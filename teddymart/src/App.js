@@ -1,18 +1,7 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import DashBoard from "./screens/dashboard/index";
-import Partner from "./screens/partner";
+import RootRoutes from "./routes/RootRoutes";
 const App = () => {
-  return (
-    <div>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<DashBoard />} />
-          <Route path="/partner" element={<Partner />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
+  return <RootRoutes />;
 };
 
 export default App;
