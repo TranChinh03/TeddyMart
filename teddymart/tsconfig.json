@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true,
     "outDir": "./dist/",
     "noImplicitAny": true,
     "allowSyntheticDefaultImports": true,
@@ -7,7 +8,9 @@
     "target": "es5",
     "jsx": "react-jsx",
     "allowJs": true,
-    "moduleResolution": "Node"
+    "moduleResolution": "node",
+    "baseUrl": "src"
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }

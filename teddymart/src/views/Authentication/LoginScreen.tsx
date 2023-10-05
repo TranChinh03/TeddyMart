@@ -1,14 +1,14 @@
 import React from "react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+// import {
+//   LineChart,
+//   Line,
+//   XAxis,
+//   YAxis,
+//   CartesianGrid,
+//   Tooltip,
+//   Legend,
+//   ResponsiveContainer,
+// } from "recharts";
 
 const data = [
   {
@@ -58,7 +58,7 @@ export default function LoginScreen() {
   const demoUrl = "https://codesandbox.io/s/simple-line-chart-kec3v";
   return (
     <div className="flex-1 bg-slate-400">
-      <h1>Header</h1>
+      {/* <h1>Header</h1> */}
       {/* <ResponsiveContainer width={500} height={500}>
         <LineChart
           width={500}
