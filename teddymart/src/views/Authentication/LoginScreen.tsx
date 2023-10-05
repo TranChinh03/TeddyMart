@@ -56,11 +56,10 @@ const data = [
 ];
 export default function LoginScreen() {
   const demoUrl = "https://codesandbox.io/s/simple-line-chart-kec3v";
-
   return (
     <div className="flex-1 bg-slate-400">
       <h1>Header</h1>
-      <ResponsiveContainer width={500} height={500}>
+      {/* <ResponsiveContainer width={500} height={500}>
         <LineChart
           width={500}
           height={300}
@@ -85,7 +84,7 @@ export default function LoginScreen() {
           />
           <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
         </LineChart>
-      </ResponsiveContainer>
+      </ResponsiveContainer> */}
     </div>
   );
 }

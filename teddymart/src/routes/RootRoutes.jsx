@@ -1,14 +1,14 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import SaleScreen from "views/Sale/SaleScreen";
-import ProductScreen from "views/Product/ProductScreen";
-import ReportScreen from "views/Report/ReportScreen";
-import CustomerScreen from "views/Partner/CustomerScreen";
-import SupplierScreen from "views/Partner/SupplierScreen";
-import WarehouseScreen from "views/Warehouse/WarehouseScreen";
-import LoginScreen from "views/Authentication/LoginScreen";
-import SignUpScreen from "views/Authentication/SignUpScreen";
-import ForgotPassword from "views/Authentication/ForgotPassword";
+import SaleScreen from "../views/Sale/SaleScreen";
+import ProductScreen from "../views/Product/ProductScreen";
+import ReportScreen from "../views/Report/ReportScreen";
+import CustomerScreen from "../views/Partner/CustomerScreen";
+import SupplierScreen from "../views/Partner/SupplierScreen";
+import WarehouseScreen from "../views/Warehouse/WarehouseScreen";
+import LoginScreen from "../views/Authentication/LoginScreen";
+import SignUpScreen from "../views/Authentication/SignUpScreen";
+import ForgotPassword from "../views/Authentication/ForgotPassword";
 
 export default function RootRoutes() {
   return (
