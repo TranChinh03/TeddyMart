@@ -1,7 +1,7 @@
-import "./App.scss";
+import React from "react";
 import RootRoutes from "./routes/RootRoutes";
-function App() {
+const App = () => {
   return <RootRoutes />;
-}
+};
 
 export default App;

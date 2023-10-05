@@ -1,5 +1,5 @@
 import React from "react";
 
 export default function SignUpScreen() {
-  return <div>SignUp</div>;
+  return <h1 className="text-red-400 font-bold underline">Hello world!</h1>;
 }
