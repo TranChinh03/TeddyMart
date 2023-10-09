@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SaleScreen from "views/Sale/SaleScreen";
 import ProductScreen from "views/Product/ProductScreen";
