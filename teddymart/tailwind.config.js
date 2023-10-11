@@ -33,7 +33,11 @@ module.exports = {
         17: "17px",
         19: "19px",
         20: "20px",
-        2.2:"2.2rem",
+        2.2: "2.2rem",
+      },
+      
+      fontFamily: {
+        roboto: ['Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
       },
     },
   },
