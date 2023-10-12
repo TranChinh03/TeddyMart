@@ -9,10 +9,11 @@ import LoginScreen from "views/Authentication/LoginScreen";
 import SignUpScreen from "views/Authentication/SignUpScreen";
 import ForgotPassword from "views/Authentication/ForgotPassword";
 import Drawer from "./Drawer";
+import Draft from "views/Draft/Draft";
 export default function RootRoutes() {
   return (
     <BrowserRouter>
-      <Drawer />
+      {/* <Drawer /> */}
       <Routes>
         <Route path="/" index element={<LoginScreen />} />
         <Route path="/signup" element={<SignUpScreen />} />
@@ -23,6 +24,7 @@ export default function RootRoutes() {
         <Route path="customer" element={<CustomerScreen />} />
         <Route path="supplier" element={<SupplierScreen />} />
         <Route path="warehouse" element={<WarehouseScreen />} />
+        <Route path="draft" element={<Draft />} />
       </Routes>
     </BrowserRouter>
   );
