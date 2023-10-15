@@ -1,4 +1,3 @@
-import React from "react";
 import { TxtProps } from "./txtprops";
 import { COLORS } from "constants/colors";
 
