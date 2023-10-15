@@ -21,8 +21,9 @@ module.exports = {
         txt_white: "#fff",
         message_success: "#51a351",
         checkbox_bg: "#f34334",
+        black: "#000",
+        white: "#fff",
       },
-
       fontSize: {
         12: "12px",
         13: "13px",
@@ -32,7 +33,6 @@ module.exports = {
         20: "20px",
         2.2: "2.2rem",
       },
-
       fontFamily: {
         roboto: ["Roboto", "Helvetica Neue", "Arial", "sans-serif"],
       },

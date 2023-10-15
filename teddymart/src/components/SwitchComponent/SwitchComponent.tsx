@@ -1,18 +1,7 @@
 import { COLORS } from "constants/colors";
-type SwitchProps = {
-  trackColor?: string;
-  thumbColor?: string;
-  trackActiveColor?: string;
-  thumbActiveColor?: string;
-  label?: string;
-  trackWidth?: string | number;
-  thumbSize?: string | number;
-  fontSize?: string | number;
-  isChecked?: boolean;
-  setIsChecked: (value: boolean) => void;
-};
+import { SwitchProps } from "./props";
 /**
- * @param {Object} props - The props for the SwitchComponent.
+ * @param {SwitchProps} props - The props for the SwitchComponent.
  * @param {string} [props.trackColor] - The color of the track when the switch is off.
  * @param {string} [props.thumbColor] - The color of the thumb when the switch is off.
  * @param {string} [props.trackActiveColor] - The color of the track when the switch is on.
@@ -21,20 +10,22 @@ type SwitchProps = {
  * @param {string | number} [props.trackWidth] - The width of the track.
  * @param {string | number} [props.thumbSize] - The size of the thumb.
  * @param {string | number} [props.fontSize] - The font size for the label.
- * @param {boolean} [props.isChecked] - Whether the thumb is checked
+ * @param {boolean} [props.isChecked] - Whether the thumb is checked.
  * @param {(value: boolean) => void} [props.setIsChecked] - Function to turn on/off the thumb
+ * @param {string} [props.labelColor] - The color for the label
  */
 const SwitchComponent = ({
-  trackColor = COLORS.grey.lightGray,
-  thumbColor = COLORS.white.defaultWhite,
-  trackActiveColor = COLORS.blue.lightBlue,
-  thumbActiveColor = COLORS.blue.mediumBlue,
+  trackColor = COLORS.lightGray,
+  thumbColor = COLORS.defaultWhite,
+  trackActiveColor = COLORS.lightBlue,
+  thumbActiveColor = COLORS.mediumBlue,
   label,
   trackWidth = "40",
   thumbSize = "20",
   fontSize = 15,
   isChecked = false,
   setIsChecked,
+  labelColor,
 }: SwitchProps) => {
   const toggleSwitch = () => {
     setIsChecked(!isChecked);
@@ -74,7 +65,10 @@ const SwitchComponent = ({
         </div>
       </div>
       {label && (
-        <span className="ml-3" style={{ fontSize: fontSize }}>
+        <span
+          className={`ml-3`}
+          style={{ fontSize: fontSize, color: labelColor }}
+        >
           {label}
         </span>
       )}

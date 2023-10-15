@@ -4,7 +4,6 @@ import TextComponent from "components/TextComponent";
 import { ChangeEvent } from "react";
 /**
  * Props for a custom text input component.
- *
  * @param labelFontWeight - Font weight of the label.
  * @param labelFontSize - Font size of the label.
  * @param labelColor - Color of the label text.
@@ -26,7 +25,7 @@ import { ChangeEvent } from "react";
 export default function TextInputComponent({
   labelFontWeight = "font-medium",
   labelFontSize = 12,
-  labelColor = COLORS.black.defaultBlack,
+  labelColor = COLORS.defaultBlack,
   placeHolder = "Type here...",
   id,
   inputType = "text",
@@ -45,7 +44,6 @@ export default function TextInputComponent({
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
-  console.log(value);
   return (
     <div style={{ width }}>
       {label && (
@@ -53,6 +51,7 @@ export default function TextInputComponent({
           fontSize={labelFontSize}
           fontWeight={labelFontWeight}
           color={labelColor}
+          style={{ color: "red" }}
         >
           {"Label"}
         </TextComponent>

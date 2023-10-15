@@ -16,9 +16,9 @@ export default function RootRoutes() {
       {/* <Drawer /> */}
       <Routes>
         <Route path="/" index element={<LoginScreen />} />
-        <Route path="/signup" element={<SignUpScreen />} />
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/sale" element={<SaleScreen />} />
+        <Route path="signup" element={<SignUpScreen />} />
+        <Route path="forgotpassword" element={<ForgotPassword />} />
+        <Route path="sale" element={<SaleScreen />} />
         <Route path="product" element={<ProductScreen />} />
         <Route path="report" element={<ReportScreen />} />
         <Route path="customer" element={<CustomerScreen />} />

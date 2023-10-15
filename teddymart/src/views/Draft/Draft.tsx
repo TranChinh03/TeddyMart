@@ -1,5 +1,6 @@
-import SwitchComponent from "components/SwitchComponent";
+import SwitchComponent from "components/SwitchComponent/SwitchComponent";
 import TextInputComponent from "components/TextInputComponent";
+import { COLORS } from "constants/colors";
 import React, { useState } from "react";
 import { CiAlarmOn } from "react-icons/ci";
 export default function Draft() {
@@ -11,6 +12,7 @@ export default function Draft() {
         label="option1"
         isChecked={isOn}
         setIsChecked={setIsOn}
+        labelColor={COLORS.checkbox_bg}
       />
       <TextInputComponent
         icon={<CiAlarmOn />}

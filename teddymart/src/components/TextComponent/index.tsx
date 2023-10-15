@@ -5,13 +5,14 @@ export default function TextComponent({
   fontWeight = "font-bold",
   fontSize = 12,
   children,
-  color = COLORS.black.defaultBlack,
+  color = "message_success",
   letterSpacing,
+  style,
 }: TxtProps) {
   return (
     <label
-      className={`block mb-2 text-${fontSize} ${fontWeight} dark:text-white`}
-      style={{ color, letterSpacing }}
+      className={`block mb-2 text-${fontSize} ${fontWeight} dark:text-white text-${color}`}
+      style={{ letterSpacing, ...style }}
     >
       {children}
     </label>
