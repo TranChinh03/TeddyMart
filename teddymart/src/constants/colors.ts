@@ -22,9 +22,29 @@ export const COLORS = {
     defaultWhite: "#fff",
   },
   black: {
+      /**
+     * lightBlack: "#211f30"
+     */
+      lightBlack:"#373543",
+
+      /**
+      * mediumBlack: "#211f30"
+      */
+      mediumBlack:"#211f30",
     /**
      * defaultBlack: "#000"
      */
     defaultBlack: "#000",
   },
+
+  yellow: {
+    /**
+    * darkYellow: "#000"
+    */
+   darkYellow: "#e5a24a",
+    /**
+    * darkerYellow: "#000"
+    */
+   darkerYellow:"#e29930",
+ },
 };
