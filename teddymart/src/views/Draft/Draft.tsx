@@ -5,9 +5,11 @@ import TextInputComponent from "components/TextInputComponent";
 import { COLORS } from "constants/colors";
 import { useState } from "react";
 import { CiAlarmOn } from "react-icons/ci";
+import CheckboxComponent from "components/CheckBoxComponent";
 export default function Draft() {
   const [isOn, setIsOn] = useState(false);
   const [value, setValue] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
   return (
     <div className="flex items-center justify-center mt-10 flex-col">
       <SwitchComponent
@@ -33,6 +35,11 @@ export default function Draft() {
         iconLeft={<CiAlarmOn />}
       />
       <SearchComponent />
+      <CheckboxComponent
+        color="red"
+        isChecked={isChecked}
+        setIsChecked={setIsChecked}
+      />
     </div>
   );
 }
