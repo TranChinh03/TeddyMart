@@ -1,7 +1,9 @@
+import ButtonComponent from "components/ButtonComponent";
+import SearchComponent from "components/SearchComponent";
 import SwitchComponent from "components/SwitchComponent/SwitchComponent";
 import TextInputComponent from "components/TextInputComponent";
 import { COLORS } from "constants/colors";
-import React, { useState } from "react";
+import { useState } from "react";
 import { CiAlarmOn } from "react-icons/ci";
 export default function Draft() {
   const [isOn, setIsOn] = useState(false);
@@ -19,7 +21,18 @@ export default function Draft() {
         onIconClick={() => console.log("AA")}
         value={value}
         setValue={setValue}
+        labelFontWeight={"font-bold"}
+        labelFontSize={12}
       />
+      <ButtonComponent
+        color={COLORS.hover}
+        onClick={() => {
+          alert("Button clicked!");
+        }}
+        label="Label 1"
+        iconLeft={<CiAlarmOn />}
+      />
+      <SearchComponent />
     </div>
   );
 }

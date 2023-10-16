@@ -11,8 +11,8 @@ export default function TextComponent({
 }: TxtProps) {
   return (
     <label
-      className={`block mb-2 text-${fontSize} ${fontWeight} dark:text-white text-${color}`}
-      style={{ letterSpacing, ...style }}
+      className={`block mb-2 ${fontWeight} dark:text-white text-${color}`}
+      style={{ letterSpacing, ...style, fontSize: fontSize }}
     >
       {children}
     </label>

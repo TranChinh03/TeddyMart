@@ -30,7 +30,7 @@ export default function TextInputComponent({
   id,
   inputType = "text",
   label = "Label",
-  borderRadius = "rounded-lg",
+  borderRadius = 20,
   width = 200,
   textInputColor = "txt_main_color",
   borderColor = "gray",
@@ -40,25 +40,27 @@ export default function TextInputComponent({
   required = false,
   value,
   setValue,
+  iconLeft,
 }: Props) {
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
   return (
-    <div style={{ width }}>
+    <div style={{ maxWidth: width }}>
       {label && (
         <TextComponent
           fontSize={labelFontSize}
           fontWeight={labelFontWeight}
           color={labelColor}
-          style={{ color: "red" }}
         >
-          {"Label"}
+          {label}
         </TextComponent>
       )}
       <div
-        className={`flex items-center border ${borderRadius} p-2 focus-within:border-black focus-within:border-1 w-full border-${borderColor}`}
+        className={`flex items-center border p-2 focus-within:border-black focus-within:border-1 w-full border-${borderColor}`}
+        style={{ borderRadius: borderRadius }}
       >
+        {icon && <button>{iconLeft}</button>}
         <input
           type={inputType}
           id={id}
