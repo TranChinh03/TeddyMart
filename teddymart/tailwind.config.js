@@ -26,6 +26,7 @@ module.exports = {
         light_grey: "#d2d2d2",
         purple: "#6574c4",
         light_purple: "#3d4b98",
+        extreme_lg_grey: "#f5f5f5",
       },
       fontSize: {
         12: "12px",

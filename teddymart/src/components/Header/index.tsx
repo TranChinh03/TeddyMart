@@ -9,7 +9,7 @@ export default function Header({
   width = "100%",
   title = "Title",
 }: HeaderProps) {
-  const [language, setLanguage] = useState("");
+  const [language, setLanguage] = useState("VI");
   const numberOfNotifications = 2;
   return (
     <div
