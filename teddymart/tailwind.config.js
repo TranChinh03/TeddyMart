@@ -23,6 +23,9 @@ module.exports = {
         checkbox_bg: "#f34334",
         black: "#000",
         white: "#fff",
+        light_grey: "#d2d2d2",
+        purple: "#6574c4",
+        light_purple: "#3d4b98",
       },
       fontSize: {
         12: "12px",
@@ -32,6 +35,7 @@ module.exports = {
         19: "19px",
         20: "20px",
         2.2: "2.2rem",
+        10: "10px",
       },
       fontFamily: {
         roboto: ["Roboto", "Helvetica Neue", "Arial", "sans-serif"],

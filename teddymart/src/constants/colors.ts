@@ -21,4 +21,6 @@ export const COLORS = {
   txt_white: "#fff",
   message_success: "#51a351",
   checkbox_bg: "#f34334",
+  purple: "#6574c4",
+  light_purple: "#3d4b98",
 };
