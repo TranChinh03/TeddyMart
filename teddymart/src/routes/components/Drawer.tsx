@@ -1,31 +1,31 @@
-import React from "react";
 import Divider from "components/Divider";
 import DrawerItem from "./DrawerItem";
 import { useNavigate } from "react-router-dom";
+import { NAV_LINK } from "./NAV_LINK";
 const DRAWER_ITEM = [
   {
     name: "Sale",
-    link: "/sale",
+    link: NAV_LINK.SALE,
   },
   {
     name: "Product",
-    link: "/product",
+    link: NAV_LINK.PRODUCT,
   },
   {
     name: "Customer",
-    link: "/customer",
+    link: NAV_LINK.CUSTOMER,
   },
   {
     name: "Supplier",
-    link: "/supplier",
+    link: NAV_LINK.SUPPLIER,
   },
   {
     name: "Warehouse",
-    link: "/warehouse",
+    link: NAV_LINK.WAREHOUSE,
   },
   {
     name: "Report",
-    link: "/report",
+    link: NAV_LINK.REPORT,
   },
 ];
 export default function Drawer() {
