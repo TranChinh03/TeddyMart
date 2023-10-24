@@ -1,5 +1,6 @@
 import { FONT_WEIGHT } from "constants/fonts";
 import { ReactNode } from "react";
+import { Style } from "util";
 export type Props = {
   labelFontWeight?: FONT_WEIGHT;
   labelFontSize?: number;
@@ -17,6 +18,7 @@ export type Props = {
   onIconClick?: () => void;
   required?: boolean;
   value: string;
+  style?: React.CSSProperties;
   setValue: (value: string) => void;
   iconLeft?: ReactNode;
 };

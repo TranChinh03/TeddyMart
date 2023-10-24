@@ -8,7 +8,7 @@ import WarehouseScreen from "views/Warehouse/WarehouseScreen";
 import Drawer from "../components/Drawer";
 export default function HomeRoutes() {
   return (
-    <>
+    <div className="flex items-start">
       <Drawer />
       <Routes>
         <Route path="sale" element={<SaleScreen />} />
@@ -18,6 +18,6 @@ export default function HomeRoutes() {
         <Route path="supplier" element={<SupplierScreen />} />
         <Route path="warehouse" element={<WarehouseScreen />} />
       </Routes>
-    </>
+    </div>
   );
 }
