@@ -13,6 +13,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({
   iconLeft,
   iconRight,
   maxWidth,
+  labelColor = COLORS.defaultWhite,
 }) => {
   return (
     <button
@@ -27,7 +28,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({
       className={`${fontWeight} flex justify-between items-center`}
     >
       {iconLeft && iconLeft}
-      {label}
+      <span style={{ color: labelColor }}>{label}</span>
       {iconRight && iconRight}
     </button>
   );
