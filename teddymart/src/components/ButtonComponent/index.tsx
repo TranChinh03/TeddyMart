@@ -23,7 +23,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({
         borderRadius: borderRadius,
         fontSize: fontSize,
         maxWidth,
-        color: color,
+
         fontWeight: fontWeight,
         letterSpacing: 0.8,
       }}
