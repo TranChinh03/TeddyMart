@@ -7,7 +7,7 @@ export default function ReportScreen() {
   return (
     <div
       className="flex-col bg-extreme_lg_grey pb-10"
-      style={{ marginLeft: "20%" }}
+      style={{ marginLeft: "20%", backgroundColor: "red" }}
     >
       <Header width={"100%"} title={"Report"} />
       <SubHeader />
