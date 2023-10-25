@@ -87,31 +87,36 @@ export default function SubHeader({}: Props) {
           </>
         )}
       >
-        <div className="w-full flex items-center justify-around">
-          <p>Year</p>
-          <Select
-            style={{ width: "50%" }}
-            placeholder="Tags Mode"
-            value={year}
-            onChange={(e) => setYear(e)}
-          >
-            {MONTHS.map((month, i) => (
-              <div key={i}>{month}</div>
-            ))}
-          </Select>
-        </div>
-        <div className="w-full flex items-center justify-around mt-2">
-          <p>Quarter</p>
-          <Select
-            style={{ width: "50%" }}
-            placeholder="Tags Mode"
-            value={year}
-            onChange={(e) => setYear(e)}
-          >
-            {MONTHS.map((month, i) => (
-              <div key={i}>{month}</div>
-            ))}
-          </Select>
+        <div
+          style={{ width: "80%" }}
+          className="flex items-center justify-center flex-col"
+        >
+          <div className="w-full flex items-center justify-between">
+            <p>Year</p>
+            <Select
+              style={{ width: "50%" }}
+              placeholder="Year"
+              value={year}
+              onChange={(e) => setYear(e)}
+            >
+              {MONTHS.map((month, i) => (
+                <div key={i}>{month}</div>
+              ))}
+            </Select>
+          </div>
+          <div className="w-full flex items-center justify-between mt-2">
+            <p>Quarter</p>
+            <Select
+              style={{ width: "50%" }}
+              placeholder="Quarter"
+              value={year}
+              onChange={(e) => setYear(e)}
+            >
+              {MONTHS.map((month, i) => (
+                <div key={i}>{month}</div>
+              ))}
+            </Select>
+          </div>
         </div>
       </Modal>
     </div>

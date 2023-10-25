@@ -1,6 +1,5 @@
 import Header from "components/Header";
 import { SubHeader, CardButton, Chart } from "./components";
-import { useState } from "react";
 import GeneralTable from "./components/GeneralTable";
 
 export default function ReportScreen() {

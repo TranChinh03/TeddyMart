@@ -6,6 +6,7 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { BiCalendar } from "react-icons/bi";
 
 export default function AdvancedSearch() {
+  const [branch, setBranch] = useState();
   return (
     <div className="bg-white border p-5 my-4 rounded-md shadow-md">
       <h1 className="	font-semibold text-blue-600">Tìm kiếm nâng cao</h1>
@@ -21,6 +22,9 @@ export default function AdvancedSearch() {
           }
           title="Chọn chi nhánh"
           label="Chi nhánh"
+          value={branch}
+          setValue={setBranch}
+          options={[1, 2, 3]}
         />
         <ButtonSelect
           iconRight={
