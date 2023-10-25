@@ -88,12 +88,10 @@ export default function AdvancedSearch() {
       </div>
       <div className="flex justify-center gap-x-4 mt-4">
         <ButtonComponent
-          color={COLORS.btn_main_bg}
           label="Tìm kiếm"
           onClick={() => alert("Button Clicked")}
         />
         <ButtonComponent
-          color={COLORS.btn_main_bg}
           label="Đặt lại"
           onClick={() => alert("Button Clicked")}
         />

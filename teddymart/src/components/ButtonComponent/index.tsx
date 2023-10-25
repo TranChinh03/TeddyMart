@@ -23,7 +23,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({
         borderRadius: borderRadius,
         fontSize: fontSize,
         maxWidth,
-
+        color: color,
         fontWeight: fontWeight,
         letterSpacing: 0.8,
       }}
@@ -31,7 +31,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({
       className={`${fontWeight} flex justify-between items-center hover:opacity-80`}
     >
       {iconLeft && iconLeft}
-      <span style={{ color: color }}>{label}</span>
+      <span>{label}</span>
       {iconRight && iconRight}
     </button>
   );

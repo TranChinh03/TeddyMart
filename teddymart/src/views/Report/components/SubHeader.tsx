@@ -26,7 +26,7 @@ export default function SubHeader({}: Props) {
       <div className="flex items-center">
         <div className="relative">
           <DatePicker
-            defaultValue={dayjs("2015/01/01", "DD/MM/YYYY")}
+            defaultValue={dayjs("25/10/2023", "DD/MM/YYYY")}
             format={"DD/MM/YYYY"}
             onChange={(value, dataString) => alert(value + "\n" + dataString)}
           />
@@ -36,7 +36,7 @@ export default function SubHeader({}: Props) {
         </div>
         <div className="relative ml-4">
           <DatePicker
-            defaultValue={dayjs("2015/01/01", "DD/MM/YYYY")}
+            defaultValue={dayjs("25/10/2023", "DD/MM/YYYY")}
             format={"DD/MM/YYYY"}
             onChange={(value, dataString) => alert(value + "\n" + dataString)}
           />
