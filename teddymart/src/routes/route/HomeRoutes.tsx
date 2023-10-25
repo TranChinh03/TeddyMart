@@ -9,7 +9,7 @@ import Drawer from "../components/Drawer";
 import Draft from "views/Draft/Draft";
 export default function HomeRoutes() {
   return (
-    <>
+    <div className="flex items-start">
       <Drawer />
       <Routes>
         <Route path="sale" element={<SaleScreen />} />
@@ -20,6 +20,6 @@ export default function HomeRoutes() {
         <Route path="warehouse" element={<WarehouseScreen />} />
         <Route path="draft" element={<Draft />} />
       </Routes>
-    </>
+    </div>
   );
 }

@@ -29,7 +29,7 @@ export default function TextInputComponent({
   placeHolder = "Type here...",
   id,
   inputType = "text",
-  label = "Label",
+  label,
   borderRadius = 20,
   width = 200,
   textInputColor = "txt_main_color",
@@ -41,12 +41,13 @@ export default function TextInputComponent({
   value,
   setValue,
   iconLeft,
+  style,
 }: Props) {
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
   return (
-    <div style={{ maxWidth: width }}>
+    <div style={{ width: width }}>
       {label && (
         <TextComponent
           fontSize={labelFontSize}
@@ -58,9 +59,9 @@ export default function TextInputComponent({
       )}
       <div
         className={`flex items-center border p-2 focus-within:border-black focus-within:border-1 w-full border-${borderColor}`}
-        style={{ borderRadius: borderRadius }}
+        style={{ borderRadius: borderRadius, ...style }}
       >
-        {icon && <button>{iconLeft}</button>}
+        {iconLeft && <button>{iconLeft}</button>}
         <input
           type={inputType}
           id={id}

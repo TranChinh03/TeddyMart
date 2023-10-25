@@ -31,7 +31,7 @@ const DRAWER_ITEM = [
 export default function Drawer() {
   const navigate = useNavigate();
   return (
-    <div className="fixed top-0 left-0 h-screen bg-blue-300 w-1/5">
+    <div className=" h-screen bg-blue-300 w-1/5">
       <div className="overflow-y-auto h-full">
         {/* Avatar */}
         <div className="flex flex-row px-5 py-5 items-center">

@@ -31,7 +31,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({
       className={`${fontWeight} flex justify-between items-center hover:opacity-80`}
     >
       {iconLeft && iconLeft}
-      {label}
+      <span style={{ color: color }}>{label}</span>
       {iconRight && iconRight}
     </button>
   );

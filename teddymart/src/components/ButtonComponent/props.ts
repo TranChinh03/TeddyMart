@@ -15,6 +15,11 @@ export type ButtonProps = {
   label?: string;
 
   /**
+   * @type {string} - The color of the label.
+   */
+  labelColor?: string;
+
+  /**
    * @type {()=>void} A callback function to be executed when the button is clicked.
    */
   onClick: () => void;
