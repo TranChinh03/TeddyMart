@@ -18,7 +18,6 @@ module.exports = {
         txt_main_color: "#000000de",
         txt_mediumgrey: "#888",
         txt_lightgrey: "#9a9a9a",
-        txt_white: "#fff",
         message_success: "#51a351",
         checkbox_bg: "#f34334",
         black: "#000",
@@ -27,6 +26,8 @@ module.exports = {
         purple: "#6574c4",
         light_purple: "#3d4b98",
         extreme_lg_grey: "#f5f5f5",
+        extra_gray: "#888888",
+        medium_lg_grey: "#f3f3f3",
       },
       fontSize: {
         12: "12px",
@@ -40,6 +41,9 @@ module.exports = {
       },
       fontFamily: {
         roboto: ["Roboto", "Helvetica Neue", "Arial", "sans-serif"],
+      },
+      borderWidth: {
+        1.5: "1.5px",
       },
     },
   },

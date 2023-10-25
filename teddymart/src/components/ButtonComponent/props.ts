@@ -58,4 +58,9 @@ export type ButtonProps = {
    * @type {number} The maximum width of the button.
    */
   maxWidth?: number;
+
+  /**
+   * @type {string} Background color of the button
+   */
+  backgroundColor?: string;
 };

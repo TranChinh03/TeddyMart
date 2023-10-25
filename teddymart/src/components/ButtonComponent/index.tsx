@@ -5,7 +5,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({
   color = COLORS.defaultWhite,
   label,
   onClick,
-  fontWeight = "font-medium",
+  fontWeight = "normal",
   fontSize = "12px",
   paddingHorizontal = "20",
   paddingVertical = "8",
@@ -13,18 +13,22 @@ const ButtonComponent: React.FC<ButtonProps> = ({
   iconLeft,
   iconRight,
   maxWidth,
+  backgroundColor = COLORS.darkYellow,
 }) => {
   return (
     <button
       style={{
-        backgroundColor: color,
+        backgroundColor: backgroundColor,
         padding: `${paddingVertical}px ${paddingHorizontal}px`,
         borderRadius: borderRadius,
         fontSize: fontSize,
         maxWidth,
+        color: color,
+        fontWeight: fontWeight,
+        letterSpacing: 0.8,
       }}
       onClick={onClick}
-      className={`${fontWeight} flex justify-between items-center`}
+      className={`${fontWeight} flex justify-between items-center hover:opacity-80`}
     >
       {iconLeft && iconLeft}
       {label}

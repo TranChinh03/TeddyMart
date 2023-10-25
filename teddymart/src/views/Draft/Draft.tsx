@@ -6,10 +6,12 @@ import { COLORS } from "constants/colors";
 import { useState } from "react";
 import { CiAlarmOn } from "react-icons/ci";
 import CheckboxComponent from "components/CheckBoxComponent";
+import { useTranslation } from "react-i18next";
 export default function Draft() {
   const [isOn, setIsOn] = useState(false);
   const [value, setValue] = useState("");
   const [isChecked, setIsChecked] = useState(false);
+  const { t, i18n } = useTranslation();
   return (
     <div className="flex items-center justify-center mt-10 flex-col">
       <SwitchComponent
@@ -40,6 +42,9 @@ export default function Draft() {
         isChecked={isChecked}
         setIsChecked={setIsChecked}
       />
+      <div>
+        <h1>{t("signUp.shopname")}</h1>
+      </div>
     </div>
   );
 }
