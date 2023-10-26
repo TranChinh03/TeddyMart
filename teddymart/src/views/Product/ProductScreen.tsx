@@ -2,7 +2,7 @@ import React from "react";
 
 export default function ProductScreen() {
   return (
-    <div className="flex" style={{ marginLeft: "20%" }}>
+    <div className="flex">
       <p className="text-3xl">ProductScreen</p>
     </div>
   );

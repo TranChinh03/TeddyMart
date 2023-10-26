@@ -68,7 +68,7 @@ export default function SaleScreen() {
   };
   return (
     <div
-      className="font-roboto h-screen"
+      className="font-roboto h-screen w-4/5"
       style={{
         backgroundColor: COLORS.lightGray,
         flex: 1,

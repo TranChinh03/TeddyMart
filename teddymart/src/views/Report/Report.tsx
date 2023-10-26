@@ -4,10 +4,7 @@ import GeneralTable from "./components/GeneralTable";
 
 export default function ReportScreen() {
   return (
-    <div
-      className="flex-col bg-extreme_lg_grey pb-10"
-      style={{ marginLeft: "20%" }}
-    >
+    <div className="flex-col bg-extreme_lg_grey pb-10">
       <Header width={"100%"} title={"Report"} />
       <SubHeader />
       <div className="p-5 grid md:grid-cols-4 gap-4 grid-cols-1 sm:grid-cols-2">
