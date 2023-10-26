@@ -32,7 +32,7 @@ export default function Drawer() {
   const navigate = useNavigate();
   return (
     <div
-      className="h-screenw-1/5 top-0 left-0 shadow-lg"
+      className="h-screen w-full top-0 left-0 shadow-lg"
       style={{ backgroundColor: "#217ca3" }}
     >
       <div className="overflow-y-auto h-full">

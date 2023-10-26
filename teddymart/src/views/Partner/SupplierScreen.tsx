@@ -6,7 +6,7 @@ export default function CustomerScreen() {
   const chartWidth = window.innerWidth * 0.7;
 
   return (
-    <div className="flex flex-col w-4/5">
+    <div className="flex flex-col w-full">
       <Header width={"100%"} title={"Supplier"} />
       <div
         className="bg-extreme_lg_grey border-2 p-5 mx-1.5 my-1.5 rounded-md"

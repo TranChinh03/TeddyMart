@@ -7,7 +7,7 @@ export default function CustomerScreen() {
   const chartWidth = window.innerWidth * 0.7;
 
   return (
-    <div className="w-4/5">
+    <div className="w-full">
       <Header width={"100%"} title={"Customer"} />
       <div
         className="bg-white border-2 p-5 mx-1.5 my-1.5 rounded-md"
