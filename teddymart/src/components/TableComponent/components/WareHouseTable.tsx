@@ -138,7 +138,7 @@ const WareHouseTable = () => {
   };
   return (
     <div className="w-full">
-      <table className="w-full border-collapse border border-gray-300 bg-gray-50">
+      {/* <table className="w-full border-collapse border border-gray-300 bg-gray-50">
         <thead className="bg-gray-200">
           <tr>
             <th className="border border-gray-300 p-2 text-xs">
@@ -211,7 +211,83 @@ const WareHouseTable = () => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> */}
+      <div className="max-h-96 overflow-y-auto visible">
+        <table className="w-full border-collapse border border-gray-300 bg-gray-50">
+          <thead className="bg-gray-200 sticky top-0 left-0 z-50">
+            <tr>
+              <th className="border border-gray-300 p-2 text-xs">
+                <input
+                  className="w-15 h-15 bg-hover"
+                  type="checkbox"
+                  onChange={() => handleCheckBoxChange(-1)}
+                />
+              </th>
+              <th className="border border-gray-300 p-2 text-xs">#</th>
+              {HEADER.map((header, index) => (
+                <th key={index} className="border border-gray-300 p-2 text-xs">
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="text-center">
+            {CONTENT.map((content, index) => (
+              <tr key={index}>
+                <td className="border border-gray-300 p-2">
+                  <input
+                    className="w-15 h-15 bg-hover"
+                    type="checkbox"
+                    onChange={() => handleCheckBoxChange(content.id)}
+                    checked={selectedRows.includes(content.id) ? true : false}
+                  />
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">{index}</td>
+
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.createdAt.toLocaleDateString("vi")}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.transaction_code}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.staff}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.delivery_partner}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.total}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.paid}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.quantity}
+                </td>
+                <td className="border border-gray-300 p-2 font-[500] text-sm">
+                  {content.remain}
+                </td>
+                <td
+                  className="border border-gray-300 p-2 font-[500] text-sm"
+                  style={{ color: COLOR_STATUS.get(content.status) }}
+                >
+                  {content.status}
+                </td>
+                <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
+                  <Button className="mr-2">
+                    <FiEdit />
+                  </Button>
+
+                  <Button>
+                    <FiTrash color="red" />
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <div className="w-full text-left my-5 flex row justify-end pr-10 items-center ">
         <span className="text-sm mr-4 text-gray-400 ">Số mục mỗi trang:</span>
         <select

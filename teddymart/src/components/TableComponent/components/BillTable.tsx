@@ -1,4 +1,4 @@
-import { Button, Dropdown, MenuProps } from "antd";
+import { Button, Dropdown, Layout, MenuProps } from "antd";
 import dayjs from "dayjs";
 import { useState } from "react";
 import {
@@ -93,6 +93,126 @@ const CONTENT: TContent[] = [
     payment_status: "Success",
     notes: "Khách hàng thân quen",
   },
+  {
+    id: 3,
+    bill_code: "#B_01",
+    customer: "DoanTanKhang",
+    sales_date_and_time: new Date(),
+    sale_stafff: "Nguyen Tien",
+    subTotal: 5999,
+    total_discount: 500,
+    total_paid: 5499,
+    total_cost_of_goods_sold: 3000,
+    payment: 5999,
+    status: "Success",
+    payment_status: "Success",
+    notes: "Khách hàng thân quen",
+  },
+  {
+    id: 4,
+    bill_code: "#B_01",
+    customer: "DoanTanKhang",
+    sales_date_and_time: new Date(),
+    sale_stafff: "Nguyen Tien",
+    subTotal: 5999,
+    total_discount: 500,
+    total_paid: 5499,
+    total_cost_of_goods_sold: 3000,
+    payment: 5999,
+    status: "Success",
+    payment_status: "Success",
+    notes: "Khách hàng thân quen",
+  },
+  {
+    id: 5,
+    bill_code: "#B_01",
+    customer: "DoanTanKhang",
+    sales_date_and_time: new Date(),
+    sale_stafff: "Nguyen Tien",
+    subTotal: 5999,
+    total_discount: 500,
+    total_paid: 5499,
+    total_cost_of_goods_sold: 3000,
+    payment: 5999,
+    status: "Success",
+    payment_status: "Success",
+    notes: "Khách hàng thân quen",
+  },
+  {
+    id: 6,
+    bill_code: "#B_01",
+    customer: "DoanTanKhang",
+    sales_date_and_time: new Date(),
+    sale_stafff: "Nguyen Tien",
+    subTotal: 5999,
+    total_discount: 500,
+    total_paid: 5499,
+    total_cost_of_goods_sold: 3000,
+    payment: 5999,
+    status: "Success",
+    payment_status: "Success",
+    notes: "Khách hàng thân quen",
+  },
+  {
+    id: 7,
+    bill_code: "#B_01",
+    customer: "DoanTanKhang",
+    sales_date_and_time: new Date(),
+    sale_stafff: "Nguyen Tien",
+    subTotal: 5999,
+    total_discount: 500,
+    total_paid: 5499,
+    total_cost_of_goods_sold: 3000,
+    payment: 5999,
+    status: "Success",
+    payment_status: "Success",
+    notes: "Khách hàng thân quen",
+  },
+  {
+    id: 2,
+    bill_code: "#B_01",
+    customer: "DoanTanKhang",
+    sales_date_and_time: new Date(),
+    sale_stafff: "Nguyen Tien",
+    subTotal: 5999,
+    total_discount: 500,
+    total_paid: 5499,
+    total_cost_of_goods_sold: 3000,
+    payment: 5999,
+    status: "Success",
+    payment_status: "Success",
+    notes: "Khách hàng thân quen",
+  },
+  {
+    id: 2,
+    bill_code: "#B_01",
+    customer: "DoanTanKhang",
+    sales_date_and_time: new Date(),
+    sale_stafff: "Nguyen Tien",
+    subTotal: 5999,
+    total_discount: 500,
+    total_paid: 5499,
+    total_cost_of_goods_sold: 3000,
+    payment: 5999,
+    status: "Success",
+    payment_status: "Success",
+    notes: "Khách hàng thân quen",
+  },
+  {
+    id: 2,
+    bill_code: "#B_01",
+    customer: "DoanTanKhang",
+    sales_date_and_time: new Date(),
+    sale_stafff: "Nguyen Tien",
+    subTotal: 5999,
+    total_discount: 500,
+    total_paid: 5499,
+    total_cost_of_goods_sold: 3000,
+    payment: 5999,
+    status: "Success",
+    payment_status: "Success",
+    notes: "Khách hàng thân quen",
+  },
 ];
 
 const HEADER = [
@@ -133,84 +253,87 @@ const BillTable = () => {
     setRowsPerPage(e.target.value);
   };
   return (
-    <div className="w-full">
-      <table className="w-full border-collapse border border-gray-300 bg-gray-50">
-        <thead className="bg-gray-200">
-          <tr>
-            <th className="border border-gray-300 p-2 text-xs">
-              <input
-                className="w-15 h-15 bg-hover"
-                type="checkbox"
-                onChange={() => handleCheckBoxChange(-1)}
-              />
-            </th>
-            <th className="border border-gray-300 p-2 text-xs">#</th>
-            {HEADER.map((header, index) => (
-              <th key={index} className="border border-gray-300 p-2 text-xs">
-                {header}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="text-center">
-          {CONTENT.map((content, index) => (
-            <tr key={index}>
-              <td className="border border-gray-300 p-2">
+    <div>
+      <div className="max-h-96 overflow-y-auto visible">
+        <table className="w-full border-collapse border border-gray-300 bg-gray-50 z-50">
+          <thead className="bg-gray-200 sticky top-0 left-0">
+            <tr>
+              <th className="border border-gray-300 p-2 text-xs">
                 <input
                   className="w-15 h-15 bg-hover"
                   type="checkbox"
-                  onChange={() => handleCheckBoxChange(content.id)}
-                  checked={selectedRows.includes(content.id) ? true : false}
+                  onChange={() => handleCheckBoxChange(-1)}
                 />
-              </td>
-              <td className="border border-gray-300 p-2 text-sm">{index}</td>
-              <td className="border border-gray-300 p-2 text-sm">
-                {content.id}
-              </td>
-              <td className="border border-gray-300 p-2 text-sm">
-                {content.customer}
-              </td>
-              <td className="border border-gray-300 p-2 text-sm">
-                {content.sales_date_and_time.toLocaleDateString("vi")}{" "}
-                {dayjs(content.sales_date_and_time).format("HH:mm:ss")}
-              </td>
-              <td className="border border-gray-300 p-2 text-sm">
-                {content.sale_stafff}
-              </td>
-              <td className="border border-gray-300 p-2 text-sm">
-                {content.subTotal}
-              </td>
-              <td className="border border-gray-300 p-2 text-sm">
-                {content.total_discount}
-              </td>
-              <td className="border border-gray-300 p-2 text-sm">
-                {content.total_paid}
-              </td>
-              <td className="border border-gray-300 p-2 text-sm">
-                {content.total_cost_of_goods_sold}
-              </td>
-              <td className="border border-gray-300 p-2 text-sm">
-                {content.payment}
-              </td>
-              <td
-                className="border border-gray-300 p-2 font-[500] text-sm"
-                style={{ color: COLOR_STATUS.get(content.status) }}
-              >
-                {content.status}
-              </td>
-              <td
-                className="border border-gray-300 p-2 font-[500] text-sm"
-                style={{ color: COLOR_STATUS.get(content.status) }}
-              >
-                {content.payment_status}
-              </td>
-              <td className="border border-gray-300 p-2 text-sm">
-                {content.notes}
-              </td>
+              </th>
+              <th className="border border-gray-300 p-2 text-xs">#</th>
+              {HEADER.map((header, index) => (
+                <th key={index} className="border border-gray-300 p-2 text-xs">
+                  {header}
+                </th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="text-center">
+            {CONTENT.map((content, index) => (
+              <tr key={index}>
+                <td className="border border-gray-300 p-2">
+                  <input
+                    className="w-15 h-15 bg-hover"
+                    type="checkbox"
+                    onChange={() => handleCheckBoxChange(content.id)}
+                    checked={selectedRows.includes(content.id) ? true : false}
+                  />
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">{index}</td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.id}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.customer}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.sales_date_and_time.toLocaleDateString("vi")}{" "}
+                  {dayjs(content.sales_date_and_time).format("HH:mm:ss")}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.sale_stafff}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.subTotal}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.total_discount}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.total_paid}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.total_cost_of_goods_sold}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.payment}
+                </td>
+                <td
+                  className="border border-gray-300 p-2 font-[500] text-sm"
+                  style={{ color: COLOR_STATUS.get(content.status) }}
+                >
+                  {content.status}
+                </td>
+                <td
+                  className="border border-gray-300 p-2 font-[500] text-sm"
+                  style={{ color: COLOR_STATUS.get(content.status) }}
+                >
+                  {content.payment_status}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.notes}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
       <div className="w-full text-left my-5 flex row justify-end pr-10 items-center ">
         <span className="text-sm mr-4 text-gray-400 ">Số mục mỗi trang:</span>
         <select
