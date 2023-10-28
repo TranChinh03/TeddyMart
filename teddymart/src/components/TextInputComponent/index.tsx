@@ -30,7 +30,7 @@ export default function TextInputComponent({
   id,
   inputType = "text",
   label,
-  borderRadius = 20,
+  borderRadius = 5,
   width = 200,
   textInputColor = "txt_main_color",
   borderColor = "gray",
@@ -47,25 +47,28 @@ export default function TextInputComponent({
     setValue(event.target.value);
   };
   return (
-    <div style={{ width: width }}>
+    <div style={{ width: width }}  className="relative">
       {label && (
-        <TextComponent
+        <div className="absolute -top-2 left-2 bg-white text-10 px-1 font-roboto text-txt_lightgrey">
+          <TextComponent
           fontSize={labelFontSize}
           fontWeight={labelFontWeight}
           color={labelColor}
         >
           {label}
-        </TextComponent>
+        </TextComponent> 
+        </div>
+
       )}
       <div
-        className={`flex items-center border p-2 focus-within:border-black focus-within:border-1 w-full border-${borderColor}`}
+        className={`flex items-center border p-2 focus-within:border-black focus-within:border-2 w-full border-${borderColor}`}
         style={{ borderRadius: borderRadius, ...style }}
       >
         {iconLeft && <button>{iconLeft}</button>}
         <input
           type={inputType}
           id={id}
-          className={`bg-gray-50 ${textInputColor} ${textInputSize} block w-full p-2.5 focus:outline-none`}
+          className={`bg-gray-50 ${textInputColor} ${textInputSize} block w-full focus:outline-none`}
           placeholder={placeHolder}
           required={required}
           value={value}

@@ -29,6 +29,7 @@ export default function FieldSupplier() {
         <ButtonComponent
           label="Import or Export Excel"
           onClick={() => alert("Button Clicked")}
+          backgroundColor = {COLORS.lightBlack}
           iconLeft={
             <LiaFileExcel
               style={{ marginRight: 10, color: "white", fontSize: 22 }}

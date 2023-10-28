@@ -7,7 +7,7 @@ import { COLORS } from "constants/colors";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { LiaFileExcel } from "react-icons/lia";
 import { TiPlus } from "react-icons/ti";
-import { TbMenuDeep } from "react-icons/tb";
+import { BiFilter } from "react-icons/bi";
 
 export default function FieldCustomer() {
   const [isChecked, setIsChecked] = useState(false);
@@ -29,13 +29,14 @@ export default function FieldCustomer() {
           paddingHorizontal={10}
           paddingVertical={10}
           borderRadius={100}
-          iconLeft={<TbMenuDeep style={{ color: "white", fontSize: 22 }} />}
+          iconLeft={<BiFilter style={{ color: "white", fontSize: 22 }} />}
         />
       </div>
       <div className="w-100% bg-white flex items-center justify-between gap-x-4">
         <ButtonComponent
           label="Import or Export Excel"
           onClick={() => alert("Button Clicked")}
+          backgroundColor = {COLORS.lightBlack}
           iconLeft={
             <LiaFileExcel
               style={{ marginRight: 10, color: "white", fontSize: 22 }}

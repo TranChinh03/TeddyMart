@@ -9,7 +9,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({
   fontSize = "12px",
   paddingHorizontal = "20",
   paddingVertical = "8",
-  borderRadius = 10,
+  borderRadius = 5,
   iconLeft,
   iconRight,
   maxWidth,
