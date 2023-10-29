@@ -25,7 +25,7 @@ import { ChangeEvent } from "react";
  */
 export default function TextInputComponent({
   labelFontWeight = "font-medium",
-  labelFontSize = 12,
+  labelFontSize = 14,
   labelColor = COLORS.black.defaultBlack,
   placeHolder = "Type here...",
   id,
@@ -54,16 +54,16 @@ export default function TextInputComponent({
           fontWeight={labelFontWeight}
           color={labelColor}
         >
-          {"Label"}
+          {label}
         </TextComponent>
       )}
       <div
-        className={`flex items-center border ${borderRadius} p-2 focus-within:border-black focus-within:border-1 w-full border-${borderColor}`}
+        className={`flex items-center border ${borderRadius} px-2 focus-within:border-black focus-within:border-1 w-full border-${borderColor}`}
       >
         <input
           type={inputType}
           id={id}
-          className={`bg-gray-50 ${textInputColor} ${textInputSize} block w-full p-2.5 focus:outline-none`}
+          className={` ${textInputColor} ${textInputSize} block w-full p-2 focus:outline-none`}
           placeholder={placeHolder}
           required={required}
           value={value}

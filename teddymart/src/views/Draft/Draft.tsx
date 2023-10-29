@@ -17,6 +17,7 @@ export default function Draft() {
         onIconClick={() => console.log("AA")}
         value={value}
         setValue={setValue}
+        
       />
     </div>
   );

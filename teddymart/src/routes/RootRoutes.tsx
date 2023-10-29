@@ -13,7 +13,7 @@ import Draft from "views/Draft/Draft";
 export default function RootRoutes() {
   return (
     <BrowserRouter>
-      {/* <Drawer /> */}
+      <Drawer />
       <Routes>
         <Route path="/" index element={<LoginScreen />} />
         <Route path="/signup" element={<SignUpScreen />} />
