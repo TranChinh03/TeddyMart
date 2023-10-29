@@ -5,8 +5,8 @@ interface DropdownComponentProps {
   label?: string;
   options: string[];
   placeholder?: string;
-  value: string;
-  setValue: (value: string) => void;
+  value?: string;
+  setValue?: (value: string) => void;
 }
 
 // size: kích thước: small, default, big
