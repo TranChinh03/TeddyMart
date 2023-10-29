@@ -77,7 +77,7 @@ export default function TextInputComponent({
         {icon && (
           <button
             onClick={onIconClick}
-            className="p-2 hover:bg-slate-300 rounded-full"
+            className="px-2 hover:bg-slate-300 rounded-full"
           >
             {icon}
           </button>

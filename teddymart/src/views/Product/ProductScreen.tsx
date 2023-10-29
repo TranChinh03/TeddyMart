@@ -151,9 +151,9 @@ export default function ProductScreen() {
           <SearchComponent/>
         </div>
       </div>
-      <ResponsiveContainer style={{ margin: "auto"}} width={chartWidth}>
+      {/* <ResponsiveContainer style={{ margin: "auto"}} width={chartWidth}>
         <ProductTable/>
-      </ResponsiveContainer>
+      </ResponsiveContainer> */}
     </div>
   );
 }

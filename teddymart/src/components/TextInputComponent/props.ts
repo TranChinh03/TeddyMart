@@ -7,7 +7,7 @@ export type Props = {
   labelColor?: string;
   placeHolder?: string;
   id?: string;
-  inputType?: "text" | "checkbox" | "radio" | "color" | "date" | "file";
+  inputType?: "text" | "checkbox" | "radio" | "color" | "date" | "file" | "password";
   borderRadius?: number;
   label?: string;
   width?: number | string;
