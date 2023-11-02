@@ -3,8 +3,6 @@ import TextInputComponent from 'components/TextInputComponent';
 import { useState } from "react";
 import { BiSearch } from "react-icons/bi";
 
-// onSearch là function dùng để xử lý khi search!!
-
 interface SearchComponentProps {
     placeholder?: string;
 }
