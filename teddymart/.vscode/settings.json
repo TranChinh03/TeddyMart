@@ -1,0 +1,5 @@
+{
+  "i18next.i18nPaths": "e:/ReactJS/TeddyMart/teddymart/public/locales",
+  "i18n-ally.localesPaths": ["public/locales"],
+  "i18n-ally.keystyle": "nested"
+}
