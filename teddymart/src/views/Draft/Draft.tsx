@@ -10,6 +10,8 @@ import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { addNewPartner } from "state_management/slices/partnerSlice";
+import { Button } from "antd";
+import { addDbOrder } from "firebase-tools/addDbOrder";
 
 export default function Draft() {
   const [isOn, setIsOn] = useState(false);
