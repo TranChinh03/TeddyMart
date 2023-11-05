@@ -42,6 +42,7 @@ export default function Draft() {
           alert("Button clicked!");
           console.log(partners);
           i18n.changeLanguage("vi");
+          // dispatch: để gọi actions = setState()
           // dispatch(
           //   addNewPartner({
           //     partnerId: "AAA",
@@ -103,9 +104,9 @@ export default function Draft() {
       {/* <Button onClick={addDbWarehouse}>
         <h1>Add warehouse Into Database</h1>
       </Button> */}
-      {/* <Button onClick={addDbOrder}>
+      <Button onClick={addDbOrder}>
         <h1>Add Order Into Database</h1>
-      </Button> */}
+      </Button>
     </div>
   );
 }

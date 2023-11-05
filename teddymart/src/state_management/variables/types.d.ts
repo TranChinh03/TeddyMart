@@ -8,21 +8,17 @@ declare type TPartner = {
   gender?: "female" | "male";
 };
 
-declare type TUser = {
-  userId: string;
+declare type TManager = {
+  managerId: string;
+  shopName: string;
+  field: string;
+  password: string;
   userName: string;
   photoUrl?: string;
   address?: string;
   phoneNumber: string;
   email: string;
   gender?: "female" | "male";
-}
-
-declare type TManager = {
-  userId: string;
-  shopName: string;
-  field: string;
-  password: string;
 }
 
 declare type TVoucher = {
