@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import TextInputComponent from "components/TextInputComponent";
 import {
-  AiFillCaretDown,
   AiFillEye,
   AiFillEyeInvisible,
   AiOutlineArrowLeft,
@@ -71,7 +70,7 @@ export default function SignUpScreen() {
             Create your account. It's free and only take a minute.
           </p>
           <div className="flex ">
-            <div className="w-full grid grid-cols-2 justify-items-start gap-y-7 p-5">
+            <div className="w-full grid grid-cols-2 justify-items-start gap-y-7 p-5 gap-4">
               <div style={{ width: "90%" }} className="flex flex-col gap-x-5">
                 <TextInputComponent
                   placeHolder=""
@@ -83,7 +82,7 @@ export default function SignUpScreen() {
                   setValue={setUsername}
                 />
 
-                {error && username.length <= 0 ? (
+                {/* {error && username.length <= 0 ? (
                   <label className="text-red-500 text-12">
                     Username required !
                   </label>
@@ -93,15 +92,15 @@ export default function SignUpScreen() {
                   </label>
                 ) : (
                   ""
-                )}
+                )} */}
               </div>
 
-              <div style={{ width: "100%" }} className="flex flex-col gap-x-5">
+              <div style={{ width: "90%" }} className="flex flex-col gap-x-5">
                 <TextInputComponent
                   placeHolder=""
                   label="Password"
                   //labelFontSize={11}
-                  //width={"90%"}
+                  width={"100%"}
                   required={true}
                   inputType={visible ? "text" : "password"}
                   icon={visible ? <AiFillEyeInvisible /> : <AiFillEye />}
@@ -110,7 +109,7 @@ export default function SignUpScreen() {
                   setValue={setPassword}
                 />
 
-                {error && password.length <= 0 ? (
+                {/* {error && password.length <= 0 ? (
                   <label className="text-red-500 text-12">
                     Password required !
                   </label>
@@ -120,21 +119,20 @@ export default function SignUpScreen() {
                   </label>
                 ) : (
                   ""
-                )}
+                )} */}
               </div>
 
               <div style={{ width: "90%" }} className="flex flex-col gap-x-5">
                 <TextInputComponent
                   placeHolder=""
                   label="Email"
-                  //labelFontSize={11}
                   width={"100%"}
                   required={true}
                   value={email}
                   setValue={setEmail}
                 />
 
-                {error && email.length <= 0 ? (
+                {/* {error && email.length <= 0 ? (
                   <label className="text-red-500 text-12">
                     Email required !
                   </label>
@@ -144,7 +142,7 @@ export default function SignUpScreen() {
                   </label>
                 ) : (
                   ""
-                )}
+                )} */}
               </div>
 
               <div style={{ width: "90%" }} className="flex flex-col gap-x-5">
@@ -159,7 +157,7 @@ export default function SignUpScreen() {
                   setValue={setPhone}
                 />
 
-                {error && phone.length <= 0 ? (
+                {/* {error && phone.length <= 0 ? (
                   <label className="text-red-500 text-12">
                     Phone Number required!
                   </label>
@@ -177,7 +175,7 @@ export default function SignUpScreen() {
                   </label>
                 ) : (
                   ""
-                )}
+                )} */}
               </div>
 
               <div style={{ width: "90%" }} className="flex flex-col gap-x-5">
@@ -191,13 +189,13 @@ export default function SignUpScreen() {
                   setValue={setShopname}
                 />
 
-                {error && shopname.length <= 0 ? (
+                {/* {error && shopname.length <= 0 ? (
                   <label className="text-red-500 text-12">
                     Shop Name required!
                   </label>
                 ) : (
                   ""
-                )}
+                )} */}
               </div>
 
               <div style={{ width: "90%" }} className="flex flex-col gap-x-5">
@@ -211,13 +209,13 @@ export default function SignUpScreen() {
                   setValue={setAddress}
                 />
 
-                {error && address.length <= 0 ? (
+                {/* {error && address.length <= 0 ? (
                   <label className="text-red-500 text-12">
                     Address required!
                   </label>
                 ) : (
                   ""
-                )}
+                )} */}
               </div>
             </div>
           </div>

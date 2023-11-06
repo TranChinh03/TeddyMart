@@ -9,21 +9,18 @@ export default function LoginScreen() {
   const [visible, setVisible] = useState(false);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
-
   const handleSubmit = () => {
-    //e.preventDefault();
     if (username.length == 0 || password.length == 0) {
       setError(true);
     } else {
       navigate(NAV_LINK.SALE);
     }
   };
-
   return (
     <div className="flex justify-center items-center h-screen bg-gradient-to-t from-sidebar to-white">
       <div className="flex w-8/12 shadow-lg bg-white rounded-md p-5">
         <div className="w-1/2 flex flex-col justify-center items-center p-5">
-          <img src={require("assets/images/logo.png")} alt="" />
+          <img src={require("assets/images/logo.png")} alt="image" />
           <p className="pt-5 text-center text-sidebar font-medium text-2xl">
             MANAGE YOUR BUSINESS BETTER
           </p>
@@ -37,29 +34,27 @@ export default function LoginScreen() {
           </h1>
           <p className="text-center">Sign in to manage your store</p>
 
-          <div className="w-full grid justify-items-center gap-y-2 py-10">
+          <div className="w-full grid gap-y-1 mt-4">
             <TextInputComponent
               placeHolder=""
               label="Username"
-              //labelFontSize={11}
               width={"90%"}
               required={true}
               value={username}
               setValue={setUsername}
             />
-
-            {error && username.length <= 0 ? (
-              <label className="text-red-500 text-12">
-                Username required !
-              </label>
-            ) : (
-              ""
-            )}
-
+            <label
+              className={` text-12 ${
+                error && username.length <= 0 ? `text-red-500` : `text-white`
+              }`}
+            >
+              Username required !
+            </label>
+          </div>
+          <div className="w-full grid gap-y-1 mt-3">
             <TextInputComponent
               placeHolder=""
               label="Password"
-              //labelFontSize={11}
               width={"90%"}
               required={true}
               inputType={visible ? "text" : "password"}
@@ -68,17 +63,16 @@ export default function LoginScreen() {
               value={password}
               setValue={setPassword}
             />
-
-            {error && password.length <= 0 ? (
-              <label className="text-red-500 text-12">
-                Password required !
-              </label>
-            ) : (
-              ""
-            )}
+            <label
+              className={` text-12 ${
+                error && password.length <= 0 ? `text-red-500` : `text-white`
+              }`}
+            >
+              Password required !
+            </label>
           </div>
 
-          <div className="flex flex-col justify-center items-center gap-y-3">
+          <div className="flex flex-col justify-center items-center gap-y-3 mt-4">
             <button
               className="w-5/12 py-2 bg-sidebar text-white text-xl rounded-md hover:bg-hover"
               onClick={handleSubmit}
