@@ -42,6 +42,7 @@ export default function Draft() {
           alert("Button clicked!");
           console.log(partners);
           i18n.changeLanguage("vi");
+          // dispatch: để gọi actions = setState()
           // dispatch(
           //   addNewPartner({
           //     partnerId: "AAA",

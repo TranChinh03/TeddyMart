@@ -19,8 +19,8 @@ const partnerSlice = createSlice({
     uploadPartner: (state: TPartner[], action: PayloadAction<TPartner[]>) => {
       state = [...action.payload];
     },
-    deletePartner: (state: TPartner[], action: PayloadAction<string>) => {
-      return state.filter((p) => p.partnerId !== action.payload);
+    deletePartner: (state: TPartner[], action: PayloadAction<{partnerId : string}>) => {
+      return state.filter((p) => p.partnerId !== action.payload.partnerId);
     },
     updatePartner: (
       state: TPartner[],
