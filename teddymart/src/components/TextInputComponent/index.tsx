@@ -32,9 +32,9 @@ export default function TextInputComponent({
   label,
   borderRadius = 5,
   width = 200,
-  textInputColor = "txt_main_color",
+  textInputColor = COLORS.defaultBlack,
   borderColor = "gray",
-  textInputSize = "text-sm",
+  textInputSize = "16px",
   icon,
   onIconClick,
   required = false,
@@ -67,11 +67,12 @@ export default function TextInputComponent({
         <input
           type={inputType}
           id={id}
-          className={`bg-gray-50 ${textInputColor} ${textInputSize} block w-full focus:outline-none`}
+          className={`bg-gray-50 block w-full focus:outline-none py-1`}
           placeholder={placeHolder}
           required={required}
           value={value}
           onChange={handleInputChange}
+          style={{ fontSize: textInputSize, color: textInputColor }}
         />
         {icon && (
           <button
