@@ -47,21 +47,20 @@ export default function TextInputComponent({
     setValue(event.target.value);
   };
   return (
-    <div style={{ width: width }}  className="relative">
+    <div style={{ width: width }} className="relative">
       {label && (
         <div className="absolute -top-2 left-2 bg-white text-10 px-1 font-roboto text-txt_lightgrey">
           <TextComponent
-          fontSize={labelFontSize}
-          fontWeight={labelFontWeight}
-          color={labelColor}
-        >
-          {label}
-        </TextComponent> 
+            fontSize={labelFontSize}
+            fontWeight={labelFontWeight}
+            color={labelColor}
+          >
+            {label}
+          </TextComponent>
         </div>
-
       )}
       <div
-        className={`flex items-center border p-2 focus-within:border-black focus-within:border-2 w-full border-${borderColor}`}
+        className={`flex items-center outline outline-1 outline-gray-300 p-2  focus-within:outline-2 focus-within:outline-black w-full border-${borderColor}`}
         style={{ borderRadius: borderRadius, ...style }}
       >
         {iconLeft && <button>{iconLeft}</button>}
@@ -77,7 +76,7 @@ export default function TextInputComponent({
         {icon && (
           <button
             onClick={onIconClick}
-            className="px-2 hover:bg-slate-300 rounded-full"
+            className="p-2 hover:bg-slate-300 rounded-full"
           >
             {icon}
           </button>
