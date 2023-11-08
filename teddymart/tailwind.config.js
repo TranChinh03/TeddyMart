@@ -28,6 +28,7 @@ module.exports = {
         extreme_lg_grey: "#f5f5f5",
         extra_gray: "#888888",
         medium_lg_grey: "#f3f3f3",
+        hover_side_bar: "#74adc6",
       },
       fontSize: {
         12: "12px",
@@ -47,5 +48,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar-hide")],
 };

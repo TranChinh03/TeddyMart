@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-
+import { DELETE_PRODUCT } from "state_management/actions/deleteProductAction";
 // const initialState = {
 //   warehouseId: "",
 //   warehouseName: "",
@@ -41,6 +41,12 @@ const warehouseSlice = createSlice({
         state[index] = { ...action.payload.updatedData };
       }
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(DELETE_PRODUCT, (state, action) => {
+      console.log("extraReducers");
+      console.log(action.payload);
+    });
   },
 });
 export const {
