@@ -1,4 +1,4 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { db } from "firebaseConfig";
 
 export const PARTNER = [
@@ -208,6 +208,6 @@ export const PARTNER = [
 ];
 export const addDBPartnerTable = () => {
   PARTNER.map(async (partner) => {
-    await addDoc(collection(db, "Partner"), partner);
+    await setDoc(doc(db, "/Manager/M001/Partner", partner.partnerId), partner);
   });
 };

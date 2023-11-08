@@ -2,39 +2,48 @@ import Divider from "components/Divider";
 import DrawerItem from "./DrawerItem";
 import { useNavigate } from "react-router-dom";
 import { NAV_LINK } from "./NAV_LINK";
-import { BsCart2, BsTruck, BsPeople, BsBox, BsBarChartLine, BsReverseLayoutTextSidebarReverse, BsCaretDownFill} from "react-icons/bs";
+import { useState } from "react";
+import {
+  BsCart2,
+  BsTruck,
+  BsPeople,
+  BsBox,
+  BsBarChartLine,
+  BsReverseLayoutTextSidebarReverse,
+  BsCaretDownFill,
+} from "react-icons/bs";
 const DRAWER_ITEM = [
   {
     name: "Sale",
     link: NAV_LINK.SALE,
-    icon1: <BsCart2 size={25}/>,
-    icon2: <BsCaretDownFill size={15}/>
+    icon1: <BsCart2 size={25} />,
+    icon2: <BsCaretDownFill size={15} />,
   },
   {
     name: "Product",
     link: NAV_LINK.PRODUCT,
-    icon1: <BsReverseLayoutTextSidebarReverse size={25}/>,
-    icon2: <BsCaretDownFill size={15}/>
+    icon1: <BsReverseLayoutTextSidebarReverse size={25} />,
+    icon2: <BsCaretDownFill size={15} />,
   },
   {
     name: "Customer",
     link: NAV_LINK.CUSTOMER,
-    icon1: <BsPeople size={25}/>
+    icon1: <BsPeople size={25} />,
   },
   {
     name: "Supplier",
     link: NAV_LINK.SUPPLIER,
-    icon1: <BsTruck size={25}/>
+    icon1: <BsTruck size={25} />,
   },
   {
     name: "Warehouse",
     link: NAV_LINK.WAREHOUSE,
-    icon1: <BsBox size={25}/>
+    icon1: <BsBox size={25} />,
   },
   {
     name: "Report",
     link: NAV_LINK.REPORT,
-    icon1: <BsBarChartLine size={25}/>
+    icon1: <BsBarChartLine size={25} />,
   },
 ];
 export default function Drawer() {
@@ -50,10 +59,19 @@ export default function Drawer() {
           </div>
           <div>Shop's Name</div>
         </div>
-        <Divider color="bg-hover"/>
+        <Divider color="bg-hover" />
         {DRAWER_ITEM.map((item, index) => {
           return (
-            <DrawerItem onClick={() => {navigate(item.link); setCurrentTab(item.link)}} name={item.name} icon1={item.icon1} icon2={item.icon2} isSelected={currentTab===item.link}/>
+            <DrawerItem
+              onClick={() => {
+                navigate(item.link);
+                setCurrentTab(item.link);
+              }}
+              name={item.name}
+              icon1={item.icon1}
+              icon2={item.icon2}
+              isSelected={currentTab === item.link}
+            />
           );
         })}
       </div>
