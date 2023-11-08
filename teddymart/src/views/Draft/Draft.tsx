@@ -112,7 +112,7 @@ export default function Draft() {
       </Button>
       <Button onClick={addDbOrder}>
         <h1>Add Order Into Database</h1>
-      </Button> */}
+      </Button>
       <Button
         onClick={() =>
           dispatch({ type: "DELETE_PRODUCT", payload: { data: "AA" } })
