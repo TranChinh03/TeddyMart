@@ -1,4 +1,4 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { db } from "firebaseConfig";
 
 const WAREHOUSE = [
@@ -60,6 +60,9 @@ const WAREHOUSE = [
 ];
 export const addDbWarehouse = () => {
   WAREHOUSE.map(async (warehouse) => {
-    await addDoc(collection(db, "Warehouse"), warehouse);
+    await setDoc(
+      doc(db, "/Manager/M001/Ware_House", warehouse.warehouseId),
+      warehouse
+    );
   });
 };

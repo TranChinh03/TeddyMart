@@ -1,9 +1,9 @@
 import { db } from "firebaseConfig";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 const MANAGER = [
   {
-    userId: "001",
+    userId: "M001",
     userName: "John Smith",
     photoURL: "example.com/001",
     address: "123 Main Street, City",
@@ -12,7 +12,7 @@ const MANAGER = [
     shopName: "BestMart",
   },
   {
-    userId: "002",
+    userId: "M002",
     userName: "Emily Brown",
     photoURL: "example.com/002",
     address: "456 Elm Avenue, Town",
@@ -21,7 +21,7 @@ const MANAGER = [
     shopName: "Fashion Trends",
   },
   {
-    userId: "003",
+    userId: "M003",
     userName: "David Lee",
     photoURL: "example.com/003",
     address: "789 Oak Road, Village",
@@ -30,7 +30,7 @@ const MANAGER = [
     shopName: "TechGadgets",
   },
   {
-    userId: "004",
+    userId: "M004",
     userName: "Sarah Johnson",
     photoURL: "example.com/004",
     address: "101 Pine Lane, Suburb",
@@ -39,7 +39,7 @@ const MANAGER = [
     shopName: "HomeEssentials",
   },
   {
-    userId: "005",
+    userId: "M005",
     userName: "Michael Davis",
     photoURL: "example.com/005",
     address: "246 Oak Street, Hamlet",
@@ -48,7 +48,7 @@ const MANAGER = [
     shopName: "SportsEmporium",
   },
   {
-    userId: "006",
+    userId: "M006",
     userName: "Sophia Martinez",
     photoURL: "example.com/006",
     address: "876 Cedar Avenue, County",
@@ -57,7 +57,7 @@ const MANAGER = [
     shopName: "ChicBoutique",
   },
   {
-    userId: "007",
+    userId: "M007",
     userName: "William Thompson",
     photoURL: "example.com/007",
     address: "543 Birch Lane, Town",
@@ -66,7 +66,7 @@ const MANAGER = [
     shopName: "GadgetZone",
   },
   {
-    userId: "008",
+    userId: "M008",
     userName: "Olivia Wilson",
     photoURL: "example.com/008",
     address: "321 Maple Street, City",
@@ -75,7 +75,7 @@ const MANAGER = [
     shopName: "FashionHub",
   },
   {
-    userId: "009",
+    userId: "M009",
     userName: "Daniel Anderson",
     photoURL: "example.com/009",
     address: "111 Pinecrest Road, Suburb",
@@ -84,7 +84,7 @@ const MANAGER = [
     shopName: "HomeDecorPlus",
   },
   {
-    userId: "010",
+    userId: "M010",
     userName: "Ava Garcia",
     photoURL: "example.com/010",
     address: "999 Elm Street, Town",
@@ -95,6 +95,6 @@ const MANAGER = [
 ];
 export const addDbManagerTable = async () => {
   MANAGER.map(async (manager) => {
-    await addDoc(collection(db, "Manager"), manager);
+    await setDoc(doc(db, "Manager", manager.userId), manager);
   });
 };

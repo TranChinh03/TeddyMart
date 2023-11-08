@@ -2,6 +2,7 @@ import Divider from "components/Divider";
 import DrawerItem from "./DrawerItem";
 import { useNavigate } from "react-router-dom";
 import { NAV_LINK } from "./NAV_LINK";
+import { useState } from "react";
 import {
   BsCart2,
   BsTruck,
@@ -11,7 +12,6 @@ import {
   BsReverseLayoutTextSidebarReverse,
   BsCaretDownFill,
 } from "react-icons/bs";
-import { useState } from "react";
 const DRAWER_ITEM = [
   {
     name: "Sale",

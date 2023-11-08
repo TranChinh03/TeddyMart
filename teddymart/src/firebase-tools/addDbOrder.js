@@ -1,4 +1,4 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { PARTNER } from "./addDbPartnerTable";
 import { PRODUCT } from "./addDbProduct";
 import { VOUCHER } from "./addDbVoucherTable";
@@ -172,9 +172,7 @@ export const addDbOrder = () => {
         data["tax"] = (Math.random() * 10 + 1) / 100;
       }
       console.log("data", data);
-      await addDoc(collection(db, "Order"), {
-        ...data,
-      });
+      await setDoc(doc(db, "/Manager/M001/Orders", data.orderId), data);
     } catch (error) {
       console.log(error);
     }

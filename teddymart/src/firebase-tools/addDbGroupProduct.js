@@ -1,4 +1,4 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { db } from "firebaseConfig";
 const PRODUCT_GROUPS = [
   {
@@ -54,6 +54,6 @@ const PRODUCT_GROUPS = [
 ];
 export const addDbGroupProduct = async () => {
   PRODUCT_GROUPS.map(async (gp) => {
-    await addDoc(collection(db, "Group_Product"), gp);
+    await setDoc(doc(db, "/Manager/M001/Group_Product", gp.groupId), gp);
   });
 };

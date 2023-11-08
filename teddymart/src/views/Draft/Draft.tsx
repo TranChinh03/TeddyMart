@@ -12,6 +12,12 @@ import { RootState } from "state_management/reducers/rootReducer";
 import { addNewPartner } from "state_management/slices/partnerSlice";
 import { Button } from "antd";
 import { addDbOrder } from "firebase-tools/addDbOrder";
+import { addDbManagerTable } from "firebase-tools/addDbManageTable";
+import { addDBPartnerTable } from "firebase-tools/addDbPartnerTable";
+import { addDbVoucherTable } from "firebase-tools/addDbVoucherTable";
+import { addDbWarehouse } from "firebase-tools/addDbWarehouse";
+import { addDBProduct } from "firebase-tools/addDbProduct";
+import { addDbGroupProduct } from "firebase-tools/addDbGroupProduct";
 
 export default function Draft() {
   const [isOn, setIsOn] = useState(false);
@@ -89,22 +95,22 @@ export default function Draft() {
       {/* <Button onClick={addDbManagerTable}>
         <h1>Add Manager Into Database</h1>
       </Button> */}
-      {/* <Button onClick={addDBPartnerTable}>
+      <Button onClick={addDBPartnerTable}>
         <h1>Add Partner Into Database</h1>
-      </Button> */}
-      {/* <Button onClick={addDbVoucherTable}>
+      </Button>
+      <Button onClick={addDbVoucherTable}>
         <h1>Add Voucher Into Database</h1>
-      </Button> */}
-      {/* <Button onClick={addDbGroupProduct}>
+      </Button>
+      <Button onClick={addDbGroupProduct}>
         <h1>Add Group Product Into Database</h1>
       </Button>
       <Button onClick={addDBProduct}>
         <h1>Add Product Into Database</h1>
-      </Button> */}
-      {/* <Button onClick={addDbWarehouse}>
+      </Button>
+      <Button onClick={addDbWarehouse}>
         <h1>Add warehouse Into Database</h1>
-      </Button> */}
-      {/* <Button onClick={addDbOrder}>
+      </Button>
+      <Button onClick={addDbOrder}>
         <h1>Add Order Into Database</h1>
       </Button> */}
       <Button

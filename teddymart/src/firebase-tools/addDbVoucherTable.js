@@ -1,4 +1,4 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { db } from "firebaseConfig";
 
 export const VOUCHER = [
@@ -145,6 +145,6 @@ export const VOUCHER = [
 ];
 export const addDbVoucherTable = () => {
   VOUCHER.map(async (voucher) => {
-    await addDoc(collection(db, "Voucher"), voucher);
+    await setDoc(doc(db, "/Manager/M001/Voucher", voucher.voucherId), voucher);
   });
 };

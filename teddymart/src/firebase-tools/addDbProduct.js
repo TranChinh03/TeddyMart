@@ -1,4 +1,4 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { db } from "firebaseConfig";
 
 export const PRODUCT = [
@@ -518,6 +518,6 @@ export const PRODUCT = [
 ];
 export const addDBProduct = () => {
   PRODUCT.map(async (product) => {
-    await addDoc(collection(db, "Product"), product);
+    await setDoc(doc(db, "/Manager/M001/Product", product.productId), product);
   });
 };
