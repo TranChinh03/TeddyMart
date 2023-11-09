@@ -3,6 +3,7 @@ import ButtonSelect from "components/ButtonSelect";
 import SearchComponent from "components/SearchComponent";
 import SwitchComponent from "components/SwitchComponent/SwitchComponent";
 import ButtonComponent from "components/ButtonComponent";
+import AddNewSupplier from './AddNewSupplier';
 import { COLORS } from "constants/colors";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { LiaFileExcel } from "react-icons/lia";
