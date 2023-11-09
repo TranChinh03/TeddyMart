@@ -11,6 +11,8 @@ export const PARTNER = [
     notes: "Regular customer, prefers organic products.",
     gender: "Male",
     type: "Customer",
+    totalBuyAmount: 0,
+    debt: 0,
   },
   {
     partnerId: "P002",
@@ -22,6 +24,8 @@ export const PARTNER = [
     certificate:
       "https://www.registrationking.com/wp-content/uploads/2020/06/iso1.png",
     type: "Supplier",
+    totalBuyAmount: 0,
+    debt: 0,
   },
   {
     partnerId: "P003",
@@ -32,6 +36,8 @@ export const PARTNER = [
     notes: "Regular customer, interested in discounts.",
     gender: "Male",
     type: "Customer",
+    totalBuyAmount: 0,
+    debt: 0,
   },
   {
     partnerId: "P004",
@@ -43,6 +49,8 @@ export const PARTNER = [
     certificate:
       "https://5.imimg.com/data5/SD/CD/JZ/SELLER-79747521/iso-9001-2015.jpg",
     type: "Supplier",
+    totalBuyAmount: 0,
+    debt: 0,
   },
   {
     partnerId: "P005",
@@ -53,6 +61,8 @@ export const PARTNER = [
     notes: "Regular customer, tech enthusiast.",
     gender: "Male",
     type: "Customer",
+    totalBuyAmount: 0,
+    debt: 0,
   },
   {
     partnerId: "P006",
@@ -64,6 +74,8 @@ export const PARTNER = [
     certificate:
       "https://vietabolt.com/public/upload/chungchi1/scan0001-03.jpg?1551170892304",
     type: "Supplier",
+    totalBuyAmount: 0,
+    debt: 0,
   },
   {
     partnerId: "P007",
@@ -74,6 +86,8 @@ export const PARTNER = [
     notes: "Regular customer, coffee lover.",
     gender: "Male",
     type: "Customer",
+    totalBuyAmount: 0,
+    debt: 0,
   },
   {
     partnerId: "P008",
@@ -84,6 +98,8 @@ export const PARTNER = [
     notes: "Supplier of home decor items.",
     certificate: "https://example.com/certificates/oliviawilson.jpg",
     type: "Supplier",
+    totalBuyAmount: 0,
+    debt: 0,
   },
   {
     partnerId: "P009",
@@ -94,6 +110,8 @@ export const PARTNER = [
     notes: "Regular customer, fitness enthusiast.",
     gender: "Male",
     type: "Customer",
+    totalBuyAmount: 0,
+    debt: 0,
   },
   {
     partnerId: "P010",
@@ -104,6 +122,8 @@ export const PARTNER = [
     notes: "Supplier of beauty products.",
     certificate: "https://example.com/certificates/avagarcia.jpg",
     type: "Supplier",
+    totalBuyAmount: 0,
+    debt: 0,
   },
   {
     partnerId: "P011",
@@ -114,6 +134,8 @@ export const PARTNER = [
     notes: "Regular customer, book enthusiast.",
     gender: "Male",
     type: "Customer",
+    totalBuyAmount: 0,
+    debt: 0,
   },
   {
     partnerId: "P012",
@@ -124,6 +146,8 @@ export const PARTNER = [
     notes: "Supplier of handmade jewelry.",
     certificate: "https://example.com/certificates/miajohnson.jpg",
     type: "Supplier",
+    totalBuyAmount: 0,
+    debt: 0,
   },
   {
     partnerId: "P013",
@@ -134,6 +158,8 @@ export const PARTNER = [
     notes: "Regular customer, music lover.",
     gender: "Male",
     type: "Customer",
+    totalBuyAmount: 0,
+    debt: 0,
   },
   {
     partnerId: "P014",
@@ -144,6 +170,8 @@ export const PARTNER = [
     notes: "Supplier of organic products.",
     certificate: "https://example.com/certificates/ellamoore.jpg",
     type: "Supplier",
+    totalBuyAmount: 0,
+    debt: 0,
   },
   {
     partnerId: "P015",
@@ -154,6 +182,8 @@ export const PARTNER = [
     notes: "Regular customer, outdoor enthusiast.",
     gender: "Male",
     type: "Customer",
+    totalBuyAmount: 0,
+    debt: 0,
   },
   {
     partnerId: "P016",
@@ -164,6 +194,8 @@ export const PARTNER = [
     notes: "Supplier of artisanal goods.",
     certificate: "https://example.com/certificates/scarlettbrown.jpg",
     type: "Supplier",
+    totalBuyAmount: 0,
+    debt: 0,
   },
   {
     partnerId: "P017",
@@ -174,6 +206,8 @@ export const PARTNER = [
     notes: "Regular customer, tech savvy.",
     gender: "Male",
     type: "Customer",
+    totalBuyAmount: 0,
+    debt: 0,
   },
   {
     partnerId: "P018",
@@ -184,6 +218,8 @@ export const PARTNER = [
     notes: "Supplier of homemade jams.",
     certificate: "https://example.com/certificates/chloewilson.jpg",
     type: "Supplier",
+    totalBuyAmount: 0,
+    debt: 0,
   },
   {
     partnerId: "P019",
@@ -194,6 +230,8 @@ export const PARTNER = [
     notes: "Regular customer, foodie.",
     gender: "Male",
     type: "Customer",
+    totalBuyAmount: 0,
+    debt: 0,
   },
   {
     partnerId: "P020",
@@ -204,6 +242,8 @@ export const PARTNER = [
     notes: "Supplier of handcrafted items.",
     certificate: "https://example.com/certificates/lilyanderson.jpg",
     type: "Supplier",
+    totalBuyAmount: 0,
+    debt: 0,
   },
 ];
 export const addDBPartnerTable = () => {

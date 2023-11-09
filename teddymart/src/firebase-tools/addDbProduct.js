@@ -8,7 +8,6 @@ export const PRODUCT = [
     groupId: "GP001",
     note: "An efficient and smart induction cooktop for modern kitchens.",
     quantity: 50,
-    status: true,
     image:
       "https://img.us.news.samsung.com/us/wp-content/uploads/2021/08/09005623/Samsung-Smart-Induction-Built-In-Cooktop-with-Wi-Fi-scaled.jpg",
     cost_price: 150.0,
@@ -21,7 +20,6 @@ export const PRODUCT = [
     groupId: "GP002",
     note: "High-quality 4K Smart TV with multiple features.",
     quantity: 40,
-    status: true,
     image:
       "https://images.samsung.com/is/image/samsung/p6pim/vn/ua65au7000kxxv/gallery/vn-uhd-au7000-ua65au7000kxxv-408365641?$650_519_PNG$",
     cost_price: 600.0,
@@ -31,10 +29,9 @@ export const PRODUCT = [
   {
     productId: "PD003",
     productName: "Smart Refrigerator",
-    groupId: "GP001",
+    groupId: "GP003",
     note: "A smart refrigerator with advanced cooling technology.",
     quantity: 35,
-    status: true,
     image:
       "https://images.samsung.com/is/image/samsung/ph-ref-rs5000-familyhub-rs64t5f01b4-tc-frontblack-244067168?$650_519_PNG$",
     cost_price: 800.0,
@@ -44,10 +41,9 @@ export const PRODUCT = [
   {
     productId: "PD004",
     productName: "Wireless Sound System",
-    groupId: "GP005",
+    groupId: "GP004",
     note: "Immerse in a wireless music experience with this sound system.",
     quantity: 45,
-    status: true,
     image:
       "https://www.popsci.com/uploads/2022/03/29/JBL-Bar-9.1-easiest-setup.jpg?auto=webp",
     cost_price: 200.0,
@@ -57,10 +53,9 @@ export const PRODUCT = [
   {
     productId: "PD005",
     productName: "Smartwatch Series X",
-    groupId: "GP006",
+    groupId: "GP005",
     note: "Stay connected and monitor your health with this smartwatch.",
     quantity: 60,
-    status: true,
     image:
       "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:80/plain/https://cellphones.com.vn/media/wysiwyg/Watch/Apple/Watch-X/apple-watch-x-2.jpg",
     cost_price: 150.0,
@@ -70,10 +65,9 @@ export const PRODUCT = [
   {
     productId: "PD006",
     productName: "Office All-in-One Printer",
-    groupId: "GP007",
+    groupId: "GP006",
     note: "A versatile all-in-one printer for home and office use.",
     quantity: 40,
-    status: true,
     image:
       "https://www.khoslaonline.com/wp-content/uploads/2023/03/61ze3OFakgL._SL1500_.jpg",
     cost_price: 300.0,
@@ -83,10 +77,9 @@ export const PRODUCT = [
   {
     productId: "PD007",
     productName: "Gaming Console Pro",
-    groupId: "GP008",
+    groupId: "GP007",
     note: "Elevate your gaming experience with this high-performance console.",
     quantity: 55,
-    status: true,
     image:
       "https://www.makerfocus.com/cdn/shop/products/XtronPro_1_1024x1024@2x.jpg?v=1640230361",
     cost_price: 400.0,
@@ -96,10 +89,9 @@ export const PRODUCT = [
   {
     productId: "PD008",
     productName: "Car Dash Cam",
-    groupId: "GP009",
+    groupId: "GP008",
     note: "A reliable dash camera for your car's safety and security.",
     quantity: 33,
-    status: true,
     image: "https://m.media-amazon.com/images/I/51o458kdrfL.jpg",
     cost_price: 100.0,
     VAT: 0.06,
@@ -111,7 +103,6 @@ export const PRODUCT = [
     groupId: "GP010",
     note: "Set the perfect ambiance with this smart lighting kit.",
     quantity: 38,
-    status: true,
     image:
       "https://thelightingoutlet.com.au/cdn/shop/articles/smart-lighting-generic-photo.jpg?v=1670797761",
     cost_price: 120.0,
@@ -124,7 +115,7 @@ export const PRODUCT = [
     groupId: "GP004",
     note: "Improve air quality in your home with this efficient air purifier.",
     quantity: 31,
-    status: true,
+
     image:
       "https://img.gigadigital.vn/image/1666602873750-may-loc-khong-khi-xiaomi-smart-air-purifier-4-compact.jpg",
     cost_price: 250.0,
@@ -137,7 +128,7 @@ export const PRODUCT = [
     groupId: "GP008",
     note: "Experience freedom in gaming with this high-response wireless mouse.",
     quantity: 47,
-    status: true,
+
     image: "https://example.com/images/gaming_mouse.jpg",
     cost_price: 50.0,
     VAT: 0.07,
@@ -149,7 +140,7 @@ export const PRODUCT = [
     groupId: "GP005",
     note: "Keep an eye on your home with this smart security camera.",
     quantity: 42,
-    status: true,
+
     image: "https://example.com/images/security_camera.jpg",
     cost_price: 180.0,
     VAT: 0.06,
@@ -161,7 +152,7 @@ export const PRODUCT = [
     groupId: "GP004",
     note: "Effortlessly clean your home with this smart robotic vacuum.",
     quantity: 40,
-    status: true,
+
     image: "https://example.com/images/robotic_vacuum.jpg",
     cost_price: 300.0,
     VAT: 0.07,
@@ -173,7 +164,7 @@ export const PRODUCT = [
     groupId: "GP009",
     note: "Capture your adventures in stunning detail with this action camera.",
     quantity: 33,
-    status: true,
+
     image: "https://example.com/images/action_camera.jpg",
     cost_price: 180.0,
     VAT: 0.06,
@@ -185,7 +176,7 @@ export const PRODUCT = [
     groupId: "GP005",
     note: "Experience music like never before with these smart wireless earbuds.",
     quantity: 50,
-    status: true,
+
     image: "https://example.com/images/wireless_earbuds.jpg",
     cost_price: 100.0,
     VAT: 0.05,
@@ -197,7 +188,7 @@ export const PRODUCT = [
     groupId: "GP003",
     note: "A modern and efficient electric rice cooker for your kitchen.",
     quantity: 45,
-    status: true,
+
     image: "https://example.com/images/rice_cooker.jpg",
     cost_price: 80.0,
     VAT: 0.04,
@@ -209,7 +200,7 @@ export const PRODUCT = [
     groupId: "GP006",
     note: "Conveniently charge your devices wirelessly with this pad.",
     quantity: 35,
-    status: true,
+
     image: "https://example.com/images/charging_pad.jpg",
     cost_price: 40.0,
     VAT: 0.03,
@@ -221,7 +212,7 @@ export const PRODUCT = [
     groupId: "GP010",
     note: "Keep your home safe with this smart doorbell camera.",
     quantity: 48,
-    status: true,
+
     image: "https://example.com/images/doorbell_camera.jpg",
     cost_price: 160.0,
     VAT: 0.05,
@@ -233,7 +224,7 @@ export const PRODUCT = [
     groupId: "GP001",
     note: "Stay cool and comfortable anywhere with this portable AC unit.",
     quantity: 55,
-    status: true,
+
     image: "https://example.com/images/portable_ac.jpg",
     cost_price: 400.0,
     VAT: 0.09,
@@ -245,7 +236,7 @@ export const PRODUCT = [
     groupId: "GP010",
     note: "Protect your home with a comprehensive smart security system.",
     quantity: 37,
-    status: true,
+
     image: "https://example.com/images/home_security_system.jpg",
     cost_price: 600.0,
     VAT: 0.1,
@@ -257,7 +248,7 @@ export const PRODUCT = [
     groupId: "GP004",
     note: "Efficiently clean your home without the hassle of cords with this vacuum cleaner.",
     quantity: 60,
-    status: true,
+
     image: "https://example.com/images/cordless_vacuum.jpg",
     cost_price: 250.0,
     VAT: 0.06,
@@ -269,7 +260,7 @@ export const PRODUCT = [
     groupId: "GP007",
     note: "Increase productivity with this wireless keyboard and mouse set.",
     quantity: 42,
-    status: true,
+
     image: "https://example.com/images/wireless_keyboard_mouse.jpg",
     cost_price: 60.0,
     VAT: 0.04,
@@ -281,7 +272,7 @@ export const PRODUCT = [
     groupId: "GP003",
     note: "Brew coffee smartly with this innovative coffee maker.",
     quantity: 48,
-    status: true,
+
     image: "https://example.com/images/smart_coffee_maker.jpg",
     cost_price: 90.0,
     VAT: 0.05,
@@ -293,7 +284,7 @@ export const PRODUCT = [
     groupId: "GP005",
     note: "Experience portable music with this Bluetooth speaker.",
     quantity: 55,
-    status: true,
+
     image: "https://example.com/images/bluetooth_speaker.jpg",
     cost_price: 70.0,
     VAT: 0.06,
@@ -305,7 +296,7 @@ export const PRODUCT = [
     groupId: "GP003",
     note: "Enjoy healthier frying with this air fryer for your kitchen.",
     quantity: 32,
-    status: true,
+
     image: "https://example.com/images/air_fryer.jpg",
     cost_price: 120.0,
     VAT: 0.07,
@@ -317,7 +308,7 @@ export const PRODUCT = [
     groupId: "GP010",
     note: "Efficiently manage home heating with this smart thermostat.",
     quantity: 38,
-    status: true,
+
     image: "https://example.com/images/heating_thermostat.jpg",
     cost_price: 100.0,
     VAT: 0.05,
@@ -329,7 +320,7 @@ export const PRODUCT = [
     groupId: "GP006",
     note: "Track your weight and health with this smart weight scale.",
     quantity: 40,
-    status: true,
+
     image: "https://example.com/images/weight_scale.jpg",
     cost_price: 50.0,
     VAT: 0.03,
@@ -341,7 +332,7 @@ export const PRODUCT = [
     groupId: "GP002",
     note: "Enjoy entertainment on-the-go with this portable projector.",
     quantity: 42,
-    status: true,
+
     image: "https://example.com/images/bluetooth_projector.jpg",
     cost_price: 200.0,
     VAT: 0.08,
@@ -353,7 +344,7 @@ export const PRODUCT = [
     groupId: "GP008",
     note: "Enhance gaming experience with this wireless headset.",
     quantity: 45,
-    status: true,
+
     image: "https://example.com/images/gaming_headset.jpg",
     cost_price: 80.0,
     VAT: 0.05,
@@ -365,7 +356,7 @@ export const PRODUCT = [
     groupId: "GP004",
     note: "Upgrade your dental care with this electric toothbrush.",
     quantity: 60,
-    status: true,
+
     image: "https://example.com/images/electric_toothbrush.jpg",
     cost_price: 30.0,
     VAT: 0.03,
@@ -377,7 +368,7 @@ export const PRODUCT = [
     groupId: "GP010",
     note: "Control home devices remotely with this smart Wi-Fi plug.",
     quantity: 35,
-    status: true,
+
     image: "https://example.com/images/wifi_plug.jpg",
     cost_price: 25.0,
     VAT: 0.02,
@@ -389,7 +380,7 @@ export const PRODUCT = [
     groupId: "GP004",
     note: "Style your hair effortlessly with this cordless hair dryer.",
     quantity: 33,
-    status: true,
+
     image: "https://example.com/images/hair_dryer.jpg",
     cost_price: 70.0,
     VAT: 0.04,
@@ -401,7 +392,7 @@ export const PRODUCT = [
     groupId: "GP001",
     note: "Efficiently vacuum and mop with this smart robotic cleaner.",
     quantity: 42,
-    status: true,
+
     image: "https://example.com/images/robot_vacuum_mop.jpg",
     cost_price: 350.0,
     VAT: 0.08,
@@ -413,7 +404,7 @@ export const PRODUCT = [
     groupId: "GP010",
     note: "Monitor your home with this advanced surveillance camera.",
     quantity: 40,
-    status: true,
+
     image: "https://example.com/images/home_surveillance_camera.jpg",
     cost_price: 180.0,
     VAT: 0.06,
@@ -425,7 +416,7 @@ export const PRODUCT = [
     groupId: "GP006",
     note: "Keep track of air quality with this smart monitoring device.",
     quantity: 55,
-    status: true,
+
     image: "https://example.com/images/air_quality_monitor.jpg",
     cost_price: 90.0,
     VAT: 0.05,
@@ -437,7 +428,7 @@ export const PRODUCT = [
     groupId: "GP005",
     note: "Experience high-quality sound with noise-canceling headphones.",
     quantity: 46,
-    status: true,
+
     image: "https://example.com/images/noise_cancelling_headphones.jpg",
     cost_price: 120.0,
     VAT: 0.06,
@@ -449,7 +440,7 @@ export const PRODUCT = [
     groupId: "GP006",
     note: "Charge multiple devices wirelessly with this charging stand.",
     quantity: 48,
-    status: true,
+
     image: "https://example.com/images/charging_stand.jpg",
     cost_price: 50.0,
     VAT: 0.03,
@@ -461,7 +452,7 @@ export const PRODUCT = [
     groupId: "GP002",
     note: "Display your memories with this smart digital picture frame.",
     quantity: 35,
-    status: true,
+
     image: "https://example.com/images/digital_picture_frame.jpg",
     cost_price: 80.0,
     VAT: 0.04,
@@ -473,7 +464,7 @@ export const PRODUCT = [
     groupId: "GP003",
     note: "Boil water quickly and efficiently with this electric kettle.",
     quantity: 60,
-    status: true,
+
     image: "https://example.com/images/electric_kettle.jpg",
     cost_price: 40.0,
     VAT: 0.03,
@@ -485,7 +476,7 @@ export const PRODUCT = [
     groupId: "GP010",
     note: "Secure your home with this advanced smart door lock.",
     quantity: 42,
-    status: true,
+
     image: "https://example.com/images/smart_door_lock.jpg",
     cost_price: 200.0,
     VAT: 0.07,
@@ -497,7 +488,7 @@ export const PRODUCT = [
     groupId: "GP003",
     note: "Blend your favorite smoothies on the go with this portable blender.",
     quantity: 37,
-    status: true,
+
     image: "https://example.com/images/portable_blender.jpg",
     cost_price: 60.0,
     VAT: 0.04,
@@ -509,7 +500,7 @@ export const PRODUCT = [
     groupId: "GP004",
     note: "Filter and purify water with this smart pitcher.",
     quantity: 45,
-    status: true,
+
     image: "https://example.com/images/water_filter_pitcher.jpg",
     cost_price: 35.0,
     VAT: 0.03,

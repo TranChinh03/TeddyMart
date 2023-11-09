@@ -1,81 +1,98 @@
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  setDoc,
+  updateDoc,
+  increment,
+} from "firebase/firestore";
 import { PARTNER } from "./addDbPartnerTable";
 import { PRODUCT } from "./addDbProduct";
 import { VOUCHER } from "./addDbVoucherTable";
 import { db } from "firebaseConfig";
-import { useState } from "react";
 
 const ORDERS = [
-  { orderId: "ORD001", notes: "Import order from supplier A", type: "Import" },
-  { orderId: "ORD002", notes: "Export order to customer B", type: "Export" },
-  { orderId: "ORD003", notes: "Importing raw materials", type: "Import" },
-  { orderId: "ORD004", notes: "Exporting finished products", type: "Export" },
+  { orderId: "ORD001", note: "Import order from supplier A", type: "Import" },
+  { orderId: "ORD002", note: "Export order to customer B", type: "Export" },
+  { orderId: "ORD003", note: "Importing raw materials", type: "Import" },
+  { orderId: "ORD004", note: "Exporting finished products", type: "Export" },
   {
     orderId: "ORD005",
-    notes: "Import of electronic components",
+    note: "Import of electronic components",
     type: "Import",
   },
   {
     orderId: "ORD006",
-    notes: "Export to international client",
+    note: "Export to international client",
     type: "Export",
   },
-  { orderId: "ORD007", notes: "Bulk import from overseas", type: "Import" },
+  { orderId: "ORD007", note: "Bulk import from overseas", type: "Import" },
   {
     orderId: "ORD008",
-    notes: "Export to regional distributors",
+    note: "Export to regional distributors",
     type: "Export",
   },
-  { orderId: "ORD009", notes: "Importing machinery parts", type: "Import" },
+  { orderId: "ORD009", note: "Importing machinery parts", type: "Import" },
   {
     orderId: "ORD010",
-    notes: "Exporting supplies to retail stores",
+    note: "Exporting supplies to retail stores",
     type: "Export",
   },
-  { orderId: "ORD011", notes: "Import order from supplier C", type: "Import" },
-  { orderId: "ORD012", notes: "Export order to customer D", type: "Export" },
+  { orderId: "ORD011", note: "Import order from supplier C", type: "Import" },
+  { orderId: "ORD012", note: "Export order to customer D", type: "Export" },
   {
     orderId: "ORD013",
-    notes: "Importing automotive components",
+    note: "Importing automotive components",
     type: "Import",
   },
   {
     orderId: "ORD014",
-    notes: "Exporting to international markets",
+    note: "Exporting to international markets",
     type: "Export",
   },
   {
     orderId: "ORD015",
-    notes: "Import of technological equipment",
+    note: "Import of technological equipment",
     type: "Import",
   },
-  { orderId: "ORD016", notes: "Export to global partners", type: "Export" },
-  { orderId: "ORD017", notes: "Importing medical supplies", type: "Import" },
+  { orderId: "ORD016", note: "Export to global partners", type: "Export" },
+  { orderId: "ORD017", note: "Importing medical supplies", type: "Import" },
   {
     orderId: "ORD018",
-    notes: "Export to neighboring countries",
+    note: "Export to neighboring countries",
     type: "Export",
   },
   {
     orderId: "ORD019",
-    notes: "Importing textiles and fabrics",
+    note: "Importing textiles and fabrics",
     type: "Import",
   },
-  { orderId: "ORD020", notes: "Exporting fashion products", type: "Export" },
+  { orderId: "ORD020", note: "Exporting fashion products", type: "Export" },
 ];
-const findPartner = () => {
+const findPartner = (orderType) => {
   let flag = -1;
-  let partnerId = "";
-  while (flag === -1) {
-    const index = Math.floor(Math.random() * PARTNER.length);
-    if (PARTNER[index].type === "Customer") {
-      flag = 1;
-      partnerId = PARTNER[index].partnerId;
-      return partnerId;
+  if (orderType === "Export") {
+    while (flag === -1) {
+      const index = Math.floor(Math.random() * PARTNER.length);
+      if (PARTNER[index].type === "Customer") {
+        flag = 1;
+        return {
+          partnerId: PARTNER[index].partnerId,
+          partnerName: PARTNER[index].partnerName,
+        };
+      }
     }
-  }
-  if (partnerId !== "") {
-    return partnerId;
+  } else {
+    while (flag === -1) {
+      const index = Math.floor(Math.random() * PARTNER.length);
+      if (PARTNER[index].type === "Supplier") {
+        flag = 1;
+        return {
+          partnerId: PARTNER[index].partnerId,
+          partnerName: PARTNER[index].partnerName,
+        };
+      }
+    }
   }
 };
 const findVoucher = (createdAt) => {
@@ -101,16 +118,21 @@ const findVoucher = (createdAt) => {
 
   if (voucher) return voucher;
 };
-const getListProduct = () => {
+const getListProduct = (type) => {
   let flag = -1;
-  let numberProduct = Math.floor(Math.random() * 5);
+  console.log("type", type);
+  let numberProduct = Math.floor(Math.random() * 3) + 1;
   let products = [];
   let sum = 0;
+  console.log(numberProduct);
   while (numberProduct > products.length) {
     const index = Math.floor(Math.random() * PRODUCT.length);
+    console.log("Index", index);
+    console.log("product", PRODUCT[index]);
     const findProduct = products.find(
-      (value, index) => value.productId === PRODUCT[index].productId
+      (value, _) => value.productId === PRODUCT[index].productId
     );
+    console.log("Find", findProduct);
     if (findProduct === undefined) {
       let quantity = Math.floor(Math.random() * PRODUCT[index].quantity + 1);
       products.push({
@@ -118,21 +140,27 @@ const getListProduct = () => {
         productName: PRODUCT[index].productName,
         quantity: quantity,
       });
-      sum += PRODUCT[index].sell_price * quantity;
+      if (type === "Export") {
+        sum += PRODUCT[index].sell_price * (1 + PRODUCT[index].VAT) * quantity;
+        console.log("SUM", sum);
+      } else {
+        sum += PRODUCT[index].cost_price * (1 + PRODUCT[index].VAT) * quantity;
+        console.log("SUM", sum);
+      }
     }
     if (products.length === numberProduct) {
       console.log("Tong", sum);
       return {
         listProduct: products,
-        sum: sum,
+        sum: sum.toFixed(),
       };
     }
   }
 };
 export const addDbOrder = () => {
+  const STATUS = ["paid", "unpaid"];
   ORDERS.map(async (order) => {
     try {
-      const deliveryCost = Math.floor(Math.random() * 50 + 20);
       const month = 10;
       const date = Math.floor(Math.random() * 15 + 1);
       const createdAt = new Date(
@@ -143,36 +171,44 @@ export const addDbOrder = () => {
         createdAt,
         `2023-${month}-${date > 10 ? date : "0" + date}`
       );
-
       const voucher = findVoucher(createdAt.getTime());
-      const listProduct = getListProduct();
+      const partner = findPartner(order.type);
+      const listProduct = getListProduct(order.type);
       const totalDiscount =
         order.type === "Export" ? voucher.discountAmount : 0;
-      const totalMoney = listProduct.sum + deliveryCost - totalDiscount;
+      const totalPayment = listProduct.sum - totalDiscount;
+      console.log("Total Payment: ", totalPayment);
 
       console.log("list product", listProduct);
       console.log("voucher", voucher);
       console.log("find partnet", findPartner());
-      const debt = Math.random() * 100 + 10;
+      const status = STATUS[Math.floor(Math.random() * 2)];
+      const debt = status === "paid" ? 0 : (Math.random() * 100 + 10).toFixed();
       let data = {
         ...order,
-        partnerId: findPartner(),
-        userId: `U${Math.floor(Math.random() * 5000)}`,
+        partnerId: partner.partnerId,
+        partnerName: partner.partnerName,
         createdAt: createdAt.toISOString(),
-        totalDiscount: totalDiscount,
-        deliveryCost: deliveryCost,
-        totalMoney: totalMoney,
+        payment: +listProduct.sum,
+        discount: totalDiscount,
+        totalPayment: totalPayment,
         listProduct: listProduct.listProduct,
-        debt: debt,
+        debt: +debt,
+        status: status,
       };
       if (order.type === "Export") {
         data["voucherId"] = voucher.voucherId;
+        data["seller"] = "Teddy Mart";
       }
       if (order.type === "Import") {
-        data["tax"] = (Math.random() * 10 + 1) / 100;
+        data["receiver"] = "Teddy Mart";
       }
       console.log("data", data);
       await setDoc(doc(db, "/Manager/M001/Orders", data.orderId), data);
+      await updateDoc(doc(db, "/Manager/M001/Partner", partner.partnerId), {
+        debt: increment(debt),
+        totalBuyAmount: increment(totalPayment),
+      });
     } catch (error) {
       console.log(error);
     }

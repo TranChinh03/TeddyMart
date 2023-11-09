@@ -4,58 +4,94 @@ import { db } from "firebaseConfig";
 const WAREHOUSE = [
   {
     warehouseId: "WH001",
-    status: true,
-    listGroupProduct: [
-      { groupId: "GP001", groupName: "Kitchen Appliances", count: 300 },
-      { groupId: "GP002", groupName: "Home Entertainment", count: 211 },
-      { groupId: "GP003", groupName: "Home Appliances", count: 444 },
+    listProduct: [
+      {
+        productId: "PD001",
+        productName: "Smart Induction Cooktop",
+        quantity: 300,
+      },
+      { productId: "PD002", productName: "Smart TV 4K", quantity: 211 },
+      { productId: "PD003", productName: "Smart Refrigerator", quantity: 444 },
     ],
     warehouseName: "Central Warehouse",
-    address: "123 Main Street, City, Country",
+    address: "123 Main Street, City, quantityry",
+    count: 955,
   },
   {
     warehouseId: "WH002",
-    status: true,
-    listGroupProduct: [
-      { groupId: "GP004", groupName: "Home Essentials", count: 412 },
-      { groupId: "GP005", groupName: "Electronics", count: 442 },
-      { groupId: "GP006", groupName: "Smart Devices", count: 341 },
+    listProduct: [
+      {
+        productId: "PD004",
+        productName: "Wireless Sound System",
+        quantity: 412,
+      },
+      { productId: "PD005", productName: "Smartwatch Series X", quantity: 442 },
+      {
+        productId: "PD006",
+        productName: "Office All-in-One Printer",
+        quantity: 341,
+      },
     ],
     warehouseName: "North Warehouse",
-    address: "456 Oak Avenue, City, Country",
+    address: "456 Oak Avenue, City, quantityry",
+    count: 1195,
   },
   {
     warehouseId: "WH003",
-    status: true,
-    listGroupProduct: [
-      { groupId: "GP007", groupName: "Office Supplies", count: 258 },
-      { groupId: "GP008", groupName: "Gaming", count: 357 },
-      { groupId: "GP009", groupName: "Outdoor & Adventure", count: 236 },
+    listProduct: [
+      { productId: "PD007", productName: "Gaming Console Pro", quantity: 258 },
+      { productId: "PD008", productName: "Car Dash Cam", quantity: 357 },
+      {
+        productId: "PD009",
+        productName: "Smart Home Lighting Kit",
+        quantity: 236,
+      },
     ],
     warehouseName: "South Warehouse",
-    address: "789 Elm Street, City, Country",
+    address: "789 Elm Street, City, quantityry",
+    count: 851,
   },
   {
     warehouseId: "WH004",
-    status: true,
-    listGroupProduct: [
-      { groupId: "GP010", groupName: "Smart Home", count: 420 },
-      { groupId: "GP001", groupName: "Kitchen Appliances", count: 300 },
-      { groupId: "GP002", groupName: "Home Entertainment", count: 210 },
+    listProduct: [
+      { productId: "PD010", productName: "Air Purifier", quantity: 420 },
+      {
+        productId: "PD011",
+        productName: "Wireless Gaming Mouse",
+        quantity: 300,
+      },
+      {
+        productId: "PD012",
+        productName: "Smart Security Camera",
+        quantity: 210,
+      },
     ],
     warehouseName: "East Warehouse",
-    address: "321 Maple Avenue, City, Country",
+    address: "321 Maple Avenue, City, quantityry",
+    count: 930,
   },
   {
     warehouseId: "WH005",
-    status: true,
-    listGroupProduct: [
-      { groupId: "GP003", groupName: "Home Appliances", count: 442 },
-      { groupId: "GP004", groupName: "Home Essentials", count: 430 },
-      { groupId: "GP005", groupName: "Electronics", count: 389 },
+    listProduct: [
+      {
+        productId: "PD013",
+        productName: "Robotic Vacuum Cleaner",
+        quantity: 442,
+      },
+      {
+        productId: "PD014",
+        productName: "Ultra HD Action Camera",
+        quantity: 430,
+      },
+      {
+        productId: "PD015",
+        productName: "Smart Wireless Earbuds",
+        quantity: 389,
+      },
     ],
     warehouseName: "West Warehouse",
-    address: "654 Pine Street, City, Country",
+    address: "654 Pine Street, City, quantityry",
+    count: 1261,
   },
 ];
 export const addDbWarehouse = () => {
