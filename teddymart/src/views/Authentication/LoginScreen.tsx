@@ -81,14 +81,19 @@ export default function LoginScreen() {
             </button>
             <button
               className="w-5/12 text-sidebar text-14"
-              //onClick={()=>navigate(NAV_LINK.FORGOT_PASSWORD)}
+              onClick={() => navigate(NAV_LINK.FORGOT_PASSWORD)}
             >
               Forgot Password
             </button>
 
             <div className="flex justify-center gap-2 text-16 pt-5">
               <p>New to TeddyMart?</p>
-              <button className="text-sidebar font-medium">Sign Up</button>
+              <button
+                className="text-sidebar font-medium"
+                onClick={() => navigate(NAV_LINK.SIGN_UP)}
+              >
+                Sign Up
+              </button>
             </div>
           </div>
         </div>
