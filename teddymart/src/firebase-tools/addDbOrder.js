@@ -10,7 +10,7 @@ import { PARTNER } from "./addDbPartnerTable";
 import { PRODUCT } from "./addDbProduct";
 import { VOUCHER } from "./addDbVoucherTable";
 import { db } from "firebaseConfig";
-
+import { WAREHOUSE } from "./addDbWarehouse";
 const ORDERS = [
   { orderId: "ORD001", note: "Import order from supplier A", type: "Import" },
   { orderId: "ORD002", note: "Export order to customer B", type: "Export" },
@@ -134,7 +134,9 @@ const getListProduct = (type) => {
     );
     console.log("Find", findProduct);
     if (findProduct === undefined) {
-      let quantity = Math.floor(Math.random() * PRODUCT[index].quantity + 1);
+      let quantity = Math.floor(
+        Math.random() * WAREHOUSE[0].listProduct[index].quantity + 1
+      );
       products.push({
         productId: PRODUCT[index].productId,
         productName: PRODUCT[index].productName,

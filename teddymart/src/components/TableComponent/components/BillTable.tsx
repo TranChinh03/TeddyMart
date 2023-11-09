@@ -60,7 +60,7 @@ type TContent = {
   payment: number;
   status: TStatus;
   payment_status: TStatus;
-  notes?: string;
+  note?: string;
 };
 const CONTENT: TContent[] = [
   {
@@ -76,7 +76,7 @@ const CONTENT: TContent[] = [
     payment: 5999,
     status: "Success",
     payment_status: "Success",
-    notes: "Khách hàng thân quen",
+    note: "Khách hàng thân quen",
   },
   {
     id: 2,
@@ -91,7 +91,7 @@ const CONTENT: TContent[] = [
     payment: 5999,
     status: "Success",
     payment_status: "Success",
-    notes: "Khách hàng thân quen",
+    note: "Khách hàng thân quen",
   },
   {
     id: 3,
@@ -106,7 +106,7 @@ const CONTENT: TContent[] = [
     payment: 5999,
     status: "Success",
     payment_status: "Success",
-    notes: "Khách hàng thân quen",
+    note: "Khách hàng thân quen",
   },
   {
     id: 4,
@@ -121,7 +121,7 @@ const CONTENT: TContent[] = [
     payment: 5999,
     status: "Success",
     payment_status: "Success",
-    notes: "Khách hàng thân quen",
+    note: "Khách hàng thân quen",
   },
   {
     id: 5,
@@ -136,7 +136,7 @@ const CONTENT: TContent[] = [
     payment: 5999,
     status: "Success",
     payment_status: "Success",
-    notes: "Khách hàng thân quen",
+    note: "Khách hàng thân quen",
   },
   {
     id: 6,
@@ -151,7 +151,7 @@ const CONTENT: TContent[] = [
     payment: 5999,
     status: "Success",
     payment_status: "Success",
-    notes: "Khách hàng thân quen",
+    note: "Khách hàng thân quen",
   },
   {
     id: 7,
@@ -166,7 +166,7 @@ const CONTENT: TContent[] = [
     payment: 5999,
     status: "Success",
     payment_status: "Success",
-    notes: "Khách hàng thân quen",
+    note: "Khách hàng thân quen",
   },
   {
     id: 2,
@@ -181,7 +181,7 @@ const CONTENT: TContent[] = [
     payment: 5999,
     status: "Success",
     payment_status: "Success",
-    notes: "Khách hàng thân quen",
+    note: "Khách hàng thân quen",
   },
   {
     id: 2,
@@ -196,7 +196,7 @@ const CONTENT: TContent[] = [
     payment: 5999,
     status: "Success",
     payment_status: "Success",
-    notes: "Khách hàng thân quen",
+    note: "Khách hàng thân quen",
   },
   {
     id: 2,
@@ -211,7 +211,7 @@ const CONTENT: TContent[] = [
     payment: 5999,
     status: "Success",
     payment_status: "Success",
-    notes: "Khách hàng thân quen",
+    note: "Khách hàng thân quen",
   },
 ];
 
@@ -326,7 +326,7 @@ const BillTable = () => {
                   {content.payment_status}
                 </td>
                 <td className="border border-gray-300 p-2 text-sm">
-                  {content.notes}
+                  {content.note}
                 </td>
               </tr>
             ))}

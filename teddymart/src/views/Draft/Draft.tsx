@@ -56,7 +56,7 @@ export default function Draft() {
           //     email: "1123@gmail.com",
           //     phoneNumber: "12345678",
           //     address: "123",
-          //     notes: "asass",
+          //     note: "asass",
           //     gender: "female",
           //   })
           // );
@@ -74,7 +74,7 @@ export default function Draft() {
               email: "1123@gmail.com",
               phoneNumber: "12345678",
               address: "123",
-              notes: "asass",
+              note: "asass",
               gender: "female",
             })
           );

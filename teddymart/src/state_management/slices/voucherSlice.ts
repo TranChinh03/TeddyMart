@@ -19,6 +19,18 @@ const voucherSlice = createSlice({
     deleteVoucher: (state: TVoucher[], action: PayloadAction<string>) => {
       return state.filter((v) => v.voucherId !== action.payload);
     },
+    updateVoucher: (
+      state: TVoucher[],
+      action: PayloadAction<{ voucherId: string; updateData: TVoucher }>
+    ) => {
+      // only allow to update: Voucher Name, Expiration Date, Discount Amount
+      const index = state.findIndex(
+        (voucher) => voucher.voucherId === action.payload.voucherId
+      );
+      if (index > 0) {
+        state[index] = action.payload.updateData;
+      }
+    },
   },
 });
 

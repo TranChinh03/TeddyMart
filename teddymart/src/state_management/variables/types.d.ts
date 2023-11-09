@@ -4,22 +4,23 @@ declare type TPartner = {
   email: string;
   phoneNumber: string;
   address?: string;
-  notes?: string;
+  note?: string;
   gender?: "female" | "male";
+  certificate?: string;
+  type?: "Customer" | "Supplier";
+  totalBuyAmount?: number;
+  debt?: number;
 };
 
 declare type TManager = {
-  managerId: string;
+  userId: string;
   shopName: string;
-  field: string;
-  password: string;
   userName: string;
   photoUrl?: string;
   address?: string;
   phoneNumber: string;
   email: string;
-  gender?: "female" | "male";
-}
+};
 
 declare type TVoucher = {
   voucherId: string;
@@ -33,42 +34,50 @@ declare type TProduct = {
   productId: string;
   productName: string;
   groupId: string;
+  groupName: string;
   image?: string;
   cost_price: number;
-  retail_price: number;
-  VAT?  : number;
+  sell_price: number;
+  VAT?: number;
   note?: string;
-  quantity?: number;
-  status: boolean;
 };
 
 declare type TGroupProduct = {
   groupId: string;
   groupName: string;
-  quantity: number;
-  revenue: number;
-  products?: TProduct[];
-  notes?: string;
-}
+  note?: string;
+};
 
 declare type TWarehouse = {
   warehouseId: string;
   warehouseName: string;
   address?: string;
-  products?: TProduct[];
-  numberOfProducts: number;
+  listProduct: {
+    productId: string;
+    productName: string;
+    quantity: number;
+  };
+  count: number;
 };
 
 declare type TOrder = {
   orderId: string;
-  UserId: string;
   partnerId: string;
-  totalMoney: number;
-  listProducts: TProduct[];
-  totalDiscount: number;
-  deliveryCost: number;
-  warehouse: string;
-  paymentStatus: string;
+  partnerName: string;
+  createdAt?: Date;
+  payment: number;
+  discount?: number;
+  totalPayment: number;
+  status?: "paid" | "unpaid";
+  debt?: number;
+  listProduct: {
+    productId: string;
+    productName: string;
+    quantity: number;
+  };
+  note?: string;
   voucherId?: string;
-  notes?: string;
-}
+  seller: string;
+  receiver: string;
+  type: "Import" | "Export";
+};

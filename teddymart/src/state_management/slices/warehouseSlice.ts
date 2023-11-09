@@ -1,16 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { DELETE_PRODUCT } from "state_management/actions/deleteProductAction";
-// const initialState = {
-//   warehouseId: "",
-//   warehouseName: "",
-//   address: "",
-//   products: [],
-//   numberOfProducts: 0,
-// };
-type updatedData = Pick<
-  TWarehouse,
-  "warehouseName" | "address" | "numberOfProducts"
->;
+
 const warehouseSlice = createSlice({
   name: "warehouseSlice",
   initialState: [],
