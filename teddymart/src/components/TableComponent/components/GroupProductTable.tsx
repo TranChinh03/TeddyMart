@@ -9,99 +9,42 @@ import {
 } from "react-icons/hi2";
 
 type TContent = {
-  productId: string;
-  productName: string;
   groupId: string;
   groupName: string;
-  image: string;
-  sell_price: number;
-  cost_price: number;
-  VAT: number;
   note: string;
 };
 const CONTENT: TContent[] = [
   {
-    productId: "P001",
-    productName: "Máy giặc",
-    groupId: "G001",
-    groupName: "Group A",
-    image:
-      "https://cdn.tgdd.vn/Products/Images/2402/226459/noi-nhom-chong-dinh-kangaroo-kg993mx-bo-3-cai-2-org.jpg",
-    sell_price: 1231,
-    cost_price: 12333,
-    VAT: 0.5,
-    note: "Do moi",
+    groupId: "GP001",
+    groupName: "Home Appliance",
+    note: "Explore essential appliances required for household needs. From refrigerators to kitchen essentials, this group provides reliable and efficient solutions to simplify daily routines at home.",
   },
   {
-    productId: "P001",
-    productName: "Máy giặc",
-    groupId: "G001",
-    groupName: "Group A",
-    image:
-      "https://cdn.tgdd.vn/Products/Images/2402/226459/noi-nhom-chong-dinh-kangaroo-kg993mx-bo-3-cai-2-org.jpg",
-    sell_price: 1231,
-    cost_price: 12333,
-    VAT: 0.5,
-    note: "Do moi",
+    groupId: "GP001",
+    groupName: "Home Appliance",
+    note: "Explore essential appliances required for household needs. From refrigerators to kitchen essentials, this group provides reliable and efficient solutions to simplify daily routines at home.",
   },
   {
-    productId: "P001",
-    productName: "Máy giặc",
-    groupId: "G001",
-    groupName: "Group A",
-    image:
-      "https://cdn.tgdd.vn/Products/Images/2402/226459/noi-nhom-chong-dinh-kangaroo-kg993mx-bo-3-cai-2-org.jpg",
-    sell_price: 1231,
-    cost_price: 12333,
-    VAT: 0.5,
-    note: "Do moi",
+    groupId: "GP001",
+    groupName: "Home Appliance",
+    note: "Explore essential appliances required for household needs. From refrigerators to kitchen essentials, this group provides reliable and efficient solutions to simplify daily routines at home.",
   },
   {
-    productId: "P001",
-    productName: "Máy giặc",
-    groupId: "G001",
-    groupName: "Group A",
-    image:
-      "https://cdn.tgdd.vn/Products/Images/2402/226459/noi-nhom-chong-dinh-kangaroo-kg993mx-bo-3-cai-2-org.jpg",
-    sell_price: 1231,
-    cost_price: 12333,
-    VAT: 0.5,
-    note: "Do moi",
-  },
-  {
-    productId: "P001",
-    productName: "Máy giặc",
-    groupId: "G001",
-    groupName: "Group A",
-    image:
-      "https://cdn.tgdd.vn/Products/Images/2402/226459/noi-nhom-chong-dinh-kangaroo-kg993mx-bo-3-cai-2-org.jpg",
-    sell_price: 1231,
-    cost_price: 12333,
-    VAT: 0.5,
-    note: "Do moi",
+    groupId: "GP001",
+    groupName: "Home Appliance",
+    note: "Explore essential appliances required for household needs. From refrigerators to kitchen essentials, this group provides reliable and efficient solutions to simplify daily routines at home.",
   },
 ];
 
-const HEADER = [
-  "PRODUCT ID",
-  "PRODUCT NAME",
-  "GROUP ID",
-  "GROUP NAME",
-  "IMAGE",
-  "SELL PRICE",
-  "COST PRICE",
-  "VAT",
-  "NOTE",
-  "OPERATION",
-];
-const ProductTable = () => {
+const HEADER = ["GROUP ID", "GROUP NAME", "NOTE", "OPERATION"];
+const GroupProductTable = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState("10");
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
       console.log("ok");
       if (selectedRows.length === 0) {
-        setSelectedRows([...CONTENT.map((content) => content.productId)]);
+        setSelectedRows([...CONTENT.map((content) => content.groupId)]);
         return;
       }
       setSelectedRows([]);
@@ -144,41 +87,17 @@ const ProductTable = () => {
                   <input
                     className="w-15 h-15 bg-hover"
                     type="checkbox"
-                    onChange={() => handleCheckBoxChange(content.productId)}
+                    onChange={() => handleCheckBoxChange(content.groupId)}
                     checked={
-                      selectedRows.includes(content.productId) ? true : false
+                      selectedRows.includes(content.groupId) ? true : false
                     }
                   />
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.productId}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.productName}
                 </td>
                 <td className="border border-gray-300 p-2 text-sm">
                   {content.groupId}
                 </td>
                 <td className="border border-gray-300 p-2 text-sm">
                   {content.groupName}
-                </td>
-
-                <td className="border border-gray-300 p-2 text-sm ">
-                  <img
-                    src={content.image}
-                    width={45}
-                    height={45}
-                    className="inline-block"
-                  />
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.sell_price}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.cost_price}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.VAT}
                 </td>
                 <td className="border border-gray-300 p-2 text-sm">
                   {content.note}
@@ -236,4 +155,4 @@ const ProductTable = () => {
     </div>
   );
 };
-export default ProductTable;
+export default GroupProductTable;

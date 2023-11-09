@@ -1,6 +1,16 @@
 import BillTable from "./components/BillTable";
-import CustomerTable from "./components/CustomerTable";
-import PartnerTable from "./components/PartnerTable";
 import ProductTable from "./components/ProductTable";
 import WareHouseTable from "./components/WareHouseTable";
-export { BillTable, CustomerTable, PartnerTable, ProductTable, WareHouseTable };
+import PartnerTable from "./components/PartnerTable";
+import VoucherTable from "./components/VoucherTable";
+import GroupProductTable from "./components/GroupProductTable";
+import ManagerTable from "./components/ManagerTable";
+export {
+  BillTable,
+  PartnerTable,
+  ProductTable,
+  WareHouseTable,
+  VoucherTable,
+  GroupProductTable,
+  ManagerTable,
+};

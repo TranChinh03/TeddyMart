@@ -1,7 +1,5 @@
-import { Button, Dropdown, MenuProps } from "antd";
-import dayjs from "dayjs";
-import { useState } from "react";
-import { BiDetail } from "react-icons/bi";
+import { Button } from "antd";
+import { ChangeEvent, useState } from "react";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import {
   HiOutlineChevronLeft,
@@ -9,110 +7,47 @@ import {
   HiOutlineChevronRight,
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
-/**
- * Chưa thanh toán (Unpaid): Hóa đơn vẫn chưa được thanh toán hoặc chưa đến hạn thanh toán.
 
-  Đã thanh toán (Paid): Hóa đơn đã được thanh toán đầy đủ hoặc theo một phần.
-
-  Chờ xác nhận (Pending): Hóa đơn đã được tạo, nhưng chưa được xác nhận hoặc chưa được chấp nhận bởi người nhận.
-
-  Quá hạn (Overdue): Hóa đơn đã đến hạn thanh toán và vẫn chưa được thanh toán.
-
-  Hoàn trả (Refunded): Hóa đơn đã được hoàn trả hoặc trả lại tiền cho người mua hàng.
-
-  Hủy bỏ (Canceled): Hóa đơn đã bị hủy bỏ và không còn hiệu lực.
-
-  Giao dịch lỗi (Error): Có sự cố hoặc lỗi trong quá trình thanh toán, và hóa đơn đang ở trạng thái này để kiểm tra và xử lý sự cố.
-
-  Chờ duyệt (Pending Approval): Hóa đơn cần được xem xét và duyệt bởi người quản lý hoặc bộ phận tài chính trước khi thanh toán.
-
-  Chờ giao hàng (Awaiting Delivery): Hóa đơn đã được thanh toán, nhưng hàng hóa hoặc dịch vụ chưa được giao.
-
-  Thành công (Success): Hóa đơn đã hoàn toàn thành công và đã được xử lý.
- */
-type TStatus =
-  | "Đã tạo đơn hàng"
-  | "Chờ xác nhận"
-  | "Đã xác nhận"
-  | "Đang nhập"
-  | "Hoàn thành"
-  | "Chờ kiểm tra chất lượng"
-  | "Hỏng hoặc lỗi"
-  | "Chờ phân loại"
-  | "Chờ đánh dấu giá"
-  | "Đã phân loại"
-  | "Chờ thanh toán"
-  | "Đã thanh toán"
-  | "Trả lại nhà cung cấp"
-  | "Chờ kiểm kê"
-  | "Hết hạn";
-const COLOR_STATUS = new Map([
-  ["Đã tạo đơn hàng", "#3498db"],
-  ["Chờ xác nhận", "#9b59b6"],
-  ["Đã xác nhận", "#2ecc71"],
-  ["Đang nhập", "#e67e22"],
-  ["Hoàn thành", "#27ae60"],
-  ["Chờ kiểm tra chất lượng", "#f1c40f"],
-  ["Hỏng hoặc lỗi", "#c0392b"],
-  ["Chờ phân loại", "#34495e"],
-  ["Chờ đánh dấu giá", "#8e44ad"],
-  ["Đã phân loại", "#1abc9c"],
-  ["Chờ thanh toán", "#d35400"],
-  ["Đã thanh toán", "#3498db"],
-  ["Trả lại nhà cung cấp", "#e74c3c"],
-  ["Chờ kiểm kê", "#f39c12"],
-  ["Hết hạn", "#e74c3c"],
-]);
-type TListPRoduct = {
-  productId: string;
-  productName: string;
-  quantity: number;
-};
 type TContent = {
-  address: string;
-  count: number;
-  listProduct: TListPRoduct[];
-  warehouseId: string;
-  warehouseName: string;
+  voucherId: string;
+  discountAmount: number;
+  expirationDate: string;
+  publicDate: string;
+  voucherName: string;
 };
 const CONTENT: TContent[] = [
   {
-    address: "123 Main Street, City, quantityry",
-    count: 955,
-    listProduct: [
-      {
-        productId: "P001",
-        productName: "Máy giặc",
-        quantity: 600,
-      },
-      {
-        productId: "P001",
-        productName: "Máy giặc",
-        quantity: 600,
-      },
-    ],
-    warehouseId: "W001",
-    warehouseName: "Nhà máy 1",
+    voucherId: "V001",
+    voucherName: "20/11",
+    expirationDate: "2023-09-01",
+    publicDate: "2023-09-01",
+    discountAmount: 1000,
+  },
+  {
+    voucherId: "V001",
+    voucherName: "20/11",
+    expirationDate: "2023-09-01",
+    publicDate: "2023-09-01",
+    discountAmount: 1000,
   },
 ];
 
 const HEADER = [
-  "WAREHOUSE ID",
-  "WAREHOUSE NAME",
-  "COUNT",
-  "LIST PRODUCT",
-  "ADDRESS",
+  "VOUCHER ID",
+  "VOUCHER NAME",
+  "PUBLIC DATE",
+  "EXPIRATION DATE",
+  "DISCOUNT AMOUNT",
   "OPERATION",
 ];
-
-const WareHouseTable = () => {
+const VoucherTable = () => {
   const [selectedRows, setSelectedRows] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState("10");
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
       console.log("ok");
       if (selectedRows.length === 0) {
-        setSelectedRows([...CONTENT.map((content) => content.warehouseId)]);
+        setSelectedRows([...CONTENT.map((content) => content.voucherId)]);
         return;
       }
       setSelectedRows([]);
@@ -124,7 +59,8 @@ const WareHouseTable = () => {
     }
     setSelectedRows([...selectedRows, rowId]);
   };
-  const handleRowsPerPageChange = (e: any) => {
+  const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    console.log("okkkkk");
     setRowsPerPage(e.target.value);
   };
   return (
@@ -154,28 +90,26 @@ const WareHouseTable = () => {
                   <input
                     className="w-15 h-15 bg-hover"
                     type="checkbox"
-                    onChange={() => handleCheckBoxChange(content.warehouseId)}
+                    onChange={() => handleCheckBoxChange(content.voucherId)}
                     checked={
-                      selectedRows.includes(content.warehouseId) ? true : false
+                      selectedRows.includes(content.voucherId) ? true : false
                     }
                   />
                 </td>
                 <td className="border border-gray-300 p-2 text-sm">
-                  {content.warehouseId}
+                  {content.voucherId}
                 </td>
                 <td className="border border-gray-300 p-2 text-sm">
-                  {content.warehouseName}
+                  {content.voucherName}
                 </td>
                 <td className="border border-gray-300 p-2 text-sm">
-                  {content.count}
+                  {new Date(content.publicDate).toLocaleDateString("vi")}
                 </td>
                 <td className="border border-gray-300 p-2 text-sm">
-                  <Button className="mr-2">
-                    <BiDetail />
-                  </Button>
+                  {new Date(content.expirationDate).toLocaleDateString("vi")}
                 </td>
                 <td className="border border-gray-300 p-2 text-sm">
-                  {content.address}
+                  {content.discountAmount}
                 </td>
                 <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
                   <Button className="mr-2">
@@ -199,7 +133,9 @@ const WareHouseTable = () => {
           className=" bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:bg-white "
         >
           <option value="10">10</option>
-          <option value="20">20</option>
+          <option value="20" selected>
+            20
+          </option>
           <option value="50">50</option>
         </select>
 
@@ -227,4 +163,4 @@ const WareHouseTable = () => {
     </div>
   );
 };
-export default WareHouseTable;
+export default VoucherTable;

@@ -1,54 +1,164 @@
 import { Button } from "antd";
 import { ChangeEvent, useState } from "react";
-import { FiEdit, FiTrash } from "react-icons/fi";
 import {
   HiOutlineChevronLeft,
   HiOutlineChevronDoubleLeft,
   HiOutlineChevronRight,
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
-type TGroup =
-  | "Thiết bị gia đình"
-  | "Thiết bị điện tử"
-  | "Thiết bị nhà bếp"
-  | "Phụ kiện điện tử"
-  | "Dịch vụ bảo hành và sửa chữa"
-  | "Thiết bị văn phòng và máy in"
-  | "Thiết bị an ninh và giám sát"
-  | "Phụ kiện gia đình"
-  | "Thiết bị chơi game"
-  | "Thiết bị năng lượng mặt trời"
-  | "Dịch vụ cài đặt và giao hàng";
-type TContent = {
-  id: number;
-  name: string;
-  groupName: TGroup;
-  total_buy_amount: number;
+import { FiDelete, FiEdit, FiTrash } from "react-icons/fi";
+
+type TContentCustomer = {
+  address: string;
+  debt: number;
+  email: string;
+  gender: "Male" | "Female";
+  note: string;
+  partnerId: string;
+  partnerName: string;
+  phoneNumber: string;
+  totalBuyAmount: number;
+  type: "Customer";
 };
+type TContentSupplier = {
+  address: string;
+  debt: number;
+  email: string;
+  certificate: string;
+  note: string;
+  partnerId: string;
+  partnerName: string;
+  phoneNumber: string;
+  totalBuyAmount: number;
+  type: "Supplier";
+};
+type TContent = TContentCustomer | TContentSupplier;
 const CONTENT: TContent[] = [
   {
-    id: 1,
-    name: "Thaco",
-    groupName: "Phụ kiện điện tử",
-    total_buy_amount: 5000,
+    address: "69 NVL",
+    debt: 0,
+    email: "dk@gmail.com",
+    gender: "Female",
+    note: "HELLO",
+    partnerId: "P001",
+    partnerName: "Khang",
+    phoneNumber: "+84356955354",
+    totalBuyAmount: 1561,
+    type: "Customer",
   },
   {
-    id: 1,
-    name: "Thaco",
-    groupName: "Phụ kiện điện tử",
-    total_buy_amount: 5000,
+    address: "69 NVL",
+    debt: 0,
+    email: "dk@gmail.com",
+
+    note: "HELLO",
+    partnerId: "P001",
+    partnerName: "Khang",
+    phoneNumber: "+84356955354",
+    totalBuyAmount: 1561,
+    certificate:
+      "https://i.pinimg.com/236x/9d/92/6c/9d926cf33a8101e204322fde8dd81f41.jpg",
+    type: "Supplier",
+  },
+  {
+    address: "69 NVL",
+    debt: 0,
+    email: "dk@gmail.com",
+    gender: "Female",
+    note: "HELLO",
+    partnerId: "P001",
+    partnerName: "Khang",
+    phoneNumber: "+84356955354",
+    totalBuyAmount: 1561,
+    type: "Customer",
+  },
+  {
+    address: "69 NVL",
+    debt: 0,
+    email: "dk@gmail.com",
+    note: "HELLO",
+    partnerId: "P001",
+    partnerName: "Khang",
+    phoneNumber: "+84356955354",
+    totalBuyAmount: 1561,
+    certificate:
+      "https://i.pinimg.com/236x/9d/92/6c/9d926cf33a8101e204322fde8dd81f41.jpg",
+    type: "Supplier",
+  },
+  {
+    address: "69 NVL",
+    debt: 0,
+    email: "dk@gmail.com",
+    gender: "Female",
+    note: "HELLO",
+    partnerId: "P001",
+    partnerName: "Khang",
+    phoneNumber: "+84356955354",
+    totalBuyAmount: 1561,
+    type: "Customer",
+  },
+  {
+    address: "69 NVL",
+    debt: 0,
+    email: "dk@gmail.com",
+    note: "HELLO",
+    partnerId: "P001",
+    partnerName: "Khang",
+    phoneNumber: "+84356955354",
+    totalBuyAmount: 1561,
+    certificate:
+      "https://i.pinimg.com/236x/9d/92/6c/9d926cf33a8101e204322fde8dd81f41.jpg",
+    type: "Supplier",
+  },
+  {
+    address: "69 NVL",
+    debt: 0,
+    email: "dk@gmail.com",
+    gender: "Female",
+    note: "HELLO",
+    partnerId: "P001",
+    partnerName: "Khang",
+    phoneNumber: "+84356955354",
+    totalBuyAmount: 1561,
+    type: "Customer",
+  },
+  {
+    address: "69 NVL",
+    debt: 0,
+    email: "dk@gmail.com",
+    note: "HELLO",
+    partnerId: "P001",
+    partnerName: "Khang",
+    phoneNumber: "+84356955354",
+    totalBuyAmount: 1561,
+    certificate:
+      "https://i.pinimg.com/236x/9d/92/6c/9d926cf33a8101e204322fde8dd81f41.jpg",
+    type: "Supplier",
   },
 ];
 
-const HEADER = ["TÊN", "TÊN NHÓM", "TỔNG ĐÃ MUA", "THAO TÁC"];
+const HEADER = [
+  "PARTNER ID",
+  "PARTNER NAME",
+  "GENDER",
+  "PHONE NUMBER",
+  "EMAIL",
+  "ADDRESS",
+  "DEBT",
+  "TOTAL BUY AMOUNT",
+  "CERTIFICATE",
+  "TYPE",
+  "NOTE",
+  "OPERATION",
+];
 const PartnerTable = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState("10");
-  const handleCheckBoxChange = (rowId: number) => {
-    if (rowId === -1) {
+  const handleCheckBoxChange = (rowId: string) => {
+    if (rowId === null) {
       console.log("ok");
       if (selectedRows.length === 0) {
-        setSelectedRows([...CONTENT.map((content) => content.id)]);
+        setSelectedRows([...CONTENT.map((content) => content.partnerId)]);
         return;
       }
       setSelectedRows([]);
@@ -74,10 +184,9 @@ const PartnerTable = () => {
                 <input
                   className="w-15 h-15 bg-hover"
                   type="checkbox"
-                  onChange={() => handleCheckBoxChange(-1)}
+                  onChange={() => handleCheckBoxChange(null)}
                 />
               </th>
-              <th className="border border-gray-300 p-2 text-xs">#</th>
               {HEADER.map((header, index) => (
                 <th key={index} className="border border-gray-300 p-2 text-xs">
                   {header}
@@ -92,20 +201,56 @@ const PartnerTable = () => {
                   <input
                     className="w-15 h-15 bg-hover"
                     type="checkbox"
-                    onChange={() => handleCheckBoxChange(content.id)}
-                    checked={selectedRows.includes(content.id) ? true : false}
+                    onChange={() => handleCheckBoxChange(content.partnerId)}
+                    checked={
+                      selectedRows.includes(content.partnerId) ? true : false
+                    }
                   />
                 </td>
-                <td className="border border-gray-300 p-2 text-sm">{index}</td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.partnerId}
+                </td>
 
                 <td className="border border-gray-300 p-2 text-sm">
-                  {content.name}
+                  {content.partnerName}
                 </td>
                 <td className="border border-gray-300 p-2 text-sm">
-                  {content.groupName}
+                  {content.type === "Customer" ? content.gender : null}
                 </td>
                 <td className="border border-gray-300 p-2 text-sm">
-                  {content.total_buy_amount}
+                  {content.phoneNumber}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.email}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.address}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.debt}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.totalBuyAmount}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm  items-center justify-center">
+                  {content.type === "Supplier" ? (
+                    <img
+                      src={content.certificate}
+                      style={{
+                        width: "100%",
+                        height: 100,
+                        alignSelf: "center",
+                        borderWidth: 1,
+                      }}
+                    />
+                  ) : null}
+                </td>
+
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.type}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.note}
                 </td>
                 <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
                   <Button className="mr-2">

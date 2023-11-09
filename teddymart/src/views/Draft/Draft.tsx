@@ -22,6 +22,15 @@ import { addDbVoucherTable } from "firebase-tools/addDbVoucherTable";
 import { addDbWarehouse } from "firebase-tools/addDbWarehouse";
 import { addDBProduct } from "firebase-tools/addDbProduct";
 import { addDbGroupProduct } from "firebase-tools/addDbGroupProduct";
+import {
+  BillTable,
+  GroupProductTable,
+  ManagerTable,
+  PartnerTable,
+  ProductTable,
+  VoucherTable,
+  WareHouseTable,
+} from "components/TableComponent";
 
 export default function Draft() {
   const [isOn, setIsOn] = useState(false);
@@ -132,6 +141,13 @@ export default function Draft() {
       >
         <h1>Extra Reducer</h1>
       </Button>
+      <BillTable />
+      <PartnerTable />
+      <ProductTable />
+      <WareHouseTable />
+      <VoucherTable />
+      <ManagerTable />
+      <GroupProductTable />
     </div>
   );
 }
