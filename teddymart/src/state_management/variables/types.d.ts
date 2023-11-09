@@ -81,3 +81,10 @@ declare type TOrder = {
   receiver: string;
   type: "Import" | "Export";
 };
+
+declare type TReport = {
+  revenue: number;
+  outcome: number;
+  totalImport: number;
+  totalExport: number;
+};

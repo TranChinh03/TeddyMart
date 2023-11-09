@@ -9,7 +9,11 @@ import CheckboxComponent from "components/CheckBoxComponent";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
-import { addNewPartner } from "state_management/slices/partnerSlice";
+import {
+  addNewPartner,
+  updatePartner,
+  uploadPartner,
+} from "state_management/slices/partnerSlice";
 import { Button } from "antd";
 import { addDbOrder } from "firebase-tools/addDbOrder";
 import { addDbManagerTable } from "firebase-tools/addDbManageTable";
@@ -26,6 +30,7 @@ export default function Draft() {
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const partners = useSelector((state: RootState) => state.partnerSlice);
+  //console.log(partners);
   return (
     <div className="flex items-center justify-center mt-10 flex-col">
       <SwitchComponent
@@ -48,25 +53,7 @@ export default function Draft() {
           alert("Button clicked!");
           console.log(partners);
           i18n.changeLanguage("vi");
-          // dispatch: để gọi actions = setState()
-          // dispatch(
-          //   addNewPartner({
-          //     partnerId: "AAA",
-          //     partnerName: "AAA",
-          //     email: "1123@gmail.com",
-          //     phoneNumber: "12345678",
-          //     address: "123",
-          //     note: "asass",
-          //     gender: "female",
-          //   })
-          // );
-        }}
-        label="Label 1"
-        iconLeft={<CiAlarmOn />}
-      />
-      <ButtonComponent
-        color={COLORS.hover}
-        onClick={() => {
+          //dispatch: để gọi actions = setState()
           dispatch(
             addNewPartner({
               partnerId: "AAA",
@@ -82,6 +69,31 @@ export default function Draft() {
         label="Label 1"
         iconLeft={<CiAlarmOn />}
       />
+      <ButtonComponent
+        color={COLORS.hover}
+        onClick={() => {
+          alert("Button clicked!");
+          //console.log(partners);
+          //i18n.changeLanguage("vi");
+          //dispatch: để gọi actions = setState()
+          dispatch(
+            uploadPartner([
+              {
+                partnerId: "Akkkk",
+                partnerName: "AAA",
+                email: "1123@gmail.com",
+                phoneNumber: "12345678",
+                address: "123",
+                note: "asass",
+                gender: "female",
+              },
+            ])
+          );
+        }}
+        label="Label 2"
+        iconLeft={<CiAlarmOn />}
+      />
+
       <SearchComponent />
       <CheckboxComponent
         color="red"
@@ -113,13 +125,13 @@ export default function Draft() {
       <Button onClick={addDbOrder}>
         <h1>Add Order Into Database</h1>
       </Button>
-      {/* <Button
+      <Button
         onClick={() =>
           dispatch({ type: "DELETE_PRODUCT", payload: { data: "AA" } })
         }
       >
         <h1>Extra Reducer</h1>
-      </Button> */}
+      </Button>
     </div>
   );
 }

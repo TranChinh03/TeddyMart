@@ -5,6 +5,8 @@ import {
   AiFillEyeInvisible,
   AiOutlineArrowLeft,
 } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+import { NAV_LINK } from "routes/components/NAV_LINK";
 
 export default function SignUpScreen() {
   const [username, setUsername] = useState("");
@@ -17,7 +19,7 @@ export default function SignUpScreen() {
   const [isActive, setIsActive] = useState(false);
   const [address, setAddress] = useState("");
   const [error, setError] = useState(false);
-
+  const navigate = useNavigate();
   const handleSubmit = () => {
     //e.preventDefault();
     if (
@@ -231,7 +233,12 @@ export default function SignUpScreen() {
             <div className="self-center">
               <AiOutlineArrowLeft color="#217CA3" />
             </div>
-            <button className="text-sidebar font-medium">Login</button>
+            <button
+              className="text-sidebar font-medium"
+              onClick={() => navigate(NAV_LINK.LOGIN)}
+            >
+              Login
+            </button>
           </div>
         </div>
       </div>

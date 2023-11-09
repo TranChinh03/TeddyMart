@@ -12,6 +12,8 @@ import {
   BsReverseLayoutTextSidebarReverse,
   BsCaretDownFill,
 } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "state_management/reducers/rootReducer";
 const DRAWER_ITEM = [
   {
     name: "Sale",
@@ -45,10 +47,17 @@ const DRAWER_ITEM = [
     link: NAV_LINK.REPORT,
     icon1: <BsBarChartLine size={25} />,
   },
+  {
+    name: "Log out",
+    link: "",
+  },
 ];
 export default function Drawer() {
   const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState("/");
+  const dispatch = useDispatch();
+  const partners = useSelector((state: RootState) => state.partnerSlice);
+  console.log(partners);
   return (
     <div className="fixed top-0 left-0 h-screen bg-sidebar w-1/5 scrollbar-hide">
       <div className="overflow-y-auto h-full justify-center">
@@ -64,8 +73,12 @@ export default function Drawer() {
           return (
             <DrawerItem
               onClick={() => {
-                navigate(item.link);
-                setCurrentTab(item.link);
+                if (index === DRAWER_ITEM.length - 1) {
+                  dispatch({ type: "RESET_ALL_STORES" });
+                } else {
+                  navigate(item.link);
+                  setCurrentTab(item.link);
+                }
               }}
               name={item.name}
               icon1={item.icon1}

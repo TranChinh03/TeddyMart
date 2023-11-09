@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { DELETE_PRODUCT } from "state_management/actions/deleteProductAction";
-
+import { DELETE_PRODUCT } from "state_management/actions/actions";
+import { RESET_ALL_STORES } from "state_management/actions/actions";
 const warehouseSlice = createSlice({
   name: "warehouseSlice",
   initialState: [],
@@ -15,7 +15,7 @@ const warehouseSlice = createSlice({
       state: TWarehouse[],
       action: PayloadAction<TWarehouse[]>
     ) => {
-      state = [...action.payload];
+      return [...action.payload];
     },
     deleteWarehouse: (state: TWarehouse[], action: PayloadAction<string>) => {
       return state.filter((w) => w.warehouseId !== action.payload);
@@ -33,10 +33,14 @@ const warehouseSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(DELETE_PRODUCT, (state, action) => {
-      console.log("extraReducers");
-      console.log(action.payload);
-    });
+    builder
+      .addCase(RESET_ALL_STORES, (state: TWarehouse[]) => {
+        return [];
+      })
+      .addCase(DELETE_PRODUCT, (state, action) => {
+        console.log("extraReducers");
+        console.log(action.payload);
+      });
   },
 });
 export const {

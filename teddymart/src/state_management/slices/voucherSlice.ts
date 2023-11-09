@@ -1,11 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-// const voucher = {
-//   voucherId: "",
-//   voucherName: "",
-//   discountAmount: 0.1,
-//   expirationDate: new Date(),
-//   publicDate: new Date(),
-// };
+import { RESET_ALL_STORES } from "state_management/actions/actions";
 const voucherSlice = createSlice({
   name: "voucherSlice",
   initialState: [],
@@ -14,7 +8,7 @@ const voucherSlice = createSlice({
       state.push(action.payload);
     },
     uploadVoucher: (state: TVoucher[], action: PayloadAction<TVoucher[]>) => {
-      state = [...action.payload];
+      return [...action.payload];
     },
     deleteVoucher: (state: TVoucher[], action: PayloadAction<string>) => {
       return state.filter((v) => v.voucherId !== action.payload);
@@ -32,8 +26,13 @@ const voucherSlice = createSlice({
       }
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(RESET_ALL_STORES, (state: TVoucher[]) => {
+      return [];
+    });
+  },
 });
 
-export const { addNewVoucher, uploadVoucher, deleteVoucher } =
+export const { addNewVoucher, uploadVoucher, deleteVoucher, updateVoucher } =
   voucherSlice.actions;
 export default voucherSlice.reducer;

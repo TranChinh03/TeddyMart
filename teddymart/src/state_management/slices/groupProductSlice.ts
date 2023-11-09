@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-
+import { RESET_ALL_STORES } from "state_management/actions/actions";
 const groupProductSlice = createSlice({
   name: "groupProductSlice",
   initialState: [],
@@ -14,7 +14,7 @@ const groupProductSlice = createSlice({
       state: TGroupProduct[],
       action: PayloadAction<TGroupProduct[]>
     ) => {
-      state = [...action.payload];
+      return [...action.payload];
     },
     deleteGroupProduct: (
       state: TGroupProduct[],
@@ -37,6 +37,11 @@ const groupProductSlice = createSlice({
         state[index] = { ...action.payload.newGroupProduct };
       }
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(RESET_ALL_STORES, (state: TGroupProduct[]) => {
+      return [];
+    });
   },
 });
 

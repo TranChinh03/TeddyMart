@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-
+import { RESET_ALL_STORES } from "state_management/actions/actions";
 const productSlice = createSlice({
   name: "productSlice",
   initialState: [],
@@ -8,7 +8,7 @@ const productSlice = createSlice({
       state.push(action.payload);
     },
     uploadProduct: (state: TProduct[], action: PayloadAction<TProduct[]>) => {
-      state = [...action.payload];
+      return [...action.payload];
     },
     deleteProduct: (state: TProduct[], action: PayloadAction<TProduct>) => {
       return state.filter((p) => p.productId !== action.payload.productId);
@@ -24,7 +24,13 @@ const productSlice = createSlice({
       if (index > 0) {
         state[index] = { ...action.payload.newProduct };
       }
+      return state;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(RESET_ALL_STORES, (state: TProduct[]) => {
+      return [];
+    });
   },
 });
 

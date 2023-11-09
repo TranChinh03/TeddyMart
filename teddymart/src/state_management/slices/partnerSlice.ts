@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { RESET_ALL_STORES } from "state_management/actions/actions";
 const partnerSlice = createSlice({
   name: "partnerSlice",
   initialState: [],
@@ -7,7 +8,7 @@ const partnerSlice = createSlice({
       state.push(action.payload);
     },
     uploadPartner: (state: TPartner[], action: PayloadAction<TPartner[]>) => {
-      state = [...action.payload];
+      return [...action.payload];
     },
     deletePartner: (
       state: TPartner[],
@@ -26,7 +27,13 @@ const partnerSlice = createSlice({
       if (index > 0) {
         state[index] = { ...action.payload.newData };
       }
+      return state;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(RESET_ALL_STORES, (state: TPartner[]) => {
+      return [];
+    });
   },
 });
 
