@@ -9,19 +9,12 @@ export type Props = {
   placeHolder?: string;
   id?: string;
   inputType?:
-    |
     | "text"
-   
     | "checkbox"
-   
     | "radio"
-   
     | "color"
-   
     | "date"
-   
     | "file"
-   
     | "password";
   borderRadius?: number;
   label?: string;
