@@ -1,5 +1,6 @@
 import { FONT_WEIGHT } from "constants/fonts";
 import { ReactNode } from "react";
+import { UseFormRegister } from "react-hook-form";
 import { Style } from "util";
 export type Props = {
   labelFontWeight?: FONT_WEIGHT;
@@ -7,7 +8,14 @@ export type Props = {
   labelColor?: string;
   placeHolder?: string;
   id?: string;
-  inputType?: "text" | "checkbox" | "radio" | "color" | "date" | "file" | "password";
+  inputType?:
+    | "text"
+    | "checkbox"
+    | "radio"
+    | "color"
+    | "date"
+    | "file"
+    | "password";
   borderRadius?: number;
   label?: string;
   width?: number | string;
@@ -17,8 +25,10 @@ export type Props = {
   icon?: ReactNode;
   onIconClick?: () => void;
   required?: boolean;
-  value: string;
+  value?: string;
   style?: React.CSSProperties;
-  setValue: (value: string) => void;
+  setValue?: (value: string) => void;
   iconLeft?: ReactNode;
+  register?: UseFormRegister<any>;
+  registerName?: string;
 };

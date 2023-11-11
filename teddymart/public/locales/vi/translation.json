@@ -1,7 +1,13 @@
 {
   "signUp": {
-    "shopname": "Tên Shop",
-    "password": "Mật khẩu"
+    "signUp": "Đăng ký",
+    "createAccount": "Tạo tài khoản miễn phí và nhanh chóng",
+    "shopname": "Tên shop",
+    "password": "Mật khẩu",
+    "username": "Tên đăng nhập",
+    "email": "Email",
+    "phoneNo": "Số điện thoại",
+    "address": "Địa chỉ"
   },
   "welcome": "Xin chào",
   "login": {
