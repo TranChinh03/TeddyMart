@@ -27,7 +27,8 @@ export type Props = {
   required?: boolean;
   value?: string;
   style?: React.CSSProperties;
-  setValue: (value: string) => void;
+  outStyle?: React.CSSProperties;
+  setValue?: (value: string) => void;
   iconLeft?: ReactNode;
   register?: UseFormRegister<any>;
   registerName?: string;
