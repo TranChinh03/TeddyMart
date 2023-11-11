@@ -25,6 +25,7 @@
     "order": "Order",
     "partner": "Partner",
     "product": "Product",
+    "groupProduct": "Group Product",
     "customer": "Customer",
     "supplier": "Supplier",
     "voucher": "Voucher",

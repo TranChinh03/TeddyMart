@@ -8,6 +8,8 @@ export const NAV_LINK = {
   CUSTOMER: "/home/customer",
   SUPPLIER: "/home/supplier",
   WAREHOUSE: "/home/warehouse",
+  VOUCHER: "/home/voucher",
+  GROUP_PRODUCT: "/home/groupproduct",
   HOME: "/home/*",
   AUTH: "/*",
 };

@@ -8,6 +8,8 @@ import WarehouseScreen from "views/Warehouse/WarehouseScreen";
 import Drawer from "../components/Drawer";
 import Draft from "views/Draft/Draft";
 import Layout from "antd/es/layout/layout";
+import VoucherScreen from "views/Voucher/VoucherScreen";
+import GroupProductScreen from "views/GroupProduct/GroupProductScreen";
 export default function HomeRoutes() {
   return (
     <div className="flex max-h-screen">
@@ -22,7 +24,9 @@ export default function HomeRoutes() {
           <Route path="customer" element={<CustomerScreen />} />
           <Route path="supplier" element={<SupplierScreen />} />
           <Route path="warehouse" element={<WarehouseScreen />} />
+          <Route path="voucher" element={<VoucherScreen />} />
           <Route path="draft" element={<Draft />} />
+          <Route path="groupproduct" element={<GroupProductScreen />} />
         </Routes>
       </Layout>
     </div>

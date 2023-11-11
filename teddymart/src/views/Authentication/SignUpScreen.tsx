@@ -19,16 +19,7 @@ type Inputs = {
   address: string;
 };
 export default function SignUpScreen() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
-  const [email, setEmail] = useState("");
-  const [shopname, setShopname] = useState("");
-  const [phone, setPhone] = useState("");
-  const [field, setField] = useState("");
-  const [isActive, setIsActive] = useState(false);
-  const [address, setAddress] = useState("");
-  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const { t, i18n } = useTranslation();
   const { register, handleSubmit } = useForm<Inputs>();
@@ -36,17 +27,6 @@ export default function SignUpScreen() {
   const onSignUp: SubmitHandler<Inputs> = (data) => {
     console.log(data);
     //e.preventDefault();
-    if (
-      username.length == 0 ||
-      password.length == 0 ||
-      email.length == 0 ||
-      phone.length == 0 ||
-      shopname.length == 0 ||
-      field.length == 0 ||
-      address.length == 0
-    ) {
-      setError(true);
-    }
   };
 
   return (
