@@ -2,6 +2,7 @@ import { COLORS } from "constants/colors";
 import { Props } from "./props";
 import TextComponent from "components/TextComponent";
 import { ChangeEvent } from "react";
+import { useForm, SubmitHandler, UseFormRegister } from "react-hook-form";
 /**
  * Props for a custom text input component.
  * @param labelFontWeight - Font weight of the label.
@@ -27,7 +28,7 @@ export default function TextInputComponent({
   labelFontWeight = "font-medium",
   labelFontSize = 12,
   labelColor = COLORS.defaultBlack,
-  placeHolder = "Type here...",
+  placeHolder = "",
   id,
   inputType = "text",
   label,
@@ -44,6 +45,8 @@ export default function TextInputComponent({
   iconLeft,
   style,
   outStyle,
+  register,
+  registerName,
 }: Props) {
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -66,16 +69,29 @@ export default function TextInputComponent({
         style={{ borderRadius: borderRadius, ...style }}
       >
         {iconLeft && <button>{iconLeft}</button>}
-        <input
-          type={inputType}
-          id={id}
-          className={`bg-gray-50 block w-full focus:outline-none py-1`}
-          placeholder={placeHolder}
-          required={required}
-          value={value}
-          onChange={handleInputChange}
-          style={{ fontSize: textInputSize, color: textInputColor }}
-        />
+        {register ? (
+          <input
+            type={inputType}
+            id={id}
+            className={`bg-gray-50 block w-full focus:outline-none py-1`}
+            placeholder={placeHolder}
+            required={required}
+            style={{ fontSize: textInputSize, color: textInputColor }}
+            {...(register && register(registerName, { required: required }))}
+          />
+        ) : (
+          <input
+            type={inputType}
+            id={id}
+            className={`bg-gray-50 block w-full focus:outline-none py-1`}
+            placeholder={placeHolder}
+            required={required}
+            value={value}
+            onChange={handleInputChange}
+            style={{ fontSize: textInputSize, color: textInputColor }}
+          />
+        )}
+
         {icon && (
           <button
             onClick={onIconClick}

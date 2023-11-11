@@ -7,7 +7,17 @@ import {
 } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { NAV_LINK } from "routes/components/NAV_LINK";
-
+import { useTranslation } from "react-i18next";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Spin } from "antd";
+type Inputs = {
+  username: string;
+  email: string;
+  password: string;
+  shopName: string;
+  phoneNo: string;
+  address: string;
+};
 export default function SignUpScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -19,8 +29,12 @@ export default function SignUpScreen() {
   const [isActive, setIsActive] = useState(false);
   const [address, setAddress] = useState("");
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { t, i18n } = useTranslation();
+  const { register, handleSubmit } = useForm<Inputs>();
   const navigate = useNavigate();
-  const handleSubmit = () => {
+  const onSignUp: SubmitHandler<Inputs> = (data) => {
+    console.log(data);
     //e.preventDefault();
     if (
       username.length == 0 ||
@@ -35,213 +49,104 @@ export default function SignUpScreen() {
     }
   };
 
-  const fieldOption = [
-    "Building Materials",
-    "Mini Supermarket",
-    "Fashion",
-    "Cosmetics",
-    "Agricultural Products",
-    "Mom & Baby Products",
-    "Flowers & Gifts",
-    "Pharmacy",
-    "Groceries",
-    "Books & Stationery",
-    "Mobile & Electrical Appliances",
-    "Interiors & Exteriors",
-    "Garage",
-    "Canteen",
-  ];
-
   return (
-    <div className="flex justify-center items-center h-screen bg-gradient-to-t from-sidebar to-white">
-      <div className="flex w-8/12 shadow-lg bg-white rounded-md p-5">
-        <div className="w-1/2 justify-center self-center p-5">
-          <img src={require("assets/images/logo.png")} alt="" />
-          <p className="pt-5 text-center text-sidebar font-medium text-2xl">
-            MANAGE YOUR BUSINESS BETTER
-          </p>
-        </div>
-
-        <div className="border border-gray-100"></div>
-
-        <div className="w-1/2 p-5">
-          <h1 className="text-center text-sidebar font-medium text-3xl">
-            SIGN UP
-          </h1>
-          <p className="py-2 text-center text-black text-14">
-            Create your account. It's free and only take a minute.
-          </p>
-          <div className="flex ">
-            <div className="w-full grid grid-cols-2 justify-items-start gap-y-7 p-5 gap-4">
-              <div style={{ width: "90%" }} className="flex flex-col gap-x-5">
-                <TextInputComponent
-                  placeHolder=""
-                  label="Username"
-                  //labelFontSize={11}
-                  width={"100%"}
-                  required={true}
-                  value={username}
-                  setValue={setUsername}
-                />
-
-                {/* {error && username.length <= 0 ? (
-                  <label className="text-red-500 text-12">
-                    Username required !
-                  </label>
-                ) : error && username.length <= 5 ? (
-                  <label className="text-red-500 text-12">
-                    Username at least 6 characters !
-                  </label>
-                ) : (
-                  ""
-                )} */}
-              </div>
-
-              <div style={{ width: "90%" }} className="flex flex-col gap-x-5">
-                <TextInputComponent
-                  placeHolder=""
-                  label="Password"
-                  //labelFontSize={11}
-                  width={"100%"}
-                  required={true}
-                  inputType={visible ? "text" : "password"}
-                  icon={visible ? <AiFillEyeInvisible /> : <AiFillEye />}
-                  onIconClick={() => setVisible(!visible)}
-                  value={password}
-                  setValue={setPassword}
-                />
-
-                {/* {error && password.length <= 0 ? (
-                  <label className="text-red-500 text-12">
-                    Password required !
-                  </label>
-                ) : error && password.length <= 7 ? (
-                  <label className="text-red-500 text-12">
-                    Password at least 8 characters !
-                  </label>
-                ) : (
-                  ""
-                )} */}
-              </div>
-
-              <div style={{ width: "90%" }} className="flex flex-col gap-x-5">
-                <TextInputComponent
-                  placeHolder=""
-                  label="Email"
-                  width={"100%"}
-                  required={true}
-                  value={email}
-                  setValue={setEmail}
-                />
-
-                {/* {error && email.length <= 0 ? (
-                  <label className="text-red-500 text-12">
-                    Email required !
-                  </label>
-                ) : error && !email.includes("@") ? (
-                  <label className="text-red-500 text-12">
-                    Unvalid Email !
-                  </label>
-                ) : (
-                  ""
-                )} */}
-              </div>
-
-              <div style={{ width: "90%" }} className="flex flex-col gap-x-5">
-                <TextInputComponent
-                  placeHolder=""
-                  label="Phone Number"
-                  //labelFontSize={11}
-                  width={"100%"}
-                  required={true}
-                  //inputType="number"
-                  value={phone}
-                  setValue={setPhone}
-                />
-
-                {/* {error && phone.length <= 0 ? (
-                  <label className="text-red-500 text-12">
-                    Phone Number required!
-                  </label>
-                ) : error && !/^\d+$/.test(phone) ? (
-                  <label className="text-red-500 text-12">
-                    Number only required!
-                  </label>
-                ) : error && phone.length != 10 ? (
-                  <label className="text-red-500 text-12">
-                    Unvalid number phone
-                  </label>
-                ) : error && phone.charAt(0) != "0" ? (
-                  <label className="text-red-500 text-12">
-                    Unvalid number phone
-                  </label>
-                ) : (
-                  ""
-                )} */}
-              </div>
-
-              <div style={{ width: "90%" }} className="flex flex-col gap-x-5">
-                <TextInputComponent
-                  placeHolder=""
-                  label="Shop Name"
-                  //labelFontSize={11}
-                  width={"100%"}
-                  required={true}
-                  value={shopname}
-                  setValue={setShopname}
-                />
-
-                {/* {error && shopname.length <= 0 ? (
-                  <label className="text-red-500 text-12">
-                    Shop Name required!
-                  </label>
-                ) : (
-                  ""
-                )} */}
-              </div>
-
-              <div style={{ width: "90%" }} className="flex flex-col gap-x-5">
-                <TextInputComponent
-                  placeHolder=""
-                  label="Address"
-                  //labelFontSize={11}
-                  width={"100%"}
-                  required={true}
-                  value={address}
-                  setValue={setAddress}
-                />
-
-                {/* {error && address.length <= 0 ? (
-                  <label className="text-red-500 text-12">
-                    Address required!
-                  </label>
-                ) : (
-                  ""
-                )} */}
-              </div>
-            </div>
+    <Spin spinning={loading}>
+      <div className="flex justify-center items-center min-h-screen bg-gradient-to-t from-sidebar to-white">
+        <div className="flex w-8/12 shadow-lg bg-white rounded-md p-2">
+          <div className="w-1/2 flex-col justify-center items-center p-5 hidden md:flex">
+            <img src={require("assets/images/logo.png")} alt="image" />
+            <p className="pt-5 text-center text-sidebar font-medium text-2xl">
+              {t("login.slogan")}
+            </p>
           </div>
-          <div className="flex flex-col justify-center items-center gap-y-3">
-            <button
-              className="w-5/12 py-2 bg-sidebar text-white text-xl rounded-md hover:bg-hover"
-              onClick={handleSubmit}
-            >
-              Sign Up
-            </button>
-          </div>
-          <div className=" flex flex-row gap-2 text-16 pt-5">
-            <div className="self-center">
-              <AiOutlineArrowLeft color="#217CA3" />
+
+          <div className="border border-gray-100 hidden md:flex"></div>
+
+          <div className="md:w-1/2 w-full py-5 px-2">
+            <p className="text-center text-sidebar font-medium text-3xl">
+              {t("signUp.signUp")}
+            </p>
+            <p className="py-2 text-center text-black text-14">
+              {t("signUp.createAccount")}
+            </p>
+
+            <form onSubmit={handleSubmit(onSignUp)}>
+              <div className="flex">
+                <div className="w-full grid grid-cols-2 gap-y-7 py-2 gap-2">
+                  <TextInputComponent
+                    label={t("signUp.username")}
+                    width={"100%"}
+                    required={true}
+                    register={register}
+                    registerName={"username"}
+                  />
+
+                  <TextInputComponent
+                    label={t("signUp.password")}
+                    //labelFontSize={11}
+                    width={"100%"}
+                    required={true}
+                    inputType={visible ? "text" : "password"}
+                    icon={visible ? <AiFillEyeInvisible /> : <AiFillEye />}
+                    onIconClick={() => setVisible(!visible)}
+                    register={register}
+                    registerName="password"
+                  />
+
+                  <TextInputComponent
+                    label={t("signUp.email")}
+                    width={"100%"}
+                    required={true}
+                    register={register}
+                    registerName="email"
+                  />
+
+                  <TextInputComponent
+                    label={t("signUp.phoneNo")}
+                    width={"100%"}
+                    required={true}
+                    register={register}
+                    registerName="phone"
+                  />
+                  <TextInputComponent
+                    label={t("signUp.shopname")}
+                    width={"100%"}
+                    required={true}
+                    register={register}
+                    registerName="shopName"
+                  />
+                  <TextInputComponent
+                    label={t("signUp.address")}
+                    width={"100%"}
+                    required={true}
+                    register={register}
+                    registerName="address"
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col justify-center items-center gap-y-3">
+                <button
+                  className="w-5/12 py-2 bg-sidebar text-white text-xl rounded-md hover:bg-hover"
+                  onClick={() => onSignUp}
+                >
+                  {t("signUp.signUp")}
+                </button>
+              </div>
+            </form>
+            <div className=" flex flex-row gap-2 text-16 pt-5">
+              <div className="self-center">
+                <AiOutlineArrowLeft color="#217CA3" />
+              </div>
+              <button
+                className="text-sidebar font-medium"
+                onClick={() => navigate(NAV_LINK.LOGIN)}
+              >
+                {t("login.login")}
+              </button>
             </div>
-            <button
-              className="text-sidebar font-medium"
-              onClick={() => navigate(NAV_LINK.LOGIN)}
-            >
-              Login
-            </button>
           </div>
         </div>
       </div>
-    </div>
+    </Spin>
   );
 }
