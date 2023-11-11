@@ -1,7 +1,9 @@
 import { Button, Dropdown, Layout, MenuProps } from "antd";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { t } from "i18next";
+import { useMemo, useState } from "react";
 import { BiDetail } from "react-icons/bi";
+import { FiEdit, FiTrash } from "react-icons/fi";
 import {
   HiOutlineChevronLeft,
   HiOutlineChevronDoubleLeft,
@@ -345,25 +347,27 @@ const CONTENT: TContent[] = [
   },
 ];
 
-const HEADER = [
-  "ORDER ID",
-  "CREATED AT",
-  "PARTNER ID",
-  "PARTNER NAME",
-  "RECEIVER",
-  "LIST PRODUCT",
-  "PAYMENT",
-  "DEBT",
-  "DISCOUNT",
-  "TOTAL PAYMENT",
-  "VOUCHER ID",
-  "SELLER",
-  "TYPE",
-  "STATUS",
-  "NOTE",
-];
-
 const BillTable = () => {
+  const HEADER = useMemo(
+    () => [
+      t("sale.orderId"),
+      t("sale.createdAt"),
+      t("sale.customerId"),
+      t("sale.customerName"),
+      t("sale.receiver"),
+      t("sale.listProduct"),
+      t("sale.payment"),
+      t("sale.debt"),
+      t("sale.discount"),
+      t("sale.totalPayment"),
+      t("voucher.voucherID"),
+      t("sale.seller"),
+      t("sale.status"),
+      t("sale.note"),
+      t("activities"),
+    ],
+    [t]
+  );
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const handleCheckBoxChange = (rowId: string) => {
@@ -389,7 +393,10 @@ const BillTable = () => {
     <div>
       <div className="max-h-96 overflow-y-auto visible">
         <table className="w-full border-collapse border border-gray-300 bg-gray-50 z-50">
-          <thead className="bg-gray-200 sticky top-0 left-0">
+          <thead
+            className="sticky top-0 left-0"
+            style={{ backgroundColor: "#F0EAEA", zIndex: 9999 }}
+          >
             <tr>
               <th className="border border-gray-300 p-2 text-xs">
                 <input
@@ -458,9 +465,7 @@ const BillTable = () => {
                 <td className="border border-gray-300 p-2 text-sm">
                   {content.type === "Export" ? content.seller : null}
                 </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.type}
-                </td>
+
                 <td
                   className="border border-gray-300 p-2 font-[500] text-sm"
                   style={{ color: COLOR_STATUS.get(content.status) }}
@@ -469,6 +474,15 @@ const BillTable = () => {
                 </td>
                 <td className="border border-gray-300 p-2 text-sm">
                   {content.note}
+                </td>
+                <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
+                  <Button className="mr-2">
+                    <FiEdit />
+                  </Button>
+
+                  <Button>
+                    <FiTrash color="red" />
+                  </Button>
                 </td>
               </tr>
             ))}

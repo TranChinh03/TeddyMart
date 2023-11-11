@@ -22,6 +22,7 @@ import { useForm, SubmitHandler, UseFormRegister } from "react-hook-form";
  * @param required - Indicates if the input is required.
  * @param value - The current value of the input.
  * @param setValue - Function to update the value of the input.
+ * @param outerStyle - style outline of textinput
  */
 export default function TextInputComponent({
   labelFontWeight = "font-medium",
@@ -43,6 +44,7 @@ export default function TextInputComponent({
   setValue,
   iconLeft,
   style,
+  outStyle,
   register,
   registerName,
 }: Props) {
@@ -50,7 +52,7 @@ export default function TextInputComponent({
     setValue(event.target.value);
   };
   return (
-    <div style={{ width: width }} className="relative">
+    <div style={{ width: width, ...outStyle }} className="relative">
       {label && (
         <div className="absolute -top-2 left-2 bg-white text-10 px-1 font-roboto text-txt_lightgrey">
           <TextComponent
