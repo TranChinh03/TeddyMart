@@ -7,7 +7,14 @@ export type Props = {
   labelColor?: string;
   placeHolder?: string;
   id?: string;
-  inputType?: "text" | "checkbox" | "radio" | "color" | "date" | "file" | "password";
+  inputType?:
+    | "text"
+    | "checkbox"
+    | "radio"
+    | "color"
+    | "date"
+    | "file"
+    | "password";
   borderRadius?: number;
   label?: string;
   width?: number | string;
@@ -19,6 +26,7 @@ export type Props = {
   required?: boolean;
   value: string;
   style?: React.CSSProperties;
+  outStyle?: React.CSSProperties;
   setValue: (value: string) => void;
   iconLeft?: ReactNode;
 };

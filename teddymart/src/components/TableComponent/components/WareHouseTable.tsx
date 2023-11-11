@@ -1,6 +1,7 @@
 import { Button, Dropdown, MenuProps } from "antd";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { t } from "i18next";
+import { useMemo, useState } from "react";
 import { BiDetail } from "react-icons/bi";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import {
@@ -96,16 +97,18 @@ const CONTENT: TContent[] = [
   },
 ];
 
-const HEADER = [
-  "WAREHOUSE ID",
-  "WAREHOUSE NAME",
-  "COUNT",
-  "LIST PRODUCT",
-  "ADDRESS",
-  "OPERATION",
-];
-
 const WareHouseTable = () => {
+  const HEADER = useMemo(
+    () => [
+      t("warehouse.warehouseID"),
+      t("warehouse.warehouseName"),
+      t("warehouse.quantity"),
+      t("warehouse.listProduct"),
+      t("warehouse.address"),
+      t("activities"),
+    ],
+    [t]
+  );
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const handleCheckBoxChange = (rowId: string) => {

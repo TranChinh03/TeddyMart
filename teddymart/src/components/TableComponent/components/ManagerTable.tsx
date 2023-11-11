@@ -1,5 +1,6 @@
 import { Button } from "antd";
-import { ChangeEvent, useState } from "react";
+import { t } from "i18next";
+import { ChangeEvent, useMemo, useState } from "react";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import {
   HiOutlineChevronLeft,
@@ -30,17 +31,20 @@ const CONTENT: TContent[] = [
   },
 ];
 
-const HEADER = [
-  "USER ID",
-  "USER NAME",
-  "PHOTO URL",
-  "ADDRESS",
-  "PHONE NUMBER",
-  "EMAIL",
-  "SHOP NAME",
-  "OPERATION",
-];
 const ManagerTable = () => {
+  const HEADER = useMemo(
+    () => [
+      t("manager.userId"),
+      t("manager.userName"),
+      t("manager.photoURL"),
+      t("manager.address"),
+      t("manager.phoneNumber"),
+      t("manager.email"),
+      t("manager.shopName"),
+      t("activities"),
+    ],
+    [t]
+  );
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState("10");
   const handleCheckBoxChange = (rowId: string) => {

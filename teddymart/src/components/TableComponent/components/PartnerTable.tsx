@@ -1,5 +1,5 @@
 import { Button } from "antd";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 import {
   HiOutlineChevronLeft,
   HiOutlineChevronDoubleLeft,
@@ -7,6 +7,7 @@ import {
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
 import { FiDelete, FiEdit, FiTrash } from "react-icons/fi";
+import { t } from "i18next";
 
 type TContentCustomer = {
   address: string;
@@ -137,21 +138,23 @@ const CONTENT: TContent[] = [
   },
 ];
 
-const HEADER = [
-  "PARTNER ID",
-  "PARTNER NAME",
-  "GENDER",
-  "PHONE NUMBER",
-  "EMAIL",
-  "ADDRESS",
-  "DEBT",
-  "TOTAL BUY AMOUNT",
-  "CERTIFICATE",
-  "TYPE",
-  "NOTE",
-  "OPERATION",
-];
-const PartnerTable = () => {
+const PartnerTable = ({ isCustomer = false }: { isCustomer?: boolean }) => {
+  const HEADER = useMemo(
+    () => [
+      !isCustomer ? t("partner.supplierID") : t("partner.customerID"),
+      !isCustomer ? t("partner.supplierName") : t("partner.customerName"),
+      t("partner.gender"),
+      t("partner.phoneNumber"),
+      t("partner.email"),
+      t("partner.address"),
+      t("partner.debt"),
+      t("partner.totalBuyAmount"),
+      t("partner.certificate"),
+      t("note"),
+      t("activities"),
+    ],
+    [t]
+  );
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState("10");
   const handleCheckBoxChange = (rowId: string) => {
@@ -246,9 +249,6 @@ const PartnerTable = () => {
                   ) : null}
                 </td>
 
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.type}
-                </td>
                 <td className="border border-gray-300 p-2 text-sm">
                   {content.note}
                 </td>
