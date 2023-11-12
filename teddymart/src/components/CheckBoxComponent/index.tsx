@@ -1,5 +1,6 @@
 import TextComponent from "components/TextComponent";
 import { COLORS } from "constants/colors";
+import { BsCheckLg } from "react-icons/bs";
 interface CheckboxComponentProps {
   /**
    * @type {string} - The size of the component.
@@ -31,18 +32,16 @@ function CheckboxComponent({
 }: CheckboxComponentProps) {
   return (
     <div className="flex items-center">
-      <input
-        type="checkbox"
-        checked={isChecked}
-        onChange={() => setIsChecked()}
+      <button
+        className="flex w-4 h-4 rounded border items-center justify-center border-slate-400"
         style={{
-          accentColor: "blue",
-          height: size,
-          width: size,
-          color: "white",
+          backgroundColor: isChecked ? color : COLORS.defaultWhite,
         }}
-        className="text-white"
-      />
+        onClick={setIsChecked}
+      >
+        {isChecked && <BsCheckLg color={COLORS.defaultWhite} />}
+      </button>
+
       <div className="w-2"></div>
       {label && <TextComponent>{label}</TextComponent>}
     </div>
