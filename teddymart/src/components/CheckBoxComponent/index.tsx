@@ -1,3 +1,4 @@
+import TextComponent from "components/TextComponent";
 import { COLORS } from "constants/colors";
 interface CheckboxComponentProps {
   /**
@@ -18,28 +19,33 @@ interface CheckboxComponentProps {
   /**
    * @type {(isChecked: boolean) => void} - A function that sets the `isChecked` value.
    */
-  setIsChecked: (isChecked: boolean) => void;
+  setIsChecked: () => void;
+  label?: string;
 }
 function CheckboxComponent({
   size = "16px",
   color = COLORS.mediumBlue,
   isChecked,
   setIsChecked,
+  label,
 }: CheckboxComponentProps) {
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-  };
   return (
-    <input
-      type="checkbox"
-      checked={isChecked}
-      onChange={handleCheckboxChange}
-      style={{
-        accentColor: color,
-        height: size,
-        width: size,
-      }}
-    />
+    <div className="flex items-center">
+      <input
+        type="checkbox"
+        checked={isChecked}
+        onChange={() => setIsChecked()}
+        style={{
+          accentColor: "blue",
+          height: size,
+          width: size,
+          color: "white",
+        }}
+        className="text-white"
+      />
+      <div className="w-2"></div>
+      {label && <TextComponent>{label}</TextComponent>}
+    </div>
   );
 }
 

@@ -31,7 +31,7 @@ import {
   VoucherTable,
   WareHouseTable,
 } from "components/TableComponent";
-
+import ListCheckBox from "components/ListCheckBox";
 export default function Draft() {
   const [isOn, setIsOn] = useState(false);
   const [value, setValue] = useState("");
@@ -39,10 +39,24 @@ export default function Draft() {
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const partners = useSelector((state: RootState) => state.partnerSlice);
+  const [listFilter, setListFilter] = useState([
+    {
+      displayName: "Customer Name",
+      value: true,
+    },
+    {
+      displayName: "Email",
+      value: true,
+    },
+    {
+      displayName: "Phone Number",
+      value: true,
+    },
+  ]);
   //console.log(partners);
   return (
     <div className="flex items-center justify-center mt-10 flex-col">
-      <SwitchComponent
+      {/* <SwitchComponent
         label="option1"
         isChecked={isOn}
         setIsChecked={setIsOn}
@@ -108,7 +122,7 @@ export default function Draft() {
         color="red"
         isChecked={isChecked}
         setIsChecked={setIsChecked}
-      />
+      /> */}
       <div>
         <h1>{t("welcome")}</h1>
       </div>
@@ -141,13 +155,17 @@ export default function Draft() {
       >
         <h1>Extra Reducer</h1>
       </Button>
-      <BillTable />
+      <Button>
+        <h1>List Checkbox</h1>
+      </Button>
+      <ListCheckBox listFilter={listFilter} setListFilter={setListFilter} />
+      {/* <BillTable />
       <PartnerTable />
       <ProductTable />
       <WareHouseTable />
       <VoucherTable />
       <ManagerTable />
-      <GroupProductTable />
+      <GroupProductTable /> */}
     </div>
   );
 }

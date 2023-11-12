@@ -6,7 +6,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({
   label,
   onClick,
   fontWeight = "normal",
-  fontSize = "12px",
+  fontSize = "16px",
   paddingHorizontal = "20",
   paddingVertical = "8",
   borderRadius = 5,
