@@ -24,4 +24,5 @@ export const COLORS = {
   purple: "#6574c4",
   light_purple: "#3d4b98",
   extra_gray: "#888888",
+  primaryBlue: "#207fff",
 };

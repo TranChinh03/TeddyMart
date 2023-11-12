@@ -12,8 +12,11 @@ import VoucherScreen from "views/Voucher/VoucherScreen";
 import GroupProductScreen from "views/GroupProduct/GroupProductScreen";
 export default function HomeRoutes() {
   return (
-    <div className="flex max-h-screen">
-      <Layout className="w-1/5 fixed" hasSider>
+    <div className="flex max-h-screen ">
+      <Layout
+        className="fixed top-0 left-0 h-screen w-1/5 scrollbar-hide"
+        hasSider
+      >
         <Drawer />
       </Layout>
       <Layout className="w-4/5 ml-[20%]" hasSider>

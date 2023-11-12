@@ -1,7 +1,6 @@
-import DrawerItem from "./DrawerItem";
 import { useNavigate, useLocation } from "react-router-dom";
 import { NAV_LINK } from "./NAV_LINK";
-import { useState, useMemo } from "react";
+import { useCallback, useState } from "react";
 import {
   BsCart2,
   BsTruck,
@@ -17,9 +16,10 @@ import {
   BsBoxes,
 } from "react-icons/bs";
 import { BiBox } from "react-icons/bi";
-import { Collapse } from "antd";
+import { Menu } from "antd";
 import { useTranslation } from "react-i18next";
 import { Divider } from "antd";
+import { COLORS } from "constants/colors";
 type DrawerItemProps = {
   name?: string;
   link?: string;
@@ -34,6 +34,7 @@ export type DrawerProps = DrawerItemProps & {
 export default function Drawer() {
   const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState("/");
+  const [openKeys, setOpenKeys] = useState();
   const location = useLocation();
   const { t } = useTranslation();
   const DRAWER_ITEM: DrawerProps[] = [
@@ -41,7 +42,7 @@ export default function Drawer() {
       name: t("drawer.sale"),
       link: "",
       icon1: <BsCart2 size={25} />,
-      icon2: <BsCaretDownFill size={15} />,
+      icon2: <BsCaretDownFill size={15} color="white" />,
       subDrawer: [
         {
           name: t("drawer.order"),
@@ -103,12 +104,20 @@ export default function Drawer() {
     },
     {
       name: t("drawer.signOut"),
-      link: "",
+      link: "SignOut",
       icon1: <BsBoxArrowInLeft size={25} />,
     },
   ];
+  const chooseColor = useCallback(
+    (name: string, link: string) => {
+      return currentTab === name || currentTab === link
+        ? COLORS.primaryBlue
+        : COLORS.defaultWhite;
+    },
+    [currentTab]
+  );
   return (
-    <div className="fixed top-0 left-0 h-screen bg-sidebar w-1/5 scrollbar-hide">
+    <div className="bg-sidebar w-full">
       <div className="overflow-y-auto h-full justify-center">
         {/* Avatar */}
         <button className="flex flex-row px-5 mt-5 items-center text-txt_white gap-2">
@@ -118,51 +127,43 @@ export default function Drawer() {
           <div>Shop's Name</div>
         </button>
         <Divider className="bg-slate-400" />
-        {DRAWER_ITEM.map((item: DrawerProps, index) => {
-          return (
-            <Collapse
-              style={{ padding: 0 }}
-              bordered={false}
-              size="small"
-              collapsible={!item.subDrawer ? "disabled" : "header"}
-              expandIcon={() => <></>}
-              expandIconPosition="end"
-              items={[
-                {
-                  key: index.toString(),
-                  label: (
-                    <DrawerItem
-                      item={item}
-                      width={window.screen.width * 0.15}
-                      isSelected={currentTab === item.name}
-                      onClick={() => {
-                        if (!item.subDrawer) {
-                          navigate(item.link);
-                          setCurrentTab(item.name);
-                        } else {
-                          setCurrentTab(item.name);
-                        }
-                      }}
-                    />
-                  ),
-                  children: item.subDrawer?.map((subItem, i) => (
-                    <div className="py-1">
-                      <DrawerItem
-                        item={subItem}
-                        isSelected={location.pathname === subItem.link}
-                        key={i}
-                        onClick={() => {
-                          navigate(subItem.link);
-                        }}
-                        //width={window.screen.width * 0.14}
-                      />
-                    </div>
-                  )),
-                },
-              ]}
-            ></Collapse>
-          );
-        })}
+        <Menu
+          expandIcon={<BsCaretDownFill size={15} color="white" />}
+          theme="light"
+          mode="inline"
+          className={`bg-sidebar text-white`}
+          inlineCollapsed={false}
+          onClick={(e) => {
+            navigate(e.key);
+            setCurrentTab(e.key);
+          }}
+          items={DRAWER_ITEM.map((d, i) => ({
+            label: (
+              <span
+                style={{
+                  color: chooseColor(d.name, d.link),
+                }}
+              >
+                {d.name}
+              </span>
+            ),
+            key: d.link !== "" ? d.link : d.name,
+            icon: (
+              <p
+                style={{
+                  color: chooseColor(d.name, d.link),
+                }}
+              >
+                {d.icon1}
+              </p>
+            ),
+            children: d.subDrawer?.map((s, index) => ({
+              label: s.name,
+              key: s.link,
+              icon: s.icon1,
+            })),
+          }))}
+        />
       </div>
     </div>
   );
