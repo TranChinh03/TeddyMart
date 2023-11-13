@@ -12,9 +12,9 @@ import VoucherScreen from "views/Voucher/VoucherScreen";
 import GroupProductScreen from "views/GroupProduct/GroupProductScreen";
 export default function HomeRoutes() {
   return (
-    <div className="flex max-h-screen ">
+    <div className="flex max-h-screen">
       <Layout
-        className="fixed top-0 left-0 h-screen w-1/5 scrollbar-hide hidden md:block bg-sidebar"
+        className="fixed top-0 left-0 h-screen w-1/5 scrollbar-hide hidden md:block bg-sidebar overflow-y-auto"
         hasSider
       >
         <Drawer />

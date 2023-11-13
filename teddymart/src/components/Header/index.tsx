@@ -8,13 +8,15 @@ import { COLORS } from "constants/colors";
 import { Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
+import { toggleDrawer } from "state_management/slices/controlSlice";
 export default function Header({
   width = "100%",
   title = "Title",
 }: HeaderProps) {
   const [language, setLanguage] = useState("VI");
   const { openDrawer } = useSelector((state: RootState) => state.controlSlice);
-  console.log(openDrawer);
+  const dispatch = useDispatch();
+  //console.log(openDrawer);
   const numberOfNotifications = 2;
   const [showDrawer, setShowDrawer] = useState(false);
   return (
@@ -25,9 +27,9 @@ export default function Header({
       <div className="flex items-center">
         <button
           className="bg-txt_mediumgrey w-8 h-8 rounded-full items-center justify-center flex hover:bg-txt_lightgrey"
-          onClick={() => setShowDrawer(!showDrawer)}
+          onClick={() => dispatch(toggleDrawer())}
         >
-          {!showDrawer ? (
+          {!openDrawer ? (
             <BiDotsVerticalRounded color={COLORS.defaultWhite} />
           ) : (
             <BiMenu color={COLORS.defaultWhite} />
