@@ -6,11 +6,11 @@ const controlSlice = createSlice({
   name: "controlSlice",
   initialState: { openDrawer: true },
   reducers: {
-    openDrawer: (state: TControl) => {
+    toggleDrawer: (state: TControl) => {
       state.openDrawer = !state.openDrawer;
       return state;
     },
   },
 });
-export const { openDrawer } = controlSlice.actions;
+export const { toggleDrawer } = controlSlice.actions;
 export default controlSlice.reducer;

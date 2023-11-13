@@ -20,6 +20,8 @@ import { Menu } from "antd";
 import { useTranslation } from "react-i18next";
 import { Divider } from "antd";
 import { COLORS } from "constants/colors";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "state_management/reducers/rootReducer";
 type DrawerItemProps = {
   name?: string;
   link?: string;
@@ -34,6 +36,8 @@ export type DrawerProps = DrawerItemProps & {
 export default function Drawer() {
   const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState("/");
+  const { openDrawer } = useSelector((state: RootState) => state.controlSlice);
+  const dispatch = useDispatch();
   const location = useLocation();
   const { t } = useTranslation();
   const DRAWER_ITEM: DrawerProps[] = [
@@ -107,6 +111,7 @@ export default function Drawer() {
       icon1: <BsBoxArrowInLeft size={25} />,
     },
   ];
+
   const chooseColor = useCallback(
     (name: string, link: string) => {
       return currentTab === name || currentTab === link
@@ -131,7 +136,7 @@ export default function Drawer() {
           theme="light"
           mode="inline"
           className={`bg-sidebar text-white`}
-          inlineCollapsed={false}
+          inlineCollapsed={openDrawer}
           onClick={(e) => {
             navigate(e.key);
             setCurrentTab(e.key);
