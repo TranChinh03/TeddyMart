@@ -6,11 +6,15 @@ import { useState } from "react";
 import { AiOutlineBell } from "react-icons/ai";
 import { COLORS } from "constants/colors";
 import { Button } from "antd";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "state_management/reducers/rootReducer";
 export default function Header({
   width = "100%",
   title = "Title",
 }: HeaderProps) {
   const [language, setLanguage] = useState("VI");
+  const { openDrawer } = useSelector((state: RootState) => state.controlSlice);
+  console.log(openDrawer);
   const numberOfNotifications = 2;
   const [showDrawer, setShowDrawer] = useState(false);
   return (

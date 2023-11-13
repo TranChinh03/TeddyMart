@@ -14,12 +14,12 @@ export default function HomeRoutes() {
   return (
     <div className="flex max-h-screen ">
       <Layout
-        className="fixed top-0 left-0 h-screen w-1/5 scrollbar-hide"
+        className="fixed top-0 left-0 h-screen w-1/5 scrollbar-hide hidden md:block bg-sidebar"
         hasSider
       >
         <Drawer />
       </Layout>
-      <Layout className="w-4/5 ml-[20%]" hasSider>
+      <Layout className="w-full md:w-4/5 ml-0 md:ml-[20%]" hasSider>
         <Routes>
           <Route path="sale" element={<SaleScreen />} />
           <Route path="product" element={<ProductScreen />} />

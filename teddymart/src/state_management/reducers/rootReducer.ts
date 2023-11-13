@@ -6,14 +6,16 @@ import partnerSlice from "state_management/slices/partnerSlice";
 import productSlice from "state_management/slices/productSlice";
 import voucherSlice from "state_management/slices/voucherSlice";
 import warehouseSlice from "state_management/slices/warehouseSlice";
+import controlSlice, { TControl } from "state_management/slices/controlSlice";
 export type RootState = {
   partnerSlice: TPartner[];
   voucherSlice: TVoucher[];
   warehouseSlice: TWarehouse[];
   product: TProduct[];
   groupProduct: TGroupProduct[];
-  manager: TManager[],
+  manager: TManager[];
   order: TOrder[];
+  controlSlice: TControl;
 };
 
 const rootReducer = combineReducers({
@@ -24,5 +26,6 @@ const rootReducer = combineReducers({
   manager: managerSlice,
   order: orderSlice,
   groupProduct: groupProductSlice,
+  controlSlice: controlSlice,
 });
 export default rootReducer;
