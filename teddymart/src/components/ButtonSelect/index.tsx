@@ -20,12 +20,12 @@ export default function ButtonSelect({
 }: Props) {
   return (
     <div className="px-2 py-2">
-      <button className="relative">
+      <button className="relative w-full">
         {options.length !== 0 ? (
           <Select
             placeholder={title}
             value={value}
-            style={{ width: width, textAlign: "left" }}
+            style={{width: width, textAlign: "left" }}
             className="flex items-start"
             onChange={(value) => setValue(value)}
           >

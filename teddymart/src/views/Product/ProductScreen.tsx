@@ -21,7 +21,7 @@ export default function ProductScreen() {
   const [sort, setSort] = useState()
   const [search, setSearch] = useState()
 
-  const chartWidth = window.innerWidth * 0.7;
+  const chartWidth = window.innerWidth * 0.8;
 
   return (
     <div className="w-full">
@@ -39,7 +39,7 @@ export default function ProductScreen() {
             iconRight={
               <IoMdArrowDropdown style={{ marginLeft: 50, color: "gray" }} />
             }
-            width={250}
+            width = "100%"
             title="Choose screens"
             label="Move to screens"
             value={screens}
@@ -92,7 +92,7 @@ export default function ProductScreen() {
             iconRight={
               <IoMdArrowDropdown style={{ marginLeft: 50, color: "gray" }} />
             }
-            width={250}
+            width = "100%"
             title="All"
             label="Type"
             value={type}
@@ -104,7 +104,7 @@ export default function ProductScreen() {
             iconRight={
               <IoMdArrowDropdown style={{ marginLeft: 50, color: "gray" }} />
             }
-            width={250}
+            width = "100%"
             title="All"
             label="Product Group"
             value={productGroup}
@@ -116,7 +116,7 @@ export default function ProductScreen() {
             iconRight={
               <IoMdArrowDropdown style={{ marginLeft: 50, color: "gray" }} />
             }
-            width={250}
+            width = "100%"
             title="Available"
             label="Status"
             value={status}
@@ -128,7 +128,7 @@ export default function ProductScreen() {
             iconRight={
               <IoMdArrowDropdown style={{ marginLeft: 50, color: "gray" }} />
             }
-            width={250}
+            width = "100%"
             title="All"
             label="Store Management"
             value={storeManagement}
@@ -140,7 +140,7 @@ export default function ProductScreen() {
             iconRight={
               <IoMdArrowDropdown style={{ marginLeft: 50, color: "gray" }} />
             }
-            width={250}
+            width = "100%"
             title="Name: A-Z"
             label="Sort"
             value={sort}
@@ -151,9 +151,11 @@ export default function ProductScreen() {
           <SearchComponent/>
         </div>
       </div>
-      {/* <ResponsiveContainer style={{ margin: "auto"}} width={chartWidth}>
-        <ProductTable/>
-      </ResponsiveContainer> */}
+      <div style={{width: 'fit-content', margin: "auto" }}>
+        <ResponsiveContainer width={chartWidth}>
+          <ProductTable/>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }
