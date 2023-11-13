@@ -52,6 +52,18 @@ export default function Draft() {
       displayName: "Phone Number",
       value: true,
     },
+    {
+      displayName: "Product Name",
+      value: true,
+    },
+    {
+      displayName: "Seller Name",
+      value: true,
+    },
+    {
+      displayName: "Activities",
+      value: true,
+    },
   ]);
   //console.log(partners);
   return (

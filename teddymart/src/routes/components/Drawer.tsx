@@ -34,7 +34,6 @@ export type DrawerProps = DrawerItemProps & {
 export default function Drawer() {
   const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState("/");
-  const [openKeys, setOpenKeys] = useState();
   const location = useLocation();
   const { t } = useTranslation();
   const DRAWER_ITEM: DrawerProps[] = [

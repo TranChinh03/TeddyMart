@@ -35,18 +35,18 @@ export default function ListCheckBox({ listFilter, setListFilter }: Props) {
       placement="bottom"
       open={open}
       //onOpenChange={() => setOpen(!open)}
-      content={() =>
-        result.map((d, index) => (
-          <div key={index} className="grid grid-cols-2 gap-4">
+      content={() => (
+        <div className="grid grid-cols-2 gap-2">
+          {result.map((d, index) => (
             <CheckboxComponent
               label={d.displayName}
               isChecked={d.value}
               setIsChecked={() => onChange(index)}
               color={COLORS.darkYellow}
             />
-          </div>
-        ))
-      }
+          ))}
+        </div>
+      )}
     >
       <ButtonComponent
         onClick={onClose}
