@@ -121,54 +121,52 @@ export default function Drawer() {
     [currentTab]
   );
   return (
-    <div className="w-full">
-      <div className="overflow-y-auto h-full justify-center">
-        {/* Avatar */}
-        <button className="flex flex-row px-5 mt-5 items-center text-txt_white gap-2">
-          <div className="flex w-10 h-10 bg-hover rounded-full items-center justify-center">
-            P
-          </div>
-          <div>Shop's Name</div>
-        </button>
-        <Divider className="bg-slate-400" />
-        <Menu
-          expandIcon={<BsCaretDownFill size={15} color="white" />}
-          theme="light"
-          mode="inline"
-          className={`bg-sidebar text-white`}
-          inlineCollapsed={openDrawer}
-          onClick={(e) => {
-            navigate(e.key);
-            setCurrentTab(e.key);
-          }}
-          items={DRAWER_ITEM.map((d, i) => ({
-            label: (
-              <span
-                style={{
-                  color: chooseColor(d.name, d.link),
-                }}
-              >
-                {d.name}
-              </span>
-            ),
-            key: d.link !== "" ? d.link : d.name,
-            icon: (
-              <p
-                style={{
-                  color: chooseColor(d.name, d.link),
-                }}
-              >
-                {d.icon1}
-              </p>
-            ),
-            children: d.subDrawer?.map((s, index) => ({
-              label: s.name,
-              key: s.link,
-              icon: s.icon1,
-            })),
-          }))}
-        />
-      </div>
+    <div className="overflow-y-auto h-full justify-center">
+      {/* Avatar */}
+      <button className="flex flex-row px-5 mt-5 items-center text-txt_white gap-2">
+        <div className="flex w-10 h-10 bg-hover rounded-full items-center justify-center">
+          P
+        </div>
+        {!openDrawer && <div>Shop's Name</div>}
+      </button>
+      <Divider className="bg-slate-400" />
+      <Menu
+        expandIcon={<BsCaretDownFill size={15} color="white" />}
+        theme="light"
+        mode="inline"
+        className={`bg-sidebar text-white`}
+        inlineCollapsed={openDrawer}
+        onClick={(e) => {
+          navigate(e.key);
+          setCurrentTab(e.key);
+        }}
+        items={DRAWER_ITEM.map((d, i) => ({
+          label: (
+            <span
+              style={{
+                color: chooseColor(d.name, d.link),
+              }}
+            >
+              {d.name}
+            </span>
+          ),
+          key: d.link !== "" ? d.link : d.name,
+          icon: (
+            <p
+              style={{
+                color: chooseColor(d.name, d.link),
+              }}
+            >
+              {d.icon1}
+            </p>
+          ),
+          children: d.subDrawer?.map((s, index) => ({
+            label: s.name,
+            key: s.link,
+            icon: s.icon1,
+          })),
+        }))}
+      />
     </div>
   );
 }
