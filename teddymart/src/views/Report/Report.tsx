@@ -4,7 +4,7 @@ import GeneralTable from "./components/GeneralTable";
 
 export default function ReportScreen() {
   return (
-    <div className="flex-col bg-extreme_lg_grey pb-10 w-full">
+    <div className="bg-extreme_lg_grey pb-10 w-full">
       <Header width={"100%"} title={"Report"} />
       <SubHeader />
       <div className="p-5 grid md:grid-cols-4 gap-4 grid-cols-1 sm:grid-cols-2">
@@ -16,7 +16,7 @@ export default function ReportScreen() {
         <CardButton title="IMPORT ORDERS" tooltip="Net revenue" />
       </div>
       <Chart />
-      <GeneralTable />
+      {/* <GeneralTable /> */}
     </div>
   );
 }
