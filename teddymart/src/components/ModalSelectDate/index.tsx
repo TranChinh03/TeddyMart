@@ -1,5 +1,5 @@
-import React, { Dispatch, SetStateAction, useState, useRef } from "react";
-import { Button, Modal } from "antd";
+import { useState } from "react";
+import { Modal } from "antd";
 import { TextInputComponent, ButtonComponent } from "components";
 import { useTranslation } from "react-i18next";
 import { FiCalendar } from "react-icons/fi";
@@ -12,7 +12,6 @@ type Props = {
 };
 export default function ModalSelectDate({ setResult }: Props) {
   const { t } = useTranslation();
-  const { RangePicker } = DatePicker;
   const [openModal, setOpenModal] = useState(false);
   const [txtDate, setTxtDate] = useState<string>(
     `${timeFormat.format(new Date())} - ${timeFormat.format(new Date())}`
@@ -71,15 +70,12 @@ export default function ModalSelectDate({ setResult }: Props) {
       value: "last-year",
     },
   ];
-  console.log("FROM", date.from);
   const [mode, setMode] = useState(OPTIONS[0].value);
-  const [openCalendar, setOpenCalendar] = useState(false);
   const onSelectDate = (value: string) => {
     setMode(value);
     let currentDate = new Date();
     let gap1 = currentDate.getDay();
     let quater = +((currentDate.getMonth() + 1) / 4).toFixed();
-    //console.log("gap1", gap1);
     switch (value) {
       case "today":
         setDate({
@@ -177,6 +173,7 @@ export default function ModalSelectDate({ setResult }: Props) {
         setValue={setTxtDate}
         icon={<FiCalendar />}
         textInputSize="14px"
+        style={{ borderWidth: 1.2, borderColor: COLORS.lightGray }}
       />
       <Modal
         open={openModal}
@@ -248,7 +245,6 @@ export default function ModalSelectDate({ setResult }: Props) {
               />
             </div>
           </div>
-          {/* <RangePicker open={openCalendar} picker="calendar" /> */}
         </div>
       </Modal>
     </div>

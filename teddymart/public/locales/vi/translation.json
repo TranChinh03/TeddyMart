@@ -48,14 +48,15 @@
     "uploadImage": "Đăng ảnh",
     "apply": "Áp dụng",
     "resetInventory": "Thiết lập lại kho",
-    "export Report": "Xuất file báo cáo",
+    "exportReport": "Xuất file báo cáo",
     "confirm": "Xác nhận",
     "areYouSure": "Bạn có chắc chắn?",
     "resetAllInventory": "Thiết lập lại tất cả kho",
     "delete": "Xóa",
     "accept": "Chấp nhận",
     "cancel": "Hủy",
-    "view": "Xem"
+    "view": "Xem",
+    "time": "Thời gian"
   },
   "sale": {
     "importOrder": "Nhập hàng",
@@ -165,5 +166,23 @@
     "to": "Đến ngày"
   },
   "cancel": "Hủy",
-  "accept": "Đồng ý"
+  "accept": "Đồng ý",
+  "report": {
+    "report": "Báo cáo",
+    "overviewReport": "Báo cáo tổng quan",
+    "overviewChart": "Biểu đồ tổng quan",
+    "outcome": "Chi tiêu",
+    "revenue": "Thu nhập",
+    "profit": "Lợi nhuận",
+    "numberOfOrder": "Số lượng đơn hàng",
+    "importOrder": "Đơn nhập hàng",
+    "exportOrder": "Đơn xuất hàng",
+    "overviewTitle": "Nhấn vào bất kỳ điểm nào trên biểu đồ để xem chi tiết",
+    "hourly": "Hàng giờ",
+    "day": "Ngày",
+    "week": "Tuần",
+    "month": "Tháng",
+    "reportByDate": "Báo cáo theo ngày",
+    "reportByProduct": "Báo cáo theo sản phẩm"
+  }
 }

@@ -57,14 +57,15 @@
     "uploadImage": "Upload Image",
     "apply": "Apply",
     "resetInventory": "Reset Inventory",
-    "export Report": "Export Report",
+    "exportReport": "Export Report",
     "confirm": "Confirm",
     "areYouSure": "Are you sure?",
     "resetAllInventory": "Reset All Inventory",
     "delete": "Delete",
     "accept": "Accept",
     "cancel": "Cancel",
-    "view": "View"
+    "view": "View",
+    "time": "Time"
   },
   "group": {
     "groupId": "Group ID",
@@ -120,7 +121,6 @@
     "productGroup": "Product Group",
     "product": "Product",
     "productId": "Product ID",
-
     "searchByProductGroup": "Search By Product Group Name",
     "searchByProduct": "Search By Product Name",
     "ID": "ID",
@@ -166,5 +166,23 @@
     "to": "To"
   },
   "cancel": "Cancel",
-  "accept": "Accept"
+  "accept": "Accept",
+  "report": {
+    "report": "Report",
+    "overviewReport": "Overview Report",
+    "overviewChart": "Overview Chart",
+    "outcome": "Outcome",
+    "revenue": "Revenue",
+    "profit": "Profit",
+    "numberOfOrder": "Number of Order",
+    "importOrder": "Import Order",
+    "exportOrder": "Export Order",
+    "overviewTitle": "Touch any point on screen to see detail",
+    "hourly": "Hourly",
+    "day": "Day",
+    "week": "Week",
+    "month": "Month",
+    "reportByDate": "Report by date",
+    "reportByProduct": "Report by product"
+  }
 }
