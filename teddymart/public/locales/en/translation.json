@@ -86,7 +86,8 @@
     "debt": "Debt",
     "note": "Note",
     "receiver": "Receiver",
-    "listProduct": "List Product"
+    "listProduct": "List Product",
+    "placeholderSearch":"Search orders or custumer information"
   },
   "voucher": {
     "searchVoucher": "Search by voucher's name",
@@ -164,6 +165,14 @@
     "selectDate": "Select Date",
     "from": "From",
     "to": "To"
+  },
+  "sort":{
+    "orderAscending":"Order ID: Ascending",
+    "orderDescending":"Order ID: Descending",
+    "createdAtNewest":"Created At: Newest First",
+    "createdAtOldest":"Created At: Oldest First",
+    "totalPaymentAscending":"Total Payment: Ascending",
+    "totalPaymentDescending":"Total Payment: Descending"
   },
   "cancel": "Cancel",
   "accept": "Accept"
