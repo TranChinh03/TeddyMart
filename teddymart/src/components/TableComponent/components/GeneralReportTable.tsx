@@ -1,63 +1,143 @@
 import { Button } from "antd";
-import { t } from "i18next";
-import { ChangeEvent, useMemo, useState } from "react";
+import React, { ChangeEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FiEdit, FiTrash } from "react-icons/fi";
 import {
-  HiOutlineChevronLeft,
   HiOutlineChevronDoubleLeft,
-  HiOutlineChevronRight,
   HiOutlineChevronDoubleRight,
+  HiOutlineChevronLeft,
+  HiOutlineChevronRight,
 } from "react-icons/hi2";
-
 type TContent = {
-  groupId: string;
-  groupName: string;
-  note: string;
+  id: string;
+  createdAt: Date;
+  revenue: number;
+  outcome: number;
+  profit: number;
+  totalOrder: number;
+  totalImportOrder: number;
 };
 const CONTENT: TContent[] = [
   {
-    groupId: "GP001",
-    groupName: "Home Appliance",
-    note: "Explore essential appliances required for household needs. From refrigerators to kitchen essentials, this group provides reliable and efficient solutions to simplify daily routines at home.",
+    id: "123123",
+    createdAt: new Date(),
+    revenue: 1232,
+    outcome: 3134,
+    profit: 1332,
+    totalOrder: 12,
+    totalImportOrder: 23,
   },
   {
-    groupId: "GP001",
-    groupName: "Home Appliance",
-    note: "Explore essential appliances required for household needs. From refrigerators to kitchen essentials, this group provides reliable and efficient solutions to simplify daily routines at home.",
+    id: "123123r",
+    createdAt: new Date(),
+
+    revenue: 1232,
+    outcome: 3134,
+    profit: 1332,
+    totalOrder: 12,
+    totalImportOrder: 23,
   },
   {
-    groupId: "GP001",
-    groupName: "Home Appliance",
-    note: "Explore essential appliances required for household needs. From refrigerators to kitchen essentials, this group provides reliable and efficient solutions to simplify daily routines at home.",
+    id: "123k1s1",
+    createdAt: new Date(),
+
+    revenue: 1232,
+    outcome: 3134,
+    profit: 1332,
+    totalOrder: 12,
+    totalImportOrder: 23,
   },
   {
-    groupId: "GP001",
-    groupName: "Home Appliance",
-    note: "Explore essential appliances required for household needs. From refrigerators to kitchen essentials, this group provides reliable and efficient solutions to simplify daily routines at home.",
+    id: "123123",
+    createdAt: new Date(),
+    revenue: 1232,
+    outcome: 3134,
+    profit: 1332,
+    totalOrder: 12,
+    totalImportOrder: 23,
+  },
+  {
+    id: "123123r",
+    createdAt: new Date(),
+
+    revenue: 1232,
+    outcome: 3134,
+    profit: 1332,
+    totalOrder: 12,
+    totalImportOrder: 23,
+  },
+  {
+    id: "123k1s1",
+    createdAt: new Date(),
+
+    revenue: 1232,
+    outcome: 3134,
+    profit: 1332,
+    totalOrder: 12,
+    totalImportOrder: 23,
+  },
+  {
+    id: "123123",
+    createdAt: new Date(),
+    revenue: 1232,
+    outcome: 3134,
+    profit: 1332,
+    totalOrder: 12,
+    totalImportOrder: 23,
+  },
+  {
+    id: "123123r",
+    createdAt: new Date(),
+
+    revenue: 1232,
+    outcome: 3134,
+    profit: 1332,
+    totalOrder: 12,
+    totalImportOrder: 23,
+  },
+  {
+    id: "123k1s1",
+    createdAt: new Date(),
+
+    revenue: 1232,
+    outcome: 3134,
+    profit: 1332,
+    totalOrder: 12,
+    totalImportOrder: 23,
   },
 ];
 type TOptions = {
-  groupId?: boolean;
-  groupName?: boolean;
-  note?: boolean;
+  id?: boolean;
+  createdAt?: boolean;
+  revenue?: boolean;
+  outcome?: boolean;
+  profit?: boolean;
+  totalOrder?: boolean;
+  totalImportOrder?: boolean;
 };
-const GroupProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
+const GeneralReportTable = ({ filterOption }: { filterOption?: TOptions }) => {
   const { t } = useTranslation();
   const options: TOptions = {
-    groupId: true,
-    groupName: true,
-    note: true,
+    id: true,
+    createdAt: true,
+    revenue: true,
+    outcome: true,
+    profit: true,
+    totalOrder: true,
+    totalImportOrder: true,
     ...filterOption,
   };
   const HEADER = useMemo(
-    () => [
-      options.groupId && t("group.groupId"),
-      options.groupName && t("group.groupName"),
-      options.note && t("note"),
-      t("activities"),
-    ],
-    [t]
+    () =>
+      [
+        "#",
+        options.createdAt && t("report.createdAt"),
+        options.revenue && t("report.revenue"),
+        options.outcome && t("report.outcome"),
+        options.profit && t("report.profit"),
+        options.totalOrder && t("report.totalOrder"),
+        options.totalImportOrder && t("report.totalImportOrder"),
+      ].filter((value) => Boolean(value) !== false),
+    [t, options]
   );
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState("10");
@@ -65,7 +145,7 @@ const GroupProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
     if (rowId === null) {
       console.log("ok");
       if (selectedRows.length === 0) {
-        setSelectedRows([...CONTENT.map((content) => content.groupId)]);
+        setSelectedRows([...CONTENT.map((content) => content.id)]);
         return;
       }
       setSelectedRows([]);
@@ -108,37 +188,45 @@ const GroupProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
                   <input
                     className="w-15 h-15 bg-hover"
                     type="checkbox"
-                    onChange={() => handleCheckBoxChange(content.groupId)}
-                    checked={
-                      selectedRows.includes(content.groupId) ? true : false
-                    }
+                    onChange={() => handleCheckBoxChange(content.id)}
+                    checked={selectedRows.includes(content.id) ? true : false}
                   />
                 </td>
-                {options.groupId && (
+                {options.id && (
                   <td className="border border-gray-300 p-2 text-sm">
-                    {content.groupId}
+                    {content.id}
                   </td>
                 )}
-                {options.groupName && (
+                {options.createdAt && (
                   <td className="border border-gray-300 p-2 text-sm">
-                    {content.groupName}
+                    {new Date(content.createdAt).toLocaleDateString("vi")}
                   </td>
                 )}
-                {options.note && (
+                {options.revenue && (
                   <td className="border border-gray-300 p-2 text-sm">
-                    {content.note}
+                    {content.revenue}
                   </td>
                 )}
-
-                <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                  <Button className="mr-2">
-                    <FiEdit />
-                  </Button>
-
-                  <Button>
-                    <FiTrash color="red" />
-                  </Button>
-                </td>
+                {options.outcome && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.outcome}
+                  </td>
+                )}
+                {options.profit && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.profit}
+                  </td>
+                )}
+                {options.totalOrder && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.totalOrder}
+                  </td>
+                )}
+                {options.totalImportOrder && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.totalImportOrder}
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
@@ -182,4 +270,5 @@ const GroupProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
     </div>
   );
 };
-export default GroupProductTable;
+
+export default GeneralReportTable;

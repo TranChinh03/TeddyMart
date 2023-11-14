@@ -106,6 +106,16 @@
     "certificate": "Bằng kinh doanh",
     "supplierID": "Mã nhà cung cấp"
   },
+  "report":{
+    "revenue": "Doanh thu",
+    "outcome":"Chi phí",
+    "profit":"Lợi nhuận",
+    "totalOrder":"Số lượng đơn hàng",
+    "totalImportOrder":"Số lượng đơn nhập hàng",
+    "createdAt":"Ngày tạo",
+    "product":"Sản phẩm",
+    "quantity":"Số lượng"
+  },
   "product": {
     "productGroup": "Nhóm sản phẩm",
     "product": "Sản phẩm",
@@ -175,6 +185,7 @@
     "totalPaymentAscending":"Sắp xếp tổng thanh toán tăng dần",
     "totalPaymentDescending":"Sắp xếp tổng thanh toán giảm dần"
   },
+  
   "cancel": "Hủy",
   "accept": "Đồng ý",
   "report": {

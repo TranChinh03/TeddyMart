@@ -1,61 +1,100 @@
 import { Button } from "antd";
-import { t } from "i18next";
-import { ChangeEvent, useMemo, useState } from "react";
+import React, { ChangeEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FiEdit, FiTrash } from "react-icons/fi";
 import {
-  HiOutlineChevronLeft,
   HiOutlineChevronDoubleLeft,
-  HiOutlineChevronRight,
   HiOutlineChevronDoubleRight,
+  HiOutlineChevronLeft,
+  HiOutlineChevronRight,
 } from "react-icons/hi2";
-
 type TContent = {
-  groupId: string;
-  groupName: string;
-  note: string;
+  id: string;
+  product: string;
+  quantity: number;
+  revenue: number;
+  profit: number;
 };
 const CONTENT: TContent[] = [
   {
-    groupId: "GP001",
-    groupName: "Home Appliance",
-    note: "Explore essential appliances required for household needs. From refrigerators to kitchen essentials, this group provides reliable and efficient solutions to simplify daily routines at home.",
+    id: "12312das",
+    product: "DO Nau Bep",
+    revenue: 13123,
+    profit: 12323,
+    quantity: 123,
   },
   {
-    groupId: "GP001",
-    groupName: "Home Appliance",
-    note: "Explore essential appliances required for household needs. From refrigerators to kitchen essentials, this group provides reliable and efficient solutions to simplify daily routines at home.",
+    id: "12312das",
+    product: "DO Nau Bep",
+    revenue: 13123,
+    profit: 12323,
+    quantity: 123,
   },
   {
-    groupId: "GP001",
-    groupName: "Home Appliance",
-    note: "Explore essential appliances required for household needs. From refrigerators to kitchen essentials, this group provides reliable and efficient solutions to simplify daily routines at home.",
+    id: "12312das",
+    product: "DO Nau Bep",
+    revenue: 13123,
+    profit: 12323,
+    quantity: 123,
   },
   {
-    groupId: "GP001",
-    groupName: "Home Appliance",
-    note: "Explore essential appliances required for household needs. From refrigerators to kitchen essentials, this group provides reliable and efficient solutions to simplify daily routines at home.",
+    id: "12312das",
+    product: "DO Nau Bep",
+    revenue: 13123,
+    profit: 12323,
+    quantity: 123,
+  },
+  {
+    id: "12312das",
+    product: "DO Nau Bep",
+    revenue: 13123,
+    profit: 12323,
+    quantity: 123,
+  },
+  {
+    id: "12312das",
+    product: "DO Nau Bep",
+    revenue: 13123,
+    profit: 12323,
+    quantity: 123,
+  },
+  {
+    id: "12312das",
+    product: "DO Nau Bep",
+    revenue: 13123,
+    profit: 12323,
+    quantity: 123,
+  },
+  {
+    id: "12312das",
+    product: "DO Nau Bep",
+    revenue: 13123,
+    profit: 12323,
+    quantity: 123,
+  },
+  {
+    id: "12312das",
+    product: "DO Nau Bep",
+    revenue: 13123,
+    profit: 12323,
+    quantity: 123,
+  },
+  {
+    id: "12312das",
+    product: "DO Nau Bep",
+    revenue: 13123,
+    profit: 12323,
+    quantity: 123,
   },
 ];
-type TOptions = {
-  groupId?: boolean;
-  groupName?: boolean;
-  note?: boolean;
-};
-const GroupProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
+const ReportProductTable = () => {
   const { t } = useTranslation();
-  const options: TOptions = {
-    groupId: true,
-    groupName: true,
-    note: true,
-    ...filterOption,
-  };
   const HEADER = useMemo(
     () => [
-      options.groupId && t("group.groupId"),
-      options.groupName && t("group.groupName"),
-      options.note && t("note"),
-      t("activities"),
+      "#",
+      t("report.product"),
+      t("report.quantity"),
+      t("report.revenue"),
+      t("report.profit"),
     ],
     [t]
   );
@@ -65,7 +104,7 @@ const GroupProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
     if (rowId === null) {
       console.log("ok");
       if (selectedRows.length === 0) {
-        setSelectedRows([...CONTENT.map((content) => content.groupId)]);
+        setSelectedRows([...CONTENT.map((content) => content.id)]);
         return;
       }
       setSelectedRows([]);
@@ -108,36 +147,25 @@ const GroupProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
                   <input
                     className="w-15 h-15 bg-hover"
                     type="checkbox"
-                    onChange={() => handleCheckBoxChange(content.groupId)}
-                    checked={
-                      selectedRows.includes(content.groupId) ? true : false
-                    }
+                    onChange={() => handleCheckBoxChange(content.id)}
+                    checked={selectedRows.includes(content.id) ? true : false}
                   />
                 </td>
-                {options.groupId && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.groupId}
-                  </td>
-                )}
-                {options.groupName && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.groupName}
-                  </td>
-                )}
-                {options.note && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.note}
-                  </td>
-                )}
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.id}
+                </td>
 
-                <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                  <Button className="mr-2">
-                    <FiEdit />
-                  </Button>
-
-                  <Button>
-                    <FiTrash color="red" />
-                  </Button>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.product}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.quantity}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.revenue}
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {content.profit}
                 </td>
               </tr>
             ))}
@@ -182,4 +210,5 @@ const GroupProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
     </div>
   );
 };
-export default GroupProductTable;
+
+export default ReportProductTable;
