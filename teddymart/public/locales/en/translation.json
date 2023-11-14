@@ -148,6 +148,23 @@
   "activities": "Activities",
   "note": "Note",
   "modal": {
-    "time": "Time"
-  }
+    "time": "Time",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "in-week": "In week",
+    "7-days-ago": "7 days ago",
+    "last-week": "Last week",
+    "in-month": "In month",
+    "last-month": "Last month",
+    "30-days-ago": "30 days ago",
+    "in-quarter": "In quarter",
+    "last-quarter": "Last quarter",
+    "in-year": "In year",
+    "last-year": "Last year",
+    "selectDate": "Select Date",
+    "from": "From",
+    "to": "To"
+  },
+  "cancel": "Cancel",
+  "accept": "Accept"
 }

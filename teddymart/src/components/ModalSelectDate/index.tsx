@@ -7,82 +7,71 @@ import { COLORS } from "constants/colors";
 import { timeFormat } from "constants/time";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
-import { RangePickerRef } from "antd/es/date-picker/generatePicker/interface";
-import { DatePickerType } from "antd/es/date-picker";
-
 type Props = {
-  txtDate: Date;
-  setTxtDate: Function;
+  setResult: Function;
 };
-type D = {
-  from: Date;
-  to: Date;
-};
-export default function ModalSelectDate() {
+export default function ModalSelectDate({ setResult }: Props) {
   const { t } = useTranslation();
   const { RangePicker } = DatePicker;
   const [openModal, setOpenModal] = useState(false);
-  const [txtDate, setTxtDate] = useState<string>("");
+  const [txtDate, setTxtDate] = useState<string>(
+    `${timeFormat.format(new Date())} - ${timeFormat.format(new Date())}`
+  );
   const [date, setDate] = useState<D>({
     from: new Date(),
     to: new Date(),
   });
-  const ref = useRef<RangePickerRef<Date>>();
-  console.log(ref.current);
   const OPTIONS = [
     {
-      name: "Today",
+      name: t("modal.today"),
       value: "today",
     },
     {
-      name: "Yesterday",
+      name: t("modal.yesterday"),
       value: "yesterday",
     },
     {
-      name: "In week",
+      name: t("modal.in-week"),
       value: "in-week",
     },
     {
-      name: "7 days ago",
+      name: t("modal.7-days-ago"),
       value: "7-days-ago",
     },
     {
-      name: "Last week",
+      name: t("modal.last-week"),
       value: "last-week",
     },
     {
-      name: "In month",
+      name: t("modal.in-month"),
       value: "in-month",
     },
     {
-      name: "Last month",
+      name: t("modal.last-month"),
       value: "last-month",
     },
     {
-      name: "30 days ago",
+      name: t("modal.30-days-ago"),
       value: "30-days-ago",
     },
     {
-      name: "In quarter",
+      name: t("modal.in-quarter"),
       value: "in-quarter",
     },
     {
-      name: "Last quarter",
+      name: t("modal.last-quarter"),
       value: "last-quarter",
     },
     {
-      name: "In year",
+      name: t("modal.in-year"),
       value: "in-year",
     },
     {
-      name: "Last year",
+      name: t("modal.last-year"),
       value: "last-year",
     },
-    {
-      name: "Option",
-      value: "option",
-    },
   ];
+  console.log("FROM", date.from);
   const [mode, setMode] = useState(OPTIONS[0].value);
   const [openCalendar, setOpenCalendar] = useState(false);
   const onSelectDate = (value: string) => {
@@ -151,7 +140,6 @@ export default function ModalSelectDate() {
         });
         break;
       case "in-quarter":
-        //console.log("Q", quater);
         setDate({
           from: new Date(currentDate.getFullYear(), quater * 3, 1),
           to: currentDate,
@@ -175,10 +163,6 @@ export default function ModalSelectDate() {
           to: new Date(currentDate.getFullYear() - 1, 12, 0),
         });
         break;
-      case "option":
-        //ref?.current.openPicker();
-        setOpenCalendar(!openCalendar);
-        break;
       default:
         break;
     }
@@ -196,26 +180,27 @@ export default function ModalSelectDate() {
       />
       <Modal
         open={openModal}
-        title="Select Date"
+        title={t("modal.selectDate")}
         onOk={() => setOpenModal(false)}
         onCancel={() => setOpenModal(false)}
         footer={(_, __) => (
           <div className="flex w-full justify-end">
             <ButtonComponent
-              label={"Cancel"}
+              label={t("cancel")}
               onClick={() => setOpenModal(false)}
               backgroundColor={COLORS.txt_lightgrey}
             />
             <div className="w-2" />
             <ButtonComponent
-              label={"Accept"}
-              onClick={() =>
+              label={t("accept")}
+              onClick={() => {
                 setTxtDate(
                   `${timeFormat.format(date.from)} - ${timeFormat.format(
                     date.to
                   )}`
-                )
-              }
+                );
+                setOpenModal(false);
+              }}
             />
           </div>
         )}
@@ -247,17 +232,23 @@ export default function ModalSelectDate() {
             ))}
           </div>
           <div className="flex justify-between w-full mt-5">
-            <div className="w-[40%] border-dotted border-b-2 border-light_grey pb-1">
-              <p className="text-txt_lightgrey">From</p>
-              <p className="text-txt_blue">{timeFormat.format(date.from)}</p>
+            <div className="w-[40%]  pb-1">
+              <p className="text-txt_lightgrey">{t("modal.from")}</p>
+
+              <DatePicker
+                value={dayjs(timeFormat.format(date.from), "DD/MM/YYYY")}
+                format={"DD/MM/YYYY"}
+              />
             </div>
-            <div className="w-[40%] border-dotted border-b-2 border-light_grey pb-1 ">
-              <p className="text-txt_lightgrey">To</p>
-              <p className="text-txt_blue">{timeFormat.format(date.to)}</p>
+            <div className="w-[40%]  pb-1 ">
+              <p className="text-txt_lightgrey">{t("modal.to")}</p>
+              <DatePicker
+                value={dayjs(timeFormat.format(date.to), "DD/MM/YYYY")}
+                format={["DD/MM/YYYY"]}
+              />
             </div>
           </div>
           {/* <RangePicker open={openCalendar} picker="calendar" /> */}
-          <DatePicker value={dayjs()} />
         </div>
       </Modal>
     </div>

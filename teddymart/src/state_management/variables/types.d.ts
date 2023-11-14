@@ -88,3 +88,8 @@ declare type TReport = {
   totalImport: number;
   totalExport: number;
 };
+
+declare type D = {
+  from: Date;
+  to: Date;
+};

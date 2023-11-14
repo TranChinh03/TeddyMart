@@ -147,6 +147,23 @@
   "activities": "Chức năng",
   "note": "Ghi chú",
   "modal": {
-    "time": "Thời gian"
-  }
+    "time": "Thời gian",
+    "today": "Hôm nay",
+    "yesterday": "Hôm qua",
+    "in-week": "Trong tuần",
+    "7-days-ago": "7 ngày qua",
+    "last-week": "Tuần trước",
+    "in-month": "Trong tháng",
+    "last-month": "Tháng trước",
+    "30-days-ago": "30 ngày qua",
+    "in-quarter": "Trong quý",
+    "last-quarter": "Quý trước",
+    "in-year": "Trong năm",
+    "last-year": "Năm trước",
+    "selectDate": "Chọn ngày",
+    "from": "Từ ngày",
+    "to": "Đến ngày"
+  },
+  "cancel": "Hủy",
+  "accept": "Đồng ý"
 }

@@ -8,12 +8,17 @@ import { ModalSelectDate } from "components";
 type Props = {
   //onClickFilter: MouseEventHandler<HTMLButtonElement>;
 };
+
 const MONTHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const TYPES = ["Year", "Quarter", "Month"];
 export default function SubHeader({}: Props) {
   const [openPopUp, setOpenPopUp] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [year, setYear] = useState(1);
+  const [date, setDate] = useState<D>({
+    from: new Date(),
+    to: new Date(),
+  });
   //const [date, setDate] = useState<Date>(new Date());
   return (
     <div className="w-full bg-white flex items-center justify-between px-4 py-2">
@@ -25,7 +30,7 @@ export default function SubHeader({}: Props) {
       >
         OVERVIEW REPORT
       </TextComponent>
-      <ModalSelectDate />
+      <ModalSelectDate setResult={setDate} />
       {/* <div className="flex items-center">
         <div className="relative">
           <DatePicker
