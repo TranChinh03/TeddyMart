@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, CSSProperties } from "react";
 import { Popover } from "antd";
 import ButtonComponent from "components/ButtonComponent";
 import { BiFilter } from "react-icons/bi";
 import { COLORS } from "constants/colors";
 import CheckboxComponent from "components/CheckBoxComponent";
+import { t } from "i18next";
 type Item = {
   displayName: string;
   value: boolean;
@@ -50,14 +51,8 @@ export default function ListCheckBox({ listFilter, setListFilter }: Props) {
     >
       <ButtonComponent
         onClick={onClose}
-        label="Filter"
-        iconLeft={
-          <BiFilter
-            style={{ marginRight: 5 }}
-            size={22}
-            color={COLORS.defaultWhite}
-          />
-        }
+        label={t("button.filter")}
+        iconLeft={<BiFilter size={22} color={COLORS.defaultWhite} />}
       ></ButtonComponent>
     </Popover>
   );

@@ -8,6 +8,7 @@ import {
 } from "react-icons/hi2";
 import { FiDelete, FiEdit, FiTrash } from "react-icons/fi";
 import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 type TContentCustomer = {
   address: string;
@@ -139,6 +140,7 @@ const CONTENT: TContent[] = [
 ];
 
 const PartnerTable = ({ isCustomer = false }: { isCustomer?: boolean }) => {
+  const { t } = useTranslation();
   const HEADER = useMemo(
     () => [
       !isCustomer ? t("partner.supplierID") : t("partner.customerID"),

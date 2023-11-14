@@ -74,7 +74,9 @@
     "debt": "Còn nợ",
     "note": "Ghi chú",
     "receiver": "Người nhận",
-    "listProduct": "Danh sách sản phẩm"
+    "listProduct": "Danh sách sản phẩm",
+    "placeholderSearch":"Tìm kiếm đơn hàng và thông tin khách hàng"
+
   },
   "voucher": {
     "searchVoucher": "Tìm kiếm theo tên voucher",
@@ -164,6 +166,14 @@
     "selectDate": "Chọn ngày",
     "from": "Từ ngày",
     "to": "Đến ngày"
+  },
+  "sort":{
+    "orderAscending":"Sắp xếp orderID tăng dần",
+    "orderDescending":"Sắp xếp orderID giảm dần",
+    "createdAtNewest":"Thời gian gần nhất",
+    "createdAtOldest":"Thời gian xa nhất",
+    "totalPaymentAscending":"Sắp xếp tổng thanh toán tăng dần",
+    "totalPaymentDescending":"Sắp xếp tổng thanh toán giảm dần"
   },
   "cancel": "Hủy",
   "accept": "Đồng ý",

@@ -8,8 +8,10 @@ import {
   Tooltip,
   TabsProps,
   Tabs,
+  Popconfirm,
 } from "antd";
 import Search, { SearchProps } from "antd/es/input/Search";
+import { ButtonComponent, ListCheckBox } from "components";
 import DropdownImage from "components/DropDownImage";
 import DropdownComponent from "components/DropdownComponent";
 import Header from "components/Header";
@@ -18,6 +20,7 @@ import TextInputComponent from "components/TextInputComponent";
 import { COLORS } from "constants/colors";
 import { title } from "process";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   BiDotsVerticalRounded,
   BiBell,
@@ -26,7 +29,11 @@ import {
   BiSearch,
   BiSave,
   BiDownload,
+  BiTrash,
+  BiPlus,
 } from "react-icons/bi";
+import { BsFileExcel } from "react-icons/bs";
+import { LiaFileExcel } from "react-icons/lia";
 const { RangePicker } = DatePicker;
 
 export default function SaleScreen() {
@@ -35,6 +42,37 @@ export default function SaleScreen() {
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
+  const { t } = useTranslation();
+  const [listFilter, setListFilter] = useState([
+    {
+      displayName: t("sale.seller"),
+      value: true,
+    },
+    {
+      displayName: t("sale.status"),
+      value: true,
+    },
+    {
+      displayName: t("sale.payment"),
+      value: true,
+    },
+    {
+      displayName: t("sale.debt"),
+      value: true,
+    },
+    {
+      displayName: t("sale.discount"),
+      value: true,
+    },
+    {
+      displayName: t("sale.note"),
+      value: true,
+    },
+    {
+      displayName: t("sale.totalPayment"),
+      value: true,
+    },
+  ]);
   const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
     console.log(info?.source, value);
 
@@ -90,109 +128,60 @@ export default function SaleScreen() {
               <h1>Lọc theo giờ kinh doanh</h1>
             </Checkbox>
           </div>
-          <Button>Tất cả</Button>
-          <Space direction="horizontal" style={{ width: "100%" }}>
-            <Dropdown
-              placement="bottom"
-              dropdownRender={() => (
-                <div className="bg-white p-4 rounded-md">
-                  <Space direction="vertical" size={10}>
-                    <h1>Chọn điều kiện lọc</h1>
-                    <DropdownComponent
-                      options={[
-                        "Tổng doanh thu",
-                        "Ngày xác nhận",
-                        "Đơn hàng",
-                        "Trạng thái",
-                        "Trạng thái thanh toán",
-                        "Kênh bán hàng",
-                      ]}
-                      value={filter}
-                      setValue={setFilter}
-                    />
-                    <h1>Khoảng từ</h1>
-                    <DropdownComponent
-                      options={[
-                        "Hôm nay",
-                        "Hôm qua",
-                        "7 ngày qua",
-                        "Tuần này",
-                        "Tuần trước",
-                        "30 ngày qua",
-                      ]}
-                      value={filter}
-                      setValue={setFilter}
-                    />
-                    <Space direction="horizontal" size={5}>
-                      <Button>Hủy</Button>
-                      <Button
-                        style={{ backgroundColor: "#e5a344", color: "white" }}
-                      >
-                        Áp dụng
-                      </Button>
-                    </Space>
-                  </Space>
-                </div>
-              )}
-            >
-              <Tooltip title="Bộ lọc">
-                <Button
-                  className="flex h-12 "
-                  style={{
-                    backgroundColor: "#e5a344",
-                    color: "white",
-
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <BiFilter size={20} color="white" />
-                  Bộ lọc
-                </Button>
-              </Tooltip>
-            </Dropdown>
+          <Button>{t("button.all")}</Button>
+          <div className=" flex items-center">
             <TextInputComponent
               value={search}
               setValue={setSearch}
               style={{ borderRadius: 5 }}
-              width={"100%"}
+              outStyle={{ width: "100%", marginRight: 20 }}
+              placeHolder={t("sale.placeholderSearch")}
               iconLeft={<BiSearch />}
             />
-            <Button className="flex items-center text-16 h-12">
-              <BiSave size={20} />
-              Lưu bộ lọc
-            </Button>
-          </Space>
+
+            <ListCheckBox
+              listFilter={listFilter}
+              setListFilter={setListFilter}
+            />
+
+            <ButtonComponent
+              label={t("button.delete")}
+              onClick={() => {}}
+              style={{ backgroundColor: "#EA5A47", marginInline: 12 }}
+              iconLeft={<BiTrash size={20} color="white" />}
+            />
+            <ButtonComponent
+              label={t("button.exportExcel")}
+              onClick={() => {}}
+              style={{ backgroundColor: "#211F30", marginRight: 12 }}
+              iconLeft={<LiaFileExcel size={20} color="white" />}
+            />
+            <ButtonComponent
+              label={t("button.addNew")}
+              onClick={() => {}}
+              iconLeft={<BiPlus size={20} color="white" />}
+            />
+          </div>
           <div className="flex items-center">
             <Space direction="horizontal" size={10}>
               <DropdownComponent
                 value={sort}
                 setValue={setSort}
                 options={[
-                  "Mã hóa đơn: Tăng dần",
-                  "Mã hóa đơn giảm dần",
-                  "Ngày giờ bán hàng: Cũ nhất trước",
-                  "Ngày giờ bán hàng: Mới nhất trước",
-                  "Tổng tiền: Thấp ==> Cao",
-                  "Tổng tiền: Cao ==> Thấp",
+                  t("sort.orderAscending"),
+                  t("sort.orderDescending"),
+                  t("sort.createdAtNewest"),
+                  t("sort.createdAtOldest"),
+                  t("sort.totalPaymentAscending"),
+                  t("sort.totalPaymentDescending"),
                 ]}
               />
               <Button style={{ backgroundColor: "#e5a344", color: "white" }}>
-                Xem
-              </Button>
-              <Button>Thao tác đơn hàng</Button>
-              <Button
-                style={{
-                  color: "black",
-                }}
-                className="flex items-center text-14"
-              >
-                <BiDownload size={20} className="mr-2" />
-                Nhập xuất Excel
+                {t("button.view")}
               </Button>
             </Space>
           </div>
-          <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+          {/* <Tabs defaultActiveKey="1" items={items} onChange={onChange} /> */}
           <BillTable />
         </Space>
       </body>

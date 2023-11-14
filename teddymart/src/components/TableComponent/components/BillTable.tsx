@@ -1,7 +1,7 @@
 import { Button, Dropdown, Layout, MenuProps } from "antd";
 import dayjs from "dayjs";
-import { t } from "i18next";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { BiDetail } from "react-icons/bi";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import {
@@ -348,6 +348,7 @@ const CONTENT: TContent[] = [
 ];
 
 const BillTable = () => {
+  const { t } = useTranslation();
   const HEADER = useMemo(
     () => [
       t("sale.orderId"),
