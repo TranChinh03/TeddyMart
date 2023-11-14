@@ -8,6 +8,7 @@ type Props = {
   options?: string[] | number[];
   setValue?: (value: any) => void;
   value?: string | number;
+  minWidth?: number | string;
 };
 export default function ButtonSelect({
   iconRight,
@@ -17,15 +18,16 @@ export default function ButtonSelect({
   setValue,
   value,
   width = 120,
+  minWidth = 120,
 }: Props) {
   return (
     <div className="px-2 py-2">
-      <button className="relative">
+      <button className="relative w-full">
         {options.length !== 0 ? (
           <Select
             placeholder={title}
             value={value}
-            style={{ width: width, textAlign: "left" }}
+            style={{minWidth: width, width: width, textAlign: "left" }}
             className="flex items-start"
             onChange={(value) => setValue(value)}
           >
