@@ -394,8 +394,11 @@ const BillTable = () => {
       <div className="max-h-96 overflow-y-auto visible">
         <table className="w-full border-collapse border border-gray-300 bg-gray-50 z-50">
           <thead
-            className="sticky top-0 left-0"
-            style={{ backgroundColor: "#F0EAEA", zIndex: 9999 }}
+            className="sticky left-0 z-50"
+            style={{
+              backgroundColor: "#F0EAEA",
+              top: -1,
+            }}
           >
             <tr>
               <th className="border border-gray-300 p-2 text-xs">

@@ -136,6 +136,7 @@ export default function Drawer() {
         mode="inline"
         className={`bg-sidebar text-white`}
         inlineCollapsed={openDrawer}
+        style={{ borderWidth: 0 }}
         onClick={(e) => {
           navigate(e.key);
           setCurrentTab(e.key);
