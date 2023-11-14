@@ -121,7 +121,7 @@ export default function Drawer() {
     [currentTab]
   );
   return (
-    <div className="overflow-y-auto h-full justify-center">
+    <div className="h-full justify-center">
       {/* Avatar */}
       <button className="flex flex-row px-5 mt-5 items-center text-txt_white gap-2">
         <div className="flex w-10 h-10 bg-hover rounded-full items-center justify-center">

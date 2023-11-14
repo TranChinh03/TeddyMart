@@ -16,18 +16,28 @@ export default function HomeRoutes() {
   const { openDrawer } = useSelector((state: RootState) => state.controlSlice);
   return (
     <div className="flex max-h-screen">
-      <Layout
+      <div
         className="fixed top-0 left-0 h-screen scrollbar-hide hidden md:block bg-sidebar overflow-y-auto"
-        hasSider
+        style={{
+          width: !openDrawer ? "20%" : "7%",
+        }}
       >
         <Drawer />
-      </Layout>
+      </div>
       <div
         className={`transition-all ${
-          openDrawer ? "duration-1000" : "duration-0"
-        } ease-in-out ${!openDrawer ? "w-[10%]" : "w-[5%]"}`}
+          openDrawer ? "duration-800" : "duration-100"
+        } ease-in-out`}
+        style={{
+          width: !openDrawer ? "20%" : "7%",
+        }}
       />
-      <Layout className="w-full  ml-0" hasSider>
+      <div
+        className="w-fit"
+        style={{
+          width: !openDrawer ? "80%" : "93%",
+        }}
+      >
         <Routes>
           <Route path="sale" element={<SaleScreen />} />
           <Route path="product" element={<ProductScreen />} />
@@ -39,7 +49,7 @@ export default function HomeRoutes() {
           <Route path="draft" element={<Draft />} />
           <Route path="groupproduct" element={<GroupProductScreen />} />
         </Routes>
-      </Layout>
+      </div>
     </div>
   );
 }

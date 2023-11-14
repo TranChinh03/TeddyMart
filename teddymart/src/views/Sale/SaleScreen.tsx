@@ -71,6 +71,7 @@ export default function SaleScreen() {
     <div className="w-full">
       {/*Header */}
       <Header width={"100%"} title="Sale" />
+
       {/*Body */}
       <body
         className="bg-white border-2 p-5 m-1.5 rounded-md"
@@ -192,7 +193,7 @@ export default function SaleScreen() {
             </Space>
           </div>
           <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
-          <BillTable />
+          {/* <BillTable /> */}
         </Space>
       </body>
     </div>
