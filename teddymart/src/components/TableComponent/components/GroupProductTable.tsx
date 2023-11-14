@@ -1,6 +1,7 @@
 import { Button } from "antd";
 import { t } from "i18next";
 import { ChangeEvent, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import {
   HiOutlineChevronLeft,
@@ -38,6 +39,7 @@ const CONTENT: TContent[] = [
 ];
 
 const GroupProductTable = () => {
+  const { t } = useTranslation();
   const HEADER = useMemo(
     () => [
       t("group.groupId"),

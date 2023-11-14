@@ -18,9 +18,9 @@ import Header from "components/Header";
 import { BillTable } from "components/TableComponent";
 import TextInputComponent from "components/TextInputComponent";
 import { COLORS } from "constants/colors";
-import { t } from "i18next";
 import { title } from "process";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   BiDotsVerticalRounded,
   BiBell,
@@ -42,6 +42,7 @@ export default function SaleScreen() {
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
+  const { t } = useTranslation();
   const [listFilter, setListFilter] = useState([
     {
       displayName: t("sale.seller"),
@@ -137,34 +138,7 @@ export default function SaleScreen() {
               placeHolder={t("sale.placeholderSearch")}
               iconLeft={<BiSearch />}
             />
-            {/* <Popconfirm
-              title=""
-              okText={t("button.apply")}
-              okType="link"
-              onConfirm={() => console.log("confirm")}
-              onCancel={() => console.log("cancel")}
-              cancelText={t("button.close")}
-              placement="bottom"
-              icon={<></>}
-              description={
-                <div className=" grid-cols-3 grid gap-4">
-                  <Checkbox>{t("sale.seller")}</Checkbox>
-                  <Checkbox>{t("sale.status")}</Checkbox>
-                  <Checkbox>{t("sale.payment")}</Checkbox>
-                  <Checkbox>{t("sale.debt")}</Checkbox>
-                  <Checkbox>{t("sale.discount")}</Checkbox>
-                  <Checkbox>{t("sale.note")}</Checkbox>
-                  <Checkbox>{t("sale.totalPayment")}</Checkbox>
-                </div>
-              }
-            >
-              <ButtonComponent
-                label={t("button.filter")}
-                onClick={() => {}}
-                style={{ backgroundColor: "#211F30", marginRight: 12 }}
-                iconLeft={<BiFilter size={20} color="white" />}
-              />
-            </Popconfirm> */}
+
             <ListCheckBox
               listFilter={listFilter}
               setListFilter={setListFilter}
@@ -203,18 +177,8 @@ export default function SaleScreen() {
                 ]}
               />
               <Button style={{ backgroundColor: "#e5a344", color: "white" }}>
-                Xem
+                {t("button.view")}
               </Button>
-              {/* <Button>Thao tác đơn hàng</Button>
-              <Button
-                style={{
-                  color: "black",
-                }}
-                className="flex items-center text-14"
-              >
-                <BiDownload size={20} className="mr-2" />
-                Nhập xuất Excel
-              </Button> */}
             </Space>
           </div>
           {/* <Tabs defaultActiveKey="1" items={items} onChange={onChange} /> */}
