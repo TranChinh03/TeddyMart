@@ -11,6 +11,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { useTranslation } from "react-i18next";
 const data = [
   {
     name: "Mon",
@@ -55,9 +56,16 @@ const data = [
     amt: 2100,
   },
 ];
-const GAPS = ["Hour", "Day", "Week", "Month"];
+
 function Chart() {
   const [gap, setGap] = useState(0);
+  const { t } = useTranslation();
+  const GAPS = [
+    t("report.hourly"),
+    t("report.day"),
+    t("report.week"),
+    t("report.month"),
+  ];
   return (
     <div className="bg-white border-1.5  mx-5 my-1.5 rounded-md">
       <div className="divide-y">
@@ -68,8 +76,9 @@ function Chart() {
             color={COLORS.sidebar}
             fontSize={16}
           >
-            Overview Chart
+            {t("report.overviewChart")}
           </TextComponent>
+          <div className="text-xs">{t("report.overviewTitle")}</div>
         </div>
         {/* Button Filter By Hour Day Week Month */}
         <div className="px-3 pt-2 pb-5">
