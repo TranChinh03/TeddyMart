@@ -4,6 +4,7 @@ import { Button, DatePicker, Modal, Popover, Select } from "antd";
 import { IoFilter } from "react-icons/io5";
 import { useState } from "react";
 import dayjs from "dayjs";
+import { ModalSelectDate } from "components";
 type Props = {
   //onClickFilter: MouseEventHandler<HTMLButtonElement>;
 };
@@ -13,6 +14,7 @@ export default function SubHeader({}: Props) {
   const [openPopUp, setOpenPopUp] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [year, setYear] = useState(1);
+  //const [date, setDate] = useState<Date>(new Date());
   return (
     <div className="w-full bg-white flex items-center justify-between px-4 py-2">
       <TextComponent
@@ -23,7 +25,8 @@ export default function SubHeader({}: Props) {
       >
         OVERVIEW REPORT
       </TextComponent>
-      <div className="flex items-center">
+      <ModalSelectDate />
+      {/* <div className="flex items-center">
         <div className="relative">
           <DatePicker
             defaultValue={dayjs("25/10/2023", "DD/MM/YYYY")}
@@ -75,8 +78,8 @@ export default function SubHeader({}: Props) {
             icon={<IoFilter />}
           />
         </Popover>
-      </div>
-      <Modal
+      </div> */}
+      {/* <Modal
         open={openModal}
         title="Select Time To Report"
         onOk={() => setOpenModal(false)}
@@ -118,7 +121,7 @@ export default function SubHeader({}: Props) {
             </Select>
           </div>
         </div>
-      </Modal>
+      </Modal> */}
     </div>
   );
 }

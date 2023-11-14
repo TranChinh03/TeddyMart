@@ -47,6 +47,8 @@ export default function TextInputComponent({
   outStyle,
   register,
   registerName,
+  readOnly = false,
+  onClick = () => {},
 }: Props) {
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -69,6 +71,7 @@ export default function TextInputComponent({
         style={{ borderRadius: borderRadius, ...style }}
       >
         {iconLeft && <button>{iconLeft}</button>}
+
         {register ? (
           <input
             type={inputType}
@@ -78,6 +81,8 @@ export default function TextInputComponent({
             required={required}
             style={{ fontSize: textInputSize, color: textInputColor }}
             {...(register && register(registerName, { required: required }))}
+            readOnly={readOnly}
+            onClick={onClick}
           />
         ) : (
           <input
@@ -89,6 +94,8 @@ export default function TextInputComponent({
             value={value}
             onChange={handleInputChange}
             style={{ fontSize: textInputSize, color: textInputColor }}
+            readOnly={readOnly}
+            onClick={onClick}
           />
         )}
 

@@ -16,7 +16,7 @@ export default function ReportScreen() {
         <CardButton title="IMPORT ORDERS" tooltip="Net revenue" />
       </div>
       <Chart />
-      {/* <GeneralTable /> */}
+      <GeneralTable />
     </div>
   );
 }

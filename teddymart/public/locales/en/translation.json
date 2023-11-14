@@ -33,14 +33,14 @@
     "report": "Report",
     "signOut": "Sign out"
   },
-  "manager":{
-    "userId":"User ID",
-    "userName":"User Name",
-    "photoURL":"Photo URL",
-    "address":"Address",
-    "phoneNumber":"Phone Number",
-    "email":"Email",
-    "shopName":"Shop Name"
+  "manager": {
+    "userId": "User ID",
+    "userName": "User Name",
+    "photoURL": "Photo URL",
+    "address": "Address",
+    "phoneNumber": "Phone Number",
+    "email": "Email",
+    "shopName": "Shop Name"
   },
   "button": {
     "filter": "Filter",
@@ -66,9 +66,9 @@
     "cancel": "Cancel",
     "view": "View"
   },
-  "group":{
-    "groupId":"Group ID",
-    "groupName":"Group Name"
+  "group": {
+    "groupId": "Group ID",
+    "groupName": "Group Name"
   },
   "sale": {
     "importOrder": "Import Order",
@@ -85,8 +85,8 @@
     "status": "Status",
     "debt": "Debt",
     "note": "Note",
-    "receiver":"Receiver",
-    "listProduct":"List Product"
+    "receiver": "Receiver",
+    "listProduct": "List Product"
   },
   "voucher": {
     "searchVoucher": "Search by voucher's name",
@@ -119,7 +119,7 @@
   "product": {
     "productGroup": "Product Group",
     "product": "Product",
-    "productId":"Product ID",
+    "productId": "Product ID",
 
     "searchByProductGroup": "Search By Product Group Name",
     "searchByProduct": "Search By Product Name",
@@ -137,14 +137,17 @@
   "warehouse": {
     "warehouse": "Warehouse",
     "warehouseList": "Warehouse List",
-    "warehouseID":"Warehouse ID",
-    "listProduct":"List Product",
+    "warehouseID": "Warehouse ID",
+    "listProduct": "List Product",
     "quantity": "Quantity",
     "status": "Status",
     "warehouseName": "Warehouse Name",
     "createdAt": "Created At",
-    "address":"Address"
+    "address": "Address"
   },
   "activities": "Activities",
-  "note":"Note"
+  "note": "Note",
+  "modal": {
+    "time": "Time"
+  }
 }

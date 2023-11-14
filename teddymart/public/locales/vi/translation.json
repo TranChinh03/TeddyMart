@@ -72,9 +72,8 @@
     "status": "Trạng thái",
     "debt": "Còn nợ",
     "note": "Ghi chú",
-    "receiver":"Người nhận",
-    "listProduct":"Danh sách sản phẩm"
-
+    "receiver": "Người nhận",
+    "listProduct": "Danh sách sản phẩm"
   },
   "voucher": {
     "searchVoucher": "Tìm kiếm theo tên voucher",
@@ -103,12 +102,11 @@
     "supplierName": "Tên nhà cung cấp",
     "certificate": "Bằng kinh doanh",
     "supplierID": "Mã nhà cung cấp"
-  
   },
   "product": {
     "productGroup": "Nhóm sản phẩm",
     "product": "Sản phẩm",
-    "productId":"Mã sản phẩm",
+    "productId": "Mã sản phẩm",
     "searchByProductGroup": "Tìm kiếm theo tên nhóm sản phẩm",
     "searchByProduct": "Tìm kiếm theo tên sản phẩm",
     "ID": "ID",
@@ -122,30 +120,33 @@
     "costPrice": "Giá vốn",
     "VAT": "VAT"
   },
-  "group":{
-    "groupId":"Mã nhóm",
-    "groupName":"Tên nhóm"
+  "group": {
+    "groupId": "Mã nhóm",
+    "groupName": "Tên nhóm"
   },
-  "manager":{
-    "userId":"Mã người dùng",
-    "userName":"Tên người dùng",
-    "photoURL":"Ảnh",
-    "address":"Địa chỉ",
-    "phoneNumber":"Số điện thoại",
-    "email":"Email",
-    "shopName":"Tên cửa hàng"
+  "manager": {
+    "userId": "Mã người dùng",
+    "userName": "Tên người dùng",
+    "photoURL": "Ảnh",
+    "address": "Địa chỉ",
+    "phoneNumber": "Số điện thoại",
+    "email": "Email",
+    "shopName": "Tên cửa hàng"
   },
   "warehouse": {
     "warehouse": "Quản lý kho",
-    "warehouseID":"Mã kho",
-    "listProduct":"Danh sách sản phẩm",
+    "warehouseID": "Mã kho",
+    "listProduct": "Danh sách sản phẩm",
     "warehouseList": "Danh sách kho",
     "quantity": "Số lượng",
     "status": "Trạng thái",
     "warehouseName": "Tên kho",
     "createdAt": "Ngày tạo",
-    "address":"Địa chỉ"
+    "address": "Địa chỉ"
   },
-  "activities":"Chức năng",
-  "note":"Ghi chú"
+  "activities": "Chức năng",
+  "note": "Ghi chú",
+  "modal": {
+    "time": "Thời gian"
+  }
 }

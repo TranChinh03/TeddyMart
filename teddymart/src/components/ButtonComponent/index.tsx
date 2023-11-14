@@ -14,6 +14,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({
   iconRight,
   maxWidth,
   backgroundColor = COLORS.darkYellow,
+  style,
 }) => {
   return (
     <button
@@ -25,7 +26,8 @@ const ButtonComponent: React.FC<ButtonProps> = ({
         maxWidth,
         color: color,
         fontWeight: fontWeight,
-        letterSpacing: 0.8,
+        ...style,
+        //letterSpacing: 0.8,
       }}
       onClick={onClick}
       className={`${fontWeight} flex justify-between items-center hover:opacity-80`}

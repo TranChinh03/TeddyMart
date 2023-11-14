@@ -68,4 +68,9 @@ export type ButtonProps = {
    * @type {string} Background color of the button
    */
   backgroundColor?: string;
+
+  /**
+   * @type {React.CSSProperties} style of button
+   */
+  style?: React.CSSProperties;
 };

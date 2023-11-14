@@ -29,6 +29,7 @@ module.exports = {
         extra_gray: "#888888",
         medium_lg_grey: "#f3f3f3",
         hover_side_bar: "#74adc6",
+        txt_blue: "#3b8bae",
       },
       fontSize: {
         12: "12px",

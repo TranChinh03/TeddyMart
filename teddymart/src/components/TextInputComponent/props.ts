@@ -32,4 +32,6 @@ export type Props = {
   iconLeft?: ReactNode;
   register?: UseFormRegister<any>;
   registerName?: string;
+  readOnly?: boolean;
+  onClick?: () => void;
 };

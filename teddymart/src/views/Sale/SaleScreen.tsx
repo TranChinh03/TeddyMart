@@ -193,7 +193,7 @@ export default function SaleScreen() {
             </Space>
           </div>
           <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
-          {/* <BillTable /> */}
+          <BillTable />
         </Space>
       </body>
     </div>
