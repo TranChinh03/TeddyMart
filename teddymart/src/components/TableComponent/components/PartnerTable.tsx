@@ -138,21 +138,55 @@ const CONTENT: TContent[] = [
     type: "Supplier",
   },
 ];
-
-const PartnerTable = ({ isCustomer = false }: { isCustomer?: boolean }) => {
+type TOptions = {
+  partnerID?: boolean;
+  partnerName?: boolean;
+  gender?: boolean;
+  phoneNumber?: boolean;
+  email?: boolean;
+  address?: boolean;
+  debt?: boolean;
+  totalBuyAmount?: boolean;
+  certificate?: boolean;
+  note?: boolean;
+};
+const PartnerTable = ({
+  isCustomer = false,
+  filterOption,
+}: {
+  isCustomer?: boolean;
+  filterOption?: TOptions;
+}) => {
   const { t } = useTranslation();
+  const options: TOptions = {
+    partnerID: true,
+    partnerName: true,
+    gender: true,
+    phoneNumber: true,
+    email: true,
+    address: true,
+    debt: true,
+    totalBuyAmount: true,
+    certificate: true,
+    note: true,
+    ...filterOption,
+  };
   const HEADER = useMemo(
     () => [
-      !isCustomer ? t("partner.supplierID") : t("partner.customerID"),
-      !isCustomer ? t("partner.supplierName") : t("partner.customerName"),
-      t("partner.gender"),
-      t("partner.phoneNumber"),
-      t("partner.email"),
-      t("partner.address"),
-      t("partner.debt"),
-      t("partner.totalBuyAmount"),
-      t("partner.certificate"),
-      t("note"),
+      options.partnerID && !isCustomer
+        ? t("partner.supplierID")
+        : t("partner.customerID"),
+      options.partnerName && !isCustomer
+        ? t("partner.supplierName")
+        : t("partner.customerName"),
+      options.gender && t("partner.gender"),
+      options.phoneNumber && t("partner.phoneNumber"),
+      options.email && t("partner.email"),
+      options.address && t("partner.address"),
+      options.debt && t("partner.debt"),
+      options.totalBuyAmount && t("partner.totalBuyAmount"),
+      options.certificate && t("partner.certificate"),
+      options.note && t("note"),
       t("activities"),
     ],
     [t]
@@ -212,48 +246,68 @@ const PartnerTable = ({ isCustomer = false }: { isCustomer?: boolean }) => {
                     }
                   />
                 </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.partnerId}
-                </td>
+                {options.partnerID && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.partnerId}
+                  </td>
+                )}
 
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.partnerName}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.type === "Customer" ? content.gender : null}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.phoneNumber}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.email}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.address}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.debt}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.totalBuyAmount}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm  items-center justify-center">
-                  {content.type === "Supplier" ? (
-                    <img
-                      src={content.certificate}
-                      style={{
-                        width: "100%",
-                        height: 100,
-                        alignSelf: "center",
-                        borderWidth: 1,
-                      }}
-                    />
-                  ) : null}
-                </td>
+                {options.partnerName && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.partnerName}
+                  </td>
+                )}
+                {options.gender && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.type === "Customer" ? content.gender : null}
+                  </td>
+                )}
+                {options.phoneNumber && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.phoneNumber}
+                  </td>
+                )}
+                {options.email && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.email}
+                  </td>
+                )}
+                {options.address && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.address}
+                  </td>
+                )}
+                {options.debt && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.debt}
+                  </td>
+                )}
+                {options.totalBuyAmount && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.totalBuyAmount}
+                  </td>
+                )}
+                {options.certificate && (
+                  <td className="border border-gray-300 p-2 text-sm  items-center justify-center">
+                    {content.type === "Supplier" ? (
+                      <img
+                        src={content.certificate}
+                        style={{
+                          width: "100%",
+                          height: 100,
+                          alignSelf: "center",
+                          borderWidth: 1,
+                        }}
+                      />
+                    ) : null}
+                  </td>
+                )}
 
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.note}
-                </td>
+                {options.note && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.note}
+                  </td>
+                )}
                 <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
                   <Button className="mr-2">
                     <FiEdit />

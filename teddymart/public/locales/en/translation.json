@@ -89,6 +89,17 @@
     "listProduct": "List Product",
     "placeholderSearch":"Search orders or custumer information"
   },
+  "report":{
+    "revenue": "Revenue",
+    "outcome":"Outcome",
+    "profit":"Profit",
+    "totalOrder":"Total Order",
+    "totalImportOrder":"Total Import Order",
+    "createdAt":"Created At",
+    "product":"Product",
+    "quantity":"Quantity"
+
+  },
   "voucher": {
     "searchVoucher": "Search by voucher's name",
     "voucherID": "Voucher ID",

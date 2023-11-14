@@ -32,20 +32,39 @@ const CONTENT: TContent[] = [
   },
 ];
 
-const ManagerTable = () => {
+type TOptions = {
+  userId?: boolean;
+  userName?: boolean;
+  photoURL?: boolean;
+  address?: boolean;
+  phoneNumber?: boolean;
+  email?: boolean;
+  shopName?: boolean;
+};
+const ManagerTable = ({ filterOption }: { filterOption?: TOptions }) => {
   const { t } = useTranslation();
+  const options: TOptions = {
+    userId: true,
+    userName: true,
+    photoURL: true,
+    phoneNumber: true,
+    address: true,
+    email: true,
+    shopName: true,
+    ...filterOption,
+  };
   const HEADER = useMemo(
     () => [
-      t("manager.userId"),
-      t("manager.userName"),
-      t("manager.photoURL"),
-      t("manager.address"),
-      t("manager.phoneNumber"),
-      t("manager.email"),
-      t("manager.shopName"),
+      options.userId && t("manager.userId"),
+      options.userName && t("manager.userName"),
+      options.photoURL && t("manager.photoURL"),
+      options.address && t("manager.address"),
+      options.phoneNumber && t("manager.phoneNumber"),
+      options.email && t("manager.email"),
+      options.shopName && t("manager.shopName"),
       t("activities"),
     ],
-    [t]
+    [t, options]
   );
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState("10");
@@ -105,35 +124,49 @@ const ManagerTable = () => {
                     }
                   />
                 </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.userId}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.userName}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  <img
-                    src={content.photoURL}
-                    style={{
-                      width: "100%",
-                      height: 100,
-                      alignSelf: "center",
-                      borderWidth: 1,
-                    }}
-                  />
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.address}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.phoneNumber}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.email}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.shopName}
-                </td>
+                {options.userId && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.userId}
+                  </td>
+                )}
+                {options.userName && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.userName}
+                  </td>
+                )}
+                {options.photoURL && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    <img
+                      src={content.photoURL}
+                      style={{
+                        width: "100%",
+                        height: 100,
+                        alignSelf: "center",
+                        borderWidth: 1,
+                      }}
+                    />
+                  </td>
+                )}
+                {options.address && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.address}
+                  </td>
+                )}
+                {options.phoneNumber && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.phoneNumber}
+                  </td>
+                )}
+                {options.email && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.email}
+                  </td>
+                )}
+                {options.shopName && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.shopName}
+                  </td>
+                )}
                 <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
                   <Button className="mr-2">
                     <FiEdit />
