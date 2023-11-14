@@ -16,12 +16,7 @@ export default function SubHeader({}: Props) {
   //const [date, setDate] = useState<Date>(new Date());
   return (
     <div className="w-full bg-white flex items-center justify-between px-4 py-2">
-      <TextComponent
-        fontWeight="font-semibold"
-        color={COLORS.sidebar}
-        fontSize={18}
-        letterSpacing={0.8}
-      >
+      <TextComponent color={COLORS.sidebar} fontSize={18} letterSpacing={0.8}>
         {t("report.overviewReport")}
       </TextComponent>
       <ModalSelectDate setResult={setDate} />

@@ -1,5 +1,5 @@
 import { ModalSelectDate, SearchComponent } from "components";
-import ButtonComponent from "components/ButtonComponent";
+import { ButtonComponent } from "components";
 import { BillTable } from "components/TableComponent";
 import TextComponent from "components/TextComponent";
 import { COLORS } from "constants/colors";
