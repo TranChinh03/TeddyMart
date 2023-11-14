@@ -32,7 +32,6 @@ import {
   WareHouseTable,
 } from "components/TableComponent";
 import ListCheckBox from "components/ListCheckBox";
-import GeneralTable from "views/Report/components/GeneralTable";
 import GeneralReportTable from "components/TableComponent/components/GeneralReportTable";
 import ReportProductTable from "components/TableComponent/components/ReportProductTable";
 export default function Draft() {

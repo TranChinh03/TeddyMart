@@ -172,23 +172,24 @@ const PartnerTable = ({
     ...filterOption,
   };
   const HEADER = useMemo(
-    () => [
-      options.partnerID && !isCustomer
-        ? t("partner.supplierID")
-        : t("partner.customerID"),
-      options.partnerName && !isCustomer
-        ? t("partner.supplierName")
-        : t("partner.customerName"),
-      options.gender && t("partner.gender"),
-      options.phoneNumber && t("partner.phoneNumber"),
-      options.email && t("partner.email"),
-      options.address && t("partner.address"),
-      options.debt && t("partner.debt"),
-      options.totalBuyAmount && t("partner.totalBuyAmount"),
-      options.certificate && t("partner.certificate"),
-      options.note && t("note"),
-      t("activities"),
-    ],
+    () =>
+      [
+        options.partnerID && !isCustomer
+          ? t("partner.supplierID")
+          : t("partner.customerID"),
+        options.partnerName && !isCustomer
+          ? t("partner.supplierName")
+          : t("partner.customerName"),
+        options.gender && t("partner.gender"),
+        options.phoneNumber && t("partner.phoneNumber"),
+        options.email && t("partner.email"),
+        options.address && t("partner.address"),
+        options.debt && t("partner.debt"),
+        options.totalBuyAmount && t("partner.totalBuyAmount"),
+        options.certificate && t("partner.certificate"),
+        options.note && t("note"),
+        t("activities"),
+      ].filter((value) => Boolean(value) !== false),
     [t]
   );
   const [selectedRows, setSelectedRows] = useState([]);

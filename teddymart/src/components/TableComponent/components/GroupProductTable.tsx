@@ -51,12 +51,13 @@ const GroupProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
     ...filterOption,
   };
   const HEADER = useMemo(
-    () => [
-      options.groupId && t("group.groupId"),
-      options.groupName && t("group.groupName"),
-      options.note && t("note"),
-      t("activities"),
-    ],
+    () =>
+      [
+        options.groupId && t("group.groupId"),
+        options.groupName && t("group.groupName"),
+        options.note && t("note"),
+        t("activities"),
+      ].filter((value) => Boolean(value) !== false),
     [t]
   );
   const [selectedRows, setSelectedRows] = useState([]);

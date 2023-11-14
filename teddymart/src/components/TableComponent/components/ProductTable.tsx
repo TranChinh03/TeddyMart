@@ -83,23 +83,46 @@ const CONTENT: TContent[] = [
     note: "Do moi",
   },
 ];
-
-const ProductTable = () => {
+type TOptions = {
+  productId?: boolean;
+  productName?: boolean;
+  productGroup?: boolean;
+  productGroupName?: boolean;
+  productImage?: boolean;
+  retailPrice?: boolean;
+  costPrice?: boolean;
+  VAT?: boolean;
+  note?: boolean;
+};
+const ProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
   const { t } = useTranslation();
+  const options: TOptions = {
+    productId: true,
+    productName: true,
+    productGroup: true,
+    productGroupName: true,
+    productImage: true,
+    retailPrice: true,
+    costPrice: true,
+    VAT: true,
+    note: true,
+    ...filterOption,
+  };
   const HEADER = useMemo(
-    () => [
-      t("product.productId"),
-      t("productName"),
-      t("product.productGroup"),
-      t("product.productGroupName"),
-      t("product.productImage"),
-      t("product.retailPrice"),
-      t("product.costPrice"),
-      t("product.VAT"),
-      t("note"),
-      t("activities"),
-    ],
-    [t]
+    () =>
+      [
+        options.productId && t("product.productId"),
+        options.productName && t("productName"),
+        options.productGroup && t("product.productGroup"),
+        options.productGroupName && t("product.productGroupName"),
+        options.productImage && t("product.productImage"),
+        options.retailPrice && t("product.retailPrice"),
+        options.costPrice && t("product.costPrice"),
+        options.VAT && t("product.VAT"),
+        options.note && t("note"),
+        t("activities"),
+      ].filter((value) => Boolean(value) !== false),
+    [t, options]
   );
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState("10");
@@ -156,39 +179,58 @@ const ProductTable = () => {
                     }
                   />
                 </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.productId}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.productName}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.groupId}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.groupName}
-                </td>
 
-                <td className="border border-gray-300 p-2 text-sm ">
-                  <img
-                    src={content.image}
-                    width={45}
-                    height={45}
-                    className="inline-block"
-                  />
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.sell_price}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.cost_price}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.VAT}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.note}
-                </td>
+                {options.productId && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.productId}
+                  </td>
+                )}
+                {options.productName && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.productName}
+                  </td>
+                )}
+                {options.productGroup && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.groupId}
+                  </td>
+                )}
+                {options.productGroupName && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.groupName}
+                  </td>
+                )}
+
+                {options.productImage && (
+                  <td className="border border-gray-300 p-2 text-sm ">
+                    <img
+                      src={content.image}
+                      width={45}
+                      height={45}
+                      className="inline-block"
+                    />
+                  </td>
+                )}
+                {options.retailPrice && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.sell_price}
+                  </td>
+                )}
+                {options.costPrice && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.cost_price}
+                  </td>
+                )}
+                {options.VAT && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.VAT}
+                  </td>
+                )}
+                {options.note && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.note}
+                  </td>
+                )}
 
                 <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
                   <Button className="mr-2">

@@ -97,19 +97,33 @@ const CONTENT: TContent[] = [
     warehouseName: "Nhà máy 1",
   },
 ];
-
-const WareHouseTable = () => {
+type TOption = {
+  warehouseID?: boolean;
+  warehouseName?: boolean;
+  quantity?: boolean;
+  listProduct?: boolean;
+  address?: boolean;
+};
+const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
   const { t } = useTranslation();
+  const options: TOption = {
+    warehouseID: true,
+    warehouseName: true,
+    quantity: true,
+    listProduct: true,
+    address: true,
+    ...filterOption,
+  };
   const HEADER = useMemo(
     () => [
-      t("warehouse.warehouseID"),
-      t("warehouse.warehouseName"),
-      t("warehouse.quantity"),
-      t("warehouse.listProduct"),
-      t("warehouse.address"),
+      options.warehouseID && t("warehouse.warehouseID"),
+      options.warehouseName && t("warehouse.warehouseName"),
+      options.quantity && t("warehouse.quantity"),
+      options.listProduct && t("warehouse.listProduct"),
+      options.address && t("warehouse.address"),
       t("activities"),
     ],
-    [t]
+    [t, options]
   );
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -165,23 +179,33 @@ const WareHouseTable = () => {
                     }
                   />
                 </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.warehouseId}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.warehouseName}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.count}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  <Button className="mr-2">
-                    <BiDetail />
-                  </Button>
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.address}
-                </td>
+                {options.warehouseID && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.warehouseId}
+                  </td>
+                )}
+                {content.warehouseName && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.warehouseName}
+                  </td>
+                )}
+                {content.count && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.count}
+                  </td>
+                )}
+                {content.listProduct && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    <Button className="mr-2">
+                      <BiDetail />
+                    </Button>
+                  </td>
+                )}
+                {content.address && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.address}
+                  </td>
+                )}
                 <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
                   <Button className="mr-2">
                     <FiEdit />
