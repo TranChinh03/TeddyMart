@@ -56,7 +56,7 @@ export default function TextInputComponent({
   return (
     <div style={{ width: width, ...outStyle }} className="relative">
       {label && (
-        <div className="absolute -top-2 left-2 bg-white text-10 px-1 font-roboto text-txt_lightgrey">
+        <div className="absolute -top-3 left-2 bg-white text-10 px-1 font-roboto text-txt_lightgrey">
           <TextComponent
             fontSize={labelFontSize}
             fontWeight={labelFontWeight}

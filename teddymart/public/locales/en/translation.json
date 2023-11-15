@@ -66,7 +66,11 @@
     "cancel": "Cancel",
     "view": "View",
     "time": "Time",
-    "addOrder": "Add Order"
+    "addOrder": "Add Order",
+    "nameAZ": "Name: A → Z",
+    "nameZA": "Name: Z → A",
+    "quantity1": "Quantity: Low → High",
+    "quantity2": "Quantity: High → Low"
   },
   "group": {
     "groupId": "Group ID",
@@ -195,23 +199,5 @@
     "totalPaymentDescending": "Total Payment: Descending"
   },
   "cancel": "Cancel",
-  "accept": "Accept",
-  "report": {
-    "report": "Report",
-    "overviewReport": "Overview Report",
-    "overviewChart": "Overview Chart",
-    "outcome": "Outcome",
-    "revenue": "Revenue",
-    "profit": "Profit",
-    "numberOfOrder": "Number of Order",
-    "importOrder": "Import Order",
-    "exportOrder": "Export Order",
-    "overviewTitle": "Touch any point on screen to see detail",
-    "hourly": "Hourly",
-    "day": "Day",
-    "week": "Week",
-    "month": "Month",
-    "reportByDate": "Report by date",
-    "reportByProduct": "Report by product"
-  }
+  "accept": "Accept"
 }

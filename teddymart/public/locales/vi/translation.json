@@ -57,7 +57,11 @@
     "cancel": "Hủy",
     "view": "Xem",
     "time": "Thời gian",
-    "addOrder": "Tạo đơn"
+    "addOrder": "Tạo đơn",
+    "nameAZ": "Tên: A → Z",
+    "nameZA": "Tên: Z → A",
+    "quantity1": "Số lượng: Ít → Nhiều",
+    "quantity2": "Số lượng: Nhiều → Ít"
   },
   "sale": {
     "importOrder": "Nhập hàng",
