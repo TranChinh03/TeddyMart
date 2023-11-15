@@ -57,7 +57,7 @@
     "cancel": "Hủy",
     "view": "Xem",
     "time": "Thời gian",
-    "addOrder":"Tạo đơn"
+    "addOrder": "Tạo đơn"
   },
   "sale": {
     "importOrder": "Nhập hàng",
@@ -89,7 +89,7 @@
     "expirationDate": "Ngày hết hạn",
     "discountAmount": "Số lượng giảm giá",
     "note": "Ghi chú",
-    "voucherInfo":"Thông tin sản phẩm"
+    "voucherInfo": "Thông tin sản phẩm"
   },
   "partner": {
     "customer": "Khách hàng",
@@ -110,30 +110,6 @@
     "certificate": "Bằng kinh doanh",
     "supplierID": "Mã nhà cung cấp"
   },
-  "report": {
-    "revenue": "Doanh thu",
-    "outcome": "Chi phí",
-    "profit": "Lợi nhuận",
-    "totalOrder": "Số lượng đơn hàng",
-    "totalImportOrder": "Số lượng đơn nhập hàng",
-    "createdAt": "Ngày tạo",
-    "product": "Sản phẩm",
-    "quantity": "Số lượng",
-    "report": "Báo cáo",
-    "overviewReport": "Báo cáo tổng quan",
-    "overviewChart": "Biểu đồ tổng quan",
-    "numberOfOrder": "Số lượng đơn hàng",
-    "importOrder": "Đơn nhập hàng",
-    "exportOrder": "Đơn xuất hàng",
-    "overviewTitle": "Nhấn vào bất kỳ điểm nào trên biểu đồ để xem chi tiết",
-    "hourly": "Hàng giờ",
-    "day": "Ngày",
-    "week": "Tuần",
-    "month": "Tháng",
-    "reportByDate": "Báo cáo theo ngày",
-    "reportByProduct": "Báo cáo theo sản phẩm"
-  },
-
   "product": {
     "productGroup": "Nhóm sản phẩm",
     "product": "Sản phẩm",
@@ -147,11 +123,13 @@
     "addNewProduct": "Thêm sản phẩm",
     "productImage": "Hình ảnh",
     "productName": "Tên sản phẩm",
-    "retailPrice": "Giá bán lẻ",
+    "sell_price": "Giá bán lẻ",
     "costPrice": "Giá vốn",
     "VAT": "VAT",
-    "productInfo":"Thông tin sản phẩm",
-    "searchProduct":"Tìm kiếm theo sản phẩm"
+    "productInfo": "Thông tin sản phẩm",
+    "searchProduct": "Tìm kiếm theo sản phẩm",
+    "totalProduct": "Số lượng sản phẩm",
+    "price": "Giá tiền "
   },
   "group": {
     "groupId": "Mã nhóm",
@@ -224,17 +202,15 @@
     "importOrder": "Đơn nhập hàng",
     "exportOrder": "Đơn xuất hàng",
     "overviewTitle": "Nhấn vào bất kỳ điểm nào trên biểu đồ để xem chi tiết",
-    "hourly": "Hàng giờ",
     "day": "Ngày",
     "week": "Tuần",
     "month": "Tháng",
     "reportByDate": "Báo cáo theo ngày",
     "reportByProduct": "Báo cáo theo sản phẩm",
-
-    "totalOrder":"Số lượng đơn hàng",
-    "totalImportOrder":"Số lượng đơn nhập hàng",
-    "createdAt":"Ngày tạo",
-    "product":"Sản phẩm",
-    "quantity":"Số lượng"
+    "totalOrder": "Số lượng đơn hàng",
+    "totalImportOrder": "Số lượng đơn nhập hàng",
+    "createdAt": "Ngày tạo",
+    "product": "Sản phẩm",
+    "quantity": "Số lượng"
   }
 }

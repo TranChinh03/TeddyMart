@@ -66,10 +66,10 @@
     "cancel": "Cancel",
     "view": "View",
     "time": "Time",
-    "addOrder":"Add Order",
-    "addMenu":"Add To Menu",
-    "publish":"Publish",
-    "updateVoucher":"Update Voucher",
+    "addOrder": "Add Order",
+    "addMenu": "Add To Menu",
+    "publish": "Publish",
+    "updateVoucher": "Update Voucher",
     "nameAZ": "Name: A → Z",
     "nameZA": "Name: Z → A",
     "quantity1": "Quantity: Low → High",
@@ -98,16 +98,7 @@
     "listProduct": "List Product",
     "placeholderSearch": "Search orders or custumer information"
   },
-  "report": {
-    "revenue": "Revenue",
-    "outcome": "Outcome",
-    "profit": "Profit",
-    "totalOrder": "Total Order",
-    "totalImportOrder": "Total Import Order",
-    "createdAt": "Created At",
-    "product": "Product",
-    "quantity": "Quantity"
-  },
+
   "voucher": {
     "searchVoucher": "Search by voucher's name",
     "voucherID": "Voucher ID",
@@ -150,12 +141,13 @@
     "addNewProduct": "Add New Product",
     "productImage": "Product Image",
     "productName": "Product Name",
-    "retailPrice": "Retail Price",
+    "sell_price": "Retail Price",
     "costPrice": "Cost Price",
     "VAT": "VAT",
-    "productInfo":"Product Information",
-    "searchProductFromOrder":"Search Product From Order",
-    "searchProduct": "Search Product"
+    "productInfo": "Product Information",
+    "searchProductFromOrder": "Search Product From Order",
+    "searchProduct": "Search Product",
+    "price": "Price"
   },
   "warehouse": {
     "warehouse": "Warehouse",
@@ -172,7 +164,8 @@
     "manageList": "Manage inventory list",
     "importOrder": "Import orders",
     "manageImportOrder": "Manage import orders",
-    "searchByName": "Search By Name"
+    "searchByName": "Search By Name",
+    "totalProduct": "Total Products"
   },
   "activities": "Activities",
   "note": "Note",
@@ -215,19 +208,17 @@
     "importOrder": "Import Order",
     "exportOrder": "Export Order",
     "overviewTitle": "Touch any point on screen to see detail",
-    "hourly": "Hourly",
     "day": "Day",
     "week": "Week",
     "month": "Month",
     "reportByDate": "Report by date",
     "reportByProduct": "Report by product",
-    "addNewOrder":"Add New Order",   
-    "totalOrder":"Total Order",
-    "totalImportOrder":"Total Import Order",
-    "createdAt":"Created At",
-    "product":"Product",
-    "quantity":"Quantity"
+    "addNewOrder": "Add New Order",
+    "totalOrder": "Total Order",
+    "totalImportOrder": "Total Import Order",
+    "createdAt": "Created At",
+    "product": "Product",
+    "quantity": "Quantity"
   },
-  "warningTxt":"Confirm you will delete this section from the system!",
-  "accept": "Accept"
+  "warningTxt": "Confirm you will delete this section from the system!"
 }

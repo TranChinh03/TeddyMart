@@ -33,13 +33,16 @@ declare type TVoucher = {
 declare type TProduct = {
   productId: string;
   productName: string;
-  groupId: string;
-  groupName: string;
+  groupId?: string;
+  groupName?: string;
   image?: string;
-  cost_price: number;
-  sell_price: number;
+  cost_price?: number;
+  sell_price?: number;
   VAT?: number;
   note?: string;
+  quantity?: number;
+  totalPrice?: number;
+  price?: number;
 };
 
 declare type TGroupProduct = {
@@ -52,11 +55,7 @@ declare type TWarehouse = {
   warehouseId: string;
   warehouseName: string;
   address?: string;
-  listProduct: {
-    productId: string;
-    productName: string;
-    quantity: number;
-  };
+  listProduct: Pick<TProduct, "productId" | "productName" | "quantity">[];
   count: number;
 };
 
@@ -83,10 +82,20 @@ declare type TOrder = {
 };
 
 declare type TReport = {
-  revenue: number;
-  outcome: number;
-  totalImport: number;
-  totalExport: number;
+  revenue?: number;
+  outcome?: number;
+  profit?: number;
+  numberOfOrder?: number;
+  importOrder?: number;
+  exportOrder?: number;
+};
+
+declare type TReportSlice = {
+  general: TReport;
+  byDate?: {
+    date?: string;
+    report?: TReport[];
+  };
 };
 
 declare type D = {

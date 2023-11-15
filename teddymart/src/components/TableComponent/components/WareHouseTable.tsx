@@ -72,27 +72,12 @@ type TListPRoduct = {
 };
 type TContent = {
   address: string;
-  count: number;
-  listProduct: TListPRoduct[];
   warehouseId: string;
   warehouseName: string;
 };
 const CONTENT: TContent[] = [
   {
     address: "123 Main Street, City, quantityry",
-    count: 955,
-    listProduct: [
-      {
-        productId: "P001",
-        productName: "Máy giặc",
-        quantity: 600,
-      },
-      {
-        productId: "P001",
-        productName: "Máy giặc",
-        quantity: 600,
-      },
-    ],
     warehouseId: "W001",
     warehouseName: "Nhà máy 1",
   },
@@ -100,8 +85,6 @@ const CONTENT: TContent[] = [
 type TOption = {
   warehouseID?: boolean;
   warehouseName?: boolean;
-  quantity?: boolean;
-  listProduct?: boolean;
   address?: boolean;
 };
 const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
@@ -109,8 +92,6 @@ const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
   const options: TOption = {
     warehouseID: true,
     warehouseName: true,
-    quantity: true,
-    listProduct: true,
     address: true,
     ...filterOption,
   };
@@ -118,8 +99,6 @@ const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
     () => [
       options.warehouseID && t("warehouse.warehouseID"),
       options.warehouseName && t("warehouse.warehouseName"),
-      options.quantity && t("warehouse.quantity"),
-      options.listProduct && t("warehouse.listProduct"),
       options.address && t("warehouse.address"),
       t("activities"),
     ],
@@ -189,18 +168,7 @@ const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
                     {content.warehouseName}
                   </td>
                 )}
-                {content.count && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.count}
-                  </td>
-                )}
-                {content.listProduct && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    <Button className="mr-2">
-                      <BiDetail />
-                    </Button>
-                  </td>
-                )}
+
                 {content.address && (
                   <td className="border border-gray-300 p-2 text-sm">
                     {content.address}

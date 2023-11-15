@@ -299,7 +299,7 @@ export default function SaleScreen() {
                 quantity: true,
                 productImage: false,
                 VAT: false,
-                retailPrice: false,
+                sell_price: false,
               }}
             />
           </div>

@@ -22,6 +22,7 @@ type TContent = {
   note: string;
   quantity?: number;
   totalPrice?: number;
+  price?: number;
 };
 const CONTENT: TContent[] = [
   {
@@ -91,14 +92,22 @@ type TOptions = {
   productGroup?: boolean;
   productGroupName?: boolean;
   productImage?: boolean;
-  retailPrice?: boolean;
+  sell_price?: boolean;
   costPrice?: boolean;
   VAT?: boolean;
   note?: boolean;
   quantity?: boolean;
   totalPrice?: boolean;
+  activities?: boolean;
+  price?: boolean;
 };
-const ProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
+const ProductTable = ({
+  filterOption,
+  data,
+}: {
+  filterOption?: TOptions;
+  data?: TProduct[];
+}) => {
   const { t } = useTranslation();
   const options: TOptions = {
     productId: true,
@@ -106,29 +115,32 @@ const ProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
     productGroup: true,
     productGroupName: true,
     productImage: true,
-    retailPrice: true,
+    sell_price: true,
     costPrice: true,
     VAT: true,
     note: true,
     quantity: false,
     totalPrice: false,
+    activities: true,
+    price: false,
     ...filterOption,
   };
   const HEADER = useMemo(
     () =>
       [
         options.productId && t("product.productId"),
-        options.productName && t("productName"),
+        options.productName && t("product.productName"),
         options.quantity && t("warehouse.quantity"),
         options.productGroup && t("product.productGroup"),
         options.productGroupName && t("product.productGroupName"),
         options.productImage && t("product.productImage"),
-        options.retailPrice && t("product.retailPrice"),
+        options.sell_price && t("product.sell_price"),
         options.costPrice && t("product.costPrice"),
         options.totalPrice && t("sale.totalPayment"),
         options.VAT && t("product.VAT"),
         options.note && t("note"),
-        t("activities"),
+        options.activities && t("activities"),
+        options.price && t("product.price"),
       ].filter((value) => Boolean(value) !== false),
     [t, options]
   );
@@ -151,7 +163,6 @@ const ProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
     setSelectedRows([...selectedRows, rowId]);
   };
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    console.log("okkkkk");
     setRowsPerPage(e.target.value);
   };
   return (
@@ -175,7 +186,7 @@ const ProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
             </tr>
           </thead>
           <tbody className="text-center">
-            {CONTENT.map((content, index) => (
+            {data?.map((content, index) => (
               <tr key={index}>
                 <td className="border border-gray-300 p-2">
                   <input
@@ -225,15 +236,22 @@ const ProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
                     />
                   </td>
                 )}
-                {options.retailPrice && (
+                {options.sell_price && (
                   <td className="border border-gray-300 p-2 text-sm">
                     {content.sell_price}
                   </td>
                 )}
+
                 {options.costPrice && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.cost_price}
+                  </td>
+                )}
+
+                {options.price && (
                   <Tooltip title="Price = Sell price * (1+VAT)">
                     <td className="border border-gray-300 p-2 text-sm">
-                      {content.cost_price}
+                      {content.price}
                     </td>
                   </Tooltip>
                 )}
@@ -255,15 +273,19 @@ const ProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
                   </td>
                 )}
 
-                <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                  <Button className="mr-2">
-                    <FiEdit />
-                  </Button>
+                {options.activities && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    <div className="flex items-center gap-1">
+                      <Button>
+                        <FiEdit />
+                      </Button>
 
-                  <Button>
-                    <FiTrash color="red" />
-                  </Button>
-                </td>
+                      <Button>
+                        <FiTrash color="red" />
+                      </Button>
+                    </div>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

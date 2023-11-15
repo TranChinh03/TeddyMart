@@ -4,14 +4,11 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ModalSelectDate } from "components";
 type Props = {
-  //onClickFilter: MouseEventHandler<HTMLButtonElement>;
+  time: D;
+  setTime: Function;
 };
 
-export default function SubHeader({}: Props) {
-  const [date, setDate] = useState<D>({
-    from: new Date(),
-    to: new Date(),
-  });
+export default function SubHeader({ time, setTime }: Props) {
   const { t } = useTranslation();
   //const [date, setDate] = useState<Date>(new Date());
   return (
@@ -19,7 +16,7 @@ export default function SubHeader({}: Props) {
       <TextComponent color={COLORS.sidebar} fontSize={18} letterSpacing={0.8}>
         {t("report.overviewReport")}
       </TextComponent>
-      <ModalSelectDate setResult={setDate} />
+      <ModalSelectDate setResult={setTime} />
     </div>
   );
 }

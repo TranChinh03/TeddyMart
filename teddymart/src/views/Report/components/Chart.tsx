@@ -1,6 +1,6 @@
 import TextComponent from "components/TextComponent";
 import { COLORS } from "constants/colors";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -12,6 +12,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { RootState } from "state_management/reducers/rootReducer";
 const data = [
   {
     name: "Mon",
@@ -57,15 +59,29 @@ const data = [
   },
 ];
 
-function Chart() {
+type Props = {
+  time: D;
+  options: {
+    outcome: boolean;
+    revenue: boolean;
+    profit: boolean;
+    numberOfOrder: boolean;
+    importOrder: boolean;
+    exportOrder: boolean;
+  };
+};
+function Chart({ time, options }: Props) {
   const [gap, setGap] = useState(0);
   const { t } = useTranslation();
-  const GAPS = [
-    t("report.hourly"),
-    t("report.day"),
-    t("report.week"),
-    t("report.month"),
-  ];
+  const GAPS = [t("report.day"), t("report.week"), t("report.month")];
+  const ORDERS = useSelector((state: RootState) => state.order);
+  const REPORTS = useSelector((state: RootState) => state.reportSlice);
+  console.log("TIME", time);
+  const [data, setData] = useState<TReport[]>([]);
+  useEffect(() => {
+    if (gap === 0) {
+    }
+  }, [time, gap]);
   return (
     <div className="bg-white border-1.5 mx-5 my-1.5 rounded-md">
       <div className="divide-y">

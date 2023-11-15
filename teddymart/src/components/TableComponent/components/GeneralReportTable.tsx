@@ -8,8 +8,6 @@ import {
   HiOutlineChevronRight,
 } from "react-icons/hi2";
 type TContent = {
-  id: string;
-  createdAt: Date;
   revenue: number;
   outcome: number;
   profit: number;
@@ -18,8 +16,6 @@ type TContent = {
 };
 const CONTENT: TContent[] = [
   {
-    id: "123123",
-    createdAt: new Date(),
     revenue: 1232,
     outcome: 3134,
     profit: 1332,
@@ -27,9 +23,6 @@ const CONTENT: TContent[] = [
     totalImportOrder: 23,
   },
   {
-    id: "123123r",
-    createdAt: new Date(),
-
     revenue: 1232,
     outcome: 3134,
     profit: 1332,
@@ -37,9 +30,6 @@ const CONTENT: TContent[] = [
     totalImportOrder: 23,
   },
   {
-    id: "123k1s1",
-    createdAt: new Date(),
-
     revenue: 1232,
     outcome: 3134,
     profit: 1332,
@@ -47,8 +37,6 @@ const CONTENT: TContent[] = [
     totalImportOrder: 23,
   },
   {
-    id: "123123",
-    createdAt: new Date(),
     revenue: 1232,
     outcome: 3134,
     profit: 1332,
@@ -56,9 +44,6 @@ const CONTENT: TContent[] = [
     totalImportOrder: 23,
   },
   {
-    id: "123123r",
-    createdAt: new Date(),
-
     revenue: 1232,
     outcome: 3134,
     profit: 1332,
@@ -66,9 +51,6 @@ const CONTENT: TContent[] = [
     totalImportOrder: 23,
   },
   {
-    id: "123k1s1",
-    createdAt: new Date(),
-
     revenue: 1232,
     outcome: 3134,
     profit: 1332,
@@ -76,8 +58,6 @@ const CONTENT: TContent[] = [
     totalImportOrder: 23,
   },
   {
-    id: "123123",
-    createdAt: new Date(),
     revenue: 1232,
     outcome: 3134,
     profit: 1332,
@@ -85,9 +65,6 @@ const CONTENT: TContent[] = [
     totalImportOrder: 23,
   },
   {
-    id: "123123r",
-    createdAt: new Date(),
-
     revenue: 1232,
     outcome: 3134,
     profit: 1332,
@@ -95,9 +72,6 @@ const CONTENT: TContent[] = [
     totalImportOrder: 23,
   },
   {
-    id: "123k1s1",
-    createdAt: new Date(),
-
     revenue: 1232,
     outcome: 3134,
     profit: 1332,
@@ -106,8 +80,6 @@ const CONTENT: TContent[] = [
   },
 ];
 type TOptions = {
-  id?: boolean;
-  createdAt?: boolean;
   revenue?: boolean;
   outcome?: boolean;
   profit?: boolean;
@@ -117,8 +89,6 @@ type TOptions = {
 const GeneralReportTable = ({ filterOption }: { filterOption?: TOptions }) => {
   const { t } = useTranslation();
   const options: TOptions = {
-    id: true,
-    createdAt: true,
     revenue: true,
     outcome: true,
     profit: true,
@@ -129,8 +99,6 @@ const GeneralReportTable = ({ filterOption }: { filterOption?: TOptions }) => {
   const HEADER = useMemo(
     () =>
       [
-        "#",
-        options.createdAt && t("report.createdAt"),
         options.revenue && t("report.revenue"),
         options.outcome && t("report.outcome"),
         options.profit && t("report.profit"),
@@ -141,22 +109,7 @@ const GeneralReportTable = ({ filterOption }: { filterOption?: TOptions }) => {
   );
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState("10");
-  const handleCheckBoxChange = (rowId: string) => {
-    if (rowId === null) {
-      //console.log("ok");
-      if (selectedRows.length === 0) {
-        setSelectedRows([...CONTENT.map((content) => content.id)]);
-        return;
-      }
-      setSelectedRows([]);
-      return;
-    }
-    if (selectedRows.includes(rowId)) {
-      setSelectedRows([...selectedRows.filter((id) => id !== rowId)]);
-      return;
-    }
-    setSelectedRows([...selectedRows, rowId]);
-  };
+
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
     //console.log("okkkkk");
     setRowsPerPage(e.target.value);
@@ -167,13 +120,6 @@ const GeneralReportTable = ({ filterOption }: { filterOption?: TOptions }) => {
         <table className="w-full border-collapse border border-gray-300 bg-gray-50">
           <thead className="bg-gray-200 sticky left-0 z-50" style={{ top: -1 }}>
             <tr>
-              <th className="border border-gray-300 p-2 text-xs">
-                <input
-                  className="w-15 h-15 bg-hover"
-                  type="checkbox"
-                  onChange={() => handleCheckBoxChange(null)}
-                />
-              </th>
               {HEADER.map((header, index) => (
                 <th key={index} className="border border-gray-300 p-2 text-xs">
                   {header}
@@ -184,24 +130,6 @@ const GeneralReportTable = ({ filterOption }: { filterOption?: TOptions }) => {
           <tbody className="text-center">
             {CONTENT.map((content, index) => (
               <tr key={index}>
-                <td className="border border-gray-300 p-2">
-                  <input
-                    className="w-15 h-15 bg-hover"
-                    type="checkbox"
-                    onChange={() => handleCheckBoxChange(content.id)}
-                    checked={selectedRows.includes(content.id) ? true : false}
-                  />
-                </td>
-                {options.id && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.id}
-                  </td>
-                )}
-                {options.createdAt && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {new Date(content.createdAt).toLocaleDateString("vi")}
-                  </td>
-                )}
                 {options.revenue && (
                   <td className="border border-gray-300 p-2 text-sm">
                     {content.revenue}

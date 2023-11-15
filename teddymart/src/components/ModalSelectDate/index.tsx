@@ -177,6 +177,7 @@ export default function ModalSelectDate({ setResult }: Props) {
       />
       <Modal
         open={openModal}
+        width={"40%"}
         title={t("modal.selectDate")}
         onOk={() => setOpenModal(false)}
         onCancel={() => setOpenModal(false)}

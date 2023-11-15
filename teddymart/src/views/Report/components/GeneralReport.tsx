@@ -6,14 +6,14 @@ import TextComponent from "components/TextComponent";
 import { COLORS } from "constants/colors";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-
+import { useSelector } from "react-redux";
 export default function GeneralReport() {
   const { t } = useTranslation();
+
   const [date, setDate] = useState<D>({
     from: new Date(),
     to: new Date(),
   });
-
   return (
     <div className="bg-white border-1.5 mx-5 my-1.5 rounded-md">
       <div className="divide-y">

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useTransition } from "react";
+import { useState } from "react";
 import TextInputComponent from "components/TextInputComponent";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,7 @@ import { uploadGroupProduct } from "state_management/slices/groupProductSlice";
 import { uploadProduct } from "state_management/slices/productSlice";
 import { uploadWarehouse } from "state_management/slices/warehouseSlice";
 import { uploadOrder } from "state_management/slices/orderSlice";
+import { uploadReport } from "state_management/slices/reportSlice";
 import { RootState } from "state_management/reducers/rootReducer";
 import { useTranslation } from "react-i18next";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -49,9 +50,50 @@ export default function LoginScreen() {
       }),
       getData("/Manager/M001/Orders").then((data: TOrder[]) => {
         dispatch(uploadOrder(data));
+        let currentDate = new Date();
+        let tmp: TOrder[] = data.filter(
+          (order) =>
+            new Date(order.createdAt).toDateString() >=
+              new Date(
+                currentDate.getTime() - 10 * 24 * 60 * 60 * 1000
+              ).toDateString() &&
+            new Date(order.createdAt).toDateString() <=
+              currentDate.toDateString()
+        );
+        let exportOrder = tmp.reduce(
+          (total, currenVal) =>
+            currenVal.type === "Export" ? total + 1 : total,
+          0
+        );
+        let outcome = tmp.reduce(
+          (total, val) =>
+            val.type === "Import" && val.status === "paid"
+              ? total + val.totalPayment
+              : total,
+          0
+        );
+        let revenue = tmp.reduce(
+          (total, val) =>
+            val.type === "Export" && val.status === "paid"
+              ? total + val.totalPayment
+              : total,
+          0
+        );
+        dispatch(
+          uploadReport({
+            general: {
+              numberOfOrder: tmp.length,
+              importOrder: tmp.length - exportOrder,
+              exportOrder: exportOrder,
+              outcome: outcome,
+              revenue: revenue,
+              profit: outcome - revenue,
+            },
+          })
+        );
       }),
     ]).then(() => {
-      console.log("P", partners);
+      //console.log("P", partners);
       setLoading(false);
       navigate(NAV_LINK.SALE);
     });
@@ -87,7 +129,7 @@ export default function LoginScreen() {
                   registerName="username"
                 />
               </div>
-              <div className="grid gap-y-1 mt-3">
+              <div className="grid gap-y-1 mt-5">
                 <TextInputComponent
                   placeHolder=""
                   label={t("login.password")}
