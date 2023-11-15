@@ -1,11 +1,10 @@
 import { ModalSelectDate, SearchComponent } from "components";
 import { ButtonComponent } from "components";
-import { BillTable } from "components/TableComponent";
 import TextComponent from "components/TextComponent";
 import { COLORS } from "constants/colors";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-
+import { ReportProductTable } from "components/TableComponent";
 export default function ProductReport() {
   const { t } = useTranslation();
   const [date, setDate] = useState<D>({
@@ -28,7 +27,7 @@ export default function ProductReport() {
           </TextComponent>
         </div>
         <div className="w-full py-2 px-3 flex items-center justify-between flex-wrap">
-          <div className="flex flex-wrap">
+          <div className="flex flex-wrap items-end">
             <ButtonComponent
               onClick={() => {}}
               label={t("button.all")}
@@ -56,8 +55,10 @@ export default function ProductReport() {
             color={COLORS.defaultWhite}
           />
         </div>
+        <div className="w-[98%] self-center flex mx-auto">
+          <ReportProductTable />
+        </div>
       </div>
-      <BillTable />
     </div>
   );
 }

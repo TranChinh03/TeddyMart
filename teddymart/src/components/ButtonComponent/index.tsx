@@ -9,7 +9,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({
   fontWeight = "normal",
   fontSize = "16px",
   paddingHorizontal = "20",
-  paddingVertical = "8",
+  paddingVertical = "24",
   borderRadius = 5,
   iconLeft,
   iconRight,
@@ -31,7 +31,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({
         //letterSpacing: 0.8,
       }}
       onClick={onClick}
-      className={`${fontWeight} flex items-center text-16 h-12 text-white`}
+      className={`${fontWeight} flex items-center text-white`}
     >
       <Space>
         {iconLeft && iconLeft}

@@ -88,18 +88,30 @@
     "note": "Note",
     "receiver": "Receiver",
     "listProduct": "List Product",
-    "placeholderSearch":"Search orders or custumer information"
+    "placeholderSearch": "Search orders or custumer information"
   },
-  "report":{
+  "report": {
     "revenue": "Revenue",
-    "outcome":"Outcome",
-    "profit":"Profit",
-    "totalOrder":"Total Order",
-    "totalImportOrder":"Total Import Order",
-    "createdAt":"Created At",
-    "product":"Product",
-    "quantity":"Quantity"
-
+    "outcome": "Outcome",
+    "profit": "Profit",
+    "totalOrder": "Total Order",
+    "totalImportOrder": "Total Import Order",
+    "createdAt": "Created At",
+    "product": "Product",
+    "quantity": "Quantity",
+    "report": "Report",
+    "overviewReport": "Overview Report",
+    "overviewChart": "Overview Chart",
+    "numberOfOrder": "Number of Order",
+    "importOrder": "Import Order",
+    "exportOrder": "Export Order",
+    "overviewTitle": "Touch any point on screen to see detail",
+    "hourly": "Hourly",
+    "day": "Day",
+    "week": "Week",
+    "month": "Month",
+    "reportByDate": "Report by date",
+    "reportByProduct": "Report by product"
   },
   "voucher": {
     "searchVoucher": "Search by voucher's name",
@@ -155,7 +167,13 @@
     "status": "Status",
     "warehouseName": "Warehouse Name",
     "createdAt": "Created At",
-    "address": "Address"
+    "address": "Address",
+    "warehouseManagement": "Warehouse Management",
+    "manageInventory": "Manage inventory information",
+    "manageList": "Manage inventory list",
+    "importOrder": "Import orders",
+    "manageImportOrder": "Manage import orders",
+    "searchByName": "Search By Name"
   },
   "activities": "Activities",
   "note": "Note",
@@ -177,32 +195,14 @@
     "from": "From",
     "to": "To"
   },
-  "sort":{
-    "orderAscending":"Order ID: Ascending",
-    "orderDescending":"Order ID: Descending",
-    "createdAtNewest":"Created At: Newest First",
-    "createdAtOldest":"Created At: Oldest First",
-    "totalPaymentAscending":"Total Payment: Ascending",
-    "totalPaymentDescending":"Total Payment: Descending"
+  "sort": {
+    "orderAscending": "Order ID: Ascending",
+    "orderDescending": "Order ID: Descending",
+    "createdAtNewest": "Created At: Newest First",
+    "createdAtOldest": "Created At: Oldest First",
+    "totalPaymentAscending": "Total Payment: Ascending",
+    "totalPaymentDescending": "Total Payment: Descending"
   },
   "cancel": "Cancel",
-  "accept": "Accept",
-  "report": {
-    "report": "Report",
-    "overviewReport": "Overview Report",
-    "overviewChart": "Overview Chart",
-    "outcome": "Outcome",
-    "revenue": "Revenue",
-    "profit": "Profit",
-    "numberOfOrder": "Number of Order",
-    "importOrder": "Import Order",
-    "exportOrder": "Export Order",
-    "overviewTitle": "Touch any point on screen to see detail",
-    "hourly": "Hourly",
-    "day": "Day",
-    "week": "Week",
-    "month": "Month",
-    "reportByDate": "Report by date",
-    "reportByProduct": "Report by product"
-  }
+  "accept": "Accept"
 }

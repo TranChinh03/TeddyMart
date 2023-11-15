@@ -75,8 +75,7 @@
     "note": "Ghi chú",
     "receiver": "Người nhận",
     "listProduct": "Danh sách sản phẩm",
-    "placeholderSearch":"Tìm kiếm đơn hàng và thông tin khách hàng"
-
+    "placeholderSearch": "Tìm kiếm đơn hàng và thông tin khách hàng"
   },
   "voucher": {
     "searchVoucher": "Tìm kiếm theo tên voucher",
@@ -106,15 +105,28 @@
     "certificate": "Bằng kinh doanh",
     "supplierID": "Mã nhà cung cấp"
   },
-  "report":{
+  "report": {
     "revenue": "Doanh thu",
-    "outcome":"Chi phí",
-    "profit":"Lợi nhuận",
-    "totalOrder":"Số lượng đơn hàng",
-    "totalImportOrder":"Số lượng đơn nhập hàng",
-    "createdAt":"Ngày tạo",
-    "product":"Sản phẩm",
-    "quantity":"Số lượng"
+    "outcome": "Chi phí",
+    "profit": "Lợi nhuận",
+    "totalOrder": "Số lượng đơn hàng",
+    "totalImportOrder": "Số lượng đơn nhập hàng",
+    "createdAt": "Ngày tạo",
+    "product": "Sản phẩm",
+    "quantity": "Số lượng",
+    "report": "Báo cáo",
+    "overviewReport": "Báo cáo tổng quan",
+    "overviewChart": "Biểu đồ tổng quan",
+    "numberOfOrder": "Số lượng đơn hàng",
+    "importOrder": "Đơn nhập hàng",
+    "exportOrder": "Đơn xuất hàng",
+    "overviewTitle": "Nhấn vào bất kỳ điểm nào trên biểu đồ để xem chi tiết",
+    "hourly": "Hàng giờ",
+    "day": "Ngày",
+    "week": "Tuần",
+    "month": "Tháng",
+    "reportByDate": "Báo cáo theo ngày",
+    "reportByProduct": "Báo cáo theo sản phẩm"
   },
   "product": {
     "productGroup": "Nhóm sản phẩm",
@@ -147,7 +159,7 @@
     "shopName": "Tên cửa hàng"
   },
   "warehouse": {
-    "warehouse": "Quản lý kho",
+    "warehouse": "Nhà kho",
     "warehouseID": "Mã kho",
     "listProduct": "Danh sách sản phẩm",
     "warehouseList": "Danh sách kho",
@@ -155,7 +167,13 @@
     "status": "Trạng thái",
     "warehouseName": "Tên kho",
     "createdAt": "Ngày tạo",
-    "address": "Địa chỉ"
+    "address": "Địa chỉ",
+    "warehouseManagement": "Quản lý kho",
+    "manageInventory": "Quản lý thông tin kho hàng",
+    "manageList": "Quản lý danh sách kho",
+    "importOrder": "Đơn nhập hàng",
+    "manageImportOrder": "Quản lý đơn nhập hàng",
+    "searchByName": "Tìm kiếm theo tên"
   },
   "activities": "Chức năng",
   "note": "Ghi chú",
@@ -177,33 +195,14 @@
     "from": "Từ ngày",
     "to": "Đến ngày"
   },
-  "sort":{
-    "orderAscending":"Sắp xếp orderID tăng dần",
-    "orderDescending":"Sắp xếp orderID giảm dần",
-    "createdAtNewest":"Thời gian gần nhất",
-    "createdAtOldest":"Thời gian xa nhất",
-    "totalPaymentAscending":"Sắp xếp tổng thanh toán tăng dần",
-    "totalPaymentDescending":"Sắp xếp tổng thanh toán giảm dần"
+  "sort": {
+    "orderAscending": "Sắp xếp orderID tăng dần",
+    "orderDescending": "Sắp xếp orderID giảm dần",
+    "createdAtNewest": "Thời gian gần nhất",
+    "createdAtOldest": "Thời gian xa nhất",
+    "totalPaymentAscending": "Sắp xếp tổng thanh toán tăng dần",
+    "totalPaymentDescending": "Sắp xếp tổng thanh toán giảm dần"
   },
-  
   "cancel": "Hủy",
-  "accept": "Đồng ý",
-  "report": {
-    "report": "Báo cáo",
-    "overviewReport": "Báo cáo tổng quan",
-    "overviewChart": "Biểu đồ tổng quan",
-    "outcome": "Chi tiêu",
-    "revenue": "Thu nhập",
-    "profit": "Lợi nhuận",
-    "numberOfOrder": "Số lượng đơn hàng",
-    "importOrder": "Đơn nhập hàng",
-    "exportOrder": "Đơn xuất hàng",
-    "overviewTitle": "Nhấn vào bất kỳ điểm nào trên biểu đồ để xem chi tiết",
-    "hourly": "Hàng giờ",
-    "day": "Ngày",
-    "week": "Tuần",
-    "month": "Tháng",
-    "reportByDate": "Báo cáo theo ngày",
-    "reportByProduct": "Báo cáo theo sản phẩm"
-  }
+  "accept": "Đồng ý"
 }

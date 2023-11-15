@@ -53,6 +53,7 @@ export default function LoginScreen() {
     ]).then(() => {
       console.log("P", partners);
       setLoading(false);
+      navigate(NAV_LINK.SALE);
     });
   };
 

@@ -32,17 +32,17 @@ export type ButtonProps = {
   /**
    * @type {number} The font size of the text.
    */
-  fontSize?: number;
+  fontSize?: number | string;
 
   /**
    * @type {number} The horizontal padding of the button.
    */
-  paddingHorizontal?: number;
+  paddingHorizontal?: number | string;
 
   /**
    * @type {number} The vertical padding of the button.
    */
-  paddingVertical?: number;
+  paddingVertical?: number | string;
 
   /**
    * @type {number|string} The border radius of the button.

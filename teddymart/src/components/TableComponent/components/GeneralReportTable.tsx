@@ -143,7 +143,7 @@ const GeneralReportTable = ({ filterOption }: { filterOption?: TOptions }) => {
   const [rowsPerPage, setRowsPerPage] = useState("10");
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
-      console.log("ok");
+      //console.log("ok");
       if (selectedRows.length === 0) {
         setSelectedRows([...CONTENT.map((content) => content.id)]);
         return;
@@ -158,7 +158,7 @@ const GeneralReportTable = ({ filterOption }: { filterOption?: TOptions }) => {
     setSelectedRows([...selectedRows, rowId]);
   };
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    console.log("okkkkk");
+    //console.log("okkkkk");
     setRowsPerPage(e.target.value);
   };
   return (

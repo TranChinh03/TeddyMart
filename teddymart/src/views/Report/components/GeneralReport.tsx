@@ -1,6 +1,7 @@
 import { ModalSelectDate } from "components";
 import ButtonComponent from "components/ButtonComponent";
 import { BillTable } from "components/TableComponent";
+import GeneralReportTable from "components/TableComponent/components/GeneralReportTable";
 import TextComponent from "components/TextComponent";
 import { COLORS } from "constants/colors";
 import { useState } from "react";
@@ -27,7 +28,7 @@ export default function GeneralReport() {
           </TextComponent>
         </div>
         <div className="w-full py-2 px-3 flex items-center justify-between flex-wrap">
-          <div className="flex">
+          <div className="flex items-end">
             <ButtonComponent
               onClick={() => {}}
               label={t("button.all")}
@@ -49,7 +50,9 @@ export default function GeneralReport() {
           />
         </div>
       </div>
-      <BillTable />
+      <div className="w-[98%] self-center flex mx-auto">
+        <GeneralReportTable />
+      </div>
     </div>
   );
 }

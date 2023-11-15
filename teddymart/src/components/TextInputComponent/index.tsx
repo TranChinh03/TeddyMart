@@ -67,7 +67,7 @@ export default function TextInputComponent({
         </div>
       )}
       <div
-        className={`flex items-center outline outline-1 outline-gray-300 p-2  focus-within:outline-2 focus-within:outline-black w-full border-${borderColor}`}
+        className={`flex items-center outline outline-1 outline-gray-300 p-2 focus-within:outline-2 focus-within:outline-black w-full border-${borderColor}`}
         style={{ borderRadius: borderRadius, ...style }}
       >
         {iconLeft && <button>{iconLeft}</button>}
