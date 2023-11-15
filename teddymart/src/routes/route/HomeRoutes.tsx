@@ -12,6 +12,11 @@ import VoucherScreen from "views/Voucher/VoucherScreen";
 import GroupProductScreen from "views/GroupProduct/GroupProductScreen";
 import { useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
+import {
+  ImportOrder,
+  Warehouse,
+  WarehouseList,
+} from "views/Warehouse/components";
 export default function HomeRoutes() {
   const { openDrawer } = useSelector((state: RootState) => state.controlSlice);
   return (
@@ -45,6 +50,9 @@ export default function HomeRoutes() {
           <Route path="customer" element={<CustomerScreen />} />
           <Route path="supplier" element={<SupplierScreen />} />
           <Route path="warehouse" element={<WarehouseScreen />} />
+          <Route path="warehouse/warehouseManagement" element={<Warehouse />} />
+          <Route path="warehouse/warehouseList" element={<WarehouseList />} />
+          <Route path="warehouse/importOrder" element={<ImportOrder />} />
           <Route path="voucher" element={<VoucherScreen />} />
           <Route path="draft" element={<Draft />} />
           <Route path="groupproduct" element={<GroupProductScreen />} />

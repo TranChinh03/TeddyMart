@@ -25,4 +25,8 @@ export const COLORS = {
   light_purple: "#3d4b98",
   extra_gray: "#888888",
   primaryBlue: "#207fff",
+  red: "#ff0000",
+  green: "#30c93f",
+  yellow: "#c9c330",
+  blue: "#217ca3",
 };

@@ -5,6 +5,8 @@ import PartnerTable from "./components/PartnerTable";
 import VoucherTable from "./components/VoucherTable";
 import GroupProductTable from "./components/GroupProductTable";
 import ManagerTable from "./components/ManagerTable";
+import ReportProductTable from "./components/ReportProductTable";
+import GeneralReportTable from "./components/GeneralReportTable";
 export {
   BillTable,
   PartnerTable,
@@ -13,4 +15,6 @@ export {
   VoucherTable,
   GroupProductTable,
   ManagerTable,
+  ReportProductTable,
+  GeneralReportTable,
 };

@@ -10,6 +10,7 @@ interface SearchComponentProps {
   search?: string;
   setSearch?: (search: string) => void;
   width?: number | string;
+  style?: React.CSSProperties;
 }
 
 const SearchComponent: React.FC<SearchComponentProps> = ({
@@ -18,6 +19,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
   search,
   setSearch,
   width,
+  style,
 }) => {
   // const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
   // console.log(info?.source, value);
@@ -30,7 +32,14 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
       setValue={setSearch}
       iconLeft={<BiSearch style={{ marginTop: "0.2em" }} />}
       textInputSize={"14px"}
-      style={{ borderWidth: 1.2, borderColor: COLORS.lightGray, width }}
+      style={{
+        borderWidth: 1.2,
+        borderColor: COLORS.lightGray,
+        width,
+        paddingTop: "10px",
+        paddingBottom: "10px",
+        ...style,
+      }}
     />
   );
 };

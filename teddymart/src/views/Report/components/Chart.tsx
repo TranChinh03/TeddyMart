@@ -67,7 +67,7 @@ function Chart() {
     t("report.month"),
   ];
   return (
-    <div className="bg-white border-1.5  mx-5 my-1.5 rounded-md">
+    <div className="bg-white border-1.5 mx-5 my-1.5 rounded-md">
       <div className="divide-y">
         {/* Header */}
         <div className="pt-5 pb-2 px-3">
@@ -112,7 +112,7 @@ function Chart() {
       </div>
       {/* Chart */}
       <div className="p-5">
-        <ResponsiveContainer width={window.innerWidth * 0.7} height={500}>
+        <ResponsiveContainer width={"100%"} height={500}>
           <LineChart
             data={data}
             margin={{

@@ -138,8 +138,13 @@ export default function Drawer() {
         inlineCollapsed={openDrawer}
         style={{ borderWidth: 0 }}
         onClick={(e) => {
-          navigate(e.key);
-          setCurrentTab(e.key);
+          if (e.key === "SignOut") {
+            dispatch({ type: "RESET_ALL_STORES" });
+            navigate(NAV_LINK.LOGIN);
+          } else {
+            navigate(e.key);
+            setCurrentTab(e.key);
+          }
         }}
         items={DRAWER_ITEM.map((d, i) => ({
           label: (

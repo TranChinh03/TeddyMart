@@ -69,7 +69,11 @@
     "addOrder":"Add Order",
     "addMenu":"Add To Menu",
     "publish":"Publish",
-    "updateVoucher":"Update Voucher"
+    "updateVoucher":"Update Voucher",
+    "nameAZ": "Name: A → Z",
+    "nameZA": "Name: Z → A",
+    "quantity1": "Quantity: Low → High",
+    "quantity2": "Quantity: High → Low"
   },
   "group": {
     "groupId": "Group ID",
@@ -92,12 +96,18 @@
     "note": "Note",
     "receiver": "Receiver",
     "listProduct": "List Product",
-    "placeholderSearch":"Search orders or custumer information",
-    "addNewOrder":"Add New Order",
-    "customerInfo":"Customer Information",
-    "searchCusPhoneNumber":"Search customer and phone number"
+    "placeholderSearch": "Search orders or custumer information"
   },
-
+  "report": {
+    "revenue": "Revenue",
+    "outcome": "Outcome",
+    "profit": "Profit",
+    "totalOrder": "Total Order",
+    "totalImportOrder": "Total Import Order",
+    "createdAt": "Created At",
+    "product": "Product",
+    "quantity": "Quantity"
+  },
   "voucher": {
     "searchVoucher": "Search by voucher's name",
     "voucherID": "Voucher ID",
@@ -105,7 +115,7 @@
     "publicDate": "Public Date",
     "expirationDate": "Expiration Date",
     "discountAmount": "Discount Amount",
-    "voucherInfo":"Voucher Information",
+    "voucherInfo": "Voucher Information",
     "note": "Note"
   },
   "partner": {
@@ -144,8 +154,8 @@
     "costPrice": "Cost Price",
     "VAT": "VAT",
     "productInfo":"Product Information",
-    "searchProduct":"Search Product",
-    "searchProductFromOrder":"Search Product From Order"
+    "searchProductFromOrder":"Search Product From Order",
+    "searchProduct": "Search Product"
   },
   "warehouse": {
     "warehouse": "Warehouse",
@@ -156,7 +166,13 @@
     "status": "Status",
     "warehouseName": "Warehouse Name",
     "createdAt": "Created At",
-    "address": "Address"
+    "address": "Address",
+    "warehouseManagement": "Warehouse Management",
+    "manageInventory": "Manage inventory information",
+    "manageList": "Manage inventory list",
+    "importOrder": "Import orders",
+    "manageImportOrder": "Manage import orders",
+    "searchByName": "Search By Name"
   },
   "activities": "Activities",
   "note": "Note",
@@ -178,13 +194,13 @@
     "from": "From",
     "to": "To"
   },
-  "sort":{
-    "orderAscending":"Order ID: Ascending",
-    "orderDescending":"Order ID: Descending",
-    "createdAtNewest":"Created At: Newest First",
-    "createdAtOldest":"Created At: Oldest First",
-    "totalPaymentAscending":"Total Payment: Ascending",
-    "totalPaymentDescending":"Total Payment: Descending"
+  "sort": {
+    "orderAscending": "Order ID: Ascending",
+    "orderDescending": "Order ID: Descending",
+    "createdAtNewest": "Created At: Newest First",
+    "createdAtOldest": "Created At: Oldest First",
+    "totalPaymentAscending": "Total Payment: Ascending",
+    "totalPaymentDescending": "Total Payment: Descending"
   },
   "cancel": "Cancel",
   "accept": "Accept",
@@ -212,5 +228,6 @@
     "product":"Product",
     "quantity":"Quantity"
   },
-  "warningTxt":"Confirm you will delete this section from the system!"
+  "warningTxt":"Confirm you will delete this section from the system!",
+  "accept": "Accept"
 }

@@ -8,6 +8,7 @@ import {
 } from "./components";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { COLORS } from "constants/colors";
 export default function ReportScreen() {
   const { t } = useTranslation();
   const CARD_TITLE: string[] = [
@@ -22,26 +23,38 @@ export default function ReportScreen() {
     {
       name: "outcome",
       selected: true,
+      color: COLORS.red,
+      amount: 10,
     },
     {
       name: "revenue",
       selected: true,
+      color: COLORS.yellow,
+      amount: 10,
     },
     {
       name: "profit",
       selected: true,
+      color: COLORS.green,
+      amount: 10,
     },
     {
       name: "numberOfOrder",
       selected: true,
+      color: COLORS.blue,
+      amount: 10,
     },
     {
       name: "importOrder",
       selected: true,
+      color: COLORS.blue,
+      amount: 10,
     },
     {
       name: "exportOrder",
       selected: true,
+      color: COLORS.blue,
+      amount: 10,
     },
   ]);
   const onClickCard = (name: string) => {
@@ -60,7 +73,7 @@ export default function ReportScreen() {
     <div className="bg-extreme_lg_grey pb-10 w-full">
       <Header width={"100%"} title={t("report.report")} />
       <SubHeader />
-      <div className="p-5 grid md:grid-cols-3 gap-10 grid-cols-1 sm:grid-cols-2">
+      <div className="p-5 grid md:grid-cols-3 gap-x-8 grid-cols-1 gap-y-4 sm:grid-cols-2">
         {cards.map((card, i) => {
           return (
             <CardButton
@@ -68,6 +81,8 @@ export default function ReportScreen() {
               key={i}
               onClick={() => onClickCard(card.name)}
               selected={card.selected}
+              color={card.color}
+              amount={card.amount}
             />
           );
         })}

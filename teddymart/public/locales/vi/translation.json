@@ -57,12 +57,7 @@
     "cancel": "Hủy",
     "view": "Xem",
     "time": "Thời gian",
-    "addOrder":"Tạo đơn",
-    "displayAll":"Hiển thị toàn bộ",
-    "addMenu":"Thêm vào menu",
-    "publish":"Đăng",
-    "updateVoucher":"Cập nhật mã giảm giá"
-
+    "addOrder":"Tạo đơn"
   },
   "sale": {
     "importOrder": "Nhập hàng",
@@ -81,13 +76,10 @@
     "note": "Ghi chú",
     "receiver": "Người nhận",
     "listProduct": "Danh sách sản phẩm",
-    "placeholderSearch":"Tìm kiếm đơn hàng và thông tin khách hàng",
-    "addNewOrder":"Thêm đơn hàng mới",
-    "customerInfo":"Thông tin khách hàng",
-    "searchCusPhoneNumber":"Tìm thông tin khách hàng theo số điện thoại"
-
-
-
+    "placeholderSearch": "Tìm kiếm đơn hàng và thông tin khách hàng",
+    "addNewOrder": "Thêm đơn hàng mới",
+    "customerInfo": "Thông tin khách hàng",
+    "searchCusPhoneNumber": "Tìm thông tin khách hàng theo số điện thoại"
   },
   "voucher": {
     "searchVoucher": "Tìm kiếm theo tên voucher",
@@ -97,7 +89,7 @@
     "expirationDate": "Ngày hết hạn",
     "discountAmount": "Số lượng giảm giá",
     "note": "Ghi chú",
-    "voucherInfo":"Thông tin mã giảm giá"
+    "voucherInfo":"Thông tin sản phẩm"
   },
   "partner": {
     "customer": "Khách hàng",
@@ -118,7 +110,30 @@
     "certificate": "Bằng kinh doanh",
     "supplierID": "Mã nhà cung cấp"
   },
- 
+  "report": {
+    "revenue": "Doanh thu",
+    "outcome": "Chi phí",
+    "profit": "Lợi nhuận",
+    "totalOrder": "Số lượng đơn hàng",
+    "totalImportOrder": "Số lượng đơn nhập hàng",
+    "createdAt": "Ngày tạo",
+    "product": "Sản phẩm",
+    "quantity": "Số lượng",
+    "report": "Báo cáo",
+    "overviewReport": "Báo cáo tổng quan",
+    "overviewChart": "Biểu đồ tổng quan",
+    "numberOfOrder": "Số lượng đơn hàng",
+    "importOrder": "Đơn nhập hàng",
+    "exportOrder": "Đơn xuất hàng",
+    "overviewTitle": "Nhấn vào bất kỳ điểm nào trên biểu đồ để xem chi tiết",
+    "hourly": "Hàng giờ",
+    "day": "Ngày",
+    "week": "Tuần",
+    "month": "Tháng",
+    "reportByDate": "Báo cáo theo ngày",
+    "reportByProduct": "Báo cáo theo sản phẩm"
+  },
+
   "product": {
     "productGroup": "Nhóm sản phẩm",
     "product": "Sản phẩm",
@@ -136,9 +151,7 @@
     "costPrice": "Giá vốn",
     "VAT": "VAT",
     "productInfo":"Thông tin sản phẩm",
-    "searchProduct":"Tìm kiếm theo sản phẩm",
-    "searchProductFromOrder":"Tìm kiếm sản phẩm theo đơn hàng"
-
+    "searchProduct":"Tìm kiếm theo sản phẩm"
   },
   "group": {
     "groupId": "Mã nhóm",
@@ -154,7 +167,7 @@
     "shopName": "Tên cửa hàng"
   },
   "warehouse": {
-    "warehouse": "Quản lý kho",
+    "warehouse": "Nhà kho",
     "warehouseID": "Mã kho",
     "listProduct": "Danh sách sản phẩm",
     "warehouseList": "Danh sách kho",
@@ -162,7 +175,13 @@
     "status": "Trạng thái",
     "warehouseName": "Tên kho",
     "createdAt": "Ngày tạo",
-    "address": "Địa chỉ"
+    "address": "Địa chỉ",
+    "warehouseManagement": "Quản lý kho",
+    "manageInventory": "Quản lý thông tin kho hàng",
+    "manageList": "Quản lý danh sách kho",
+    "importOrder": "Đơn nhập hàng",
+    "manageImportOrder": "Quản lý đơn nhập hàng",
+    "searchByName": "Tìm kiếm theo tên"
   },
   "activities": "Chức năng",
   "note": "Ghi chú",
@@ -184,15 +203,14 @@
     "from": "Từ ngày",
     "to": "Đến ngày"
   },
-  "sort":{
-    "orderAscending":"Sắp xếp orderID tăng dần",
-    "orderDescending":"Sắp xếp orderID giảm dần",
-    "createdAtNewest":"Thời gian gần nhất",
-    "createdAtOldest":"Thời gian xa nhất",
-    "totalPaymentAscending":"Sắp xếp tổng thanh toán tăng dần",
-    "totalPaymentDescending":"Sắp xếp tổng thanh toán giảm dần"
+  "sort": {
+    "orderAscending": "Sắp xếp orderID tăng dần",
+    "orderDescending": "Sắp xếp orderID giảm dần",
+    "createdAtNewest": "Thời gian gần nhất",
+    "createdAtOldest": "Thời gian xa nhất",
+    "totalPaymentAscending": "Sắp xếp tổng thanh toán tăng dần",
+    "totalPaymentDescending": "Sắp xếp tổng thanh toán giảm dần"
   },
-  
   "cancel": "Hủy",
   "accept": "Đồng ý",
   "report": {
@@ -218,7 +236,5 @@
     "createdAt":"Ngày tạo",
     "product":"Sản phẩm",
     "quantity":"Số lượng"
-  },
-  "warningTxt":"Bạn có xác nhận xóa thông tin này khỏi hệ thống!"
-
+  }
 }
