@@ -66,8 +66,10 @@
     "cancel": "Cancel",
     "view": "View",
     "time": "Time",
-    "addOrder":"Add Order"
-
+    "addOrder":"Add Order",
+    "addMenu":"Add To Menu",
+    "publish":"Publish",
+    "updateVoucher":"Update Voucher"
   },
   "group": {
     "groupId": "Group ID",
@@ -142,8 +144,8 @@
     "costPrice": "Cost Price",
     "VAT": "VAT",
     "productInfo":"Product Information",
-    "searchProduct":"Search Product"
-
+    "searchProduct":"Search Product",
+    "searchProductFromOrder":"Search Product From Order"
   },
   "warehouse": {
     "warehouse": "Warehouse",
@@ -209,5 +211,6 @@
     "createdAt":"Created At",
     "product":"Product",
     "quantity":"Quantity"
-  }
+  },
+  "warningTxt":"Confirm you will delete this section from the system!"
 }

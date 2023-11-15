@@ -53,6 +53,7 @@ export default function SaleScreen() {
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
+  const [openSearchModal, setOpenSearchModal] = useState(false);
   const { t } = useTranslation();
   const [openAddForm, setOpenAddForm] = useState(false);
   const [listFilter, setListFilter] = useState([
@@ -257,7 +258,13 @@ export default function SaleScreen() {
           title={
             <Space>
               <h1 className=" text-2xl">{t("product.productInfo")}</h1>
-              <DropdownComponent options={["Ware house 1"]} />
+              <DropdownComponent
+                options={[
+                  "Central Warehouse",
+                  "Western Warehouse",
+                  "Eastern Warehouse",
+                ]}
+              />
             </Space>
           }
           bordered={true}
@@ -273,6 +280,10 @@ export default function SaleScreen() {
               width={"100%"}
               iconLeft={<BiSearch size={28} />}
               placeHolder={t("product.searchProduct")}
+              setValue={(value) => {}}
+              enterAction={() => {
+                setOpenSearchModal(!openSearchModal);
+              }}
             />
             <ButtonComponent
               label={t("product.addNewProduct")}
@@ -333,6 +344,53 @@ export default function SaleScreen() {
             paddingHorizontal={30}
             fontSize={26}
           />
+        </div>
+      </Modal>
+      <Modal
+        title={
+          <h1 className=" text-2xl">{t("product.searchProductFromOrder")}</h1>
+        }
+        open={openSearchModal}
+        onCancel={() => setOpenSearchModal(false)}
+        footer={false}
+        width={"70%"}
+      >
+        <Divider style={{ backgroundColor: "black" }} />
+        <div className="flex items-center justify-between">
+          <DropdownComponent label="Product Group" options={[]} />
+          <TextInputComponent
+            label="Insert name to search"
+            width={"70%"}
+            iconLeft={<BiSearch />}
+          />
+        </div>
+        <div className="flex items-center my-3">
+          <div className="flex w-full" />
+          <ButtonComponent
+            label={t("button.displayAll")}
+            onClick={() => {}}
+            backgroundColor="#74ADC6"
+          />
+        </div>
+        <ProductTable />
+        <div className="flex items-center">
+          <div className="flex w-full" />
+          <Space>
+            <ButtonComponent
+              label={t("button.cancel")}
+              onClick={() => {}}
+              backgroundColor="#9A9A9A"
+            />
+            <ButtonComponent
+              label={t("button.addMenu")}
+              onClick={() => {}}
+              style={{
+                backgroundColor: "white",
+                borderWidth: 1,
+                color: "#9A9A9A",
+              }}
+            />
+          </Space>
         </div>
       </Modal>
     </div>

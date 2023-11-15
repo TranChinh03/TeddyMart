@@ -57,7 +57,12 @@
     "cancel": "Hủy",
     "view": "Xem",
     "time": "Thời gian",
-    "addOrder":"Tạo đơn"
+    "addOrder":"Tạo đơn",
+    "displayAll":"Hiển thị toàn bộ",
+    "addMenu":"Thêm vào menu",
+    "publish":"Đăng",
+    "updateVoucher":"Cập nhật mã giảm giá"
+
   },
   "sale": {
     "importOrder": "Nhập hàng",
@@ -92,7 +97,7 @@
     "expirationDate": "Ngày hết hạn",
     "discountAmount": "Số lượng giảm giá",
     "note": "Ghi chú",
-    "voucherInfo":"Thông tin sản phẩm"
+    "voucherInfo":"Thông tin mã giảm giá"
   },
   "partner": {
     "customer": "Khách hàng",
@@ -131,7 +136,9 @@
     "costPrice": "Giá vốn",
     "VAT": "VAT",
     "productInfo":"Thông tin sản phẩm",
-    "searchProduct":"Tìm kiếm theo sản phẩm"
+    "searchProduct":"Tìm kiếm theo sản phẩm",
+    "searchProductFromOrder":"Tìm kiếm sản phẩm theo đơn hàng"
+
   },
   "group": {
     "groupId": "Mã nhóm",
@@ -211,5 +218,7 @@
     "createdAt":"Ngày tạo",
     "product":"Sản phẩm",
     "quantity":"Số lượng"
-  }
+  },
+  "warningTxt":"Bạn có xác nhận xóa thông tin này khỏi hệ thống!"
+
 }

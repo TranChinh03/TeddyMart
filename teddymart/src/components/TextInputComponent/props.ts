@@ -34,4 +34,5 @@ export type Props = {
   registerName?: string;
   readOnly?: boolean;
   onClick?: () => void;
+  enterAction?: () => void;
 };

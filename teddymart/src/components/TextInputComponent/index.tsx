@@ -23,6 +23,7 @@ import { useForm, SubmitHandler, UseFormRegister } from "react-hook-form";
  * @param value - The current value of the input.
  * @param setValue - Function to update the value of the input.
  * @param outerStyle - style outline of textinput
+ * @param enterAction - hanlde enter press
  */
 export default function TextInputComponent({
   labelFontWeight = "font-medium",
@@ -49,6 +50,7 @@ export default function TextInputComponent({
   registerName,
   readOnly = false,
   onClick = () => {},
+  enterAction,
 }: Props) {
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -96,6 +98,9 @@ export default function TextInputComponent({
             style={{ fontSize: textInputSize, color: textInputColor }}
             readOnly={readOnly}
             onClick={onClick}
+            onKeyDownCapture={(e) => {
+              if (e.key === "Enter") enterAction();
+            }}
           />
         )}
 
