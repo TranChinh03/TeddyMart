@@ -65,7 +65,9 @@
     "accept": "Accept",
     "cancel": "Cancel",
     "view": "View",
-    "time": "Time"
+    "time": "Time",
+    "addOrder":"Add Order"
+
   },
   "group": {
     "groupId": "Group ID",
@@ -88,19 +90,12 @@
     "note": "Note",
     "receiver": "Receiver",
     "listProduct": "List Product",
-    "placeholderSearch":"Search orders or custumer information"
+    "placeholderSearch":"Search orders or custumer information",
+    "addNewOrder":"Add New Order",
+    "customerInfo":"Customer Information",
+    "searchCusPhoneNumber":"Search customer and phone number"
   },
-  "report":{
-    "revenue": "Revenue",
-    "outcome":"Outcome",
-    "profit":"Profit",
-    "totalOrder":"Total Order",
-    "totalImportOrder":"Total Import Order",
-    "createdAt":"Created At",
-    "product":"Product",
-    "quantity":"Quantity"
 
-  },
   "voucher": {
     "searchVoucher": "Search by voucher's name",
     "voucherID": "Voucher ID",
@@ -108,6 +103,7 @@
     "publicDate": "Public Date",
     "expirationDate": "Expiration Date",
     "discountAmount": "Discount Amount",
+    "voucherInfo":"Voucher Information",
     "note": "Note"
   },
   "partner": {
@@ -144,7 +140,10 @@
     "productName": "Product Name",
     "retailPrice": "Retail Price",
     "costPrice": "Cost Price",
-    "VAT": "VAT"
+    "VAT": "VAT",
+    "productInfo":"Product Information",
+    "searchProduct":"Search Product"
+
   },
   "warehouse": {
     "warehouse": "Warehouse",
@@ -203,6 +202,12 @@
     "week": "Week",
     "month": "Month",
     "reportByDate": "Report by date",
-    "reportByProduct": "Report by product"
+    "reportByProduct": "Report by product",
+    "addNewOrder":"Add New Order",   
+    "totalOrder":"Total Order",
+    "totalImportOrder":"Total Import Order",
+    "createdAt":"Created At",
+    "product":"Product",
+    "quantity":"Quantity"
   }
 }

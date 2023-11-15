@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 import { t } from "i18next";
 import { ChangeEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -20,6 +20,8 @@ type TContent = {
   cost_price: number;
   VAT: number;
   note: string;
+  quantity?: number;
+  totalPrice?: number;
 };
 const CONTENT: TContent[] = [
   {
@@ -93,6 +95,8 @@ type TOptions = {
   costPrice?: boolean;
   VAT?: boolean;
   note?: boolean;
+  quantity?: boolean;
+  totalPrice?: boolean;
 };
 const ProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
   const { t } = useTranslation();
@@ -106,6 +110,8 @@ const ProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
     costPrice: true,
     VAT: true,
     note: true,
+    quantity: false,
+    totalPrice: false,
     ...filterOption,
   };
   const HEADER = useMemo(
@@ -113,11 +119,13 @@ const ProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
       [
         options.productId && t("product.productId"),
         options.productName && t("productName"),
+        options.quantity && t("warehouse.quantity"),
         options.productGroup && t("product.productGroup"),
         options.productGroupName && t("product.productGroupName"),
         options.productImage && t("product.productImage"),
         options.retailPrice && t("product.retailPrice"),
         options.costPrice && t("product.costPrice"),
+        options.totalPrice && t("sale.totalPayment"),
         options.VAT && t("product.VAT"),
         options.note && t("note"),
         t("activities"),
@@ -190,6 +198,12 @@ const ProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
                     {content.productName}
                   </td>
                 )}
+                {options.quantity && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.quantity ?? 0}
+                  </td>
+                )}
+
                 {options.productGroup && (
                   <td className="border border-gray-300 p-2 text-sm">
                     {content.groupId}
@@ -217,9 +231,18 @@ const ProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
                   </td>
                 )}
                 {options.costPrice && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.cost_price}
-                  </td>
+                  <Tooltip title="Price = Sell price * (1+VAT)">
+                    <td className="border border-gray-300 p-2 text-sm">
+                      {content.cost_price}
+                    </td>
+                  </Tooltip>
+                )}
+                {options.totalPrice && (
+                  <Tooltip title="Total Price = Price * Quantity">
+                    <td className="border border-gray-300 p-2 text-sm">
+                      {content.totalPrice ?? 0}
+                    </td>
+                  </Tooltip>
                 )}
                 {options.VAT && (
                   <td className="border border-gray-300 p-2 text-sm">
