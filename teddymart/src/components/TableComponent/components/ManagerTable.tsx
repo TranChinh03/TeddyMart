@@ -54,16 +54,17 @@ const ManagerTable = ({ filterOption }: { filterOption?: TOptions }) => {
     ...filterOption,
   };
   const HEADER = useMemo(
-    () => [
-      options.userId && t("manager.userId"),
-      options.userName && t("manager.userName"),
-      options.photoURL && t("manager.photoURL"),
-      options.address && t("manager.address"),
-      options.phoneNumber && t("manager.phoneNumber"),
-      options.email && t("manager.email"),
-      options.shopName && t("manager.shopName"),
-      t("activities"),
-    ],
+    () =>
+      [
+        options.userId && t("manager.userId"),
+        options.userName && t("manager.userName"),
+        options.photoURL && t("manager.photoURL"),
+        options.address && t("manager.address"),
+        options.phoneNumber && t("manager.phoneNumber"),
+        options.email && t("manager.email"),
+        options.shopName && t("manager.shopName"),
+        t("activities"),
+      ].filter((value) => Boolean(value) !== false),
     [t, options]
   );
   const [selectedRows, setSelectedRows] = useState([]);

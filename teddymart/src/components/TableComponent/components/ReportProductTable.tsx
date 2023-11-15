@@ -86,17 +86,31 @@ const CONTENT: TContent[] = [
     quantity: 123,
   },
 ];
-const ReportProductTable = () => {
+type TOptions = {
+  product?: boolean;
+  quantity?: boolean;
+  revenue?: boolean;
+  profit?: boolean;
+};
+const ReportProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
   const { t } = useTranslation();
+  const options: TOptions = {
+    product: true,
+    quantity: true,
+    revenue: true,
+    profit: true,
+    ...filterOption,
+  };
   const HEADER = useMemo(
-    () => [
-      "#",
-      t("report.product"),
-      t("report.quantity"),
-      t("report.revenue"),
-      t("report.profit"),
-    ],
-    [t]
+    () =>
+      [
+        "#",
+        options.product && t("report.product"),
+        options.quantity && t("report.quantity"),
+        options.revenue && t("report.revenue"),
+        options.profit && t("report.profit"),
+      ].filter((value) => Boolean(value) !== false),
+    [t, options]
   );
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState("10");
@@ -155,18 +169,26 @@ const ReportProductTable = () => {
                   {content.id}
                 </td>
 
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.product}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.quantity}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.revenue}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.profit}
-                </td>
+                {options.product && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.product}
+                  </td>
+                )}
+                {options.quantity && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.quantity}
+                  </td>
+                )}
+                {options.revenue && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.revenue}
+                  </td>
+                )}
+                {options.profit && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.profit}
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

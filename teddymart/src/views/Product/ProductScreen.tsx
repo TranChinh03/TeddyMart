@@ -6,26 +6,31 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import SearchComponent from "components/SearchComponent";
 import ButtonComponent from "components/ButtonComponent";
 import { COLORS } from "constants/colors";
-import { LiaBarcodeSolid, LiaFileExcel, LiaRecycleSolid, LiaScribd } from "react-icons/lia";
+import {
+  LiaBarcodeSolid,
+  LiaFileExcel,
+  LiaRecycleSolid,
+  LiaScribd,
+} from "react-icons/lia";
 import { TiPlus } from "react-icons/ti";
 import { BiFilter } from "react-icons/bi";
 import { ResponsiveContainer } from "recharts";
 import { ProductTable } from "components/TableComponent";
 
 export default function ProductScreen() {
-  const [screens, setScreens] = useState()
-  const [type, setType] = useState()
-  const [productGroup, setProductGroup] = useState()
-  const [status, setStatus] = useState()
-  const [storeManagement, setStoreManagement] = useState()
-  const [sort, setSort] = useState()
-  const [search, setSearch] = useState()
+  const [screens, setScreens] = useState();
+  const [type, setType] = useState();
+  const [productGroup, setProductGroup] = useState();
+  const [status, setStatus] = useState();
+  const [storeManagement, setStoreManagement] = useState();
+  const [sort, setSort] = useState();
+  const [search, setSearch] = useState();
 
   const chartWidth = window.innerWidth * 0.8;
 
   return (
     <div className="w-full">
-      <Header width={"100%"} title={"Product"} ></Header>
+      <Header width={"100%"} title={"Product"}></Header>
       <div
         className="bg-white border-2 p-5 mx-1.5 my-1.5 rounded-md"
         style={{
@@ -38,78 +43,93 @@ export default function ProductScreen() {
           <div className="flex justify-start">
             <div className="mx-2">
               <ButtonSelect
-                  iconRight={
-                    <IoMdArrowDropdown style={{ marginLeft: 50, color: "gray" }} />
-                  }
-                  title="All"
-                  label="Type"
-                  value={type}
-                  setValue={setType}
-                  options={["All", "Product", "Combo"]}
-                />
+                iconRight={
+                  <IoMdArrowDropdown
+                    style={{ marginLeft: 50, color: "gray" }}
+                  />
+                }
+                title="All"
+                label="Type"
+                value={type}
+                setValue={setType}
+                options={["All", "Product", "Combo"]}
+              />
             </div>
             <div className="mx-2">
-              <SearchComponent placeholder="Insert name to search!"/>
+              <SearchComponent placeholder="Insert name to search!" />
             </div>
             <div className="mx-2">
               <ButtonComponent
-                  onClick={() => alert("Button Clicked")}
-                  paddingHorizontal={10}
-                  paddingVertical={10}
-                  borderRadius={100}
-                  iconLeft={<BiFilter style={{ color: "white", fontSize: 22 }} />}
-                />
+                onClick={() => alert("Button Clicked")}
+                paddingHorizontal={10}
+                paddingVertical={10}
+                borderRadius={100}
+                iconLeft={<BiFilter style={{ color: "white", fontSize: 22 }} />}
+              />
             </div>
           </div>
           <div className="flex justify-around">
-              <div>
-                <ButtonComponent
-                    label="Delete"
-                    onClick={() => alert("Button Clicked")}
-                    backgroundColor = {COLORS.checkbox_bg}
+            <div>
+              <ButtonComponent
+                label="Delete"
+                onClick={() => alert("Button Clicked")}
+                backgroundColor={COLORS.checkbox_bg}
+              />
+            </div>
+            <div>
+              <ButtonComponent
+                label="Import or Export Excel"
+                onClick={() => alert("Button Clicked")}
+                backgroundColor={COLORS.lightBlack}
+                iconLeft={
+                  <LiaFileExcel
+                    style={{ marginRight: 10, color: "white", fontSize: 22 }}
                   />
-                </div>
-              <div>
-                <ButtonComponent
-                  label="Import or Export Excel"
-                  onClick={() => alert("Button Clicked")}
-                  backgroundColor = {COLORS.lightBlack}
-                  iconLeft={
-                    <LiaFileExcel
-                      style={{ marginRight: 10, color: "white", fontSize: 22 }}
-                    />
-                  }
-                />
-              </div>
-              <div>
-                <ButtonComponent
-                  label="Add new"
-                  onClick={() => alert("Button Clicked")}
-                  iconLeft={
-                    <TiPlus style={{ marginRight: 10, color: "white", fontSize: 22 }} />
-                  }
-                />
-              </div>
+                }
+              />
+            </div>
+            <div>
+              <ButtonComponent
+                label="Add new"
+                onClick={() => alert("Button Clicked")}
+                iconLeft={
+                  <TiPlus
+                    style={{ marginRight: 10, color: "white", fontSize: 22 }}
+                  />
+                }
+              />
+            </div>
           </div>
           <div className="flex">
             <div className="flex-1">
               <ButtonSelect
                 iconRight={
-                  <IoMdArrowDropdown style={{ marginLeft: 50, color: "gray" }} />
+                  <IoMdArrowDropdown
+                    style={{ marginLeft: 50, color: "gray" }}
+                  />
                 }
                 width={200}
                 title="Name: A-Z"
                 label="Sort"
                 value={sort}
                 setValue={setSort}
-                options={["Name: A-Z", "Name: Z-A", "Price: Low-High", "Price: High-Low", "Last update: Oldest", "Last update: Latest"]}
+                options={[
+                  "Name: A-Z",
+                  "Name: Z-A",
+                  "Price: Low-High",
+                  "Price: High-Low",
+                  "Last update: Oldest",
+                  "Last update: Latest",
+                ]}
               />
             </div>
 
             <div className="flex-1">
               <ButtonSelect
                 iconRight={
-                  <IoMdArrowDropdown style={{ marginLeft: 50, color: "gray" }} />
+                  <IoMdArrowDropdown
+                    style={{ marginLeft: 50, color: "gray" }}
+                  />
                 }
                 width={200}
                 title="All"
@@ -122,13 +142,13 @@ export default function ProductScreen() {
           </div>
         </div>
       </div>
-      <div style={{width: 'fit-content', margin: "auto" }}>
+      <div style={{ width: "fit-content", margin: "auto" }}>
         <ResponsiveContainer width={chartWidth}>
-          <ProductTable/>
+          <ProductTable />
         </ResponsiveContainer>
       </div>
     </div>
-  )
+  );
   //   <div className="w-full">
   //     <Header width={"100%"} title={"Product"} />
   //     <div
@@ -192,7 +212,7 @@ export default function ProductScreen() {
   //             iconLeft={<BiFilter style={{ color: "white", fontSize: 22 }} />}
   //           />
   //           </div>
-          
+
   //         <ButtonSelect
   //           iconRight={
   //             <IoMdArrowDropdown style={{ marginLeft: 50, color: "gray" }} />

@@ -33,19 +33,34 @@ const CONTENT: TContent[] = [
     discountAmount: 1000,
   },
 ];
-
-const VoucherTable = () => {
+type TOptions = {
+  voucherID?: boolean;
+  voucherName?: boolean;
+  publicDate?: boolean;
+  expirationDate?: boolean;
+  discountAmount?: boolean;
+};
+const VoucherTable = ({ filterOption }: { filterOption?: TOptions }) => {
   const { t } = useTranslation();
+  const options: TOptions = {
+    voucherID: true,
+    voucherName: true,
+    publicDate: true,
+    expirationDate: true,
+    discountAmount: true,
+    ...filterOption,
+  };
   const HEADER = useMemo(
-    () => [
-      t("voucher.voucherID"),
-      t("voucher.voucherName"),
-      t("voucher.publicDate"),
-      t("voucher.expirationDate"),
-      t("voucher.discountAmount"),
-      t("activities"),
-    ],
-    [t]
+    () =>
+      [
+        options.voucherID && t("voucher.voucherID"),
+        options.voucherName && t("voucher.voucherName"),
+        options.publicDate && t("voucher.publicDate"),
+        options.expirationDate && t("voucher.expirationDate"),
+        options.discountAmount && t("voucher.discountAmount"),
+        t("activities"),
+      ].filter((value) => Boolean(value) !== false),
+    [t, options]
   );
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState("10");

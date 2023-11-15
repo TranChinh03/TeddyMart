@@ -56,7 +56,8 @@
     "accept": "Chấp nhận",
     "cancel": "Hủy",
     "view": "Xem",
-    "time": "Thời gian"
+    "time": "Thời gian",
+    "addOrder": "Tạo đơn"
   },
   "sale": {
     "importOrder": "Nhập hàng",
@@ -75,7 +76,10 @@
     "note": "Ghi chú",
     "receiver": "Người nhận",
     "listProduct": "Danh sách sản phẩm",
-    "placeholderSearch": "Tìm kiếm đơn hàng và thông tin khách hàng"
+    "placeholderSearch": "Tìm kiếm đơn hàng và thông tin khách hàng",
+    "addNewOrder": "Thêm đơn hàng mới",
+    "customerInfo": "Thông tin khách hàng",
+    "searchCusPhoneNumber": "Tìm thông tin khách hàng theo số điện thoại"
   },
   "voucher": {
     "searchVoucher": "Tìm kiếm theo tên voucher",
@@ -84,7 +88,8 @@
     "publicDate": "Ngày áp dụng",
     "expirationDate": "Ngày hết hạn",
     "discountAmount": "Số lượng giảm giá",
-    "note": "Ghi chú"
+    "note": "Ghi chú",
+    "voucherInfo": "Thông tin sản phẩm"
   },
   "partner": {
     "customer": "Khách hàng",
@@ -128,6 +133,7 @@
     "reportByDate": "Báo cáo theo ngày",
     "reportByProduct": "Báo cáo theo sản phẩm"
   },
+
   "product": {
     "productGroup": "Nhóm sản phẩm",
     "product": "Sản phẩm",
@@ -143,7 +149,9 @@
     "productName": "Tên sản phẩm",
     "retailPrice": "Giá bán lẻ",
     "costPrice": "Giá vốn",
-    "VAT": "VAT"
+    "VAT": "VAT",
+    "productInfo": "Thông tin sản phẩm",
+    "searchProduct": "Tìm kiếm theo sản phẩm"
   },
   "group": {
     "groupId": "Mã nhóm",
