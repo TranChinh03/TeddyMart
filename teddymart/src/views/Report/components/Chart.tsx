@@ -76,12 +76,21 @@ function Chart({ time, options }: Props) {
   const GAPS = [t("report.day"), t("report.week"), t("report.month")];
   const ORDERS = useSelector((state: RootState) => state.order);
   const REPORTS = useSelector((state: RootState) => state.reportSlice);
-  console.log("TIME", time);
   const [data, setData] = useState<TReport[]>([]);
   useEffect(() => {
-    if (gap === 0) {
-    }
-  }, [time, gap]);
+    let tmp: TReport[] = [];
+    // if (gap === 0) {
+    REPORTS.forEach((r) => {
+      if (
+        new Date(r.date).getTime() >= new Date(time.from).getTime() &&
+        new Date(r.date).getTime() <= new Date(time.to).getTime()
+      ) {
+        tmp.push(r);
+      }
+    });
+    setData(tmp);
+    //}
+  }, [time, REPORTS]);
   return (
     <div className="bg-white border-1.5 mx-5 my-1.5 rounded-md">
       <div className="divide-y">
@@ -139,20 +148,26 @@ function Chart({ time, options }: Props) {
             }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
+            <XAxis dataKey="date" />
             <YAxis />
             <Tooltip />
             <Legend />
             <Line
               type="linear"
-              dataKey="import"
-              stroke="#64a4bf"
+              dataKey="outcome"
+              stroke={COLORS.red}
               strokeWidth={2}
             />
             <Line
               type="linear"
-              dataKey="export"
-              stroke="#f34334"
+              dataKey="revenue"
+              stroke={COLORS.yellow}
+              strokeWidth={2}
+            />
+            <Line
+              type="linear"
+              dataKey="profit"
+              stroke={COLORS.green}
               strokeWidth={2}
             />
           </LineChart>

@@ -7,11 +7,20 @@ import {
   ProductReport,
 } from "./components";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { COLORS } from "constants/colors";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
+
 export default function ReportScreen() {
+  const initialValue = {
+    outcome: 0,
+    revenue: 0,
+    profit: 0,
+    numberOfOrder: 0,
+    importOrder: 0,
+    exportOrder: 0,
+  };
   const { t } = useTranslation();
   const CARD_TITLE: string[] = [
     t("report.outcome"),
@@ -25,47 +34,65 @@ export default function ReportScreen() {
     from: new Date(),
     to: new Date(),
   });
-  const { general: GENERAL } = useSelector(
-    (state: RootState) => state.reportSlice
-  );
+  const REPORTS = useSelector((state: RootState) => state.reportSlice);
+  const [general, setGeneral] = useState<TReport>(initialValue);
   const [cards, setCards] = useState([
     {
       name: "outcome",
       selected: true,
       color: COLORS.red,
-      amount: GENERAL?.outcome,
     },
     {
       name: "revenue",
       selected: true,
       color: COLORS.yellow,
-      amount: GENERAL?.revenue,
     },
     {
       name: "profit",
       selected: true,
       color: COLORS.green,
-      amount: GENERAL?.profit,
     },
     {
       name: "numberOfOrder",
       selected: true,
       color: COLORS.blue,
-      amount: GENERAL?.numberOfOrder,
     },
     {
       name: "importOrder",
       selected: true,
       color: COLORS.blue,
-      amount: GENERAL?.importOrder,
     },
     {
       name: "exportOrder",
       selected: true,
       color: COLORS.blue,
-      amount: GENERAL?.exportOrder,
     },
   ]);
+  useEffect(() => {
+    // console.log("TIME CHANGE");
+    // console.log("FROM ---", time.from);
+    // console.log("TO ---", time.to);
+
+    let tmp = initialValue;
+    //console.log("tmp", tmp);
+    REPORTS?.forEach((r, i) => {
+      //console.log("date", new Date(r.date));
+      if (
+        new Date(r.date).getTime() >= new Date(time.from).getTime() &&
+        new Date(r.date).getTime() <= new Date(time.to).getTime()
+      ) {
+        //console.log("DATE PASS", new Date(r.date), "   i", i);
+        tmp.outcome += r.outcome;
+        tmp.revenue += r.revenue;
+        tmp.profit += r.profit;
+        tmp.numberOfOrder += r.numberOfOrder;
+        tmp.importOrder += r.importOrder;
+        tmp.exportOrder += r.exportOrder;
+      }
+    });
+    setGeneral(tmp);
+  }, [REPORTS, time.from, time.to]);
+
   const onClickCard = (name: string) => {
     let tmp = cards.map((c) => {
       if (c.name === name) {
@@ -83,7 +110,7 @@ export default function ReportScreen() {
       <Header width={"100%"} title={t("report.report")} />
       <SubHeader time={time} setTime={setTime} />
       <div className="p-5 grid md:grid-cols-3 gap-x-8 grid-cols-1 gap-y-4 sm:grid-cols-2">
-        {cards.map((card, i) => {
+        {cards?.map((card, i) => {
           return (
             <CardButton
               title={CARD_TITLE[i].toLocaleUpperCase()}
@@ -91,7 +118,7 @@ export default function ReportScreen() {
               onClick={() => onClickCard(card.name)}
               selected={card.selected}
               color={card.color}
-              amount={card.amount ?? 0}
+              amount={Number(general[card.name])}
             />
           );
         })}

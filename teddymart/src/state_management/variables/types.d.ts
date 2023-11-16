@@ -73,7 +73,7 @@ declare type TOrder = {
     productId: string;
     productName: string;
     quantity: number;
-  };
+  }[];
   note?: string;
   voucherId?: string;
   seller: string;
@@ -82,23 +82,33 @@ declare type TOrder = {
 };
 
 declare type TReport = {
+  date?: Date;
   revenue?: number;
   outcome?: number;
   profit?: number;
   numberOfOrder?: number;
   importOrder?: number;
   exportOrder?: number;
+  [key: string]: number | Date;
 };
 
-declare type TReportSlice = {
-  general: TReport;
-  byDate?: {
-    date?: string;
-    report?: TReport[];
-  };
-};
+// declare type TReportSlice = {
+//   general: TReport;
+//   byDate?: {
+//     date?: string;
+//     report?: TReport[];
+//   };
+// };
 
 declare type D = {
   from: Date;
   to: Date;
+};
+
+declare type TReportProduct = {
+  productId: string;
+  productName: string;
+  quantity: number;
+  revenue?: number;
+  profit?: number;
 };

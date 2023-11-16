@@ -181,8 +181,8 @@ export default function Draft() {
       <VoucherTable />
       <ManagerTable />
       <GroupProductTable /> */}
-      <GeneralReportTable />
-      <ReportProductTable />
+      {/* <GeneralReportTable /> */}
+      {/* <ReportProductTable /> */}
     </div>
   );
 }

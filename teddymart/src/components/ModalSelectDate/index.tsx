@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Modal } from "antd";
+import { DatePickerProps, Modal } from "antd";
 import { TextInputComponent, ButtonComponent } from "components";
 import { useTranslation } from "react-i18next";
 import { FiCalendar } from "react-icons/fi";
@@ -92,7 +92,7 @@ export default function ModalSelectDate({ setResult }: Props) {
       case "in-week":
         setDate({
           from: new Date(
-            currentDate.getTime() - gap1 - 1 * 24 * 60 * 60 * 1000
+            currentDate.getTime() - (gap1 - 1) * 24 * 60 * 60 * 1000
           ),
           to: currentDate,
         });
@@ -108,7 +108,7 @@ export default function ModalSelectDate({ setResult }: Props) {
           from: new Date(
             currentDate.getTime() - (gap1 + 6) * 24 * 60 * 60 * 1000
           ),
-          to: new Date(currentDate.getTime() - gap1 - 2 * 24 * 60 * 60 * 1000),
+          to: new Date(currentDate.getTime() - gap1 * 24 * 60 * 60 * 1000),
         });
         break;
       case "in-month":
@@ -163,6 +163,7 @@ export default function ModalSelectDate({ setResult }: Props) {
         break;
     }
   };
+
   return (
     <div>
       <TextInputComponent
@@ -197,6 +198,7 @@ export default function ModalSelectDate({ setResult }: Props) {
                     date.to
                   )}`
                 );
+                setResult(date);
                 setOpenModal(false);
               }}
             />
@@ -236,13 +238,29 @@ export default function ModalSelectDate({ setResult }: Props) {
               <DatePicker
                 value={dayjs(timeFormat.format(date.from), "DD/MM/YYYY")}
                 format={"DD/MM/YYYY"}
+                onChange={(e: DatePickerProps["value"]) => {
+                  if (e) {
+                    setDate({
+                      from: e.toDate(),
+                      to: date.to,
+                    });
+                  }
+                }}
               />
             </div>
-            <div className="w-[40%]  pb-1 ">
+            <div className="w-[40%] pb-1 ">
               <p className="text-txt_lightgrey">{t("modal.to")}</p>
               <DatePicker
                 value={dayjs(timeFormat.format(date.to), "DD/MM/YYYY")}
                 format={["DD/MM/YYYY"]}
+                onChange={(e) => {
+                  if (e) {
+                    setDate({
+                      from: date.from,
+                      to: e.toDate(),
+                    });
+                  }
+                }}
               />
             </div>
           </div>

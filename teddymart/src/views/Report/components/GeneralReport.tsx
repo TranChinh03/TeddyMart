@@ -1,19 +1,33 @@
 import { ModalSelectDate } from "components";
 import ButtonComponent from "components/ButtonComponent";
-import { BillTable } from "components/TableComponent";
 import GeneralReportTable from "components/TableComponent/components/GeneralReportTable";
 import TextComponent from "components/TextComponent";
 import { COLORS } from "constants/colors";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { RootState } from "state_management/reducers/rootReducer";
 export default function GeneralReport() {
   const { t } = useTranslation();
-
+  const REPORTS = useSelector((state: RootState) => state.reportSlice);
   const [date, setDate] = useState<D>({
     from: new Date(),
     to: new Date(),
   });
+
+  const [data, setData] = useState<TReport[]>([]);
+  useEffect(() => {
+    let tmp: TReport[] = [];
+    REPORTS.forEach((r) => {
+      if (
+        new Date(r.date).getTime() >= new Date(date.from).getTime() &&
+        new Date(r.date).getTime() <= new Date(date.to).getTime()
+      ) {
+        tmp.push(r);
+      }
+      setData(tmp);
+    });
+  }, [REPORTS, date]);
   return (
     <div className="bg-white border-1.5 mx-5 my-1.5 rounded-md">
       <div className="divide-y">
@@ -51,7 +65,7 @@ export default function GeneralReport() {
         </div>
       </div>
       <div className="w-[98%] self-center flex mx-auto">
-        <GeneralReportTable />
+        <GeneralReportTable data={data} />
       </div>
     </div>
   );

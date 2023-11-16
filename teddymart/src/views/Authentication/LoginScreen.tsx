@@ -4,7 +4,7 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { NAV_LINK } from "routes/components/NAV_LINK";
 import { Spin } from "antd";
-import { getData } from "controller/getData";
+import { getData, generateReport, generateProduct } from "controller/getData";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadVoucher } from "state_management/slices/voucherSlice";
 import { uploadPartner } from "state_management/slices/partnerSlice";
@@ -16,6 +16,8 @@ import { uploadReport } from "state_management/slices/reportSlice";
 import { RootState } from "state_management/reducers/rootReducer";
 import { useTranslation } from "react-i18next";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { uploadReportProduct } from "state_management/slices/reportProduct";
+import { resolve } from "path";
 type Inputs = {
   username: string;
   password: string;
@@ -25,8 +27,7 @@ export default function LoginScreen() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const partners = useSelector((state: RootState) => state.partnerSlice);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { register, handleSubmit } = useForm<Inputs>();
   const onLogin: SubmitHandler<Inputs> = async (data) => {
     // console.log("submit");
@@ -39,61 +40,36 @@ export default function LoginScreen() {
       getData("/Manager/M001/Group_Product").then((data: TGroupProduct[]) =>
         dispatch(uploadGroupProduct(data))
       ),
-      getData("/Manager/M001/Product").then((data: TProduct[]) => {
-        dispatch(uploadProduct(data));
+      new Promise((resolve) => {
+        getData("/Manager/M001/Product").then((data: TProduct[]) => {
+          dispatch(uploadProduct(data));
+          resolve(data);
+        });
       }),
+
       getData("/Manager/M001/Partner").then((data: TPartner[]) => {
         dispatch(uploadPartner(data));
       }),
       getData("/Manager/M001/Ware_House").then((data: TWarehouse[]) => {
         dispatch(uploadWarehouse(data));
       }),
-      getData("/Manager/M001/Orders").then((data: TOrder[]) => {
-        dispatch(uploadOrder(data));
-        let currentDate = new Date();
-        let tmp: TOrder[] = data.filter(
-          (order) =>
-            new Date(order.createdAt).toDateString() >=
-              new Date(
-                currentDate.getTime() - 10 * 24 * 60 * 60 * 1000
-              ).toDateString() &&
-            new Date(order.createdAt).toDateString() <=
-              currentDate.toDateString()
-        );
-        let exportOrder = tmp.reduce(
-          (total, currenVal) =>
-            currenVal.type === "Export" ? total + 1 : total,
-          0
-        );
-        let outcome = tmp.reduce(
-          (total, val) =>
-            val.type === "Import" && val.status === "paid"
-              ? total + val.totalPayment
-              : total,
-          0
-        );
-        let revenue = tmp.reduce(
-          (total, val) =>
-            val.type === "Export" && val.status === "paid"
-              ? total + val.totalPayment
-              : total,
-          0
-        );
-        dispatch(
-          uploadReport({
-            general: {
-              numberOfOrder: tmp.length,
-              importOrder: tmp.length - exportOrder,
-              exportOrder: exportOrder,
-              outcome: outcome,
-              revenue: revenue,
-              profit: outcome - revenue,
-            },
-          })
-        );
+
+      new Promise((resolve) => {
+        getData("/Manager/M001/Orders").then((data: TOrder[]) => {
+          dispatch(uploadOrder(data));
+          dispatch(uploadReport(generateReport(data)));
+          resolve(data);
+          //console.log(generateProduct(data));
+        });
       }),
-    ]).then(() => {
+    ]).then((values) => {
       //console.log("P", partners);
+      dispatch(
+        uploadReportProduct(
+          generateProduct(values[5] as TOrder[], values[2] as TProduct[])
+        )
+      );
+      //console.log("VALUES", values[2], values[5]);
       setLoading(false);
       navigate(NAV_LINK.SALE);
     });

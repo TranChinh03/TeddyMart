@@ -3,17 +3,18 @@ import { RESET_ALL_STORES } from "state_management/actions/actions";
 
 const reportSlice = createSlice({
   name: "reportSlice",
-  initialState: {},
+  initialState: [],
   reducers: {
-    uploadReport: (
-      state: TReportSlice,
-      action: PayloadAction<TReportSlice>
-    ) => {
-      state.general = action.payload.general;
-      //return [...action.payload];
+    uploadReport: (state: TReport[], action: PayloadAction<TReport[]>) => {
+      //state.general = action.payload.general;
+      return [...action.payload];
     },
   },
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder.addCase(RESET_ALL_STORES, (state: TReport[]) => {
+      return [];
+    });
+  },
 });
 export const { uploadReport } = reportSlice.actions;
 export default reportSlice.reducer;

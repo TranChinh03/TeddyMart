@@ -5,6 +5,8 @@ import { COLORS } from "constants/colors";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ReportProductTable } from "components/TableComponent";
+import { useSelector } from "react-redux";
+import { RootState } from "state_management/reducers/rootReducer";
 export default function ProductReport() {
   const { t } = useTranslation();
   const [date, setDate] = useState<D>({
@@ -12,6 +14,7 @@ export default function ProductReport() {
     to: new Date(),
   });
   const [search, setSearch] = useState("");
+  const PRODUCTS = useSelector((state: RootState) => state.reportProduct);
 
   return (
     <div className="bg-white border-1.5 mx-5 my-1.5 rounded-md">
@@ -56,7 +59,7 @@ export default function ProductReport() {
           />
         </div>
         <div className="w-[98%] self-center flex mx-auto">
-          <ReportProductTable />
+          <ReportProductTable data={PRODUCTS} />
         </div>
       </div>
     </div>

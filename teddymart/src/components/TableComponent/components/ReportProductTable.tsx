@@ -8,94 +8,102 @@ import {
   HiOutlineChevronRight,
 } from "react-icons/hi2";
 type TContent = {
-  id: string;
-  product: string;
+  productId: string;
+  productName: string;
   quantity: number;
   revenue: number;
   profit: number;
 };
 const CONTENT: TContent[] = [
   {
-    id: "12312das",
-    product: "DO Nau Bep",
+    productId: "12312das",
+    productName: "DO Nau Bep",
     revenue: 13123,
     profit: 12323,
     quantity: 123,
   },
   {
-    id: "12312das",
-    product: "DO Nau Bep",
+    productId: "12312das",
+    productName: "DO Nau Bep",
     revenue: 13123,
     profit: 12323,
     quantity: 123,
   },
   {
-    id: "12312das",
-    product: "DO Nau Bep",
+    productId: "12312das",
+    productName: "DO Nau Bep",
     revenue: 13123,
     profit: 12323,
     quantity: 123,
   },
   {
-    id: "12312das",
-    product: "DO Nau Bep",
+    productId: "12312das",
+    productName: "DO Nau Bep",
     revenue: 13123,
     profit: 12323,
     quantity: 123,
   },
   {
-    id: "12312das",
-    product: "DO Nau Bep",
+    productId: "12312das",
+    productName: "DO Nau Bep",
     revenue: 13123,
     profit: 12323,
     quantity: 123,
   },
   {
-    id: "12312das",
-    product: "DO Nau Bep",
+    productId: "12312das",
+    productName: "DO Nau Bep",
     revenue: 13123,
     profit: 12323,
     quantity: 123,
   },
   {
-    id: "12312das",
-    product: "DO Nau Bep",
+    productId: "12312das",
+    productName: "DO Nau Bep",
     revenue: 13123,
     profit: 12323,
     quantity: 123,
   },
   {
-    id: "12312das",
-    product: "DO Nau Bep",
+    productId: "12312das",
+    productName: "DO Nau Bep",
     revenue: 13123,
     profit: 12323,
     quantity: 123,
   },
   {
-    id: "12312das",
-    product: "DO Nau Bep",
+    productId: "12312das",
+    productName: "DO Nau Bep",
     revenue: 13123,
     profit: 12323,
     quantity: 123,
   },
   {
-    id: "12312das",
-    product: "DO Nau Bep",
+    productId: "12312das",
+    productName: "DO Nau Bep",
     revenue: 13123,
     profit: 12323,
     quantity: 123,
   },
 ];
 type TOptions = {
-  product?: boolean;
+  productId?: boolean;
+  productName?: boolean;
   quantity?: boolean;
   revenue?: boolean;
   profit?: boolean;
 };
-const ReportProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
+const ReportProductTable = ({
+  filterOption,
+  data,
+}: {
+  filterOption?: TOptions;
+  data?: TReportProduct[];
+}) => {
   const { t } = useTranslation();
   const options: TOptions = {
-    product: true,
+    productId: true,
+    productName: true,
     quantity: true,
     revenue: true,
     profit: true,
@@ -104,32 +112,16 @@ const ReportProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
   const HEADER = useMemo(
     () =>
       [
-        "#",
-        options.product && t("report.product"),
+        options.productId && t("product.ID"),
+        options.productName && t("product.productName"),
         options.quantity && t("report.quantity"),
         options.revenue && t("report.revenue"),
         options.profit && t("report.profit"),
       ].filter((value) => Boolean(value) !== false),
     [t, options]
   );
-  const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState("10");
-  const handleCheckBoxChange = (rowId: string) => {
-    if (rowId === null) {
-      console.log("ok");
-      if (selectedRows.length === 0) {
-        setSelectedRows([...CONTENT.map((content) => content.id)]);
-        return;
-      }
-      setSelectedRows([]);
-      return;
-    }
-    if (selectedRows.includes(rowId)) {
-      setSelectedRows([...selectedRows.filter((id) => id !== rowId)]);
-      return;
-    }
-    setSelectedRows([...selectedRows, rowId]);
-  };
+
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
     console.log("okkkkk");
     setRowsPerPage(e.target.value);
@@ -140,13 +132,6 @@ const ReportProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
         <table className="w-full border-collapse border border-gray-300 bg-gray-50">
           <thead className="bg-gray-200 sticky left-0 z-50" style={{ top: -1 }}>
             <tr>
-              <th className="border border-gray-300 p-2 text-xs">
-                <input
-                  className="w-15 h-15 bg-hover"
-                  type="checkbox"
-                  onChange={() => handleCheckBoxChange(null)}
-                />
-              </th>
               {HEADER.map((header, index) => (
                 <th key={index} className="border border-gray-300 p-2 text-xs">
                   {header}
@@ -155,23 +140,16 @@ const ReportProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
             </tr>
           </thead>
           <tbody className="text-center">
-            {CONTENT.map((content, index) => (
+            {data?.map((content, index) => (
               <tr key={index}>
-                <td className="border border-gray-300 p-2">
-                  <input
-                    className="w-15 h-15 bg-hover"
-                    type="checkbox"
-                    onChange={() => handleCheckBoxChange(content.id)}
-                    checked={selectedRows.includes(content.id) ? true : false}
-                  />
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.id}
-                </td>
-
-                {options.product && (
+                {options.productId && (
                   <td className="border border-gray-300 p-2 text-sm">
-                    {content.product}
+                    {content.productId}
+                  </td>
+                )}
+                {options.productName && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.productName}
                   </td>
                 )}
                 {options.quantity && (
