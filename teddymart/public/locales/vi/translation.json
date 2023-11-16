@@ -57,7 +57,8 @@
     "cancel": "Hủy",
     "view": "Xem",
     "time": "Thời gian",
-    "addOrder": "Tạo đơn"
+    "addOrder": "Tạo đơn",
+    "addNewSupplier":"Thêm nhà cung cấp"
   },
   "sale": {
     "importOrder": "Nhập hàng",
@@ -159,7 +160,10 @@
     "manageList": "Quản lý danh sách kho",
     "importOrder": "Đơn nhập hàng",
     "manageImportOrder": "Quản lý đơn nhập hàng",
-    "searchByName": "Tìm kiếm theo tên"
+    "searchByName": "Tìm kiếm theo tên",
+    "searchSupplier":"Tìm kiếm nhà cung cấp",
+    "supplierInfo":"Thông tin nhà cung cấp"
+
   },
   "activities": "Chức năng",
   "note": "Ghi chú",

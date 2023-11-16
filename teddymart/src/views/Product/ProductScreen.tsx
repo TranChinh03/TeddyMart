@@ -141,11 +141,11 @@ export default function ProductScreen() {
             </div>
           </div>
         </div>
-      </div>
-      <div style={{ width: "fit-content", margin: "auto" }}>
-        <ResponsiveContainer width={chartWidth}>
-          <ProductTable />
-        </ResponsiveContainer>
+        <div style={{width: 'fit-content', margin: "40px auto auto auto" }}>
+          <ResponsiveContainer width={chartWidth}>
+            <ProductTable/>
+          </ResponsiveContainer>
+        </div>
       </div>
     </div>
   );
