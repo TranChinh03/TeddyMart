@@ -20,12 +20,12 @@ const DropdownComponent: React.FC<DropdownComponentProps> = ({
   setValue = () => {},
 }) => {
   return (
-    <div>
+    <div className="relative">
       {label && (
         <label
           htmlFor={size}
-          className={`block mb-1 ${
-            size === "large" ? "text-base" : "text-sm"
+          className={`absolute -top-2 left-2 bg-white ${
+            size === "large" ? "text-base" : "text-xs"
           } font-medium text-gray-900 dark:text-white`}
         >
           {label}
@@ -34,13 +34,15 @@ const DropdownComponent: React.FC<DropdownComponentProps> = ({
 
       <select
         id={size}
-        className={`p-2 ${
+        className={`px-2 py-3 ${
           size === "large" ? "text-base" : "text-sm"
-        } text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+        } text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
         value={value}
         onChange={(e) => setValue(e.target.value)}
       >
-        <option selected>{placeholder}</option>
+        <option selected disabled>
+          {placeholder}
+        </option>
         {options.map((option, index) => (
           <option key={index} value={option}>
             {option}

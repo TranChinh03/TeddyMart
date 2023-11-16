@@ -1,6 +1,7 @@
 import React from "react";
 import { COLORS } from "constants/colors";
 import { ButtonProps } from "./props";
+import { Button, Space } from "antd";
 const ButtonComponent: React.FC<ButtonProps> = ({
   color = COLORS.defaultWhite,
   label,
@@ -8,15 +9,16 @@ const ButtonComponent: React.FC<ButtonProps> = ({
   fontWeight = "normal",
   fontSize = "16px",
   paddingHorizontal = "20",
-  paddingVertical = "8",
+  paddingVertical = "24",
   borderRadius = 5,
   iconLeft,
   iconRight,
   maxWidth,
   backgroundColor = COLORS.darkYellow,
+  style,
 }) => {
   return (
-    <button
+    <Button
       style={{
         backgroundColor: backgroundColor,
         padding: `${paddingVertical}px ${paddingHorizontal}px`,
@@ -25,15 +27,18 @@ const ButtonComponent: React.FC<ButtonProps> = ({
         maxWidth,
         color: color,
         fontWeight: fontWeight,
-        letterSpacing: 0.8,
+        ...style,
+        //letterSpacing: 0.8,
       }}
       onClick={onClick}
-      className={`${fontWeight} flex justify-between items-center hover:opacity-80`}
+      className={`${fontWeight} flex items-center text-white`}
     >
-      {iconLeft && iconLeft}
-      <span>{label}</span>
-      {iconRight && iconRight}
-    </button>
+      <Space>
+        {iconLeft && iconLeft}
+        {label}
+        {iconRight && iconRight}
+      </Space>
+    </Button>
   );
 };
 

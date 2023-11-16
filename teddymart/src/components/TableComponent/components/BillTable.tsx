@@ -1,7 +1,7 @@
 import { Button, Dropdown, Layout, MenuProps } from "antd";
 import dayjs from "dayjs";
-import { t } from "i18next";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { BiDetail } from "react-icons/bi";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import {
@@ -346,27 +346,63 @@ const CONTENT: TContent[] = [
     createdAt: "2023-10-07T17:00:00.000Z",
   },
 ];
-
-const BillTable = () => {
+type ColOptions = {
+  orderId?: boolean;
+  createdAt?: boolean;
+  partnerID?: boolean;
+  partnerName?: boolean;
+  receiver?: boolean;
+  listProduct?: boolean;
+  payment?: boolean;
+  debt?: boolean;
+  discount?: boolean;
+  totalPayment?: boolean;
+  voucherID?: boolean;
+  seller?: boolean;
+  status?: boolean;
+  note?: boolean;
+  activities?: boolean;
+};
+const BillTable = ({ filterOption }: { filterOption?: ColOptions }) => {
+  const { t } = useTranslation();
+  const options = {
+    orderId: true,
+    createdAt: true,
+    partnerID: true,
+    partnerName: true,
+    receiver: true,
+    listProduct: true,
+    payment: true,
+    debt: true,
+    discount: true,
+    totalPayment: true,
+    voucherID: true,
+    seller: false,
+    status: true,
+    note: true,
+    activities: true,
+    ...filterOption,
+  };
   const HEADER = useMemo(
-    () => [
-      t("sale.orderId"),
-      t("sale.createdAt"),
-      t("sale.customerId"),
-      t("sale.customerName"),
-      t("sale.receiver"),
-      t("sale.listProduct"),
-      t("sale.payment"),
-      t("sale.debt"),
-      t("sale.discount"),
-      t("sale.totalPayment"),
-      t("voucher.voucherID"),
-      t("sale.seller"),
-      t("sale.status"),
-      t("sale.note"),
-      t("activities"),
-    ],
-    [t]
+    () =>
+      [
+        options.orderId && t("sale.orderId"),
+        options.createdAt && t("sale.createdAt"),
+        options.partnerID && t("sale.customerId"),
+        options.partnerName && t("sale.customerName"),
+        options.receiver && t("sale.receiver"),
+        options.listProduct && t("sale.listProduct"),
+        options.payment && t("sale.payment"),
+        options.debt && t("sale.debt"),
+        options.discount && t("sale.discount"),
+        options.totalPayment && t("sale.totalPayment"),
+        options.voucherID && t("voucher.voucherID"),
+        options.seller && t("sale.seller"),
+        options.status && t("sale.status"),
+        options.note && t("sale.note"),
+        options.activities && t("activities"),
+      ].filter((value) => Boolean(value) !== false),
+    [t, options]
   );
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -394,8 +430,11 @@ const BillTable = () => {
       <div className="max-h-96 overflow-y-auto visible">
         <table className="w-full border-collapse border border-gray-300 bg-gray-50 z-50">
           <thead
-            className="sticky top-0 left-0"
-            style={{ backgroundColor: "#F0EAEA", zIndex: 9999 }}
+            className="sticky left-0 z-50"
+            style={{
+              backgroundColor: "#F0EAEA",
+              top: -1,
+            }}
           >
             <tr>
               <th className="border border-gray-300 p-2 text-xs">
@@ -425,65 +464,95 @@ const BillTable = () => {
                     }
                   />
                 </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.orderId}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {new Date(content.createdAt).toLocaleDateString("vi")}{" "}
-                  {dayjs(content.createdAt).format("HH:mm:ss")}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.partnerId}
-                </td>
+                {options.orderId && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.orderId}
+                  </td>
+                )}
+                {options.createdAt && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {new Date(content.createdAt).toLocaleDateString("vi")}{" "}
+                    {dayjs(content.createdAt).format("HH:mm:ss")}
+                  </td>
+                )}
+                {options.partnerID && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.partnerId}
+                  </td>
+                )}
 
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.partnerName}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.type === "Import" ? content.receiver : null}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  <Button>
-                    <BiDetail />
-                  </Button>
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.payment}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.debt}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.discount}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.totalPayment}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.type === "Export" ? content.voucherId : null}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.type === "Export" ? content.seller : null}
-                </td>
+                {options.partnerName && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.partnerName}
+                  </td>
+                )}
+                {options.receiver && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.type === "Import" ? content.receiver : null}
+                  </td>
+                )}
+                {options.listProduct && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    <Button>
+                      <BiDetail />
+                    </Button>
+                  </td>
+                )}
+                {options.payment && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.payment}
+                  </td>
+                )}
+                {options.debt && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.debt}
+                  </td>
+                )}
+                {options.discount && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.discount}
+                  </td>
+                )}
+                {options.totalPayment && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.totalPayment}
+                  </td>
+                )}
+                {options.voucherID && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.type === "Export" ? content.voucherId : null}
+                  </td>
+                )}
+                {options.seller && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.type === "Export" ? content.seller : null}
+                  </td>
+                )}
 
-                <td
-                  className="border border-gray-300 p-2 font-[500] text-sm"
-                  style={{ color: COLOR_STATUS.get(content.status) }}
-                >
-                  {content.status}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.note}
-                </td>
-                <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                  <Button className="mr-2">
-                    <FiEdit />
-                  </Button>
+                {options.status && (
+                  <td
+                    className="border border-gray-300 p-2 font-[500] text-sm"
+                    style={{ color: COLOR_STATUS.get(content.status) }}
+                  >
+                    {content.status}
+                  </td>
+                )}
+                {options.note && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.note}
+                  </td>
+                )}
+                {options.activities && (
+                  <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
+                    <Button className="mr-2">
+                      <FiEdit />
+                    </Button>
 
-                  <Button>
-                    <FiTrash color="red" />
-                  </Button>
-                </td>
+                    <Button>
+                      <FiTrash color="red" />
+                    </Button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

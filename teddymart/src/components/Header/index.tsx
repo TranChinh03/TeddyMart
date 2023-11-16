@@ -2,13 +2,14 @@ import TextComponent from "components/TextComponent";
 import { HeaderProps } from "./props";
 import { BiDotsVerticalRounded, BiSolidStar, BiMenu } from "react-icons/bi";
 import DropdownImage from "components/DropDownImage";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AiOutlineBell } from "react-icons/ai";
 import { COLORS } from "constants/colors";
 import { Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { toggleDrawer } from "state_management/slices/controlSlice";
+import { useTranslation } from "react-i18next";
 export default function Header({
   width = "100%",
   title = "Title",
@@ -16,9 +17,11 @@ export default function Header({
   const [language, setLanguage] = useState("VI");
   const { openDrawer } = useSelector((state: RootState) => state.controlSlice);
   const dispatch = useDispatch();
-  //console.log(openDrawer);
+  const { t, i18n } = useTranslation();
   const numberOfNotifications = 2;
-  const [showDrawer, setShowDrawer] = useState(false);
+  useEffect(() => {
+    i18n.changeLanguage(language);
+  }, [language]);
   return (
     <div
       className="flex bg-white border-b items-center justify-between py-2 px-10"

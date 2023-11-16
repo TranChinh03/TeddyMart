@@ -2,6 +2,7 @@ import { Button, Dropdown, MenuProps } from "antd";
 import dayjs from "dayjs";
 import { t } from "i18next";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { BiDetail } from "react-icons/bi";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import {
@@ -71,43 +72,37 @@ type TListPRoduct = {
 };
 type TContent = {
   address: string;
-  count: number;
-  listProduct: TListPRoduct[];
   warehouseId: string;
   warehouseName: string;
 };
 const CONTENT: TContent[] = [
   {
     address: "123 Main Street, City, quantityry",
-    count: 955,
-    listProduct: [
-      {
-        productId: "P001",
-        productName: "Máy giặc",
-        quantity: 600,
-      },
-      {
-        productId: "P001",
-        productName: "Máy giặc",
-        quantity: 600,
-      },
-    ],
     warehouseId: "W001",
     warehouseName: "Nhà máy 1",
   },
 ];
-
-const WareHouseTable = () => {
+type TOption = {
+  warehouseID?: boolean;
+  warehouseName?: boolean;
+  address?: boolean;
+};
+const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
+  const { t } = useTranslation();
+  const options: TOption = {
+    warehouseID: true,
+    warehouseName: true,
+    address: true,
+    ...filterOption,
+  };
   const HEADER = useMemo(
     () => [
-      t("warehouse.warehouseID"),
-      t("warehouse.warehouseName"),
-      t("warehouse.quantity"),
-      t("warehouse.listProduct"),
-      t("warehouse.address"),
+      options.warehouseID && t("warehouse.warehouseID"),
+      options.warehouseName && t("warehouse.warehouseName"),
+      options.address && t("warehouse.address"),
       t("activities"),
     ],
-    [t]
+    [t, options]
   );
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -134,7 +129,7 @@ const WareHouseTable = () => {
     <div className="w-full">
       <div className="max-h-96 overflow-y-auto visible">
         <table className="w-full border-collapse border border-gray-300 bg-gray-50">
-          <thead className="bg-gray-200 sticky top-0 left-0 z-50">
+          <thead className="bg-gray-200 sticky left-0 z-50" style={{ top: -1 }}>
             <tr>
               <th className="border border-gray-300 p-2 text-xs">
                 <input
@@ -163,23 +158,22 @@ const WareHouseTable = () => {
                     }
                   />
                 </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.warehouseId}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.warehouseName}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.count}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  <Button className="mr-2">
-                    <BiDetail />
-                  </Button>
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.address}
-                </td>
+                {options.warehouseID && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.warehouseId}
+                  </td>
+                )}
+                {content.warehouseName && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.warehouseName}
+                  </td>
+                )}
+
+                {content.address && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.address}
+                  </td>
+                )}
                 <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
                   <Button className="mr-2">
                     <FiEdit />

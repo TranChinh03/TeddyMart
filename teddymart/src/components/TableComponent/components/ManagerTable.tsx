@@ -1,6 +1,7 @@
 import { Button } from "antd";
 import { t } from "i18next";
 import { ChangeEvent, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import {
   HiOutlineChevronLeft,
@@ -31,19 +32,40 @@ const CONTENT: TContent[] = [
   },
 ];
 
-const ManagerTable = () => {
+type TOptions = {
+  userId?: boolean;
+  userName?: boolean;
+  photoURL?: boolean;
+  address?: boolean;
+  phoneNumber?: boolean;
+  email?: boolean;
+  shopName?: boolean;
+};
+const ManagerTable = ({ filterOption }: { filterOption?: TOptions }) => {
+  const { t } = useTranslation();
+  const options: TOptions = {
+    userId: true,
+    userName: true,
+    photoURL: true,
+    phoneNumber: true,
+    address: true,
+    email: true,
+    shopName: true,
+    ...filterOption,
+  };
   const HEADER = useMemo(
-    () => [
-      t("manager.userId"),
-      t("manager.userName"),
-      t("manager.photoURL"),
-      t("manager.address"),
-      t("manager.phoneNumber"),
-      t("manager.email"),
-      t("manager.shopName"),
-      t("activities"),
-    ],
-    [t]
+    () =>
+      [
+        options.userId && t("manager.userId"),
+        options.userName && t("manager.userName"),
+        options.photoURL && t("manager.photoURL"),
+        options.address && t("manager.address"),
+        options.phoneNumber && t("manager.phoneNumber"),
+        options.email && t("manager.email"),
+        options.shopName && t("manager.shopName"),
+        t("activities"),
+      ].filter((value) => Boolean(value) !== false),
+    [t, options]
   );
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState("10");
@@ -71,7 +93,10 @@ const ManagerTable = () => {
     <div className="w-full">
       <div className="max-h-96 overflow-y-auto visible">
         <table className="w-full border-collapse border border-gray-300 bg-gray-50">
-          <thead className="bg-gray-200 sticky top-0 left-0 z-50">
+          <thead
+            className="bg-gray-200 sticky  left-0 z-50"
+            style={{ top: -1 }}
+          >
             <tr>
               <th className="border border-gray-300 p-2 text-xs">
                 <input
@@ -100,35 +125,49 @@ const ManagerTable = () => {
                     }
                   />
                 </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.userId}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.userName}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  <img
-                    src={content.photoURL}
-                    style={{
-                      width: "100%",
-                      height: 100,
-                      alignSelf: "center",
-                      borderWidth: 1,
-                    }}
-                  />
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.address}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.phoneNumber}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.email}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.shopName}
-                </td>
+                {options.userId && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.userId}
+                  </td>
+                )}
+                {options.userName && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.userName}
+                  </td>
+                )}
+                {options.photoURL && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    <img
+                      src={content.photoURL}
+                      style={{
+                        width: "100%",
+                        height: 100,
+                        alignSelf: "center",
+                        borderWidth: 1,
+                      }}
+                    />
+                  </td>
+                )}
+                {options.address && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.address}
+                  </td>
+                )}
+                {options.phoneNumber && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.phoneNumber}
+                  </td>
+                )}
+                {options.email && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.email}
+                  </td>
+                )}
+                {options.shopName && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.shopName}
+                  </td>
+                )}
                 <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
                   <Button className="mr-2">
                     <FiEdit />

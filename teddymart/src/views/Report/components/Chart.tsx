@@ -1,6 +1,6 @@
 import TextComponent from "components/TextComponent";
 import { COLORS } from "constants/colors";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -11,6 +11,9 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { RootState } from "state_management/reducers/rootReducer";
 const data = [
   {
     name: "Mon",
@@ -55,11 +58,32 @@ const data = [
     amt: 2100,
   },
 ];
-const GAPS = ["Hour", "Day", "Week", "Month"];
-function Chart() {
+
+type Props = {
+  time: D;
+  options: {
+    outcome: boolean;
+    revenue: boolean;
+    profit: boolean;
+    numberOfOrder: boolean;
+    importOrder: boolean;
+    exportOrder: boolean;
+  };
+};
+function Chart({ time, options }: Props) {
   const [gap, setGap] = useState(0);
+  const { t } = useTranslation();
+  const GAPS = [t("report.day"), t("report.week"), t("report.month")];
+  const ORDERS = useSelector((state: RootState) => state.order);
+  const REPORTS = useSelector((state: RootState) => state.reportSlice);
+  console.log("TIME", time);
+  const [data, setData] = useState<TReport[]>([]);
+  useEffect(() => {
+    if (gap === 0) {
+    }
+  }, [time, gap]);
   return (
-    <div className="bg-white border-1.5  mx-5 my-1.5 rounded-md">
+    <div className="bg-white border-1.5 mx-5 my-1.5 rounded-md">
       <div className="divide-y">
         {/* Header */}
         <div className="pt-5 pb-2 px-3">
@@ -68,8 +92,9 @@ function Chart() {
             color={COLORS.sidebar}
             fontSize={16}
           >
-            Overview Chart
+            {t("report.overviewChart")}
           </TextComponent>
+          <div className="text-xs">{t("report.overviewTitle")}</div>
         </div>
         {/* Button Filter By Hour Day Week Month */}
         <div className="px-3 pt-2 pb-5">
@@ -103,7 +128,7 @@ function Chart() {
       </div>
       {/* Chart */}
       <div className="p-5">
-        <ResponsiveContainer width={window.innerWidth * 0.7} height={500}>
+        <ResponsiveContainer width={"100%"} height={500}>
           <LineChart
             data={data}
             margin={{

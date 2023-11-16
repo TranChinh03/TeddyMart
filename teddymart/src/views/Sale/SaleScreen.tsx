@@ -8,16 +8,23 @@ import {
   Tooltip,
   TabsProps,
   Tabs,
+  Popconfirm,
+  Modal,
+  Divider,
+  Card,
 } from "antd";
 import Search, { SearchProps } from "antd/es/input/Search";
+import { ButtonComponent, ListCheckBox, SearchComponent } from "components";
 import DropdownImage from "components/DropDownImage";
 import DropdownComponent from "components/DropdownComponent";
 import Header from "components/Header";
-import { BillTable } from "components/TableComponent";
+import { BillTable, ProductTable } from "components/TableComponent";
+import ReportProductTable from "components/TableComponent/components/ReportProductTable";
 import TextInputComponent from "components/TextInputComponent";
 import { COLORS } from "constants/colors";
 import { title } from "process";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   BiDotsVerticalRounded,
   BiBell,
@@ -26,15 +33,59 @@ import {
   BiSearch,
   BiSave,
   BiDownload,
+  BiTrash,
+  BiPlus,
 } from "react-icons/bi";
+import { BsFileExcel } from "react-icons/bs";
+import { LiaFileExcel } from "react-icons/lia";
 const { RangePicker } = DatePicker;
-
+const CUS_INFO = {
+  customerName: "NVA",
+  gender: "Male",
+  phoneNumber: 123123,
+  totalBuyAmount: 123,
+  email: "123123@gmail.com",
+  debt: 0,
+};
 export default function SaleScreen() {
   const [language, setLanguage] = useState("");
   const [time, setTime] = useState("");
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
+  const [openSearchModal, setOpenSearchModal] = useState(false);
+  const { t } = useTranslation();
+  const [openAddForm, setOpenAddForm] = useState(false);
+  const [listFilter, setListFilter] = useState([
+    {
+      displayName: t("sale.seller"),
+      value: true,
+    },
+    {
+      displayName: t("sale.status"),
+      value: true,
+    },
+    {
+      displayName: t("sale.payment"),
+      value: true,
+    },
+    {
+      displayName: t("sale.debt"),
+      value: true,
+    },
+    {
+      displayName: t("sale.discount"),
+      value: true,
+    },
+    {
+      displayName: t("sale.note"),
+      value: true,
+    },
+    {
+      displayName: t("sale.totalPayment"),
+      value: true,
+    },
+  ]);
   const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
     console.log(info?.source, value);
 
@@ -90,112 +141,258 @@ export default function SaleScreen() {
               <h1>Lọc theo giờ kinh doanh</h1>
             </Checkbox>
           </div>
-          <Button>Tất cả</Button>
-          <Space direction="horizontal" style={{ width: "100%" }}>
-            <Dropdown
-              placement="bottom"
-              dropdownRender={() => (
-                <div className="bg-white p-4 rounded-md">
-                  <Space direction="vertical" size={10}>
-                    <h1>Chọn điều kiện lọc</h1>
-                    <DropdownComponent
-                      options={[
-                        "Tổng doanh thu",
-                        "Ngày xác nhận",
-                        "Đơn hàng",
-                        "Trạng thái",
-                        "Trạng thái thanh toán",
-                        "Kênh bán hàng",
-                      ]}
-                      value={filter}
-                      setValue={setFilter}
-                    />
-                    <h1>Khoảng từ</h1>
-                    <DropdownComponent
-                      options={[
-                        "Hôm nay",
-                        "Hôm qua",
-                        "7 ngày qua",
-                        "Tuần này",
-                        "Tuần trước",
-                        "30 ngày qua",
-                      ]}
-                      value={filter}
-                      setValue={setFilter}
-                    />
-                    <Space direction="horizontal" size={5}>
-                      <Button>Hủy</Button>
-                      <Button
-                        style={{ backgroundColor: "#e5a344", color: "white" }}
-                      >
-                        Áp dụng
-                      </Button>
-                    </Space>
-                  </Space>
-                </div>
-              )}
-            >
-              <Tooltip title="Bộ lọc">
-                <Button
-                  className="flex h-12 "
-                  style={{
-                    backgroundColor: "#e5a344",
-                    color: "white",
-
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <BiFilter size={20} color="white" />
-                  Bộ lọc
-                </Button>
-              </Tooltip>
-            </Dropdown>
+          <Button>{t("button.all")}</Button>
+          <div className=" flex items-center">
             <TextInputComponent
               value={search}
               setValue={setSearch}
               style={{ borderRadius: 5 }}
-              width={"100%"}
+              outStyle={{ width: "100%", marginRight: 20 }}
+              placeHolder={t("sale.placeholderSearch")}
               iconLeft={<BiSearch />}
             />
-            <Button className="flex items-center text-16 h-12">
-              <BiSave size={20} />
-              Lưu bộ lọc
-            </Button>
-          </Space>
+
+            <ListCheckBox
+              listFilter={listFilter}
+              setListFilter={setListFilter}
+            />
+
+            <ButtonComponent
+              label={t("button.delete")}
+              onClick={() => {}}
+              style={{ backgroundColor: "#EA5A47", marginInline: 12 }}
+              iconLeft={<BiTrash size={20} color="white" />}
+            />
+            <ButtonComponent
+              label={t("button.exportExcel")}
+              onClick={() => {}}
+              style={{ backgroundColor: "#211F30", marginRight: 12 }}
+              iconLeft={<LiaFileExcel size={20} color="white" />}
+            />
+            <ButtonComponent
+              label={t("button.addNew")}
+              onClick={() => {
+                setOpenAddForm(true);
+              }}
+              iconLeft={<BiPlus size={20} color="white" />}
+            />
+          </div>
           <div className="flex items-center">
             <Space direction="horizontal" size={10}>
               <DropdownComponent
                 value={sort}
                 setValue={setSort}
                 options={[
-                  "Mã hóa đơn: Tăng dần",
-                  "Mã hóa đơn giảm dần",
-                  "Ngày giờ bán hàng: Cũ nhất trước",
-                  "Ngày giờ bán hàng: Mới nhất trước",
-                  "Tổng tiền: Thấp ==> Cao",
-                  "Tổng tiền: Cao ==> Thấp",
+                  t("sort.orderAscending"),
+                  t("sort.orderDescending"),
+                  t("sort.createdAtNewest"),
+                  t("sort.createdAtOldest"),
+                  t("sort.totalPaymentAscending"),
+                  t("sort.totalPaymentDescending"),
                 ]}
               />
               <Button style={{ backgroundColor: "#e5a344", color: "white" }}>
-                Xem
-              </Button>
-              <Button>Thao tác đơn hàng</Button>
-              <Button
-                style={{
-                  color: "black",
-                }}
-                className="flex items-center text-14"
-              >
-                <BiDownload size={20} className="mr-2" />
-                Nhập xuất Excel
+                {t("button.view")}
               </Button>
             </Space>
           </div>
-          <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
-          {/* <BillTable /> */}
+          {/* <Tabs defaultActiveKey="1" items={items} onChange={onChange} /> */}
+          <BillTable />
         </Space>
       </body>
+      <Modal
+        title={<h1 className="text-2xl">{t("sale.addNewOrder")}</h1>}
+        width={"70%"}
+        open={openAddForm}
+        onCancel={() => setOpenAddForm(false)}
+        footer={false}
+      >
+        <Divider style={{ borderWidth: 1, borderColor: "#9A9A9A" }} />
+        <Card
+          title={<h1 className=" text-2xl">{t("sale.customerInfo")}</h1>}
+          bordered={true}
+          style={{
+            width: "100%",
+            borderWidth: 1,
+            borderColor: "#9A9A9A",
+          }}
+        >
+          <div className="flex w-full items-center gap-4">
+            <TextInputComponent
+              width={"100%"}
+              iconLeft={<BiSearch size={28} />}
+              placeHolder={t("sale.searchCusPhoneNumber")}
+            />
+            <ButtonComponent
+              label={t("partner.addNewCustomer")}
+              onClick={() => {}}
+            />
+          </div>
+          <div className="grid grid-cols-4 gap-3 my-5">
+            <h1 className=" text-base font-medium">
+              {t("partner.customerName")}
+            </h1>
+            <h1 className="text-base italic">{CUS_INFO.customerName}</h1>
+
+            <h1 className=" text-base font-medium">{t("partner.gender")}</h1>
+            <h1 className="text-base italic">{CUS_INFO.gender}</h1>
+
+            <h1 className=" text-base font-medium">
+              {t("partner.phoneNumber")}
+            </h1>
+            <h1 className="text-base italic">{CUS_INFO.phoneNumber}</h1>
+
+            <h1 className=" text-base font-medium">
+              {t("partner.totalBuyAmount")}
+            </h1>
+            <h1 className="text-base italic">{CUS_INFO.totalBuyAmount}</h1>
+
+            <h1 className=" text-base font-medium">{t("partner.email")}</h1>
+            <h1 className="text-base italic">{CUS_INFO.email}</h1>
+
+            <h1 className=" text-base font-medium">{t("partner.debt")}</h1>
+            <h1 className="text-base italic">{CUS_INFO.debt}</h1>
+          </div>
+        </Card>
+        <Card
+          title={
+            <Space>
+              <h1 className=" text-2xl">{t("product.productInfo")}</h1>
+              <DropdownComponent
+                options={[
+                  "Central Warehouse",
+                  "Western Warehouse",
+                  "Eastern Warehouse",
+                ]}
+              />
+            </Space>
+          }
+          bordered={true}
+          style={{
+            width: "100%",
+            borderWidth: 1,
+            borderColor: "#9A9A9A",
+            marginBlock: 12,
+          }}
+        >
+          <div className="flex w-full items-center gap-4">
+            <TextInputComponent
+              width={"100%"}
+              iconLeft={<BiSearch size={28} />}
+              placeHolder={t("product.searchProduct")}
+              setValue={(value) => {}}
+              enterAction={() => {
+                setOpenSearchModal(!openSearchModal);
+              }}
+            />
+            <ButtonComponent
+              label={t("product.addNewProduct")}
+              onClick={() => {}}
+            />
+          </div>
+          <div className="my-5">
+            <ProductTable
+              filterOption={{
+                productGroup: false,
+                productGroupName: false,
+                totalPrice: true,
+                quantity: true,
+                productImage: false,
+                VAT: false,
+                sell_price: false,
+              }}
+            />
+          </div>
+        </Card>
+        <Card
+          title={<h1 className=" text-2xl">{t("voucher.voucherInfo")}</h1>}
+          bordered={true}
+          style={{
+            width: "100%",
+            borderWidth: 1,
+            borderColor: "#9A9A9A",
+            marginBlock: 12,
+          }}
+        >
+          <DropdownComponent
+            options={["Voucher A - 50%", "Voucher B - 20%", "Voucher C - 10%"]}
+          />
+        </Card>
+        <div className="flex items-centers">
+          <div className="flex w-[100%]" />
+          <div className=" grid grid-cols-2 gap-4 w-[30%] self-end">
+            <Tooltip title="Payment = Sum(Total Price) ">
+              <h1 className=" text-base font-medium">{t("sale.payment")}:</h1>
+            </Tooltip>
+            <h1 className=" text-base italic">$1231</h1>
+
+            <h1 className=" text-base font-medium">{t("sale.discount")}:</h1>
+            <h1 className=" text-base italic">10%</h1>
+
+            <Tooltip title="Total Payment = Payment * ( 1- Discount )">
+              <h1 className=" text-base font-medium">
+                {t("sale.totalPayment")}:
+              </h1>
+            </Tooltip>
+            <h1 className=" text-base italic">$1231</h1>
+          </div>
+        </div>
+        <div className=" flex justify-center items-center">
+          <ButtonComponent
+            label={t("button.addOrder")}
+            onClick={() => {}}
+            paddingHorizontal={30}
+            fontSize={26}
+          />
+        </div>
+      </Modal>
+      <Modal
+        title={
+          <h1 className=" text-2xl">{t("product.searchProductFromOrder")}</h1>
+        }
+        open={openSearchModal}
+        onCancel={() => setOpenSearchModal(false)}
+        footer={false}
+        width={"70%"}
+      >
+        <Divider style={{ backgroundColor: "black" }} />
+        <div className="flex items-center justify-between">
+          <DropdownComponent label="Product Group" options={[]} />
+          <TextInputComponent
+            label="Insert name to search"
+            width={"70%"}
+            iconLeft={<BiSearch />}
+          />
+        </div>
+        <div className="flex items-center my-3">
+          <div className="flex w-full" />
+          <ButtonComponent
+            label={t("button.displayAll")}
+            onClick={() => {}}
+            backgroundColor="#74ADC6"
+          />
+        </div>
+        <ProductTable />
+        <div className="flex items-center">
+          <div className="flex w-full" />
+          <Space>
+            <ButtonComponent
+              label={t("button.cancel")}
+              onClick={() => {}}
+              backgroundColor="#9A9A9A"
+            />
+            <ButtonComponent
+              label={t("button.addMenu")}
+              onClick={() => {}}
+              style={{
+                backgroundColor: "white",
+                borderWidth: 1,
+                color: "#9A9A9A",
+              }}
+            />
+          </Space>
+        </div>
+      </Modal>
     </div>
   );
 }

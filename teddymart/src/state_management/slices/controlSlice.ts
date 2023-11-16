@@ -4,7 +4,7 @@ export type TControl = {
 };
 const controlSlice = createSlice({
   name: "controlSlice",
-  initialState: { openDrawer: true },
+  initialState: { openDrawer: false },
   reducers: {
     toggleDrawer: (state: TControl) => {
       state.openDrawer = !state.openDrawer;

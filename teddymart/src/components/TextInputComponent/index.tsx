@@ -23,6 +23,7 @@ import { useForm, SubmitHandler, UseFormRegister } from "react-hook-form";
  * @param value - The current value of the input.
  * @param setValue - Function to update the value of the input.
  * @param outerStyle - style outline of textinput
+ * @param enterAction - hanlde enter press
  */
 export default function TextInputComponent({
   labelFontWeight = "font-medium",
@@ -47,6 +48,9 @@ export default function TextInputComponent({
   outStyle,
   register,
   registerName,
+  readOnly = false,
+  onClick = () => {},
+  enterAction,
 }: Props) {
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -54,7 +58,7 @@ export default function TextInputComponent({
   return (
     <div style={{ width: width, ...outStyle }} className="relative">
       {label && (
-        <div className="absolute -top-2 left-2 bg-white text-10 px-1 font-roboto text-txt_lightgrey">
+        <div className="absolute -top-3 left-2 bg-white text-10 px-1 font-roboto text-txt_lightgrey">
           <TextComponent
             fontSize={labelFontSize}
             fontWeight={labelFontWeight}
@@ -65,10 +69,11 @@ export default function TextInputComponent({
         </div>
       )}
       <div
-        className={`flex items-center outline outline-1 outline-gray-300 p-2  focus-within:outline-2 focus-within:outline-black w-full border-${borderColor}`}
+        className={`flex items-center outline outline-1 outline-gray-300 p-2 focus-within:outline-2 focus-within:outline-black w-full border-${borderColor}`}
         style={{ borderRadius: borderRadius, ...style }}
       >
         {iconLeft && <button>{iconLeft}</button>}
+
         {register ? (
           <input
             type={inputType}
@@ -78,6 +83,8 @@ export default function TextInputComponent({
             required={required}
             style={{ fontSize: textInputSize, color: textInputColor }}
             {...(register && register(registerName, { required: required }))}
+            readOnly={readOnly}
+            onClick={onClick}
           />
         ) : (
           <input
@@ -89,13 +96,18 @@ export default function TextInputComponent({
             value={value}
             onChange={handleInputChange}
             style={{ fontSize: textInputSize, color: textInputColor }}
+            readOnly={readOnly}
+            onClick={onClick}
+            onKeyDownCapture={(e) => {
+              if (e.key === "Enter") enterAction();
+            }}
           />
         )}
 
         {icon && (
           <button
             onClick={onIconClick}
-            className="p-2 hover:bg-slate-300 rounded-full"
+            className="p-2 hover:bg-extreme_lg_grey rounded-full"
           >
             {icon}
           </button>

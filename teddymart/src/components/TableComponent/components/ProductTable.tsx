@@ -1,6 +1,7 @@
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 import { t } from "i18next";
 import { ChangeEvent, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import {
   HiOutlineChevronLeft,
@@ -19,6 +20,9 @@ type TContent = {
   cost_price: number;
   VAT: number;
   note: string;
+  quantity?: number;
+  totalPrice?: number;
+  price?: number;
 };
 const CONTENT: TContent[] = [
   {
@@ -82,22 +86,63 @@ const CONTENT: TContent[] = [
     note: "Do moi",
   },
 ];
-
-const ProductTable = () => {
+type TOptions = {
+  productId?: boolean;
+  productName?: boolean;
+  productGroup?: boolean;
+  productGroupName?: boolean;
+  productImage?: boolean;
+  sell_price?: boolean;
+  costPrice?: boolean;
+  VAT?: boolean;
+  note?: boolean;
+  quantity?: boolean;
+  totalPrice?: boolean;
+  activities?: boolean;
+  price?: boolean;
+};
+const ProductTable = ({
+  filterOption,
+  data,
+}: {
+  filterOption?: TOptions;
+  data?: TProduct[];
+}) => {
+  const { t } = useTranslation();
+  const options: TOptions = {
+    productId: true,
+    productName: true,
+    productGroup: true,
+    productGroupName: true,
+    productImage: true,
+    sell_price: true,
+    costPrice: true,
+    VAT: true,
+    note: true,
+    quantity: false,
+    totalPrice: false,
+    activities: true,
+    price: false,
+    ...filterOption,
+  };
   const HEADER = useMemo(
-    () => [
-      t("product.productId"),
-      t("productName"),
-      t("product.productGroup"),
-      t("product.productGroupName"),
-      t("product.productImage"),
-      t("product.retailPrice"),
-      t("product.costPrice"),
-      t("product.VAT"),
-      t("note"),
-      t("activities"),
-    ],
-    [t]
+    () =>
+      [
+        options.productId && t("product.productId"),
+        options.productName && t("product.productName"),
+        options.quantity && t("warehouse.quantity"),
+        options.productGroup && t("product.productGroup"),
+        options.productGroupName && t("product.productGroupName"),
+        options.productImage && t("product.productImage"),
+        options.sell_price && t("product.sell_price"),
+        options.costPrice && t("product.costPrice"),
+        options.totalPrice && t("sale.totalPayment"),
+        options.VAT && t("product.VAT"),
+        options.note && t("note"),
+        options.activities && t("activities"),
+        options.price && t("product.price"),
+      ].filter((value) => Boolean(value) !== false),
+    [t, options]
   );
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState("10");
@@ -118,14 +163,13 @@ const ProductTable = () => {
     setSelectedRows([...selectedRows, rowId]);
   };
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    console.log("okkkkk");
     setRowsPerPage(e.target.value);
   };
   return (
     <div className="w-full">
       <div className="max-h-96 overflow-y-auto visible">
         <table className="w-full border-collapse border border-gray-300 bg-gray-50">
-          <thead className="bg-gray-200 sticky top-0 left-0 z-50">
+          <thead className="bg-gray-200 sticky left-0 z-50" style={{ top: -1 }}>
             <tr>
               <th className="border border-gray-300 p-2 text-xs">
                 <input
@@ -142,7 +186,7 @@ const ProductTable = () => {
             </tr>
           </thead>
           <tbody className="text-center">
-            {CONTENT.map((content, index) => (
+            {data?.map((content, index) => (
               <tr key={index}>
                 <td className="border border-gray-300 p-2">
                   <input
@@ -154,49 +198,94 @@ const ProductTable = () => {
                     }
                   />
                 </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.productId}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.productName}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.groupId}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.groupName}
-                </td>
 
-                <td className="border border-gray-300 p-2 text-sm ">
-                  <img
-                    src={content.image}
-                    width={45}
-                    height={45}
-                    className="inline-block"
-                  />
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.sell_price}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.cost_price}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.VAT}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.note}
-                </td>
+                {options.productId && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.productId}
+                  </td>
+                )}
+                {options.productName && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.productName}
+                  </td>
+                )}
+                {options.quantity && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.quantity ?? 0}
+                  </td>
+                )}
 
-                <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                  <Button className="mr-2">
-                    <FiEdit />
-                  </Button>
+                {options.productGroup && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.groupId}
+                  </td>
+                )}
+                {options.productGroupName && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.groupName}
+                  </td>
+                )}
 
-                  <Button>
-                    <FiTrash color="red" />
-                  </Button>
-                </td>
+                {options.productImage && (
+                  <td className="border border-gray-300 p-2 text-sm ">
+                    <img
+                      src={content.image}
+                      width={45}
+                      height={45}
+                      className="inline-block"
+                    />
+                  </td>
+                )}
+                {options.sell_price && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.sell_price}
+                  </td>
+                )}
+
+                {options.costPrice && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.cost_price}
+                  </td>
+                )}
+
+                {options.price && (
+                  <Tooltip title="Price = Sell price * (1+VAT)">
+                    <td className="border border-gray-300 p-2 text-sm">
+                      {content.price}
+                    </td>
+                  </Tooltip>
+                )}
+                {options.totalPrice && (
+                  <Tooltip title="Total Price = Price * Quantity">
+                    <td className="border border-gray-300 p-2 text-sm">
+                      {content.totalPrice ?? 0}
+                    </td>
+                  </Tooltip>
+                )}
+                {options.VAT && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.VAT}
+                  </td>
+                )}
+                {options.note && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {content.note}
+                  </td>
+                )}
+
+                {options.activities && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    <div className="flex items-center gap-1">
+                      <Button>
+                        <FiEdit />
+                      </Button>
+
+                      <Button>
+                        <FiTrash color="red" />
+                      </Button>
+                    </div>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

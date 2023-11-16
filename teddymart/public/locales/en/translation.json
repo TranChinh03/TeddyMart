@@ -33,14 +33,14 @@
     "report": "Report",
     "signOut": "Sign out"
   },
-  "manager":{
-    "userId":"User ID",
-    "userName":"User Name",
-    "photoURL":"Photo URL",
-    "address":"Address",
-    "phoneNumber":"Phone Number",
-    "email":"Email",
-    "shopName":"Shop Name"
+  "manager": {
+    "userId": "User ID",
+    "userName": "User Name",
+    "photoURL": "Photo URL",
+    "address": "Address",
+    "phoneNumber": "Phone Number",
+    "email": "Email",
+    "shopName": "Shop Name"
   },
   "button": {
     "filter": "Filter",
@@ -57,18 +57,27 @@
     "uploadImage": "Upload Image",
     "apply": "Apply",
     "resetInventory": "Reset Inventory",
-    "export Report": "Export Report",
+    "exportReport": "Export Report",
     "confirm": "Confirm",
     "areYouSure": "Are you sure?",
     "resetAllInventory": "Reset All Inventory",
     "delete": "Delete",
     "accept": "Accept",
     "cancel": "Cancel",
-    "view": "View"
+    "view": "View",
+    "time": "Time",
+    "addOrder": "Add Order",
+    "addMenu": "Add To Menu",
+    "publish": "Publish",
+    "updateVoucher": "Update Voucher",
+    "nameAZ": "Name: A → Z",
+    "nameZA": "Name: Z → A",
+    "quantity1": "Quantity: Low → High",
+    "quantity2": "Quantity: High → Low"
   },
-  "group":{
-    "groupId":"Group ID",
-    "groupName":"Group Name"
+  "group": {
+    "groupId": "Group ID",
+    "groupName": "Group Name"
   },
   "sale": {
     "importOrder": "Import Order",
@@ -85,9 +94,11 @@
     "status": "Status",
     "debt": "Debt",
     "note": "Note",
-    "receiver":"Receiver",
-    "listProduct":"List Product"
+    "receiver": "Receiver",
+    "listProduct": "List Product",
+    "placeholderSearch": "Search orders or custumer information"
   },
+
   "voucher": {
     "searchVoucher": "Search by voucher's name",
     "voucherID": "Voucher ID",
@@ -95,6 +106,7 @@
     "publicDate": "Public Date",
     "expirationDate": "Expiration Date",
     "discountAmount": "Discount Amount",
+    "voucherInfo": "Voucher Information",
     "note": "Note"
   },
   "partner": {
@@ -119,8 +131,7 @@
   "product": {
     "productGroup": "Product Group",
     "product": "Product",
-    "productId":"Product ID",
-
+    "productId": "Product ID",
     "searchByProductGroup": "Search By Product Group Name",
     "searchByProduct": "Search By Product Name",
     "ID": "ID",
@@ -130,21 +141,84 @@
     "addNewProduct": "Add New Product",
     "productImage": "Product Image",
     "productName": "Product Name",
-    "retailPrice": "Retail Price",
+    "sell_price": "Retail Price",
     "costPrice": "Cost Price",
-    "VAT": "VAT"
+    "VAT": "VAT",
+    "productInfo": "Product Information",
+    "searchProductFromOrder": "Search Product From Order",
+    "searchProduct": "Search Product",
+    "price": "Price"
   },
   "warehouse": {
     "warehouse": "Warehouse",
     "warehouseList": "Warehouse List",
-    "warehouseID":"Warehouse ID",
-    "listProduct":"List Product",
+    "warehouseID": "Warehouse ID",
+    "listProduct": "List Product",
     "quantity": "Quantity",
     "status": "Status",
     "warehouseName": "Warehouse Name",
     "createdAt": "Created At",
-    "address":"Address"
+    "address": "Address",
+    "warehouseManagement": "Warehouse Management",
+    "manageInventory": "Manage inventory information",
+    "manageList": "Manage inventory list",
+    "importOrder": "Import orders",
+    "manageImportOrder": "Manage import orders",
+    "searchByName": "Search By Name",
+    "totalProduct": "Total Products"
   },
   "activities": "Activities",
-  "note":"Note"
+  "note": "Note",
+  "modal": {
+    "time": "Time",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "in-week": "In week",
+    "7-days-ago": "7 days ago",
+    "last-week": "Last week",
+    "in-month": "In month",
+    "last-month": "Last month",
+    "30-days-ago": "30 days ago",
+    "in-quarter": "In quarter",
+    "last-quarter": "Last quarter",
+    "in-year": "In year",
+    "last-year": "Last year",
+    "selectDate": "Select Date",
+    "from": "From",
+    "to": "To"
+  },
+  "sort": {
+    "orderAscending": "Order ID: Ascending",
+    "orderDescending": "Order ID: Descending",
+    "createdAtNewest": "Created At: Newest First",
+    "createdAtOldest": "Created At: Oldest First",
+    "totalPaymentAscending": "Total Payment: Ascending",
+    "totalPaymentDescending": "Total Payment: Descending"
+  },
+  "cancel": "Cancel",
+  "accept": "Accept",
+  "report": {
+    "report": "Report",
+    "overviewReport": "Overview Report",
+    "overviewChart": "Overview Chart",
+    "outcome": "Outcome",
+    "revenue": "Revenue",
+    "profit": "Profit",
+    "numberOfOrder": "Number of Order",
+    "importOrder": "Import Order",
+    "exportOrder": "Export Order",
+    "overviewTitle": "Touch any point on screen to see detail",
+    "day": "Day",
+    "week": "Week",
+    "month": "Month",
+    "reportByDate": "Report by date",
+    "reportByProduct": "Report by product",
+    "addNewOrder": "Add New Order",
+    "totalOrder": "Total Order",
+    "totalImportOrder": "Total Import Order",
+    "createdAt": "Created At",
+    "product": "Product",
+    "quantity": "Quantity"
+  },
+  "warningTxt": "Confirm you will delete this section from the system!"
 }

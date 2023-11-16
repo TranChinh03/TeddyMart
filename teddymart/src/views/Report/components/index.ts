@@ -1,4 +1,6 @@
 import CardButton from "./CardButton";
 import SubHeader from "./SubHeader";
 import Chart from "./Chart";
-export { CardButton, SubHeader, Chart };
+import GeneralReport from "./GeneralReport";
+import ProductReport from "./ProductReport";
+export { CardButton, SubHeader, Chart, GeneralReport, ProductReport };

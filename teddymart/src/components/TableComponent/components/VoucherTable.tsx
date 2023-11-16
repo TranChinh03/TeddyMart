@@ -1,6 +1,7 @@
 import { Button } from "antd";
 import { t } from "i18next";
 import { ChangeEvent, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import {
   HiOutlineChevronLeft,
@@ -32,18 +33,34 @@ const CONTENT: TContent[] = [
     discountAmount: 1000,
   },
 ];
-
-const VoucherTable = () => {
+type TOptions = {
+  voucherID?: boolean;
+  voucherName?: boolean;
+  publicDate?: boolean;
+  expirationDate?: boolean;
+  discountAmount?: boolean;
+};
+const VoucherTable = ({ filterOption }: { filterOption?: TOptions }) => {
+  const { t } = useTranslation();
+  const options: TOptions = {
+    voucherID: true,
+    voucherName: true,
+    publicDate: true,
+    expirationDate: true,
+    discountAmount: true,
+    ...filterOption,
+  };
   const HEADER = useMemo(
-    () => [
-      t("voucher.voucherID"),
-      t("voucher.voucherName"),
-      t("voucher.publicDate"),
-      t("voucher.expirationDate"),
-      t("voucher.discountAmount"),
-      t("activities"),
-    ],
-    [t]
+    () =>
+      [
+        options.voucherID && t("voucher.voucherID"),
+        options.voucherName && t("voucher.voucherName"),
+        options.publicDate && t("voucher.publicDate"),
+        options.expirationDate && t("voucher.expirationDate"),
+        options.discountAmount && t("voucher.discountAmount"),
+        t("activities"),
+      ].filter((value) => Boolean(value) !== false),
+    [t, options]
   );
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState("10");
@@ -71,7 +88,7 @@ const VoucherTable = () => {
     <div className="w-full">
       <div className="max-h-96 overflow-y-auto visible">
         <table className="w-full border-collapse border border-gray-300 bg-gray-50">
-          <thead className="bg-gray-200 sticky top-0 left-0 z-50">
+          <thead className="bg-gray-200 sticky left-0 z-50" style={{ top: -1 }}>
             <tr>
               <th className="border border-gray-300 p-2 text-xs">
                 <input

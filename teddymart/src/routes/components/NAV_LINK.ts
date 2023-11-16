@@ -12,4 +12,7 @@ export const NAV_LINK = {
   GROUP_PRODUCT: "/home/groupproduct",
   HOME: "/home/*",
   AUTH: "/*",
+  WAREHOUSE_MANAGEMENT: "/home/warehouse/warehouseManagement",
+  WAREHOUSE_LIST: "/home/warehouse/warehouseList",
+  IMPORT_ORDER: "/home/warehouse/importOrder",
 };
