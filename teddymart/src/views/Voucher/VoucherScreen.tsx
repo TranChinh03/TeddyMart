@@ -47,7 +47,7 @@ function VoucherScreen() {
             {t("button.addNew")}
           </h1>
         }
-        width={"20%"}
+        width={"30%"}
         footer={false}
       >
         <TextInputComponent
@@ -63,14 +63,14 @@ function VoucherScreen() {
             marginBlock: 12,
           }}
         >
-          <div>
+          <Space>
             <label>{t("voucher.expirationDate")}</label>
             <DatePicker onChange={() => {}} />
-          </div>
-          <div>
+          </Space>
+          <Space>
             <label>{t("voucher.publicDate")}</label>
             <DatePicker onChange={() => {}} />
-          </div>
+          </Space>
         </Space>
         <TextInputComponent
           label={t("voucher.discountAmount")}
@@ -100,7 +100,7 @@ function VoucherScreen() {
             {t("button.updateVoucher")}
           </h1>
         }
-        width={"20%"}
+        width={"30%"}
         footer={false}
       >
         <TextInputComponent
@@ -116,14 +116,14 @@ function VoucherScreen() {
             marginBlock: 12,
           }}
         >
-          <div>
+          <Space>
             <label>{t("voucher.expirationDate")}</label>
             <DatePicker onChange={() => {}} />
-          </div>
-          <div>
+          </Space>
+          <Space>
             <label>{t("voucher.publicDate")}</label>
             <DatePicker onChange={() => {}} />
-          </div>
+          </Space>
         </Space>
         <TextInputComponent
           label={t("voucher.discountAmount")}
@@ -148,10 +148,18 @@ function VoucherScreen() {
       <Modal
         open={openWarningDelete}
         onCancel={() => setOpenWarningDelete(false)}
-        width={"20%"}
+        width={"30%"}
         footer={false}
       >
-        <Space direction="vertical" size={10}>
+        <Space
+          direction="vertical"
+          size={10}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <div className="flex items-center justify-center">
             <PiWarningCircle color="#F5BC89" size={108} />
           </div>

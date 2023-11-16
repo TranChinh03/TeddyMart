@@ -73,7 +73,8 @@
     "nameAZ": "Name: A → Z",
     "nameZA": "Name: Z → A",
     "quantity1": "Quantity: Low → High",
-    "quantity2": "Quantity: High → Low"
+    "quantity2": "Quantity: High → Low",
+    "addNewSupplier":"Add New Supplier"
   },
   "group": {
     "groupId": "Group ID",
@@ -96,7 +97,7 @@
     "note": "Note",
     "receiver": "Receiver",
     "listProduct": "List Product",
-    "placeholderSearch": "Search orders or custumer information"
+    "placeholderSearch": "Search orders or custumer/supplier information"
   },
 
   "voucher": {
@@ -155,7 +156,7 @@
     "warehouseID": "Warehouse ID",
     "listProduct": "List Product",
     "quantity": "Quantity",
-    "status": "Status",
+    "status": "Status", 
     "warehouseName": "Warehouse Name",
     "createdAt": "Created At",
     "address": "Address",
@@ -165,7 +166,9 @@
     "importOrder": "Import orders",
     "manageImportOrder": "Manage import orders",
     "searchByName": "Search By Name",
-    "totalProduct": "Total Products"
+    "totalProduct": "Total Products",
+    "searchSupplier":"Search Supplier",
+    "supplierInfo":"Supplier Information"
   },
   "activities": "Activities",
   "note": "Note",
