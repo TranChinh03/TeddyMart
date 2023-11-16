@@ -17,9 +17,7 @@ export default function CustomerScreen() {
         }}
       >
         <FieldSupplier />
-        <ResponsiveContainer width={chartWidth} height={500}>
-          <PartnerTable />
-        </ResponsiveContainer>
+        <PartnerTable />
       </div>
     </div>
   );

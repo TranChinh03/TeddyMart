@@ -2,6 +2,8 @@ import Header from "components/Header";
 import { ResponsiveContainer } from "recharts";
 import { PartnerTable } from "components/TableComponent";
 import FieldCustomer from "./Components/FieldCustomer";
+import AdvancedSearch from "./Components/AdvancedSearch";
+
 export default function CustomerScreen() {
   const chartWidth = window.innerWidth * 0.7;
 
@@ -17,9 +19,8 @@ export default function CustomerScreen() {
         }}
       >
         <FieldCustomer />
-        <ResponsiveContainer width={chartWidth} height={500}>
-          <PartnerTable />
-        </ResponsiveContainer>
+        <AdvancedSearch />
+        <PartnerTable />
       </div>
     </div>
   );
