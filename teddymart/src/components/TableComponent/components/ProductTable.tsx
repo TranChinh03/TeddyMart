@@ -10,6 +10,7 @@ import {
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
 
+
 type TContent = {
   productId: string;
   productName: string;
@@ -86,6 +87,8 @@ const CONTENT: TContent[] = [
     note: "Do moi",
   },
 ];
+
+
 type TOptions = {
   productId?: boolean;
   productName?: boolean;
