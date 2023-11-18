@@ -9,7 +9,8 @@ import {
   HiOutlineChevronRight,
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
-
+import { useSelector } from "react-redux";
+import { RootState } from "state_management/reducers/rootReducer";
 
 type TContent = {
   productId: string;
@@ -88,7 +89,6 @@ const CONTENT: TContent[] = [
   },
 ];
 
-
 type TOptions = {
   productId?: boolean;
   productName?: boolean;
@@ -107,11 +107,44 @@ type TOptions = {
 const ProductTable = ({
   filterOption,
   data,
+  warehouseName,
+  productName,
 }: {
   filterOption?: TOptions;
   data?: TProduct[];
+  warehouseName?: string;
+  productName?: string;
 }) => {
   const { t } = useTranslation();
+  const products = useSelector((state: RootState) => state.product);
+  const warehouses = useSelector((state: RootState) => state.warehouseSlice);
+  const productsFilter = useMemo(() => {
+    console.log(warehouseName, productName);
+    if (warehouseName === "" && productName === "") return products;
+    else {
+      const listProductWarehouse = warehouses.filter(
+        (value) => value.warehouseName === warehouseName
+      )[0].listProduct;
+      console.log("listProductWarehouse", listProductWarehouse);
+      const listProducts: any[] = [];
+      listProductWarehouse.map((value) => {
+        const tmp = products.findIndex(
+          (product) => product.productId === value.productId
+        );
+        listProducts.push({
+          productId: value.productId,
+          productName: value.productName,
+          quantity: value.quantity,
+          costPrice: products[tmp].cost_price,
+          payment: 0, //????
+          note: products[tmp].note,
+        });
+      });
+      return listProducts;
+    }
+    return products;
+  }, [warehouseName, productName]);
+  console.log(productsFilter);
   const options: TOptions = {
     productId: true,
     productName: true,
@@ -152,12 +185,16 @@ const ProductTable = ({
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
       console.log("ok");
-      if (selectedRows.length === 0) {
-        setSelectedRows([...CONTENT.map((content) => content.productId)]);
+      if (selectedRows.length < productsFilter.length) {
+        setSelectedRows([
+          ...productsFilter.map((content) => content.productId),
+        ]);
         return;
       }
-      setSelectedRows([]);
-      return;
+      if (selectedRows.length === productsFilter.length) {
+        setSelectedRows([]);
+        return;
+      }
     }
     if (selectedRows.includes(rowId)) {
       setSelectedRows([...selectedRows.filter((id) => id !== rowId)]);
@@ -189,7 +226,7 @@ const ProductTable = ({
             </tr>
           </thead>
           <tbody className="text-center">
-            {data?.map((content, index) => (
+            {productsFilter.map((content, index) => (
               <tr key={index}>
                 <td className="border border-gray-300 p-2">
                   <input

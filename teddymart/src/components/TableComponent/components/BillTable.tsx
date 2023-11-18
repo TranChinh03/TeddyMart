@@ -10,6 +10,8 @@ import {
   HiOutlineChevronRight,
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
+import { useSelector } from "react-redux";
+import { RootState } from "state_management/reducers/rootReducer";
 
 type TStatus = "unpaid" | "paid";
 const COLOR_STATUS = new Map([
@@ -383,6 +385,7 @@ const BillTable = ({ filterOption }: { filterOption?: ColOptions }) => {
     activities: true,
     ...filterOption,
   };
+  const bills = useSelector((state: RootState) => state.order);
   const HEADER = useMemo(
     () =>
       [
@@ -408,13 +411,14 @@ const BillTable = ({ filterOption }: { filterOption?: ColOptions }) => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
-      console.log("ok");
-      if (selectedRows.length === 0) {
-        setSelectedRows([...CONTENT.map((content) => content.orderId)]);
+      if (selectedRows.length < bills.length) {
+        setSelectedRows([...bills.map((content) => content.orderId)]);
         return;
       }
-      setSelectedRows([]);
-      return;
+      if (selectedRows.length === bills.length) {
+        setSelectedRows([]);
+        return;
+      }
     }
     if (selectedRows.includes(rowId)) {
       setSelectedRows([...selectedRows.filter((id) => id !== rowId)]);
@@ -452,7 +456,7 @@ const BillTable = ({ filterOption }: { filterOption?: ColOptions }) => {
             </tr>
           </thead>
           <tbody className="text-center">
-            {CONTENT.map((content, index) => (
+            {bills.map((content, index) => (
               <tr key={index}>
                 <td className="border border-gray-300 p-2">
                   <input
