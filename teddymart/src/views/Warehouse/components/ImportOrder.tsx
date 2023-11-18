@@ -38,6 +38,8 @@ import {
 } from "react-icons/bi";
 import { BsFileExcel } from "react-icons/bs";
 import { LiaFileExcel } from "react-icons/lia";
+import { useSelector } from "react-redux";
+import { RootState } from "state_management/reducers/rootReducer";
 const { RangePicker } = DatePicker;
 const CUS_INFO = {
   customerName: "NVA",
@@ -56,6 +58,11 @@ export default function ImportOrder() {
   const [openSearchModal, setOpenSearchModal] = useState(false);
   const { t } = useTranslation();
   const [openAddForm, setOpenAddForm] = useState(false);
+  const listWarehouseName = useSelector(
+    (state: RootState) => state.warehouseSlice
+  ).map((value) => value.warehouseName);
+  const [warehouseName, setWarehouseName] = useState(listWarehouseName[0]);
+
   const [listFilter, setListFilter] = useState([
     {
       displayName: t("partner.supplierName"),
@@ -276,11 +283,9 @@ export default function ImportOrder() {
             <Space>
               <h1 className=" text-2xl">{t("product.productInfo")}</h1>
               <DropdownComponent
-                options={[
-                  "Central Warehouse",
-                  "Western Warehouse",
-                  "Eastern Warehouse",
-                ]}
+                options={listWarehouseName}
+                value={warehouseName}
+                setValue={setWarehouseName}
               />
             </Space>
           }
@@ -318,6 +323,8 @@ export default function ImportOrder() {
                 VAT: false,
                 sell_price: false,
               }}
+              warehouseName={warehouseName}
+              productName={search}
             />
           </div>
         </Card>

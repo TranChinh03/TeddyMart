@@ -142,7 +142,6 @@ const ProductTable = ({
       });
       return listProducts;
     }
-    return products;
   }, [warehouseName, productName]);
   console.log(productsFilter);
   const options: TOptions = {
