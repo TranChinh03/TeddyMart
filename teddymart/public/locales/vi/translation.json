@@ -133,7 +133,8 @@
     "productInfo": "Thông tin sản phẩm",
     "searchProduct": "Tìm kiếm theo sản phẩm",
     "totalProduct": "Số lượng sản phẩm",
-    "price": "Giá tiền "
+    "price": "Giá tiền ",
+    "quantity": "Số lượng"
   },
   "group": {
     "groupId": "Mã nhóm",

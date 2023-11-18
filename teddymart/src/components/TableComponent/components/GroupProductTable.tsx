@@ -42,7 +42,7 @@ type TOptions = {
   groupName?: boolean;
   note?: boolean;
 };
-const GroupProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
+const GroupProductTable = ({ filterOption, data, }: { filterOption?: TOptions, data?: TGroupProduct[] }) => {
   const { t } = useTranslation();
   const options: TOptions = {
     groupId: true,
@@ -103,7 +103,7 @@ const GroupProductTable = ({ filterOption }: { filterOption?: TOptions }) => {
             </tr>
           </thead>
           <tbody className="text-center">
-            {CONTENT.map((content, index) => (
+            {data?.map((content, index) => (
               <tr key={index}>
                 <td className="border border-gray-300 p-2">
                   <input

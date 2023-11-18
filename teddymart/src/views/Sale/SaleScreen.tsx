@@ -23,7 +23,7 @@ import ReportProductTable from "components/TableComponent/components/ReportProdu
 import TextInputComponent from "components/TextInputComponent";
 import { COLORS } from "constants/colors";
 import { title } from "process";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BiDotsVerticalRounded,
@@ -38,6 +38,8 @@ import {
 } from "react-icons/bi";
 import { BsFileExcel } from "react-icons/bs";
 import { LiaFileExcel } from "react-icons/lia";
+import { useSelector } from "react-redux";
+import { RootState } from "state_management/reducers/rootReducer";
 const { RangePicker } = DatePicker;
 const CUS_INFO = {
   customerName: "NVA",
@@ -54,6 +56,10 @@ export default function SaleScreen() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   const [openSearchModal, setOpenSearchModal] = useState(false);
+  const listWarehouseName = useSelector(
+    (state: RootState) => state.warehouseSlice
+  ).map((value) => value.warehouseName);
+  const [warehouseName, setWarehouseName] = useState("Central Warehouse");
   const { t } = useTranslation();
   const [openAddForm, setOpenAddForm] = useState(false);
   const [listFilter, setListFilter] = useState([
@@ -259,11 +265,9 @@ export default function SaleScreen() {
             <Space>
               <h1 className=" text-2xl">{t("product.productInfo")}</h1>
               <DropdownComponent
-                options={[
-                  "Central Warehouse",
-                  "Western Warehouse",
-                  "Eastern Warehouse",
-                ]}
+                options={listWarehouseName}
+                value={warehouseName}
+                setValue={setWarehouseName}
               />
             </Space>
           }
@@ -301,6 +305,8 @@ export default function SaleScreen() {
                 VAT: false,
                 sell_price: false,
               }}
+              productName={search}
+              warehouseName={warehouseName}
             />
           </div>
         </Card>

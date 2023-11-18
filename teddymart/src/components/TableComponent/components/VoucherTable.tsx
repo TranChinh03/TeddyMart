@@ -9,6 +9,8 @@ import {
   HiOutlineChevronRight,
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
+import { useSelector } from "react-redux";
+import { RootState } from "state_management/reducers/rootReducer";
 
 type TContent = {
   voucherId: string;
@@ -50,6 +52,7 @@ const VoucherTable = ({ filterOption }: { filterOption?: TOptions }) => {
     discountAmount: true,
     ...filterOption,
   };
+  const vouchers = useSelector((state: RootState) => state.voucherSlice);
   const HEADER = useMemo(
     () =>
       [
@@ -67,12 +70,14 @@ const VoucherTable = ({ filterOption }: { filterOption?: TOptions }) => {
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
       console.log("ok");
-      if (selectedRows.length === 0) {
-        setSelectedRows([...CONTENT.map((content) => content.voucherId)]);
+      if (selectedRows.length < vouchers.length) {
+        setSelectedRows([...vouchers.map((content) => content.voucherId)]);
         return;
       }
-      setSelectedRows([]);
-      return;
+      if (selectedRows.length === vouchers.length) {
+        setSelectedRows([]);
+        return;
+      }
     }
     if (selectedRows.includes(rowId)) {
       setSelectedRows([...selectedRows.filter((id) => id !== rowId)]);
@@ -105,7 +110,7 @@ const VoucherTable = ({ filterOption }: { filterOption?: TOptions }) => {
             </tr>
           </thead>
           <tbody className="text-center">
-            {CONTENT.map((content, index) => (
+            {vouchers.map((content, index) => (
               <tr key={index}>
                 <td className="border border-gray-300 p-2">
                   <input
