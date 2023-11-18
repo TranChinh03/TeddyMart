@@ -38,7 +38,7 @@ export default function Warehouse() {
   const [sort, setSort] = useState(OPTIONS[0]);
   const [warehouse, setWarehouse] = useState(WAREHOUSES[0]?.warehouseName);
   const LIST_PRODUCTS = WAREHOUSES.find((w) => w.warehouseName === warehouse);
-  const count = WAREHOUSES.find((w) => w.warehouseName === warehouse).count;
+  const count = WAREHOUSES.find((w) => w.warehouseName === warehouse)?.count;
   return (
     <div className="w-full bg-extreme_lg_grey min-h-screen">
       <Header width={"100%"} title={t("warehouse.warehouse")} />
@@ -99,7 +99,8 @@ export default function Warehouse() {
         <div className="h-3" />
         <ProductTable
           filterOption={filterOptions}
-          data={LIST_PRODUCTS?.listProduct}
+          //data={LIST_PRODUCTS?.listProduct}
+          warehouseName={warehouse}
         />
       </div>
     </div>

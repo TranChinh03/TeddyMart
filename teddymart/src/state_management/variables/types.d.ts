@@ -14,11 +14,11 @@ declare type TPartner = {
 
 declare type TManager = {
   userId: string;
-  shopName: string;
+  shopName?: string;
   userName: string;
   photoUrl?: string;
   address?: string;
-  phoneNumber: string;
+  phoneNumber?: string;
   email: string;
 };
 

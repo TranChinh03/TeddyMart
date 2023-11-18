@@ -4,24 +4,28 @@
     "createAccount": "Create your account. It's free and only take a minute",
     "shopname": "Shop name",
     "password": "Password",
-    "username": "Username",
+    "userName": "Username",
     "email": "Email",
     "phoneNo": "Phone number",
     "address": "Address",
     "errEmail": "Invalid email address",
     "errPassword": "Password must be at least 9 characters",
-    "errPhoneNumber": "Invalid Phone number"
+    "errPhoneNumber": "Invalid Phone number",
+    "errUserName": "User name has been used"
   },
   "welcome": "Welcome",
   "login": {
-    "username": "Username",
+    "userName": "Username",
     "password": "Password",
     "forgotpassword": "Forgot password",
     "login": "Login",
     "slogan": "Manage your business better",
     "signUp": "Sign up",
     "newTeddyMart": "New to TeddyMart?",
-    "signInToManageStore": "Sign in to manage your store"
+    "signInToManageStore": "Sign in to manage your store",
+    "errVerify": "Please verify your email",
+    "errUser": "User not found",
+    "wrongPassword": "Wrong Password"
   },
   "drawer": {
     "sale": "Sale",
@@ -151,7 +155,8 @@
     "productInfo": "Product Information",
     "searchProductFromOrder": "Search Product From Order",
     "searchProduct": "Search Product",
-    "price": "Price"
+    "price": "Price",
+    "quantity": "Quantity"
   },
   "warehouse": {
     "warehouse": "Warehouse",

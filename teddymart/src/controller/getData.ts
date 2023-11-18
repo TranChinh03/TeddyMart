@@ -67,7 +67,7 @@ const generateProduct = (data: TOrder[], product: TProduct[]) => {
   let result = new Map<string, TReportProduct>();
   data.forEach((d: TOrder) => {
     if (d.status === "paid" && d.type === "Export") {
-      d.listProduct.forEach((item) => {
+      d.listProduct?.forEach((item) => {
         if (!result.has(item.productId)) {
           result.set(item.productId, { ...item });
         } else {

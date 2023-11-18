@@ -4,24 +4,28 @@
     "createAccount": "Tạo tài khoản miễn phí và nhanh chóng",
     "shopname": "Tên shop",
     "password": "Mật khẩu",
-    "username": "Tên đăng nhập",
+    "userName": "Tên đăng nhập",
     "email": "Email",
     "phoneNo": "Số điện thoại",
     "address": "Địa chỉ",
     "errEmail": "Email không hợp lệ",
     "errPassword": "Mật khẩu phải có ít nhất 8 kí tự",
-    "errPhoneNumber": "Số điện thoại không hợp lệ"
+    "errPhoneNumber": "Số điện thoại không hợp lệ",
+    "errUserName": "Tên đăng nhập đã tồn tại"
   },
   "welcome": "Xin chào",
   "login": {
-    "username": "Tên đăng nhập",
+    "userName": "Tên đăng nhập",
     "password": "Mật khẩu",
     "forgotpassword": "Quên mật khẩu",
     "login": "Đăng nhập",
     "slogan": "Quản lý doanh nghiệp tốt hơn",
     "signUp": "Đăng ký",
     "newTeddyMart": "Chưa có tài khoản?",
-    "signInToManageStore": "Đăng nhập để quản lý cửa hàng của bạn"
+    "signInToManageStore": "Đăng nhập để quản lý cửa hàng của bạn",
+    "errVerify": "Vui lòng xác nhận email",
+    "errUser": "Tên đăng nhập hoặc email không toàn tại",
+    "wrongPassword": "Sai mật khẩu"
   },
   "drawer": {
     "sale": "Bán hàng",

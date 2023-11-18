@@ -13,13 +13,22 @@ import { uploadProduct } from "state_management/slices/productSlice";
 import { uploadWarehouse } from "state_management/slices/warehouseSlice";
 import { uploadOrder } from "state_management/slices/orderSlice";
 import { uploadReport } from "state_management/slices/reportSlice";
-import { RootState } from "state_management/reducers/rootReducer";
 import { useTranslation } from "react-i18next";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { uploadReportProduct } from "state_management/slices/reportProduct";
-import { resolve } from "path";
+import {
+  getDocs,
+  collection,
+  updateDoc,
+  doc,
+  query,
+  where,
+  or,
+} from "firebase/firestore";
+import { db, auth } from "firebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
 type Inputs = {
-  username: string;
+  userName: string;
   password: string;
 };
 export default function LoginScreen() {
@@ -28,10 +37,75 @@ export default function LoginScreen() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { register, handleSubmit } = useForm<Inputs>();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<Inputs>();
   const onLogin: SubmitHandler<Inputs> = async (data) => {
     // console.log("submit");
     // console.log(data);
+    // setLoading(true);
+    // const snapshot = await getDocs(collection(db, "Manager"));
+    // const user = snapshot.docs.find(
+    //   (d) =>
+    //     d.data().email === data.userName || d.data().userName === data.userName
+    // );
+    // if (!user) {
+    //   setError("userName", {
+    //     type: "custom",
+    //     message: t("login.errUser"),
+    //   });
+    //   setLoading(false);
+    //   return;
+    // }
+    // if (data.userName.includes("@")) {
+    //   await signInWithEmailAndPassword(auth, data.userName, data.password)
+    //     .then(async (userCredential) => {
+    //       if (!userCredential.user.emailVerified) {
+    //         setError("userName", {
+    //           type: "custom",
+    //           message: t("login.errVerify"),
+    //         });
+    //         return;
+    //       }
+    //       await updateDoc(doc(db, "Manager", userCredential.user.uid), {
+    //         emailVerified: true,
+    //       });
+    //       console.log("login success");
+    //     })
+    //     .catch((e) => {
+    //       setError("password", {
+    //         type: "custom",
+    //         message: t("login.wrongPassword"),
+    //       });
+    //       console.log(e);
+    //     });
+    // } else {
+    //   await signInWithEmailAndPassword(auth, user.data().email, data.password)
+    //     .then(async (userCredential) => {
+    //       if (!userCredential.user.emailVerified) {
+    //         setError("userName", {
+    //           type: "custom",
+    //           message: t("login.errVerify"),
+    //         });
+    //         return;
+    //       }
+    //       await updateDoc(doc(db, "Manager", userCredential.user.uid), {
+    //         emailVerified: true,
+    //       });
+    //     })
+    //     .catch((e) => {
+    //       setError("password", {
+    //         type: "custom",
+    //         message: t("login.wrongPassword"),
+    //       });
+    //       console.log(e);
+    //     });
+    // }
+    // setLoading(false);
+
     setLoading(true);
     await Promise.all([
       getData("/Manager/M001/Voucher").then((data: TVoucher[]) =>
@@ -46,14 +120,12 @@ export default function LoginScreen() {
           resolve(data);
         });
       }),
-
       getData("/Manager/M001/Partner").then((data: TPartner[]) => {
         dispatch(uploadPartner(data));
       }),
       getData("/Manager/M001/Ware_House").then((data: TWarehouse[]) => {
         dispatch(uploadWarehouse(data));
       }),
-
       new Promise((resolve) => {
         getData("/Manager/M001/Orders").then((data: TOrder[]) => {
           dispatch(uploadOrder(data));
@@ -98,12 +170,17 @@ export default function LoginScreen() {
               <div className="grid gap-y-1 mt-4">
                 <TextInputComponent
                   placeHolder=""
-                  label={t("login.username")}
+                  label={t("login.userName")}
                   width={"100%"}
                   required={true}
                   register={register}
-                  registerName="username"
+                  registerName="userName"
                 />
+                {errors.userName && (
+                  <p className="text-xs text-red-500">
+                    {errors.userName.message}
+                  </p>
+                )}
               </div>
               <div className="grid gap-y-1 mt-5">
                 <TextInputComponent
@@ -117,6 +194,11 @@ export default function LoginScreen() {
                   register={register}
                   registerName="password"
                 />
+                {errors.password && (
+                  <p className="text-xs text-red-500">
+                    {errors.password.message}
+                  </p>
+                )}
               </div>
 
               <div className="flex flex-col justify-center items-center gap-y-3 mt-4">

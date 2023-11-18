@@ -17,11 +17,11 @@ type TContent = {
   productName: string;
   groupId: string;
   groupName: string;
-  image: string;
+  image?: string;
   sell_price: number;
-  cost_price: number;
-  VAT: number;
-  note: string;
+  cost_price?: number;
+  VAT?: number;
+  note?: string;
   quantity?: number;
   totalPrice?: number;
   price?: number;
@@ -120,7 +120,7 @@ const ProductTable = ({
   const warehouses = useSelector((state: RootState) => state.warehouseSlice);
   const productsFilter = useMemo(() => {
     console.log(warehouseName, productName);
-    if (warehouseName === "" && productName === "") return products;
+    if (!warehouseName && !productName) return products;
     else {
       const listProductWarehouse = warehouses.filter(
         (value) => value.warehouseName === warehouseName
@@ -131,7 +131,7 @@ const ProductTable = ({
         const tmp = products.findIndex(
           (product) => product.productId === value.productId
         );
-        listProducts.push({
+        listProducts?.push({
           productId: value.productId,
           productName: value.productName,
           quantity: value.quantity,
@@ -143,7 +143,7 @@ const ProductTable = ({
       return listProducts;
     }
   }, [warehouseName, productName]);
-  console.log(productsFilter);
+  //console.log(productsFilter);
   const options: TOptions = {
     productId: true,
     productName: true,
@@ -182,24 +182,24 @@ const ProductTable = ({
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState("10");
   const handleCheckBoxChange = (rowId: string) => {
-    if (rowId === null) {
-      console.log("ok");
-      if (selectedRows.length < productsFilter.length) {
-        setSelectedRows([
-          ...productsFilter.map((content) => content.productId),
-        ]);
-        return;
-      }
-      if (selectedRows.length === productsFilter.length) {
-        setSelectedRows([]);
-        return;
-      }
-    }
-    if (selectedRows.includes(rowId)) {
-      setSelectedRows([...selectedRows.filter((id) => id !== rowId)]);
-      return;
-    }
-    setSelectedRows([...selectedRows, rowId]);
+    // if (rowId === null) {
+    //   console.log("ok");
+    //   if (selectedRows.length < productsFilter.length) {
+    //     setSelectedRows([
+    //       ...productsFilter.map((content) => content.productId),
+    //     ]);
+    //     return;
+    //   }
+    //   if (selectedRows.length === productsFilter.length) {
+    //     setSelectedRows([]);
+    //     return;
+    //   }
+    // }
+    // if (selectedRows.includes(rowId)) {
+    //   setSelectedRows([...selectedRows.filter((id) => id !== rowId)]);
+    //   return;
+    // }
+    // setSelectedRows([...selectedRows, rowId]);
   };
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setRowsPerPage(e.target.value);

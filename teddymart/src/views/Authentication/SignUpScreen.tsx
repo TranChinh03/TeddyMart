@@ -16,9 +16,16 @@ import {
   sendEmailVerification,
 } from "firebase/auth";
 import { db } from "firebaseConfig";
-import { doc, setDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDocs,
+  collection,
+  query,
+  where,
+} from "firebase/firestore";
 type Inputs = {
-  username: string;
+  userName: string;
   email: string;
   password: string;
   shopName: string;
@@ -33,25 +40,42 @@ export default function SignUpScreen() {
     register,
     handleSubmit,
     setError,
+    reset,
     formState: { errors },
   } = useForm<Inputs>();
   const navigate = useNavigate();
   const onSignUp: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
-    //e.preventDefault();
-    const auth = getAuth();
-    await createUserWithEmailAndPassword(auth, data.email, data.password)
-      .then(async (userCredential) => {
-        sendEmailVerification(userCredential.user);
-        await setDoc(doc(db, "Manager", userCredential.user.uid), {
-          emailVerified: false,
-          ...data,
-          userId: userCredential.user.uid,
-        });
-      })
-      .catch((e) => {
-        console.log(e);
+    //console.log(data);
+    setLoading(true);
+    const snapshot = await getDocs(
+      query(collection(db, "Manager"), where("userName", "==", data.userName))
+    );
+    if (snapshot.size !== 0) {
+      setError("userName", {
+        type: "custom",
+        message: t("signUp.errUserName"),
       });
+      setLoading(false);
+      return;
+    } else {
+      const auth = getAuth();
+      await createUserWithEmailAndPassword(auth, data.email, data.password)
+        .then(async (userCredential) => {
+          sendEmailVerification(userCredential.user);
+          await setDoc(doc(db, "Manager", userCredential.user.uid), {
+            emailVerified: false,
+            ...data,
+            userId: userCredential.user.uid,
+          });
+        })
+        .catch((e) => {
+          console.log(e);
+        })
+        .finally(() => {
+          setLoading(false);
+          reset();
+        });
+    }
   };
 
   return (
@@ -78,13 +102,20 @@ export default function SignUpScreen() {
             <form onSubmit={handleSubmit(onSignUp)}>
               <div className="flex">
                 <div className="w-full grid grid-cols-2 gap-y-7 py-2 gap-2">
-                  <TextInputComponent
-                    label={t("signUp.username")}
-                    width={"100%"}
-                    required={true}
-                    register={register}
-                    registerName={"username"}
-                  />
+                  <div>
+                    <TextInputComponent
+                      label={t("signUp.userName")}
+                      width={"100%"}
+                      required={true}
+                      register={register}
+                      registerName={"userName"}
+                    />
+                    {errors.userName && (
+                      <p className="text-xs text-red-500">
+                        {errors.userName.message}
+                      </p>
+                    )}
+                  </div>
                   <div>
                     <TextInputComponent
                       label={t("signUp.password")}
@@ -134,7 +165,7 @@ export default function SignUpScreen() {
                       register={register}
                       registerName="phoneNumber"
                       pattern={{
-                        value: /^\+(?:[0-9] ?){6,14}[0-9]$/,
+                        value: /^(?:[0-9] ?){6,14}[0-9]$/,
                         message: t("signUp.errPhoneNumber"),
                       }}
                     />

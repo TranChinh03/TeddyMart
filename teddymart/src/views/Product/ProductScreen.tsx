@@ -22,9 +22,10 @@ import { ListCheckBox } from "components";
 import { t } from "i18next";
 import { Divider, Modal, Space } from "antd";
 
-
 export default function ProductScreen() {
-  const [PRODUCT, setPRODUCT] = useState(useSelector((state: RootState) => state.product))
+  const [PRODUCT, setPRODUCT] = useState(
+    useSelector((state: RootState) => state.product)
+  );
   const GROUP = useSelector((state: RootState) => state.groupProduct);
   const [screens, setScreens] = useState();
   const [type, setType] = useState();
@@ -36,47 +37,47 @@ export default function ProductScreen() {
   const [openAddForm, setOpenAddForm] = useState(false);
 
   const [listFilter, setListFilter] = useState([
-    { 
+    {
       displayName: t("product.productId"),
       value: true,
     },
-    { 
+    {
       displayName: t("product.productName"),
       value: true,
     },
-    { 
+    {
       displayName: t("product.quantity"),
       value: true,
     },
-    { 
+    {
       displayName: t("product.productGroup"),
       value: true,
     },
-    { 
+    {
       displayName: t("product.productGroupName"),
       value: true,
     },
-    { 
+    {
       displayName: t("product.sell_price"),
       value: true,
     },
-    { 
+    {
       displayName: t("product.costPrice"),
       value: true,
     },
-    { 
+    {
       displayName: t("sale.totalPayment"),
       value: true,
     },
-    { 
+    {
       displayName: t("product.price"),
       value: true,
     },
-    { 
+    {
       displayName: t("note"),
       value: true,
     },
-    { 
+    {
       displayName: t("activities"),
       value: true,
     },
@@ -84,18 +85,21 @@ export default function ProductScreen() {
 
   useEffect(() => {
     const addGroupNameToProduct = () => {
-      const updatedProduct = PRODUCT.map(productItem => {
-        const correspondingGroup = GROUP.find(groupItem => groupItem.groupId === productItem.groupId)
+      const updatedProduct = PRODUCT.map((productItem) => {
+        const correspondingGroup = GROUP.find(
+          (groupItem) => groupItem.groupId === productItem.groupId
+        );
         return {
           ...productItem,
-          groupName: correspondingGroup ? correspondingGroup.groupName : "Unknown Group"
-        }
-      })
-      setPRODUCT(updatedProduct)
-    }
+          groupName: correspondingGroup
+            ? correspondingGroup.groupName
+            : "Unknown Group",
+        };
+      });
+      setPRODUCT(updatedProduct);
+    };
     addGroupNameToProduct();
-  }, [PRODUCT, GROUP])
-
+  }, [PRODUCT, GROUP]);
 
   return (
     <div className="w-full">
@@ -201,13 +205,13 @@ export default function ProductScreen() {
                 label={t("group.groupName")}
                 value={productGroup}
                 setValue={setProductGroup}
-                options={GROUP.map(item => item.groupName)}
+                options={GROUP.map((item) => item.groupName)}
               />
             </div>
           </div>
         </div>
-        <div style={{width: '100%', margin: "20px auto auto auto" }}>
-            <ProductTable data={PRODUCT}/>
+        <div style={{ width: "100%", margin: "20px auto auto auto" }}>
+          <ProductTable />
         </div>
       </div>
       <Modal
@@ -215,90 +219,123 @@ export default function ProductScreen() {
         width={"60%"}
         open={openAddForm}
         onCancel={() => setOpenAddForm(false)}
-        footer={false}>
+        footer={false}
+      >
         <Divider style={{ backgroundColor: "black" }} />
-          <div className="grid grid-cols-4">
-            <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
-              {t("product.productGroup")} <p className="inline-block text-red-600">*</p>
-            </label>
-            <div className="col-span-3 inline-block">
-              <ButtonSelect
-                  iconRight={
-                    <IoMdArrowDropdown
-                      style={{ marginLeft: 50, color: "gray" }}
-                    />
-                  }
-                  width="100%"
-                  title="All"
-                  label={t("group.groupName")}
-                  value={productGroup}
-                  setValue={setProductGroup}
-                  options={GROUP.map(item => item.groupName)}
-                />
-            </div>
-            
-            <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
-              {t("product.productName")} <p className="inline-block text-red-600">*</p>
-            </label>
-            <div className="col-span-3 inline-block">
-            <input type="text" className="border text-gray-900 text-sm rounded-lg block w-full m-2 p-2" required/>
-            </div>
+        <div className="grid grid-cols-4">
+          <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
+            {t("product.productGroup")}{" "}
+            <p className="inline-block text-red-600">*</p>
+          </label>
+          <div className="col-span-3 inline-block">
+            <ButtonSelect
+              iconRight={
+                <IoMdArrowDropdown style={{ marginLeft: 50, color: "gray" }} />
+              }
+              width="100%"
+              title="All"
+              label={t("group.groupName")}
+              value={productGroup}
+              setValue={setProductGroup}
+              options={GROUP.map((item) => item.groupName)}
+            />
+          </div>
 
-            <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
-              {t("product.productImage")} <p className="inline-block text-red-600">*</p>
-            </label>
-            <div className="col-span-3 inline-block">
-                  <div style={{padding: "5px", border: "1px solid gray", borderRadius: "10px", width: "fit-content"}} className="cursor-pointer m-auto">
-                    <img src={require("../../assets/images/Camera.png")}/>
-                  </div>
-            </div>
+          <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
+            {t("product.productName")}{" "}
+            <p className="inline-block text-red-600">*</p>
+          </label>
+          <div className="col-span-3 inline-block">
+            <input
+              type="text"
+              className="border text-gray-900 text-sm rounded-lg block w-full m-2 p-2"
+              required
+            />
+          </div>
 
-            <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
-              {t("product.price")} <p className="inline-block text-red-600">*</p>
-            </label>
-            <div className="col-span-3 inline-block">
-            <input type="text" className="border text-gray-900 text-sm rounded-lg block w-full m-2 p-2" required/>
-            </div>
-
-            <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
-              {t("product.sell_price")} <p className="inline-block text-red-600">*</p>
-            </label>
-            <div className="col-span-3 inline-block">
-            <input type="text" className="border text-gray-900 text-sm rounded-lg block w-full m-2 p-2" required/>
-            </div>
-
-            <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
-              {t("product.VAT")}
-            </label>
-            <div className="col-span-3 inline-block">
-            <input type="text" className="border text-gray-900 text-sm rounded-lg block w-full m-2 p-2" required/>
-            </div>
-
-            <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
-              {t("note")}
-            </label>
-            <div className="col-span-3 inline-block">
-            <input type="text" className="border text-gray-900 text-sm rounded-lg block w-full m-2 p-2" required/>
+          <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
+            {t("product.productImage")}{" "}
+            <p className="inline-block text-red-600">*</p>
+          </label>
+          <div className="col-span-3 inline-block">
+            <div
+              style={{
+                padding: "5px",
+                border: "1px solid gray",
+                borderRadius: "10px",
+                width: "fit-content",
+              }}
+              className="cursor-pointer m-auto"
+            >
+              <img src={require("../../assets/images/Camera.png")} />
             </div>
           </div>
-          <div className="flex mt-10 items-center justify-center">
-            <Space>
-              <ButtonComponent
-                label={t("button.save")}
-                onClick={() => {}}
-                backgroundColor="#9A9A9A"
-              />
-              <ButtonComponent
-                label={t("button.cancel")}
-                onClick={() => {setOpenAddForm(false)}}
-                style={{
-                  backgroundColor: "white",
-                  borderWidth: 1,
-                  color: "#9A9A9A",
-                }}
-              />
-            </Space>
+
+          <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
+            {t("product.price")} <p className="inline-block text-red-600">*</p>
+          </label>
+          <div className="col-span-3 inline-block">
+            <input
+              type="text"
+              className="border text-gray-900 text-sm rounded-lg block w-full m-2 p-2"
+              required
+            />
           </div>
+
+          <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
+            {t("product.sell_price")}{" "}
+            <p className="inline-block text-red-600">*</p>
+          </label>
+          <div className="col-span-3 inline-block">
+            <input
+              type="text"
+              className="border text-gray-900 text-sm rounded-lg block w-full m-2 p-2"
+              required
+            />
+          </div>
+
+          <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
+            {t("product.VAT")}
+          </label>
+          <div className="col-span-3 inline-block">
+            <input
+              type="text"
+              className="border text-gray-900 text-sm rounded-lg block w-full m-2 p-2"
+              required
+            />
+          </div>
+
+          <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
+            {t("note")}
+          </label>
+          <div className="col-span-3 inline-block">
+            <input
+              type="text"
+              className="border text-gray-900 text-sm rounded-lg block w-full m-2 p-2"
+              required
+            />
+          </div>
+        </div>
+        <div className="flex mt-10 items-center justify-center">
+          <Space>
+            <ButtonComponent
+              label={t("button.save")}
+              onClick={() => {}}
+              backgroundColor="#9A9A9A"
+            />
+            <ButtonComponent
+              label={t("button.cancel")}
+              onClick={() => {
+                setOpenAddForm(false);
+              }}
+              style={{
+                backgroundColor: "white",
+                borderWidth: 1,
+                color: "#9A9A9A",
+              }}
+            />
+          </Space>
+        </div>
       </Modal>
     </div>
   );
