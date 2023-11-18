@@ -7,7 +7,10 @@
     "username": "Tên đăng nhập",
     "email": "Email",
     "phoneNo": "Số điện thoại",
-    "address": "Địa chỉ"
+    "address": "Địa chỉ",
+    "errEmail": "Email không hợp lệ",
+    "errPassword": "Mật khẩu phải có ít nhất 8 kí tự",
+    "errPhoneNumber": "Số điện thoại không hợp lệ"
   },
   "welcome": "Xin chào",
   "login": {
@@ -58,7 +61,7 @@
     "view": "Xem",
     "time": "Thời gian",
     "addOrder": "Tạo đơn",
-    "addNewSupplier":"Thêm nhà cung cấp"
+    "addNewSupplier": "Thêm nhà cung cấp"
   },
   "sale": {
     "importOrder": "Nhập hàng",
@@ -161,9 +164,8 @@
     "importOrder": "Đơn nhập hàng",
     "manageImportOrder": "Quản lý đơn nhập hàng",
     "searchByName": "Tìm kiếm theo tên",
-    "searchSupplier":"Tìm kiếm nhà cung cấp",
-    "supplierInfo":"Thông tin nhà cung cấp"
-
+    "searchSupplier": "Tìm kiếm nhà cung cấp",
+    "supplierInfo": "Thông tin nhà cung cấp"
   },
   "activities": "Chức năng",
   "note": "Ghi chú",

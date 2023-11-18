@@ -10,23 +10,48 @@ import { NAV_LINK } from "routes/components/NAV_LINK";
 import { useTranslation } from "react-i18next";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Spin } from "antd";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
+import { db } from "firebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
 type Inputs = {
   username: string;
   email: string;
   password: string;
   shopName: string;
-  phoneNo: string;
+  phoneNumber: string;
   address: string;
 };
 export default function SignUpScreen() {
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const { t, i18n } = useTranslation();
-  const { register, handleSubmit } = useForm<Inputs>();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<Inputs>();
   const navigate = useNavigate();
-  const onSignUp: SubmitHandler<Inputs> = (data) => {
+  const onSignUp: SubmitHandler<Inputs> = async (data) => {
     console.log(data);
     //e.preventDefault();
+    const auth = getAuth();
+    await createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then(async (userCredential) => {
+        sendEmailVerification(userCredential.user);
+        await setDoc(doc(db, "Manager", userCredential.user.uid), {
+          emailVerified: false,
+          ...data,
+          userId: userCredential.user.uid,
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   return (
@@ -60,34 +85,65 @@ export default function SignUpScreen() {
                     register={register}
                     registerName={"username"}
                   />
-
-                  <TextInputComponent
-                    label={t("signUp.password")}
-                    //labelFontSize={11}
-                    width={"100%"}
-                    required={true}
-                    inputType={visible ? "text" : "password"}
-                    icon={visible ? <AiFillEyeInvisible /> : <AiFillEye />}
-                    onIconClick={() => setVisible(!visible)}
-                    register={register}
-                    registerName="password"
-                  />
-
-                  <TextInputComponent
-                    label={t("signUp.email")}
-                    width={"100%"}
-                    required={true}
-                    register={register}
-                    registerName="email"
-                  />
-
-                  <TextInputComponent
-                    label={t("signUp.phoneNo")}
-                    width={"100%"}
-                    required={true}
-                    register={register}
-                    registerName="phone"
-                  />
+                  <div>
+                    <TextInputComponent
+                      label={t("signUp.password")}
+                      //labelFontSize={11}
+                      width={"100%"}
+                      required={true}
+                      inputType={visible ? "text" : "password"}
+                      icon={visible ? <AiFillEyeInvisible /> : <AiFillEye />}
+                      onIconClick={() => setVisible(!visible)}
+                      register={register}
+                      registerName="password"
+                      minLength={{
+                        value: 9,
+                        message: t("signUp.errPassword"),
+                      }}
+                    />
+                    {errors.password && (
+                      <p className="text-xs text-red-500">
+                        {errors.password.message}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <TextInputComponent
+                      label={t("signUp.email")}
+                      width={"100%"}
+                      required={true}
+                      register={register}
+                      registerName="email"
+                      pattern={{
+                        value:
+                          /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                        message: t("signUp.errEmail"),
+                      }}
+                    />
+                    {errors.email && (
+                      <p className="text-xs text-red-500">
+                        {errors.email.message}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <TextInputComponent
+                      label={t("signUp.phoneNo")}
+                      width={"100%"}
+                      required={true}
+                      register={register}
+                      registerName="phoneNumber"
+                      pattern={{
+                        value: /^\+(?:[0-9] ?){6,14}[0-9]$/,
+                        message: t("signUp.errPhoneNumber"),
+                      }}
+                    />
+                    {errors.phoneNumber && (
+                      <p className="text-xs text-red-500">
+                        {errors.phoneNumber.message}
+                      </p>
+                    )}
+                  </div>
                   <TextInputComponent
                     label={t("signUp.shopname")}
                     width={"100%"}

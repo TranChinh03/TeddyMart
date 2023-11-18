@@ -94,7 +94,7 @@ export default function Warehouse() {
               setValue={setWarehouse}
             />
           </div>
-          <div>{`${t("warehouse.totalProduct")}: ${count}`}</div>
+          <div>{`${t("warehouse.totalProduct")}: ${count ?? 0}`}</div>
         </div>
         <div className="h-3" />
         <ProductTable

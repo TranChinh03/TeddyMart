@@ -1,7 +1,11 @@
 import { FONT_WEIGHT } from "constants/fonts";
 import { ReactNode } from "react";
-import { UseFormRegister } from "react-hook-form";
+import { UseFormRegister, ValidationRule } from "react-hook-form";
 import { Style } from "util";
+type TPattern = {
+  value: RegExp;
+  message: string;
+};
 export type Props = {
   labelFontWeight?: FONT_WEIGHT;
   labelFontSize?: number;
@@ -35,4 +39,9 @@ export type Props = {
   readOnly?: boolean;
   onClick?: () => void;
   enterAction?: () => void;
+  pattern?: TPattern;
+  minLength?: {
+    value: number;
+    message: string;
+  };
 };

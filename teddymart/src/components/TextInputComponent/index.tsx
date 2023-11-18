@@ -51,6 +51,8 @@ export default function TextInputComponent({
   readOnly = false,
   onClick = () => {},
   enterAction,
+  pattern,
+  minLength,
 }: Props) {
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -82,7 +84,12 @@ export default function TextInputComponent({
             placeholder={placeHolder}
             required={required}
             style={{ fontSize: textInputSize, color: textInputColor }}
-            {...(register && register(registerName, { required: required }))}
+            {...(register &&
+              register(registerName, {
+                required: required,
+                pattern: pattern,
+                minLength: minLength,
+              }))}
             readOnly={readOnly}
             onClick={onClick}
           />

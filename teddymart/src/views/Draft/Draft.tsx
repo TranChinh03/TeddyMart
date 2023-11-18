@@ -35,6 +35,12 @@ import ListCheckBox from "components/ListCheckBox";
 import GeneralReport from "views/Report/components/GeneralReport";
 import GeneralReportTable from "components/TableComponent/components/GeneralReportTable";
 import ReportProductTable from "components/TableComponent/components/ReportProductTable";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
+
 export default function Draft() {
   const [isOn, setIsOn] = useState(false);
   const [value, setValue] = useState("");
@@ -69,6 +75,20 @@ export default function Draft() {
     },
   ]);
   //console.log(partners);
+  const onCreateAccount = async () => {
+    const auth = getAuth();
+    await createUserWithEmailAndPassword(
+      auth,
+      "nguyenthiphuongtien12e@gmail.com",
+      "phuongtien"
+    )
+      .then(() => {
+        console.log("sigg up sucessfully");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <div className="flex items-center justify-center mt-10 flex-col">
       {/* <SwitchComponent
@@ -174,6 +194,7 @@ export default function Draft() {
         <h1>List Checkbox</h1>
       </Button>
       <ListCheckBox listFilter={listFilter} setListFilter={setListFilter} />
+      <Button onClick={onCreateAccount}>Create Account</Button>
       {/* <BillTable />
       <PartnerTable />
       <ProductTable />
