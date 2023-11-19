@@ -74,33 +74,28 @@ type TContent = {
   address: string;
   warehouseId: string;
   warehouseName: string;
-  createAt: string;
 };
 const CONTENT: TContent[] = [
   {
     address: "123 Main Street, City, quantityry",
     warehouseId: "W001",
     warehouseName: "Nhà máy 1",
-    createAt: "10/10/2010",
   },
   {
     address: "Dong Nai",
     warehouseId: "W002",
     warehouseName: "Nhà máy 2",
-    createAt: "27/10/2010",
   },
   {
     address: "TP HCM",
     warehouseId: "W003",
     warehouseName: "Nhà máy 3",
-    createAt: "10/04/2010"
   },
 ];
 type TOption = {
   warehouseID?: boolean;
   warehouseName?: boolean;
   address?: boolean;
-  createAt?: boolean;
 };
 const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
   const { t } = useTranslation();
@@ -108,7 +103,6 @@ const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
     warehouseID: true,
     warehouseName: true,
     address: true,
-    createAt: true,
 
     ...filterOption,
   };
@@ -117,7 +111,6 @@ const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
       options.warehouseID && t("warehouse.warehouseID"),
       options.warehouseName && t("warehouse.warehouseName"),
       options.address && t("warehouse.address"),
-      options.createAt && t("warehouse.createdAt"),
       t("activities"),
     ],
     [t, options]
@@ -189,11 +182,6 @@ const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
                 {content.address && (
                   <td className="border border-gray-300 p-2 text-sm">
                     {content.address}
-                  </td>
-                )}
-                {content.createAt && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.createAt}
                   </td>
                 )}
                 <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">

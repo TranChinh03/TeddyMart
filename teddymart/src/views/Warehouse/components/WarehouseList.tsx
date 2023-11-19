@@ -49,8 +49,6 @@ export default function WarehouseList() {
     t("warehouse.warehouseIDDescending"),
     t("warehouse.warehouseNameAZ"),
     t("warehouse.warehouseNameZA"),
-    t("sort.createdAtNewest"),
-    t("sort.createdAtOldest")
   ];
   const [sort, setSort] = useState(OPTIONS[0]);
   
