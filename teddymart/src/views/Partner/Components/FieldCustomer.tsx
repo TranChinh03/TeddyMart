@@ -7,6 +7,8 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { LiaFileExcel } from "react-icons/lia";
 import { TiPlus } from "react-icons/ti";
 import { BiFilter, BiSearch } from "react-icons/bi";
+import { useTranslation } from "react-i18next";
+
 
 export default function FieldCustomer() {
   const [isChecked, setIsChecked] = useState(false);
@@ -15,34 +17,36 @@ export default function FieldCustomer() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isAddCustomerVisible, setAddCustomerVisible] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
+  const { t } = useTranslation();
+
 
   const [listFilter, setListFilter] = useState([
     {
-      displayName: ("Phone Number"),
+      displayName: t("customer.phoneNumber"),
       value: true,
     },
     {
-      displayName: ("Email"),
+      displayName: t("customer.email"),
       value: true,
     },
     {
-      displayName: ("Address"),
+      displayName: t("customer.address"),
       value: true,
     },
     {
-      displayName: ("Total Buy Amount"),
+      displayName: t("customer.totalBuyAmount"),
       value: true,
     },
     {
-      displayName: ("Debt"),
+      displayName:  t("customer.debt"),
       value: true,
     },
     {
-      displayName: ("Gender"),
+      displayName: t("customer.gender"),
       value: true,
     },
     {
-      displayName: ("partner.note"),
+      displayName: t("customer.note"),
       value: true,
     },
   ]);
@@ -78,15 +82,15 @@ export default function FieldCustomer() {
   return (
     <div className="relative">
       <div className="bg-white w-full py-2 flex items-center justify-between flex-wrap gap-x-8">
-        <div className="w-100% bg-white flex items-center justify-between py-2 gap-x-4 ">
+        <div className="w-100% bg-white flex items-center justify-between py-2 gap-x-2 ">
           <ButtonComponent
-            label="All"
+            label={t("button.all")}
             onClick={() => alert("Button Clicked")}
             backgroundColor={COLORS.defaultWhite}
             color={COLORS.extra_gray}
           />
           <SearchComponent
-            placeholder={("Insert name to search")}
+            placeholder={t("customer.insertNameToSearch")}
             search={search}
             setSearch={setSearch}
           //width={"250px"}
@@ -96,14 +100,14 @@ export default function FieldCustomer() {
             setListFilter={setListFilter}
           />
         </div>
-        <div className="w-100% bg-white flex items-center justify-between gap-x-4 flex-wrap">
+        <div className="w-100% bg-white flex items-center justify-between gap-x-2 flex-wrap">
           <ButtonComponent
-            label={("Delete")}
+            label={t("button.delete")}
             onClick={() => { }}
             style={{ backgroundColor: "#EA5A47", marginInline: 12 }}
           />
           <ButtonComponent
-            label="Import or Export Excel"
+            label={t("button.importOrExportExcel")}
             onClick={() => alert("Button Clicked")}
             backgroundColor={COLORS.lightBlack}
             iconLeft={
@@ -113,7 +117,7 @@ export default function FieldCustomer() {
             }
           />
           <ButtonComponent
-            label="Add new"
+            label={t("button.addNew")}
             onClick={openAddCustomer}
             iconLeft={
               <TiPlus
@@ -133,13 +137,13 @@ export default function FieldCustomer() {
           <div onClick={handleAddCustomerClick}>
             <div className="flex justify-center">
               <div className="bg-white border p-5 my-4 rounded-md shadow-md w-fit">
-                <h1 className="pr-8 text-3xl">Add New Customer</h1>
+                <h1 className="pr-8 text-3xl">{t("customer.addNewCustomer")}</h1>
                 <hr className="h-0.5 my-4 bg-black" />
                 <div className="overflow-y-auto h-96"> <table>
                   <tbody>
                     <tr >
                       <td className="pr-8 py-6">
-                        <p>Customer Name <span className="text-red-600">*</span></p>
+                        <p>{t("customer.customerName")}<span className="text-red-600">*</span></p>
                       </td>
                       <td>
                         <TextInputComponent
@@ -152,7 +156,7 @@ export default function FieldCustomer() {
                     </tr>
                     <tr>
                       <td className="pr-8 py-6">
-                        <p>Phone Number<span className="text-red-600">*</span></p>
+                        <p>{t("customer.phoneNumber")}<span className="text-red-600">*</span></p>
                       </td>
                       <td>
                         <TextInputComponent
@@ -166,7 +170,7 @@ export default function FieldCustomer() {
 
                     <tr>
                       <td className="pr-8 py-6">
-                        <p>Gender</p>
+                        <p>{t("customer.gender")}</p>
                       </td>
                       <td>
                         <input type="radio" name="radio-gender" className="w-4 h-4 mr-4" />
@@ -177,7 +181,7 @@ export default function FieldCustomer() {
                     </tr>
                     <tr>
                       <td className="pr-8 py-6">
-                        <p>Email</p>
+                        <p>{t("customer.email")}</p>
                       </td>
                       <td>
                         <TextInputComponent
@@ -191,7 +195,7 @@ export default function FieldCustomer() {
 
                     <tr>
                       <td className="pr-8 py-6">
-                        <p>Address</p>
+                        <p>{t("customer.address")}</p>
                       </td>
                       <td>
                         <TextInputComponent
@@ -204,7 +208,7 @@ export default function FieldCustomer() {
                     </tr>
                     <tr>
                       <td className="pr-8 py-6">
-                        <p>Total Buy Amount</p>
+                        <p>{t("customer.totalBuyAmount")}</p>
                       </td>
                       <td>
                         <TextInputComponent
@@ -217,7 +221,7 @@ export default function FieldCustomer() {
                     </tr>
                     <tr>
                       <td className="pr-8 py-6">
-                        <p>Debt</p>
+                        <p>{t("customer.debt")}</p>
                       </td>
                       <td>
                         <TextInputComponent
@@ -230,7 +234,7 @@ export default function FieldCustomer() {
                     </tr>
                     <tr>
                       <td className="pr-8 py-6">
-                        <p>Note</p>
+                        <p>{t("customer.note")}</p>
                       </td>
                       <td>
                         <TextInputComponent
@@ -246,13 +250,13 @@ export default function FieldCustomer() {
 
                 <div className="flex justify-end gap-x-4 mt-4">
                   <ButtonComponent
-                    label="Save"
+                    label={t("button.save")}
                     backgroundColor={isFormValid ? COLORS.darkYellow : COLORS.defaultWhite}
                     color={isFormValid ? COLORS.defaultWhite : COLORS.lightGray}
                     onClick={() => isFormValid && alert("Button Clicked")}
                   />
                   <ButtonComponent
-                    label="Close"
+                    label={t("button.close")}
                     backgroundColor={COLORS.defaultWhite}
                     color={COLORS.extra_gray}
                     onClick={closeAddCustomer}

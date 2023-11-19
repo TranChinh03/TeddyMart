@@ -9,6 +9,8 @@ import {
 import { FiDelete, FiEdit, FiTrash } from "react-icons/fi";
 import { t } from "i18next";
 import { useTranslation } from "react-i18next";
+import { RootState } from "state_management/reducers/rootReducer";
+import { useSelector } from "react-redux";
 
 type TContentCustomer = {
   address: string;
@@ -153,11 +155,17 @@ type TOptions = {
 const PartnerTable = ({
   isCustomer = false,
   filterOption,
+  data,
+  search,
 }: {
   isCustomer?: boolean;
   filterOption?: TOptions;
+  data?: TPartner[];
+  search?: string;
 }) => {
   const { t } = useTranslation();
+  const CUSTOMERS = useSelector((state: RootState) => state.partnerSlice);
+  const CUSTOMERS_LIST = useMemo(() => CUSTOMERS.filter((c) => c.partnerName.includes(search)),[CUSTOMERS,search]);
   const options: TOptions = {
     partnerID: true,
     partnerName: true,
@@ -235,7 +243,7 @@ const PartnerTable = ({
             </tr>
           </thead>
           <tbody className="text-center">
-            {CONTENT.map((content, index) => (
+            {CUSTOMERS_LIST.map((content, index) => (
               <tr key={index}>
                 <td className="border border-gray-300 p-2">
                   <input

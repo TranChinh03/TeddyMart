@@ -231,5 +231,43 @@
     "product": "Product",
     "quantity": "Quantity"
   },
-  "warningTxt": "Confirm you will delete this section from the system!"
+  "warningTxt": "Confirm you will delete this section from the system!",
+  "customer": {
+    "phoneNumber": "Phone Number",
+    "email":"Email",
+    "address":"Address",
+    "totalBuyAmount":"Total Buy Amount",
+    "debt":"Debt",
+    "gender":"Gender",
+    "note":"Note",
+    "insertNameToSearch":"Insert name to search",
+    "importOrExportExcel":"Export Excel file",
+    "addNewCustomer":"Add New Supplier",
+    "customerName":"Customer Name",
+    "male":"Male",
+    "female":"Female",
+    "advancedSearch":"Advanced search",
+    "debtBalanceFrom":"Debt balance from",
+    "debtBalanceTo":"Debt balance to",
+    "totalPurchasesFrom":"Total purchase from",
+    "totalPurchasesTo":"Total purchase to"
+  },
+
+  "supplier": {
+    "phoneNumber": "Phone Number",
+    "email":"Email",
+    "address":"Address",
+    "totalBuyAmount":"Total Buy Amount",
+    "debt":"Debt",
+    "gender":"Gender",
+    "note":"Note",
+    "insertNameToSearch":"Insert name to search",
+    "importOrExportExcel":"Export Excel file",
+    "addNewCustomer":"Add New Customer",
+    "supplierName":"Customer Name",
+    "male":"Male",
+    "female":"Female",
+    "certificate":"Certificate",
+    "uploadImage":"Upload Image"
+  }
 }

@@ -7,6 +7,7 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { LiaFileExcel } from "react-icons/lia";
 import { TiPlus } from "react-icons/ti";
 import { BiFilter, BiSearch } from "react-icons/bi";
+import { useTranslation } from "react-i18next";
 
 export default function FieldSupplier() {
   const [isChecked, setIsChecked] = useState(false);
@@ -17,6 +18,7 @@ export default function FieldSupplier() {
   const [isFormValid, setIsFormValid] = useState(false);
   const fileInputRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const { t } = useTranslation();
 
   const handleImageSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -28,31 +30,31 @@ export default function FieldSupplier() {
 
   const [listFilter, setListFilter] = useState([
     {
-      displayName: ("Phone Number"),
+      displayName: t("supplier.phoneNumber"),
       value: true,
     },
     {
-      displayName: ("Email"),
+      displayName: t("supplier.email"),
       value: true,
     },
     {
-      displayName: ("Address"),
+      displayName: t("supplier.address"),
       value: true,
     },
     {
-      displayName: ("Total Buy Amount"),
+      displayName: t("supplier.totalBuyAmount"),
       value: true,
     },
     {
-      displayName: ("Debt"),
+      displayName:t("supplier.debt"),
       value: true,
     },
     {
-      displayName: ("Certificate"),
+      displayName:  t("supplier.certificate"),
       value: true,
     },
     {
-      displayName: ("Note"),
+      displayName: t("Note"),
       value: true,
     },
   ]);
@@ -88,15 +90,15 @@ export default function FieldSupplier() {
   return (
     <div className="relative">
       <div className="bg-white w-full py-2 flex items-center justify-between flex-wrap gap-x-8 pb-8">
-        <div className="w-100% bg-white flex items-center justify-between py-2 gap-x-4 ">
+        <div className="w-100% bg-white flex items-center justify-between py-2 gap-x-2 ">
           <ButtonComponent
-            label="All"
+            label={t("button.all")}
             onClick={() => alert("Button Clicked")}
             backgroundColor={COLORS.defaultWhite}
             color={COLORS.extra_gray}
           />
           <SearchComponent
-            placeholder={("Insert name to search")}
+            placeholder={t("supplier.insertNameToSearch")}
             search={search}
             setSearch={setSearch}
           //width={"250px"}
@@ -106,14 +108,14 @@ export default function FieldSupplier() {
             setListFilter={setListFilter}
           />
         </div>
-        <div className="w-100% bg-white flex items-center justify-between gap-x-4 flex-wrap">
+        <div className="w-100% bg-white flex items-center justify-between gap-x-2 flex-wrap">
           <ButtonComponent
-            label={("Delete")}
+            label={t("button.delete")}
             onClick={() => { }}
             style={{ backgroundColor: "#EA5A47", marginInline: 12 }}
           />
           <ButtonComponent
-            label="Import or Export Excel"
+            label={t("button.importOrExportExcel")}
             onClick={() => alert("Button Clicked")}
             backgroundColor={COLORS.lightBlack}
             iconLeft={
@@ -123,7 +125,7 @@ export default function FieldSupplier() {
             }
           />
           <ButtonComponent
-            label="Add new"
+            label={t("button.addNew")}
             onClick={openAddSupplier}
             iconLeft={
               <TiPlus
@@ -143,14 +145,14 @@ export default function FieldSupplier() {
           <div onClick={handleAddSupplierClick}>
             <div className="flex justify-center py-16">
               <div className="bg-white border p-5 my-4 rounded-md shadow-md w-fit">
-                <h1 className="pr-8 text-3xl">Add New Supplier</h1>
+                <h1 className="pr-8 text-3xl">{t("supplier.addNewSupplier")}</h1>
                 <hr className="h-0.5 my-4 bg-black" />
                 <div className="overflow-y-auto max-h-96">
                   <table>
                     <tbody>
                       <tr >
                         <td className="pr-8 py-6">
-                          <p>Supplier Name <span className="text-red-600">*</span></p>
+                          <p>{t("supplier.supplierName")}<span className="text-red-600">*</span></p>
                         </td>
                         <td>
                           <TextInputComponent
@@ -163,7 +165,7 @@ export default function FieldSupplier() {
                       </tr>
                       <tr>
                         <td className="pr-8 py-6">
-                          <p>Phone Number<span className="text-red-600">*</span></p>
+                          <p>{t("supplier.phoneNumber")}<span className="text-red-600">*</span></p>
                         </td>
                         <td>
                           <TextInputComponent
@@ -177,7 +179,7 @@ export default function FieldSupplier() {
 
                       <tr>
                         <td className="pr-8 py-6">
-                          <p>Gender</p>
+                          <p>{t("supplier.gender")}</p>
                         </td>
                         <td>
                           <input type="radio" name="radio-gender" className="w-4 h-4 mr-4" />
@@ -188,7 +190,7 @@ export default function FieldSupplier() {
                       </tr>
                       <tr>
                         <td className="pr-8 py-6">
-                          <p>Email</p>
+                          <p>{t("supplier.email")}</p>
                         </td>
                         <td>
                           <TextInputComponent
@@ -202,7 +204,7 @@ export default function FieldSupplier() {
 
                       <tr>
                         <td className="pr-8 py-6">
-                          <p>Address</p>
+                          <p>{t("supplier.address")}</p>
                         </td>
                         <td>
                           <TextInputComponent
@@ -215,7 +217,7 @@ export default function FieldSupplier() {
                       </tr>
                       <tr>
                         <td className="pr-8 py-6">
-                          <p>Total Buy Amount</p>
+                          <p>{t("supplier.totalBuyAmount")}</p>
                         </td>
                         <td>
                           <TextInputComponent
@@ -228,7 +230,7 @@ export default function FieldSupplier() {
                       </tr>
                       <tr>
                         <td className="pr-8 py-6">
-                          <p>Debt</p>
+                          <p>{t("supplier.debt")}</p>
                         </td>
                         <td>
                           <TextInputComponent
@@ -241,7 +243,7 @@ export default function FieldSupplier() {
                       </tr>
                       <tr>
                         <td className="pr-8 py-6">
-                          <p>Note</p>
+                          <p>{t("Note")}</p>
                         </td>
                         <td>
                           <TextInputComponent
@@ -254,7 +256,7 @@ export default function FieldSupplier() {
                       </tr>
                       <tr>
                         <td className="pr-8 py-6">
-                          <p>Certificate</p>
+                          <p>{t("supplier.certificate")}</p>
                         </td>
                         <td>
                           <div
@@ -286,13 +288,13 @@ export default function FieldSupplier() {
 
                 <div className="flex justify-end gap-x-4 mt-16">
                   <ButtonComponent
-                    label="Save"
+                    label={t("button.save")}
                     backgroundColor={isFormValid ? COLORS.darkYellow : COLORS.defaultWhite}
                     color={isFormValid ? COLORS.defaultWhite : COLORS.lightGray}
                     onClick={() => isFormValid && alert("Button Clicked")}
                   />
                   <ButtonComponent
-                    label="Close"
+                    label={t("button.close")}
                     backgroundColor={COLORS.defaultWhite}
                     color={COLORS.extra_gray}
                     onClick={closeAddSupplier}

@@ -1,14 +1,22 @@
 import React, { useState } from "react";
 import ButtonSelect from "components/ButtonSelect";
-import { ButtonComponent, ListCheckBox, SearchComponent, TextInputComponent, ModalSelectDate } from "components";
+import { ButtonComponent, ListCheckBox, SearchComponent, TextInputComponent, ModalSelectDate,DropdownComponent } from "components";
 import { COLORS } from "constants/colors";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { BiCalendar } from "react-icons/bi";
+import { useTranslation } from "react-i18next";
+
 
 export default function AdvancedSearch() {
-  const [gender, setGender] = useState();
   const [creatorName, setCreatorName] = useState("");
   const [isAdvancedSearchVisible, setAdvancedSearchVisible] = useState(false);
+  const { t } = useTranslation();
+  const OPTIONS = [
+    t("customer.male"),
+    t("customer.female"),
+  ];
+  const [gender, setGender] = useState(OPTIONS[0]);
+
   const [date, setDate] = useState<D>({
     from: new Date(),
     to: new Date(),
@@ -24,7 +32,7 @@ export default function AdvancedSearch() {
           type="checkbox"
           className="peer absolute inset-x-0 w-full h-12 z-10 cursor-pointer opacity-0"
         />
-        <h1 className="	font-semibold text-blue-600">Tìm kiếm nâng cao</h1>
+        <h1 className="	font-semibold text-[#207ca3]">{t("customer.advancedSearch")}</h1>
         <IoMdArrowDropdown className="transition-transform duration-500 rotate-0 peer-checked:rotate-180" />
       </div>
 
@@ -33,36 +41,32 @@ export default function AdvancedSearch() {
         <div className="flex flex-wrap gap-8 p-5">
           <div className="flex flex-row flex-wrap gap-8">
             <ModalSelectDate setResult={setDate} />
-            <ButtonSelect
-              iconRight={
-                <IoMdArrowDropdown style={{ marginLeft: 50, color: "gray" }} />
-              }
-              title="Select gender"
-              label="Gender"
+            <DropdownComponent
+              label={t("customer.gender")}
+              options={OPTIONS}
               value={gender}
               setValue={setGender}
-              options={[1, 2, 3]}
             />
             <TextInputComponent
-              label="Debt balance from"
+              label={t("customer.debtBalanceFrom")}
               placeHolder={"10.000"}
               value={creatorName}
               setValue={setCreatorName}
             />
             <TextInputComponent
-              label="Debt balance to"
+              label={t("customer.debtBalanceTo")}
               placeHolder={"100.000"}
               value={creatorName}
               setValue={setCreatorName}
             />
             <TextInputComponent
-              label="Total purchases from"
+              label={t("customer.totalPurchasesFrom")}
               placeHolder={"10.000"}
               value={creatorName}
               setValue={setCreatorName}
             />
             <TextInputComponent
-              label="Total purchases to"
+              label={t("customer.totalPurchasesTo")}
               placeHolder={"100.000"}
               value={creatorName}
               setValue={setCreatorName}
@@ -72,11 +76,11 @@ export default function AdvancedSearch() {
 
         <div className="flex justify-center gap-x-4 mt-4 pb-5">
           <ButtonComponent
-            label="Search"
+            label={t("button.search")}
             onClick={() => alert("Button Clicked")}
           />
           <ButtonComponent
-            label="Reset"
+            label={t("button.reset")}
             onClick={() => alert("Button Clicked")}
           />
         </div>

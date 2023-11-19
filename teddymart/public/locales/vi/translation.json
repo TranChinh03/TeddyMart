@@ -223,5 +223,43 @@
     "createdAt": "Ngày tạo",
     "product": "Sản phẩm",
     "quantity": "Số lượng"
+  },
+
+  "customer": {
+    "phoneNumber": "Số điện thoại",
+    "email":"Địa chỉ Email",
+    "address":"Địa chỉ",
+    "totalBuyAmount":"Tổng số lượng mua",
+    "debt":"Dư nợ",
+    "gender":"Giới tính",
+    "note":"Ghi chú",
+    "insertNameToSearch":"Nhập tên để tìm kiếm",
+    "importOrExportExcel":"Xuất file Excel",
+    "addNewCustomer":"Thêm khách hàng",
+    "customerName":"Tên khách hàng",
+    "male":"Nam",
+    "female":"Nữ",
+    "advancedSearch":"Tìm kiếm nâng cao",
+    "debtBalanceFrom":"Dư nợ từ",
+    "debtBalanceTo":"Dư nợ đến",
+    "totalPurchasesFrom":"Tổng mua từ",
+    "totalPurchasesTo":"Tổng mua tới"
+  },
+  "supplier": {
+    "phoneNumber": "Số điện thoại",
+    "email":"Địa chỉ Email",
+    "address":"Địa chỉ",
+    "totalBuyAmount":"Tổng số lượng mua",
+    "debt":"Dư nợ",
+    "gender":"Giới tính",
+    "note":"Ghi chú",
+    "insertNameToSearch":"Nhập tên để tìm kiếm",
+    "importOrExportExcel":"Xuất file Excel",
+    "addNewCustomer":"Thêm nhà cung cấp",
+    "supplierName":"Tên nhà cung cấp",
+    "male":"Nam",
+    "female":"Nữ",
+    "certificate":"Bằng kinh doanh",
+    "uploadImage":"Tải ảnh lên"
   }
 }
