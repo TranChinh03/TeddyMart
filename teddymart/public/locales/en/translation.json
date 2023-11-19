@@ -25,7 +25,14 @@
     "signInToManageStore": "Sign in to manage your store",
     "errVerify": "Please verify your email",
     "errUser": "User not found",
-    "wrongPassword": "Wrong Password"
+    "wrongPassword": "Wrong Password",
+    "sloganforgot": "Enter your email to receive code and change password",
+    "getCode": "Get code",
+    "code": "Code",
+    "continue": "Continue", 
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "confirm": "Confirm"
   },
   "drawer": {
     "sale": "Sale",
@@ -176,7 +183,13 @@
     "searchByName": "Search By Name",
     "totalProduct": "Total Products",
     "searchSupplier": "Search Supplier",
-    "supplierInfo": "Supplier Information"
+    "supplierInfo": "Supplier Information", 
+    "warehouseIDAscending": "Warehouse ID: Ascending",
+    "warehouseIDDescending": "Warehouse ID: Descending",
+    "warehouseNameAZ": "Warehouse Name: A → Z",
+    "warehouseNameZA": "Warehouse Name: Z → A",
+    "addNewWarehouse": "Add New Warehouse",
+    "defaultWarehouse": "Default warehouse"
   },
   "activities": "Activities",
   "note": "Note",
@@ -232,6 +245,7 @@
     "quantity": "Quantity"
   },
   "warningTxt": "Confirm you will delete this section from the system!",
+<<<<<<< HEAD
   "customer": {
     "phoneNumber": "Phone Number",
     "email":"Email",
@@ -270,4 +284,7 @@
     "certificate":"Certificate",
     "uploadImage":"Upload Image"
   }
+=======
+  "noData": "No data"
+>>>>>>> e00096b80ba12d0b9dc7c44fa9bef6d6ff4e3fcd
 }

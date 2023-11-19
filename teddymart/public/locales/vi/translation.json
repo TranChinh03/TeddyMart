@@ -25,7 +25,15 @@
     "signInToManageStore": "Đăng nhập để quản lý cửa hàng của bạn",
     "errVerify": "Vui lòng xác nhận email",
     "errUser": "Tên đăng nhập hoặc email không toàn tại",
-    "wrongPassword": "Sai mật khẩu"
+    "wrongPassword": "Sai mật khẩu",
+    "sloganforgot": "Nhập email để nhận mã và thay đổi mật khẩu",
+    "getCode": "Nhận mã",
+    "code": "Mã",
+    "continue": "Tiếp tục",
+    "newPassword": "Mật khẩu mới",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "confirm": "Xác nhận"
+    
   },
   "drawer": {
     "sale": "Bán hàng",
@@ -170,7 +178,14 @@
     "manageImportOrder": "Quản lý đơn nhập hàng",
     "searchByName": "Tìm kiếm theo tên",
     "searchSupplier": "Tìm kiếm nhà cung cấp",
-    "supplierInfo": "Thông tin nhà cung cấp"
+    "supplierInfo": "Thông tin nhà cung cấp",
+    "warehouseIDAscending": "Mã kho: Tăng dần",
+    "warehouseIDDescending": "Mã kho: Giảm dần",
+    "warehouseNameAZ": "Tên kho: A → Z",
+    "warehouseNameZA": "Tên kho: Z → A",
+    "addNewWarehouse": "Thêm Kho Mới",
+    "defaultWarehouse": "Kho chính"
+    
   },
   "activities": "Chức năng",
   "note": "Ghi chú",
@@ -224,6 +239,7 @@
     "product": "Sản phẩm",
     "quantity": "Số lượng"
   },
+<<<<<<< HEAD
 
   "customer": {
     "phoneNumber": "Số điện thoại",
@@ -263,3 +279,8 @@
     "uploadImage":"Tải ảnh lên"
   }
 }
+=======
+  "warningTxt": "Bạn có chắc chắn muốn xóa mục này?",
+  "noData": "Không có dữ liệu"
+}
+>>>>>>> e00096b80ba12d0b9dc7c44fa9bef6d6ff4e3fcd

@@ -139,6 +139,7 @@ export default function Drawer() {
         style={{ borderWidth: 0 }}
         onClick={(e) => {
           if (e.key === "SignOut") {
+            window.localStorage.removeItem("USER_ID");
             dispatch({ type: "RESET_ALL_STORES" });
             navigate(NAV_LINK.LOGIN);
           } else {
