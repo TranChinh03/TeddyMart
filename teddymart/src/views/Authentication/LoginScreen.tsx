@@ -73,7 +73,9 @@ export default function LoginScreen() {
     //       await updateDoc(doc(db, "Manager", userCredential.user.uid), {
     //         emailVerified: true,
     //       });
-    //       console.log("login success");
+    //       await onFetchData(userCredential.user.uid);
+    //       window.localStorage.setItem("USER_ID", userCredential.user.uid);
+    //       //console.log("login success");
     //     })
     //     .catch((e) => {
     //       setError("password", {
@@ -95,6 +97,8 @@ export default function LoginScreen() {
     //       await updateDoc(doc(db, "Manager", userCredential.user.uid), {
     //         emailVerified: true,
     //       });
+    //       await onFetchData(userCredential.user.uid);
+    //       window.localStorage.setItem("USER_ID", userCredential.user.uid);
     //     })
     //     .catch((e) => {
     //       setError("password", {
@@ -104,7 +108,7 @@ export default function LoginScreen() {
     //       console.log(e);
     //     });
     // }
-    // setLoading(false);
+    //setLoading(false);
 
     setLoading(true);
     await Promise.all([
@@ -128,6 +132,47 @@ export default function LoginScreen() {
       }),
       new Promise((resolve) => {
         getData("/Manager/M001/Orders").then((data: TOrder[]) => {
+          dispatch(uploadOrder(data));
+          dispatch(uploadReport(generateReport(data)));
+          resolve(data);
+          //console.log(generateProduct(data));
+        });
+      }),
+    ]).then((values) => {
+      //console.log("P", partners);
+      dispatch(
+        uploadReportProduct(
+          generateProduct(values[5] as TOrder[], values[2] as TProduct[])
+        )
+      );
+      //console.log("VALUES", values[2], values[5]);
+      setLoading(false);
+      navigate(NAV_LINK.SALE);
+    });
+  };
+
+  const onFetchData = async (userId: string) => {
+    await Promise.all([
+      getData(`/Manager/${userId}/Voucher`).then((data: TVoucher[]) =>
+        dispatch(uploadVoucher(data))
+      ),
+      getData(`/Manager/${userId}/Group_Product`).then(
+        (data: TGroupProduct[]) => dispatch(uploadGroupProduct(data))
+      ),
+      new Promise((resolve) => {
+        getData(`/Manager/${userId}/Product`).then((data: TProduct[]) => {
+          dispatch(uploadProduct(data));
+          resolve(data);
+        });
+      }),
+      getData(`/Manager/${userId}/Partner`).then((data: TPartner[]) => {
+        dispatch(uploadPartner(data));
+      }),
+      getData(`/Manager/${userId}/Ware_House`).then((data: TWarehouse[]) => {
+        dispatch(uploadWarehouse(data));
+      }),
+      new Promise((resolve) => {
+        getData(`/Manager/${userId}/Orders`).then((data: TOrder[]) => {
           dispatch(uploadOrder(data));
           dispatch(uploadReport(generateReport(data)));
           resolve(data);

@@ -39,49 +39,48 @@ export default function ReportScreen() {
   const [cards, setCards] = useState([
     {
       name: "outcome",
+      displayName: t("report.outcome"),
       selected: true,
       color: COLORS.red,
     },
     {
       name: "revenue",
+      displayName: t("report.revenue"),
       selected: true,
       color: COLORS.yellow,
     },
     {
       name: "profit",
+      displayName: t("report.profit"),
       selected: true,
       color: COLORS.green,
     },
     {
       name: "numberOfOrder",
+      displayName: t("report.numberOfOrder"),
       selected: true,
       color: COLORS.blue,
     },
     {
       name: "importOrder",
+      displayName: t("sale.importOrder"),
       selected: true,
       color: COLORS.blue,
     },
     {
       name: "exportOrder",
+      displayName: t("report.exportOrder"),
       selected: true,
       color: COLORS.blue,
     },
   ]);
   useEffect(() => {
-    // console.log("TIME CHANGE");
-    // console.log("FROM ---", time.from);
-    // console.log("TO ---", time.to);
-
     let tmp = initialValue;
-    //console.log("tmp", tmp);
     REPORTS?.forEach((r, i) => {
-      //console.log("date", new Date(r.date));
       if (
         new Date(r.date).getTime() >= new Date(time.from).getTime() &&
         new Date(r.date).getTime() <= new Date(time.to).getTime()
       ) {
-        //console.log("DATE PASS", new Date(r.date), "   i", i);
         tmp.outcome += r.outcome;
         tmp.revenue += r.revenue;
         tmp.profit += r.profit;
@@ -123,6 +122,7 @@ export default function ReportScreen() {
           );
         })}
       </div>
+
       <Chart
         time={time}
         options={{

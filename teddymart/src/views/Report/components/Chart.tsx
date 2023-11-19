@@ -14,6 +14,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
+import { IoMdOptions } from "react-icons/io";
 const data = [
   {
     name: "Mon",
@@ -91,6 +92,7 @@ function Chart({ time, options }: Props) {
     setData(tmp);
     //}
   }, [time, REPORTS]);
+
   return (
     <div className="bg-white border-1.5 mx-5 my-1.5 rounded-md">
       <div className="divide-y">
@@ -136,43 +138,102 @@ function Chart({ time, options }: Props) {
         </div>
       </div>
       {/* Chart */}
-      <div className="p-5">
-        <ResponsiveContainer width={"100%"} height={500}>
-          <LineChart
-            data={data}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="linear"
-              dataKey="outcome"
-              stroke={COLORS.red}
-              strokeWidth={2}
-            />
-            <Line
-              type="linear"
-              dataKey="revenue"
-              stroke={COLORS.yellow}
-              strokeWidth={2}
-            />
-            <Line
-              type="linear"
-              dataKey="profit"
-              stroke={COLORS.green}
-              strokeWidth={2}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+      {data.length === 0 ? (
+        <div className="flex w-full justify-center items-center flex-col">
+          <img
+            src={require("assets/images/nodata.jpg")}
+            alt="nodata"
+            className="w-32 h-32"
+          />
+          <div className="text-txt_lightgrey">{t("noData")}</div>
+        </div>
+      ) : (
+        <div className="p-5">
+          <ResponsiveContainer width={"100%"} height={500}>
+            <LineChart
+              data={data}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="date"
+                tickMargin={5}
+                //name={new Date().toDateString()}
+                tickFormatter={(tick) =>
+                  new Date(tick).toLocaleDateString("vi")
+                }
+              />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              {options.outcome && (
+                <Line
+                  type="linear"
+                  dataKey="outcome"
+                  stroke={COLORS.red}
+                  strokeWidth={2}
+                  name={t("report.outcome")}
+                />
+              )}
+
+              {options.revenue && (
+                <Line
+                  type="linear"
+                  dataKey="revenue"
+                  stroke={COLORS.yellow}
+                  strokeWidth={2}
+                  name={t("report.revenue")}
+                />
+              )}
+
+              {options.profit && (
+                <Line
+                  type="linear"
+                  dataKey="profit"
+                  stroke={COLORS.green}
+                  strokeWidth={2}
+                  name={t("report.profit")}
+                />
+              )}
+
+              {options.numberOfOrder && (
+                <Line
+                  type="linear"
+                  dataKey="numberOfOrder"
+                  stroke={COLORS.blue}
+                  strokeWidth={2}
+                  name={t("report.numberOfOrder")}
+                />
+              )}
+
+              {options.importOrder && (
+                <Line
+                  type="linear"
+                  dataKey="importOrder"
+                  stroke={COLORS.pink}
+                  strokeWidth={2}
+                  name={t("report.importOrder")}
+                />
+              )}
+
+              {options.exportOrder && (
+                <Line
+                  type="linear"
+                  dataKey="exportOrder"
+                  stroke={COLORS.seaBlue}
+                  strokeWidth={2}
+                  name={t("report.exportOrder")}
+                />
+              )}
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      )}
     </div>
   );
 }

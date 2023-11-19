@@ -231,5 +231,6 @@
     "product": "Product",
     "quantity": "Quantity"
   },
-  "warningTxt": "Confirm you will delete this section from the system!"
+  "warningTxt": "Confirm you will delete this section from the system!",
+  "noData": "No data"
 }

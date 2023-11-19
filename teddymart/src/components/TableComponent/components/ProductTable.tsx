@@ -182,24 +182,24 @@ const ProductTable = ({
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState("10");
   const handleCheckBoxChange = (rowId: string) => {
-    // if (rowId === null) {
-    //   console.log("ok");
-    //   if (selectedRows.length < productsFilter.length) {
-    //     setSelectedRows([
-    //       ...productsFilter.map((content) => content.productId),
-    //     ]);
-    //     return;
-    //   }
-    //   if (selectedRows.length === productsFilter.length) {
-    //     setSelectedRows([]);
-    //     return;
-    //   }
-    // }
-    // if (selectedRows.includes(rowId)) {
-    //   setSelectedRows([...selectedRows.filter((id) => id !== rowId)]);
-    //   return;
-    // }
-    // setSelectedRows([...selectedRows, rowId]);
+    if (rowId === null) {
+      console.log("ok");
+      if (selectedRows.length < productsFilter.length) {
+        setSelectedRows([
+          ...productsFilter.map((content) => content.productId),
+        ]);
+        return;
+      }
+      if (selectedRows.length === productsFilter.length) {
+        setSelectedRows([]);
+        return;
+      }
+    }
+    if (selectedRows.includes(rowId)) {
+      setSelectedRows([...selectedRows.filter((id) => id !== rowId)]);
+      return;
+    }
+    setSelectedRows([...selectedRows, rowId]);
   };
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setRowsPerPage(e.target.value);

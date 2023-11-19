@@ -223,5 +223,7 @@
     "createdAt": "Ngày tạo",
     "product": "Sản phẩm",
     "quantity": "Số lượng"
-  }
+  },
+  "warningTxt": "Bạn có chắc chắn muốn xóa mục này?",
+  "noData": "Không có dữ liệu"
 }
