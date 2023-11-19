@@ -5,7 +5,7 @@ import { NAV_LINK } from "routes/components/NAV_LINK";
 import { Spin } from "antd";
 import { useTranslation } from "react-i18next";
 import { useForm} from "react-hook-form";
-import {AiOutlineArrowLeft} from "react-icons/ai"
+
 
 type Inputs = {
   email: string;
@@ -36,10 +36,25 @@ export default function ForgotPassword() {
           <p className="text-center">{t("login.sloganforgot")}</p>
 
           <form >
+            <div className="grid gap-y-1 mt-4">
+              <TextInputComponent
+                placeHolder=""
+                label={t("login.newPassword")}
+                width={"100%"}
+                required={true}
+                
+              />
+              {/* {errors.email && (
+                <p className="text-xs text-red-500">
+                  {errors.email.message}
+                </p>
+              )} */}
+            </div>
+
             <div className="grid gap-y-2 mt-10">
               <TextInputComponent
                 placeHolder=""
-                label={t("signUp.email")}
+                label={t("login.confirmPassword")}
                 width={"100%"}
                 required={true}
                 
@@ -56,23 +71,11 @@ export default function ForgotPassword() {
                 className="w-5/12 py-2 bg-sidebar text-white text-xl rounded-md hover:bg-hover"
                 //onClick={() => (onLogin)}
               >
-                {t("login.getCode")}
+                {t("login.confirm")}
               </button>
 
             </div>
           </form>
-	
-          <div className=" flex flex-row gap-2 text-16 pt-5">
-            <div className="self-center">
-               <AiOutlineArrowLeft color="#217CA3" />
-            </div>
-            <button
-              className="text-sidebar font-medium"
-               onClick={() => navigate(NAV_LINK.LOGIN)}
-            >
-              {t("login.login")}
-            </button>
-          </div>
         </div>
       </div>
     </div>
