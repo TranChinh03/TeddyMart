@@ -18,7 +18,7 @@ export default function GeneralReport() {
   const [data, setData] = useState<TReport[]>([]);
   useEffect(() => {
     let tmp: TReport[] = [];
-    REPORTS.forEach((r) => {
+    REPORTS.byDate?.forEach((r) => {
       if (
         new Date(r.date).getTime() >= new Date(date.from).getTime() &&
         new Date(r.date).getTime() <= new Date(date.to).getTime()

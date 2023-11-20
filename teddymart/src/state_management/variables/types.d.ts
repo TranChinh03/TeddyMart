@@ -92,13 +92,11 @@ declare type TReport = {
   [key: string]: number | Date;
 };
 
-// declare type TReportSlice = {
-//   general: TReport;
-//   byDate?: {
-//     date?: string;
-//     report?: TReport[];
-//   };
-// };
+declare type TReportSlice = {
+  byDate?: TReport[];
+  byMonth?: TReport[];
+  byYear?: TReport[];
+};
 
 declare type D = {
   from: Date;

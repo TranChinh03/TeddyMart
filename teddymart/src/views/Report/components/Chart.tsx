@@ -1,6 +1,6 @@
 import TextComponent from "components/TextComponent";
 import { COLORS } from "constants/colors";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import {
   LineChart,
   Line,
@@ -74,25 +74,62 @@ type Props = {
 function Chart({ time, options }: Props) {
   const [gap, setGap] = useState(0);
   const { t } = useTranslation();
-  const GAPS = [t("report.day"), t("report.week"), t("report.month")];
-  const ORDERS = useSelector((state: RootState) => state.order);
+  const GAPS = [t("report.day"), t("report.month"), t("report.year")];
+  //const ORDERS = useSelector((state: RootState) => state.order);
   const REPORTS = useSelector((state: RootState) => state.reportSlice);
   const [data, setData] = useState<TReport[]>([]);
   useEffect(() => {
     let tmp: TReport[] = [];
-    // if (gap === 0) {
-    REPORTS.forEach((r) => {
-      if (
-        new Date(r.date).getTime() >= new Date(time.from).getTime() &&
-        new Date(r.date).getTime() <= new Date(time.to).getTime()
-      ) {
-        tmp.push(r);
-      }
-    });
-    setData(tmp);
-    //}
-  }, [time, REPORTS]);
+    if (gap === 0) {
+      REPORTS?.byDate?.forEach((r) => {
+        if (
+          new Date(r.date).getTime() >= new Date(time.from).getTime() &&
+          new Date(r.date).getTime() <= new Date(time.to).getTime()
+        ) {
+          tmp.push(r);
+        }
+      });
+    }
+    if (gap === 1) {
+      REPORTS?.byMonth?.forEach((r) => {
+        if (
+          new Date(r.date).getTime() >= new Date(time.from).getTime() &&
+          new Date(r.date).getTime() <= new Date(time.to).getTime()
+        ) {
+          tmp.push(r);
+        }
+      });
+    }
+    if (gap === 2) {
+      REPORTS?.byYear?.forEach((r) => {
+        if (
+          new Date(r.date).getTime() >= new Date(time.from).getTime() &&
+          new Date(r.date).getTime() <= new Date(time.to).getTime()
+        ) {
+          tmp.push(r);
+        }
+      });
+    }
 
+    setData(tmp);
+  }, [time, REPORTS, gap]);
+
+  const tickFormat = useCallback(
+    (tick: Date) => {
+      if (gap === 0) {
+        return new Date(tick).toLocaleDateString("vi");
+      }
+      if (gap === 1) {
+        return `${new Date(tick).getMonth() + 1}/${new Date(
+          tick
+        ).getFullYear()}`;
+      }
+      if (gap === 2) {
+        return `${new Date(tick).getFullYear()}`;
+      }
+    },
+    [gap]
+  );
   return (
     <div className="bg-white border-1.5 mx-5 my-1.5 rounded-md">
       <div className="divide-y">
@@ -163,13 +200,18 @@ function Chart({ time, options }: Props) {
               <XAxis
                 dataKey="date"
                 tickMargin={5}
-                //name={new Date().toDateString()}
+                name={"date"}
                 tickFormatter={(tick) =>
-                  new Date(tick).toLocaleDateString("vi")
+                  //new Date(tick).toLocaleDateString("vi")
+                  tickFormat(tick)
                 }
               />
               <YAxis />
-              <Tooltip />
+              <Tooltip
+                labelFormatter={(tick) => {
+                  return new Date(tick).toLocaleDateString("vi");
+                }}
+              />
               <Legend />
               {options.outcome && (
                 <Line

@@ -1,11 +1,4 @@
-import {
-  doc,
-  getDoc,
-  collection,
-  getDocs,
-  orderBy,
-  query,
-} from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "firebaseConfig";
 
 const getData = async (link: string, order?: string) => {
@@ -19,6 +12,7 @@ const getData = async (link: string, order?: string) => {
 };
 
 const generateReport = (data: TOrder[]) => {
+  // by Date
   let report = new Map<string, TReport>();
   data.forEach((d) => {
     if (!report.has(new Date(d.createdAt).toDateString())) {
@@ -28,11 +22,8 @@ const generateReport = (data: TOrder[]) => {
           d.type === "Import" && d.status === "paid" ? d.totalPayment : 0,
         revenue:
           d.type === "Export" && d.status === "paid" ? d.totalPayment : 0,
-        profit:
-          d.status === "paid" ? (d.type === "Export" ? d.totalPayment : 0) : 0,
         numberOfOrder: 1,
         importOrder: d.type === "Import" ? 1 : 0,
-        exportOrder: d.type === "Export" ? 1 : 0,
       });
     } else {
       let tmp = report.get(new Date(d.createdAt).toDateString());
@@ -46,21 +37,116 @@ const generateReport = (data: TOrder[]) => {
           d.type === "Export" && d.status === "paid"
             ? tmp.revenue + d.totalPayment
             : tmp.revenue,
-        profit:
-          d.status === "paid"
-            ? d.type === "Export"
-              ? tmp.profit + d.totalPayment
-              : tmp.profit - d.totalPayment
-            : tmp.profit,
         numberOfOrder: tmp.numberOfOrder + 1,
         importOrder:
           d.type === "Import" ? tmp.importOrder + 1 : tmp.importOrder,
-        exportOrder:
-          d.type === "Export" ? tmp.exportOrder + 1 : tmp.importOrder,
       });
     }
   });
-  return Array.from(report, ([_, item]) => ({ ...item }));
+
+  // by Month
+  let reportByMonth = new Map<string, TReport>();
+  data.forEach((d) => {
+    if (
+      !reportByMonth.has(
+        `${new Date(d.createdAt).getMonth()}/${new Date(
+          d.createdAt
+        ).getFullYear()}`
+      )
+    ) {
+      reportByMonth.set(
+        `${new Date(d.createdAt).getMonth()}/${new Date(
+          d.createdAt
+        ).getFullYear()}`,
+        {
+          date: d.createdAt,
+          outcome:
+            d.type === "Import" && d.status === "paid" ? d.totalPayment : 0,
+          revenue:
+            d.type === "Export" && d.status === "paid" ? d.totalPayment : 0,
+          numberOfOrder: 1,
+          importOrder: d.type === "Import" ? 1 : 0,
+        }
+      );
+    } else {
+      let tmp = reportByMonth.get(
+        `${new Date(d.createdAt).getMonth()}/${new Date(
+          d.createdAt
+        ).getFullYear()}`
+      );
+      reportByMonth.set(
+        `${new Date(d.createdAt).getMonth()}/${new Date(
+          d.createdAt
+        ).getFullYear()}`,
+        {
+          date: d.createdAt,
+          outcome:
+            d.type === "Import" && d.status === "paid"
+              ? tmp.outcome + d.totalPayment
+              : tmp.outcome,
+          revenue:
+            d.type === "Export" && d.status === "paid"
+              ? tmp.revenue + d.totalPayment
+              : tmp.revenue,
+          numberOfOrder: tmp.numberOfOrder + 1,
+          importOrder:
+            d.type === "Import" ? tmp.importOrder + 1 : tmp.importOrder,
+        }
+      );
+    }
+  });
+
+  // byYear
+  let reportByYear = new Map<string, TReport>();
+  data.forEach((d) => {
+    if (!reportByYear.has(`${new Date(d.createdAt).getFullYear()}`)) {
+      reportByYear.set(`${new Date(d.createdAt).getFullYear()}`, {
+        date: d.createdAt,
+        outcome:
+          d.type === "Import" && d.status === "paid" ? d.totalPayment : 0,
+        revenue:
+          d.type === "Export" && d.status === "paid" ? d.totalPayment : 0,
+        numberOfOrder: 1,
+        importOrder: d.type === "Import" ? 1 : 0,
+      });
+    } else {
+      let tmp = reportByYear.get(`${new Date(d.createdAt).getFullYear()}`);
+      reportByYear.set(`${new Date(d.createdAt).getFullYear()}`, {
+        date: d.createdAt,
+        outcome:
+          d.type === "Import" && d.status === "paid"
+            ? tmp.outcome + d.totalPayment
+            : tmp.outcome,
+        revenue:
+          d.type === "Export" && d.status === "paid"
+            ? tmp.revenue + d.totalPayment
+            : tmp.revenue,
+        numberOfOrder: tmp.numberOfOrder + 1,
+        importOrder:
+          d.type === "Import" ? tmp.importOrder + 1 : tmp.importOrder,
+      });
+    }
+  });
+
+  return {
+    byDate: Array.from(report, ([_, item]) => ({
+      ...item,
+      profit: item.revenue - item.outcome,
+      exportOrder: item.numberOfOrder - item.importOrder,
+    })),
+
+    byMonth: Array.from(reportByMonth, ([_, item]) => ({
+      ...item,
+      profit: item.revenue - item.outcome,
+      exportOrder: item.numberOfOrder - item.importOrder,
+    })),
+
+    byYear: Array.from(reportByYear, ([_, item]) => ({
+      ...item,
+      profit: item.revenue - item.outcome,
+      exportOrder: item.numberOfOrder - item.importOrder,
+    })),
+  };
 };
 
 const generateProduct = (data: TOrder[], product: TProduct[]) => {

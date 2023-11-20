@@ -76,7 +76,7 @@ export default function ReportScreen() {
   ]);
   useEffect(() => {
     let tmp = initialValue;
-    REPORTS?.forEach((r, i) => {
+    REPORTS?.byDate?.forEach((r, i) => {
       if (
         new Date(r.date).getTime() >= new Date(time.from).getTime() &&
         new Date(r.date).getTime() <= new Date(time.to).getTime()

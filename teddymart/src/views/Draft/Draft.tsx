@@ -40,7 +40,7 @@ import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
-import { addData, addVoucher } from "controller/addData";
+import { addData } from "controller/addData";
 
 export default function Draft() {
   const [isOn, setIsOn] = useState(false);

@@ -33,7 +33,6 @@
     "newPassword": "Mật khẩu mới",
     "confirmPassword": "Xác nhận mật khẩu",
     "confirm": "Xác nhận"
-    
   },
   "drawer": {
     "sale": "Bán hàng",
@@ -185,10 +184,9 @@
     "warehouseNameZA": "Tên kho: Z → A",
     "addNewWarehouse": "Thêm Kho Mới",
     "defaultWarehouse": "Kho chính"
-    
   },
   "activities": "Chức năng",
-  "note": "Ghi chú",
+
   "modal": {
     "time": "Thời gian",
     "today": "Hôm nay",
@@ -231,6 +229,7 @@
     "day": "Ngày",
     "week": "Tuần",
     "month": "Tháng",
+    "year": "Năm",
     "reportByDate": "Báo cáo theo ngày",
     "reportByProduct": "Báo cáo theo sản phẩm",
     "totalOrder": "Số lượng đơn hàng",
@@ -239,48 +238,44 @@
     "product": "Sản phẩm",
     "quantity": "Số lượng"
   },
-<<<<<<< HEAD
 
   "customer": {
     "phoneNumber": "Số điện thoại",
-    "email":"Địa chỉ Email",
-    "address":"Địa chỉ",
-    "totalBuyAmount":"Tổng số lượng mua",
-    "debt":"Dư nợ",
-    "gender":"Giới tính",
-    "note":"Ghi chú",
-    "insertNameToSearch":"Nhập tên để tìm kiếm",
-    "importOrExportExcel":"Xuất file Excel",
-    "addNewCustomer":"Thêm khách hàng",
-    "customerName":"Tên khách hàng",
-    "male":"Nam",
-    "female":"Nữ",
-    "advancedSearch":"Tìm kiếm nâng cao",
-    "debtBalanceFrom":"Dư nợ từ",
-    "debtBalanceTo":"Dư nợ đến",
-    "totalPurchasesFrom":"Tổng mua từ",
-    "totalPurchasesTo":"Tổng mua tới"
+    "email": "Địa chỉ Email",
+    "address": "Địa chỉ",
+    "totalBuyAmount": "Tổng số lượng mua",
+    "debt": "Dư nợ",
+    "gender": "Giới tính",
+    "note": "Ghi chú",
+    "insertNameToSearch": "Nhập tên để tìm kiếm",
+    "importOrExportExcel": "Xuất file Excel",
+    "addNewCustomer": "Thêm khách hàng",
+    "customerName": "Tên khách hàng",
+    "male": "Nam",
+    "female": "Nữ",
+    "advancedSearch": "Tìm kiếm nâng cao",
+    "debtBalanceFrom": "Dư nợ từ",
+    "debtBalanceTo": "Dư nợ đến",
+    "totalPurchasesFrom": "Tổng mua từ",
+    "totalPurchasesTo": "Tổng mua tới"
   },
   "supplier": {
     "phoneNumber": "Số điện thoại",
-    "email":"Địa chỉ Email",
-    "address":"Địa chỉ",
-    "totalBuyAmount":"Tổng số lượng mua",
-    "debt":"Dư nợ",
-    "gender":"Giới tính",
-    "note":"Ghi chú",
-    "insertNameToSearch":"Nhập tên để tìm kiếm",
-    "importOrExportExcel":"Xuất file Excel",
-    "addNewCustomer":"Thêm nhà cung cấp",
-    "supplierName":"Tên nhà cung cấp",
-    "male":"Nam",
-    "female":"Nữ",
-    "certificate":"Bằng kinh doanh",
-    "uploadImage":"Tải ảnh lên"
-  }
-}
-=======
+    "email": "Địa chỉ Email",
+    "address": "Địa chỉ",
+    "totalBuyAmount": "Tổng số lượng mua",
+    "debt": "Dư nợ",
+    "gender": "Giới tính",
+    "note": "Ghi chú",
+    "insertNameToSearch": "Nhập tên để tìm kiếm",
+    "importOrExportExcel": "Xuất file Excel",
+    "addNewCustomer": "Thêm nhà cung cấp",
+    "supplierName": "Tên nhà cung cấp",
+    "male": "Nam",
+    "female": "Nữ",
+    "certificate": "Bằng kinh doanh",
+    "uploadImage": "Tải ảnh lên"
+  },
   "warningTxt": "Bạn có chắc chắn muốn xóa mục này?",
   "noData": "Không có dữ liệu"
 }
->>>>>>> e00096b80ba12d0b9dc7c44fa9bef6d6ff4e3fcd
