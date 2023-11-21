@@ -98,7 +98,16 @@ export default function Warehouse() {
           <div>{`${t("warehouse.totalProduct")}: ${count ?? 0}`}</div>
         </div>
         <div className="h-3" />
-        <ProductTable filterOption={filterOptions} warehouseName={warehouse} />
+        <ProductTable
+          filterOption={filterOptions}
+          warehouseName={warehouse}
+          sort={{
+            nameAscending: sort === OPTIONS[0],
+            nameDescending: sort === OPTIONS[1],
+            quantityAscending: sort === OPTIONS[2],
+            quantityDescending: sort === OPTIONS[3],
+          }}
+        />
       </div>
     </div>
   );

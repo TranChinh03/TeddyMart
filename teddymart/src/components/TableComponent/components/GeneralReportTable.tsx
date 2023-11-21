@@ -242,8 +242,8 @@ const GeneralReportTable = ({
 
         <div className="ml-4 flex items-center">
           <span className="text-sm text-gray-400  mr-4">{`${
-            Math.floor((size.current - displayData.length) / +rowsPerPage) + 1
-          }/${Math.floor(DATA.length / +rowsPerPage) + 1}`}</span>
+            Math.ceil((size.current - displayData.length) / +rowsPerPage) + 1
+          }/${Math.ceil(DATA.length / +rowsPerPage)}`}</span>
           <Button
             onClick={() => {
               if (size.current !== Number(rowsPerPage)) {

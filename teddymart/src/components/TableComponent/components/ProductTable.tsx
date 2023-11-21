@@ -1,6 +1,6 @@
 import { Button, Tooltip } from "antd";
 import { t } from "i18next";
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import {
@@ -104,29 +104,40 @@ type TOptions = {
   activities?: boolean;
   price?: boolean;
 };
+
+type TSort = {
+  nameAscending?: boolean;
+  nameDescending?: boolean;
+  quantityAscending?: boolean;
+  quantityDescending?: boolean;
+};
 const ProductTable = ({
   filterOption,
-  data,
   warehouseName,
   productName,
+  sort,
 }: {
   filterOption?: TOptions;
-  data?: TProduct[];
   warehouseName?: string;
   productName?: string;
+  sort?: TSort;
 }) => {
   const { t } = useTranslation();
   const products = useSelector((state: RootState) => state.product);
   const warehouses = useSelector((state: RootState) => state.warehouseSlice);
+
+  console.log("PRODUCTS", products);
   const productsFilter = useMemo(() => {
     //console.log(warehouseName, productName);
-    if (!warehouseName && !productName) return products;
+    let listProducts: any[] = [];
+
+    if (!warehouseName && !productName) listProducts = products;
     else {
       const listProductWarehouse = warehouses.filter(
         (value) => value.warehouseName === warehouseName
       )[0].listProduct;
-      console.log("listProductWarehouse", listProductWarehouse);
-      const listProducts: any[] = [];
+      //console.log("listProductWarehouse", listProductWarehouse);
+      // const listProducts: any[] = [];
       listProductWarehouse.map((value) => {
         const tmp = products.findIndex(
           (product) => product.productId === value.productId
@@ -140,10 +151,27 @@ const ProductTable = ({
           note: products[tmp].note,
         });
       });
-      return listProducts;
     }
-  }, [warehouseName, productName]);
+    if (sort?.nameAscending) {
+      listProducts.sort((a, b) =>
+        a.productName.charAt(0) < b.productName.charAt(0) ? -1 : 1
+      );
+    }
+    if (sort?.nameDescending) {
+      listProducts.sort((a, b) =>
+        a.productName.charAt(0) > b.productName.charAt(0) ? -1 : 1
+      );
+    }
+    if (sort?.quantityAscending) {
+      listProducts.sort((a, b) => (a.quantity < b.quantity ? -1 : 1));
+    }
+    if (sort?.quantityDescending) {
+      listProducts.sort((a, b) => (a.quantity > b.quantity ? -1 : 1));
+    }
+    return listProducts;
+  }, [warehouseName, productName, sort]);
   //console.log(productsFilter);
+
   const options: TOptions = {
     productId: true,
     productName: true,
@@ -181,6 +209,16 @@ const ProductTable = ({
   );
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState("10");
+  const [displayData, setDisplayData] = useState(
+    productsFilter.slice(0, +rowsPerPage)
+  );
+
+  useLayoutEffect(() => {
+    setDisplayData(productsFilter.slice(0, +rowsPerPage));
+  }, [rowsPerPage, productsFilter]);
+
+  const size = useRef<number>(+rowsPerPage);
+
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
       if (selectedRows.length < productsFilter.length) {
@@ -224,7 +262,7 @@ const ProductTable = ({
             </tr>
           </thead>
           <tbody className="text-center">
-            {productsFilter.map((content, index) => (
+            {displayData.map((content, index) => (
               <tr key={index}>
                 <td className="border border-gray-300 p-2">
                   <input
@@ -336,14 +374,12 @@ const ProductTable = ({
           onChange={handleRowsPerPageChange}
           className=" bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:bg-white "
         >
+          <option value="5">5</option>
           <option value="10">10</option>
-          <option value="20" selected>
-            20
-          </option>
-          <option value="50">50</option>
+          <option value="15">15</option>
         </select>
 
-        <div className="ml-4 flex items-center">
+        {/* <div className="ml-4 flex items-center">
           <span className="text-sm text-gray-400  mr-4">0 trên 0</span>
           <Button>
             <HiOutlineChevronDoubleLeft />
@@ -360,6 +396,78 @@ const ProductTable = ({
           <div className="w-2" />
 
           <Button>
+            <HiOutlineChevronDoubleRight />
+          </Button>
+        </div> */}
+
+        <div className="ml-4 flex items-center">
+          <span className="text-sm text-gray-400  mr-4">{`${
+            Math.ceil((size.current - displayData.length) / +rowsPerPage) + 1
+          }/${Math.ceil(productsFilter.length / +rowsPerPage)}`}</span>
+          <Button
+            onClick={() => {
+              if (size.current !== Number(rowsPerPage)) {
+                setDisplayData(productsFilter.slice(0, +rowsPerPage));
+                size.current = +rowsPerPage;
+              }
+            }}
+          >
+            <HiOutlineChevronDoubleLeft />
+          </Button>
+          <div className="w-2" />
+          <Button
+            onClick={() => {
+              if (size.current !== Number(rowsPerPage)) {
+                size.current -=
+                  displayData.length < Number(rowsPerPage)
+                    ? displayData.length
+                    : Number(rowsPerPage);
+                setDisplayData(
+                  productsFilter.slice(
+                    size.current - Number(rowsPerPage),
+                    size.current
+                  )
+                );
+              }
+            }}
+          >
+            <HiOutlineChevronLeft />
+          </Button>
+          <div className="w-2" />
+
+          <Button
+            onClick={() => {
+              if (size.current !== productsFilter.length) {
+                setDisplayData(
+                  productsFilter.slice(
+                    size.current,
+                    size.current + Number(rowsPerPage)
+                  )
+                );
+                size.current =
+                  size.current + Number(rowsPerPage) < productsFilter.length
+                    ? size.current + Number(rowsPerPage)
+                    : productsFilter.length;
+              }
+            }}
+          >
+            <HiOutlineChevronRight />
+          </Button>
+          <div className="w-2" />
+
+          <Button
+            onClick={() => {
+              if (size.current !== productsFilter.length) {
+                let final = productsFilter.length % Number(rowsPerPage);
+                if (final === 0) {
+                  setDisplayData(productsFilter.slice(-Number(rowsPerPage)));
+                } else {
+                  setDisplayData(productsFilter.slice(-final));
+                }
+                size.current = productsFilter.length;
+              }
+            }}
+          >
             <HiOutlineChevronDoubleRight />
           </Button>
         </div>
