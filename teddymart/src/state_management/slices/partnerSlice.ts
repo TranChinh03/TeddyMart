@@ -5,7 +5,7 @@ const partnerSlice = createSlice({
   initialState: [],
   reducers: {
     addNewPartner: (state: TPartner[], action: PayloadAction<TPartner>) => {
-      state.push(action.payload);
+      state.unshift(action.payload);
     },
     uploadPartner: (state: TPartner[], action: PayloadAction<TPartner[]>) => {
       return [...action.payload];

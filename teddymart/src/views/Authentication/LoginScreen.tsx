@@ -44,8 +44,8 @@ export default function LoginScreen() {
     formState: { errors },
   } = useForm<Inputs>();
   const onLogin: SubmitHandler<Inputs> = async (data) => {
-    // console.log("submit");
-    // console.log(data);
+    //console.log("submit");
+    //console.log(data);
     // setLoading(true);
     // const snapshot = await getDocs(collection(db, "Manager"));
     // const user = snapshot.docs.find(
@@ -110,6 +110,7 @@ export default function LoginScreen() {
     // }
     //setLoading(false);
 
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     setLoading(true);
     await Promise.all([
       getData("/Manager/M001/Voucher").then((data: TVoucher[]) =>

@@ -205,7 +205,7 @@ export default function Draft() {
       <GroupProductTable /> */}
       {/* <GeneralReportTable /> */}
       {/* <ReportProductTable /> */}
-      {/* <Button onClick={() => window.localStorage.setItem("userId", "12345")}>
+      <Button onClick={() => window.localStorage.setItem("userId", "12345")}>
         Add UserId to LocalStorage
       </Button>
       <Button onClick={() => window.localStorage.removeItem("userId")}>
@@ -288,7 +288,7 @@ export default function Draft() {
         }}
       >
         Add Voucher
-      </Button> */}
+      </Button>
       <SearchComponent width={300} search={search} setSearch={setSearch} />
     </div>
   );

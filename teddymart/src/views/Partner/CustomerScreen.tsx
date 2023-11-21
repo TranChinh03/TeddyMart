@@ -16,7 +16,11 @@ import { TiPlus } from "react-icons/ti";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
-
+import { uuidv4 } from "@firebase/util";
+import { addData } from "controller/addData";
+import { useDispatch } from "react-redux";
+import { addNewPartner } from "state_management/slices/partnerSlice";
+import { Button } from "antd";
 export default function CustomerScreen() {
   const [search, setSearch] = useState("");
   const [customerName, setCustomerName] = useState("");
@@ -24,7 +28,7 @@ export default function CustomerScreen() {
   const [isAddCustomerVisible, setAddCustomerVisible] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const { t } = useTranslation();
-
+  const dispatch = useDispatch();
   const CUSTOMERS = useSelector((state: RootState) => state.partnerSlice);
   const [customer, setCustomer] = useState(CUSTOMERS[0]?.partnerId);
 
@@ -104,6 +108,27 @@ export default function CustomerScreen() {
     }
   };
 
+  const addNewCustomer = async () => {
+    const id = uuidv4();
+    const data: TPartner = {
+      partnerId: id,
+      partnerName: "Ethan Smith",
+      email: "ethan@example.com",
+      phoneNumber: "+2345678901",
+      address: "111 Elm Avenue, City",
+      note: "Regular customer, foodie.",
+      gender: "female",
+      type: "Customer",
+      totalBuyAmount: 0,
+      debt: 0,
+    };
+    await addData({
+      data: data,
+      id: id,
+      table: "Partner",
+    });
+    dispatch(addNewPartner(data));
+  };
   return (
     <div className="w-full">
       <Header width={"100%"} title={"Customer"} />
@@ -355,6 +380,7 @@ export default function CustomerScreen() {
           filterOption={filterOptions}
           search={search}
         />
+        {/* <Button onClick={addNewCustomer}>Add Data To Firebase</Button> */}
       </div>
     </div>
   );
