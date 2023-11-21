@@ -14,6 +14,8 @@ const getData = async (link: string, order?: string) => {
 const generateReport = (data: TOrder[]) => {
   // by Date
   let report = new Map<string, TReport>();
+  let reportByMonth = new Map<string, TReport>();
+  let reportByYear = new Map<string, TReport>();
   data.forEach((d) => {
     if (!report.has(new Date(d.createdAt).toDateString())) {
       report.set(new Date(d.createdAt).toDateString(), {
@@ -42,11 +44,9 @@ const generateReport = (data: TOrder[]) => {
           d.type === "Import" ? tmp.importOrder + 1 : tmp.importOrder,
       });
     }
-  });
 
-  // by Month
-  let reportByMonth = new Map<string, TReport>();
-  data.forEach((d) => {
+    // by Month
+
     if (
       !reportByMonth.has(
         `${new Date(d.createdAt).getMonth()}/${new Date(
@@ -94,11 +94,8 @@ const generateReport = (data: TOrder[]) => {
         }
       );
     }
-  });
 
-  // byYear
-  let reportByYear = new Map<string, TReport>();
-  data.forEach((d) => {
+    // by Year
     if (!reportByYear.has(`${new Date(d.createdAt).getFullYear()}`)) {
       reportByYear.set(`${new Date(d.createdAt).getFullYear()}`, {
         date: d.createdAt,

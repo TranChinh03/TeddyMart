@@ -16,7 +16,7 @@ export default function SubHeader({ time, setTime }: Props) {
       <TextComponent color={COLORS.sidebar} fontSize={18} letterSpacing={0.8}>
         {t("report.overviewReport")}
       </TextComponent>
-      <ModalSelectDate setResult={setTime} />
+      <ModalSelectDate setResult={setTime} width={"90%"} />
     </div>
   );
 }

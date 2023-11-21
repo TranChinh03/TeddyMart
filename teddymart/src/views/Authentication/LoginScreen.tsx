@@ -131,7 +131,7 @@ export default function LoginScreen() {
         dispatch(uploadWarehouse(data));
       }),
       new Promise((resolve) => {
-        getData("/Manager/M001/Orders").then((data: TOrder[]) => {
+        getData("/Manager/M001/Orders", "createdAt").then((data: TOrder[]) => {
           dispatch(uploadOrder(data));
           dispatch(uploadReport(generateReport(data)));
           resolve(data);

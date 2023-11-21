@@ -7,6 +7,8 @@ import {
   HiOutlineChevronLeft,
   HiOutlineChevronRight,
 } from "react-icons/hi2";
+import { useSelector } from "react-redux";
+import { RootState } from "state_management/reducers/rootReducer";
 type TContent = {
   revenue: number;
   outcome: number;
@@ -90,6 +92,7 @@ const CONTENT: TContent[] = [
   },
 ];
 type TOptions = {
+  date?: boolean;
   revenue?: boolean;
   outcome?: boolean;
   profit?: boolean;
@@ -97,15 +100,18 @@ type TOptions = {
   importOrder?: boolean;
   exportOrder?: boolean;
 };
+
+const NUMBER_PER_PAGE = ["5", "10", "15"];
 const GeneralReportTable = ({
   filterOption,
-  data,
+  date,
 }: {
   filterOption?: TOptions;
-  data: TReport[];
+  date?: D;
 }) => {
   const { t } = useTranslation();
   const options: TOptions = {
+    date: true,
     revenue: true,
     outcome: true,
     profit: true,
@@ -117,6 +123,7 @@ const GeneralReportTable = ({
   const HEADER = useMemo(
     () =>
       [
+        options.date && t("report.date"),
         options.revenue && t("report.revenue"),
         options.outcome && t("report.outcome"),
         options.profit && t("report.profit"),
@@ -132,6 +139,21 @@ const GeneralReportTable = ({
     //console.log("okkkkk");
     setRowsPerPage(e.target.value);
   };
+
+  const REPORTS = useSelector((state: RootState) => state.reportSlice);
+  const DATA: TReport[] = useMemo(() => {
+    let tmp: TReport[] = [];
+    REPORTS.byDate?.forEach((r) => {
+      if (
+        new Date(r.date).getTime() >= new Date(date.from).getTime() &&
+        new Date(r.date).getTime() <= new Date(date.to).getTime()
+      ) {
+        tmp.push(r);
+      }
+    });
+    return tmp;
+  }, [REPORTS, date]);
+
   return (
     <div className="w-full">
       <div className="max-h-96 overflow-y-auto visible">
@@ -146,13 +168,19 @@ const GeneralReportTable = ({
             </tr>
           </thead>
           <tbody className="text-center">
-            {data?.map((content, index) => (
+            {DATA?.map((content, index) => (
               <tr key={index}>
+                {options.date && (
+                  <td className="border border-gray-300 p-2 text-sm">
+                    {new Date(content.date).toLocaleDateString("vi")}
+                  </td>
+                )}
                 {options.outcome && (
                   <td className="border border-gray-300 p-2 text-sm">
                     {content.outcome}
                   </td>
                 )}
+
                 {options.revenue && (
                   <td className="border border-gray-300 p-2 text-sm">
                     {content.revenue}
@@ -190,11 +218,11 @@ const GeneralReportTable = ({
           onChange={handleRowsPerPageChange}
           className=" bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:bg-white "
         >
-          <option value="10">10</option>
-          <option value="20" selected>
-            20
-          </option>
-          <option value="50">50</option>
+          {NUMBER_PER_PAGE.map((value, i) => (
+            <option key={i} value={value}>
+              {value}
+            </option>
+          ))}
         </select>
 
         <div className="ml-4 flex items-center">

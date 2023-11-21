@@ -243,7 +243,8 @@
     "totalImportOrder": "Total Import Order",
     "createdAt": "Created At",
     "product": "Product",
-    "quantity": "Quantity"
+    "quantity": "Quantity",
+    "date": "Date"
   },
   "warningTxt": "Confirm you will delete this section from the system!",
   "customer": {

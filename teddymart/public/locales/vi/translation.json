@@ -236,7 +236,8 @@
     "totalImportOrder": "Số lượng đơn nhập hàng",
     "createdAt": "Ngày tạo",
     "product": "Sản phẩm",
-    "quantity": "Số lượng"
+    "quantity": "Số lượng",
+    "date": "Ngày"
   },
 
   "customer": {

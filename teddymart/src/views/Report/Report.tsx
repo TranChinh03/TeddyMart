@@ -65,13 +65,13 @@ export default function ReportScreen() {
       name: "importOrder",
       displayName: t("sale.importOrder"),
       selected: true,
-      color: COLORS.blue,
+      color: COLORS.pink,
     },
     {
       name: "exportOrder",
       displayName: t("report.exportOrder"),
       selected: true,
-      color: COLORS.blue,
+      color: COLORS.seaBlue,
     },
   ]);
   useEffect(() => {

@@ -9,8 +9,9 @@ import { DatePicker } from "antd";
 import dayjs from "dayjs";
 type Props = {
   setResult: Function;
+  width?: number | string;
 };
-export default function ModalSelectDate({ setResult }: Props) {
+export default function ModalSelectDate({ setResult, width = 200 }: Props) {
   const { t } = useTranslation();
   const [openModal, setOpenModal] = useState(false);
   const [txtDate, setTxtDate] = useState<string>(
@@ -175,6 +176,7 @@ export default function ModalSelectDate({ setResult }: Props) {
         icon={<FiCalendar />}
         textInputSize="14px"
         style={{ borderWidth: 1.2, borderColor: COLORS.lightGray }}
+        width={width}
       />
       <Modal
         open={openModal}
