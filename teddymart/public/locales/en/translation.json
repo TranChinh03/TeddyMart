@@ -285,5 +285,7 @@
     "certificate": "Certificate",
     "uploadImage": "Upload Image"
   },
-  "noData": "No data"
+
+  "noData": "No data",
+  "rowsPerPage": "Number of rows per page: "
 }

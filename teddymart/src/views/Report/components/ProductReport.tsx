@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { ReportProductTable } from "components/TableComponent";
 import { useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
+import { LiaFileExcel } from "react-icons/lia";
 export default function ProductReport() {
   const { t } = useTranslation();
   const [date, setDate] = useState<D>({
@@ -54,8 +55,9 @@ export default function ProductReport() {
           <ButtonComponent
             onClick={() => {}}
             label={t("button.exportReport")}
-            backgroundColor={COLORS.defaultBlack}
+            backgroundColor={COLORS.mediumBlack}
             color={COLORS.defaultWhite}
+            iconLeft={<LiaFileExcel size={20} color="white" />}
           />
         </div>
         <div className="w-[98%] self-center flex mx-auto">

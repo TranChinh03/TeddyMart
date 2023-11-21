@@ -7,6 +7,9 @@ module.exports = {
         0.1: "0.1rem",
         15: "1rem",
       },
+      height: {
+        100: "30rem",
+      },
       colors: {
         main_bg: "#f5f5f5",
         main_form: "#ffffff",

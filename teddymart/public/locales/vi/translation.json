@@ -278,5 +278,6 @@
     "uploadImage": "Tải ảnh lên"
   },
   "warningTxt": "Bạn có chắc chắn muốn xóa mục này?",
-  "noData": "Không có dữ liệu"
+  "noData": "Không có dữ liệu",
+  "rowsPerPage": "Số mục mỗi trang: "
 }

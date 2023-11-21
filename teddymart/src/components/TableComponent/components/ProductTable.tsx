@@ -119,7 +119,7 @@ const ProductTable = ({
   const products = useSelector((state: RootState) => state.product);
   const warehouses = useSelector((state: RootState) => state.warehouseSlice);
   const productsFilter = useMemo(() => {
-    console.log(warehouseName, productName);
+    //console.log(warehouseName, productName);
     if (!warehouseName && !productName) return products;
     else {
       const listProductWarehouse = warehouses.filter(
@@ -183,7 +183,6 @@ const ProductTable = ({
   const [rowsPerPage, setRowsPerPage] = useState("10");
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
-      console.log("ok");
       if (selectedRows.length < productsFilter.length) {
         setSelectedRows([
           ...productsFilter.map((content) => content.productId),

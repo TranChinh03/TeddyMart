@@ -60,6 +60,7 @@ export default function Warehouse() {
               search={search}
               setSearch={setSearch}
               placeholder={t("warehouse.searchByName")}
+              width={"35vw"}
             />
           </div>
           <div className="flex">
@@ -97,11 +98,7 @@ export default function Warehouse() {
           <div>{`${t("warehouse.totalProduct")}: ${count ?? 0}`}</div>
         </div>
         <div className="h-3" />
-        <ProductTable
-          filterOption={filterOptions}
-          //data={LIST_PRODUCTS?.listProduct}
-          warehouseName={warehouse}
-        />
+        <ProductTable filterOption={filterOptions} warehouseName={warehouse} />
       </div>
     </div>
   );

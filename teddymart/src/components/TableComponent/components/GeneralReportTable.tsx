@@ -1,5 +1,12 @@
 import { Button } from "antd";
-import React, { ChangeEvent, useMemo, useState } from "react";
+import React, {
+  ChangeEvent,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+  useRef,
+} from "react";
 import { useTranslation } from "react-i18next";
 import {
   HiOutlineChevronDoubleLeft,
@@ -136,9 +143,10 @@ const GeneralReportTable = ({
   const [rowsPerPage, setRowsPerPage] = useState("10");
 
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    //console.log("okkkkk");
     setRowsPerPage(e.target.value);
   };
+
+  const size = useRef<number>(+rowsPerPage);
 
   const REPORTS = useSelector((state: RootState) => state.reportSlice);
   const DATA: TReport[] = useMemo(() => {
@@ -154,6 +162,13 @@ const GeneralReportTable = ({
     return tmp;
   }, [REPORTS, date]);
 
+  const [displayData, setDisplayData] = useState(DATA.slice(0, +rowsPerPage));
+
+  useLayoutEffect(() => {
+    setDisplayData(DATA.slice(0, +rowsPerPage));
+    size.current = +rowsPerPage;
+  }, [rowsPerPage, DATA]);
+
   return (
     <div className="w-full">
       <div className="max-h-96 overflow-y-auto visible">
@@ -168,7 +183,7 @@ const GeneralReportTable = ({
             </tr>
           </thead>
           <tbody className="text-center">
-            {DATA?.map((content, index) => (
+            {displayData?.map((content, index) => (
               <tr key={index}>
                 {options.date && (
                   <td className="border border-gray-300 p-2 text-sm">
@@ -212,7 +227,7 @@ const GeneralReportTable = ({
         </table>
       </div>
       <div className="w-full text-left my-5 flex row justify-end pr-10 items-center ">
-        <span className="text-sm mr-4 text-gray-400 ">Số mục mỗi trang:</span>
+        <span className="text-sm mr-4 text-gray-400 ">{t("rowsPerPage")}</span>
         <select
           value={rowsPerPage}
           onChange={handleRowsPerPageChange}
@@ -226,22 +241,67 @@ const GeneralReportTable = ({
         </select>
 
         <div className="ml-4 flex items-center">
-          <span className="text-sm text-gray-400  mr-4">0 trên 0</span>
-          <Button>
+          <span className="text-sm text-gray-400  mr-4">{`${
+            Math.floor((size.current - displayData.length) / +rowsPerPage) + 1
+          }/${Math.floor(DATA.length / +rowsPerPage) + 1}`}</span>
+          <Button
+            onClick={() => {
+              if (size.current !== Number(rowsPerPage)) {
+                setDisplayData(DATA.slice(0, +rowsPerPage));
+                size.current = +rowsPerPage;
+              }
+            }}
+          >
             <HiOutlineChevronDoubleLeft />
           </Button>
           <div className="w-2" />
-          <Button>
+          <Button
+            onClick={() => {
+              if (size.current !== Number(rowsPerPage)) {
+                size.current -=
+                  displayData.length < Number(rowsPerPage)
+                    ? displayData.length
+                    : Number(rowsPerPage);
+                setDisplayData(
+                  DATA.slice(size.current - Number(rowsPerPage), size.current)
+                );
+              }
+            }}
+          >
             <HiOutlineChevronLeft />
           </Button>
           <div className="w-2" />
 
-          <Button>
+          <Button
+            onClick={() => {
+              if (size.current !== DATA.length) {
+                setDisplayData(
+                  DATA.slice(size.current, size.current + Number(rowsPerPage))
+                );
+                size.current =
+                  size.current + Number(rowsPerPage) < DATA.length
+                    ? size.current + Number(rowsPerPage)
+                    : DATA.length;
+              }
+            }}
+          >
             <HiOutlineChevronRight />
           </Button>
           <div className="w-2" />
 
-          <Button>
+          <Button
+            onClick={() => {
+              if (size.current !== DATA.length) {
+                let final = DATA.length % Number(rowsPerPage);
+                if (final === 0) {
+                  setDisplayData(DATA.slice(-Number(rowsPerPage)));
+                } else {
+                  setDisplayData(DATA.slice(-final));
+                }
+                size.current = DATA.length;
+              }
+            }}
+          >
             <HiOutlineChevronDoubleRight />
           </Button>
         </div>

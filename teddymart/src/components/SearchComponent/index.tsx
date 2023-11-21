@@ -11,6 +11,7 @@ interface SearchComponentProps {
   setSearch?: (search: string) => void;
   width?: number | string;
   style?: React.CSSProperties;
+  onClick?: () => void;
 }
 
 const SearchComponent: React.FC<SearchComponentProps> = ({
@@ -20,6 +21,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
   setSearch,
   width,
   style,
+  onClick,
 }) => {
   // const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
   // console.log(info?.source, value);
@@ -40,6 +42,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
         paddingBottom: "10px",
         ...style,
       }}
+      onIconClick={onClick}
     />
   );
 };

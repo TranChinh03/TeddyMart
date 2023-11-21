@@ -5,6 +5,7 @@ import TextComponent from "components/TextComponent";
 import { COLORS } from "constants/colors";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { LiaFileExcel } from "react-icons/lia";
 export default function GeneralReport() {
   const { t } = useTranslation();
   const [date, setDate] = useState<D>({
@@ -26,25 +27,14 @@ export default function GeneralReport() {
           </TextComponent>
         </div>
         <div className="w-full py-2 px-3 flex items-center justify-between flex-wrap">
-          <div className="flex items-end">
-            <ButtonComponent
-              onClick={() => {}}
-              label={t("button.all")}
-              backgroundColor={COLORS.defaultWhite}
-              color={COLORS.txt_lightgrey}
-              style={{
-                borderColor: COLORS.lightGray,
-                borderWidth: 1.5,
-              }}
-            />
-            <div className="w-5" />
-            <ModalSelectDate setResult={setDate} width={"90%"} />
-          </div>
+          <ModalSelectDate setResult={setDate} width={"90%"} />
+
           <ButtonComponent
             onClick={() => {}}
             label={t("button.exportReport")}
             backgroundColor={COLORS.mediumBlack}
             color={COLORS.defaultWhite}
+            iconLeft={<LiaFileExcel size={20} color="white" />}
           />
         </div>
       </div>

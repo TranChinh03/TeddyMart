@@ -110,8 +110,7 @@ function Chart({ time, options }: Props) {
         }
       });
     }
-
-    setData(tmp);
+    setData(tmp.reverse());
   }, [time, REPORTS, gap]);
 
   const tickFormat = useCallback(
