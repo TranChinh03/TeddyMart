@@ -33,7 +33,7 @@ export default function ProductScreen() {
   const [status, setStatus] = useState();
   const [storeManagement, setStoreManagement] = useState();
   const [sort, setSort] = useState();
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState("");
   const [openAddForm, setOpenAddForm] = useState(false);
 
   const [listFilter, setListFilter] = useState([
@@ -128,7 +128,10 @@ export default function ProductScreen() {
               />
             </div>
             <div className="mx-2">
-              <SearchComponent placeholder={t("product.searchByProduct")} />
+              <SearchComponent
+                placeholder={t("product.searchByProduct")}
+                setSearch={setSearch}
+              />
             </div>
             <div className="mx-2">
               <ListCheckBox
@@ -211,7 +214,7 @@ export default function ProductScreen() {
           </div>
         </div>
         <div style={{ width: "100%", margin: "20px auto auto auto" }}>
-          <ProductTable />
+          <ProductTable productName={search} />
         </div>
       </div>
       <Modal

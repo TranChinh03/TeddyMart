@@ -2,7 +2,12 @@ import Header from "components/Header";
 import { PartnerTable } from "components/TableComponent";
 import FieldSupplier from "./Components/FieldSupplier";
 import React, { useState, useRef } from "react";
-import { ButtonComponent, ListCheckBox, SearchComponent, TextInputComponent } from "components";
+import {
+  ButtonComponent,
+  ListCheckBox,
+  SearchComponent,
+  TextInputComponent,
+} from "components";
 import { COLORS } from "constants/colors";
 import { LiaFileExcel } from "react-icons/lia";
 import { TiPlus } from "react-icons/ti";
@@ -76,7 +81,6 @@ export default function CustomerScreen() {
     note: listFilter[5].value,
   };
 
-
   const openAddSupplier = () => {
     setAddSupplierVisible(true);
   };
@@ -90,17 +94,19 @@ export default function CustomerScreen() {
   const handleAddSupplierClick = (e: any) => {
     e.stopPropagation();
   };
-  const handleInputChange = (value: string, setValue: React.Dispatch<React.SetStateAction<string>>, fieldName: string) => {
+  const handleInputChange = (
+    value: string,
+    setValue: React.Dispatch<React.SetStateAction<string>>,
+    fieldName: string
+  ) => {
     setValue(value);
     validateForm(fieldName, value);
   };
 
   const validateForm = (fieldName: string, value: string) => {
     if (fieldName === "SupplierName") {
-
       setIsFormValid(value !== "" && phoneNumber !== "");
     } else if (fieldName === "phoneNumber") {
-
       setIsFormValid(value !== "" && SupplierName !== "");
     }
   };
@@ -129,7 +135,7 @@ export default function CustomerScreen() {
                 placeholder={t("supplier.insertNameToSearch")}
                 search={search}
                 setSearch={setSearch}
-              //width={"250px"}
+                //width={"250px"}
               />
               <ListCheckBox
                 listFilter={listFilter}
@@ -139,7 +145,7 @@ export default function CustomerScreen() {
             <div className="w-100% bg-white flex items-center justify-between gap-x-2 flex-wrap">
               <ButtonComponent
                 label={t("button.delete")}
-                onClick={() => { }}
+                onClick={() => {}}
                 style={{ backgroundColor: "#EA5A47", marginInline: 12 }}
               />
               <ButtonComponent
@@ -173,34 +179,54 @@ export default function CustomerScreen() {
               <div onClick={handleAddSupplierClick}>
                 <div className="flex justify-center py-16">
                   <div className="bg-white border p-5 my-4 rounded-md shadow-md w-fit">
-                    <h1 className="pr-8 text-3xl">{t("supplier.addNewSupplier")}</h1>
+                    <h1 className="pr-8 text-3xl">
+                      {t("supplier.addNewSupplier")}
+                    </h1>
                     <hr className="h-0.5 my-4 bg-black" />
                     <div className="overflow-y-auto max-h-96">
                       <table>
                         <tbody>
-                          <tr >
+                          <tr>
                             <td className="pr-8 py-6">
-                              <p>{t("supplier.supplierName")}<span className="text-red-600">*</span></p>
+                              <p>
+                                {t("supplier.supplierName")}
+                                <span className="text-red-600">*</span>
+                              </p>
                             </td>
                             <td>
                               <TextInputComponent
-                                placeHolder=''
+                                placeHolder=""
                                 width={"auto"}
                                 value={SupplierName}
-                                setValue={(value) => handleInputChange(value, setSupplierName, "supplierName")}
+                                setValue={(value) =>
+                                  handleInputChange(
+                                    value,
+                                    setSupplierName,
+                                    "supplierName"
+                                  )
+                                }
                               />
                             </td>
                           </tr>
                           <tr>
                             <td className="pr-8 py-6">
-                              <p>{t("supplier.phoneNumber")}<span className="text-red-600">*</span></p>
+                              <p>
+                                {t("supplier.phoneNumber")}
+                                <span className="text-red-600">*</span>
+                              </p>
                             </td>
                             <td>
                               <TextInputComponent
-                                placeHolder=''
+                                placeHolder=""
                                 width={"auto"}
                                 value={phoneNumber}
-                                setValue={(value) => handleInputChange(value, setPhoneNumber, "phoneNumber")}
+                                setValue={(value) =>
+                                  handleInputChange(
+                                    value,
+                                    setPhoneNumber,
+                                    "phoneNumber"
+                                  )
+                                }
                               />
                             </td>
                           </tr>
@@ -210,10 +236,22 @@ export default function CustomerScreen() {
                               <p>{t("supplier.gender")}</p>
                             </td>
                             <td>
-                              <input type="radio" name="radio-gender" className="w-4 h-4 mr-4" />
-                              <label className="mr-16">{t("supplier.male")}</label>
-                              <input type="radio" name="radio-gender" className=" w-4 h-4 mr-4" />
-                              <label className="mr-16">{t("supplier.female")}</label>
+                              <input
+                                type="radio"
+                                name="radio-gender"
+                                className="w-4 h-4 mr-4"
+                              />
+                              <label className="mr-16">
+                                {t("supplier.male")}
+                              </label>
+                              <input
+                                type="radio"
+                                name="radio-gender"
+                                className=" w-4 h-4 mr-4"
+                              />
+                              <label className="mr-16">
+                                {t("supplier.female")}
+                              </label>
                             </td>
                           </tr>
                           <tr>
@@ -222,7 +260,7 @@ export default function CustomerScreen() {
                             </td>
                             <td>
                               <TextInputComponent
-                                placeHolder=''
+                                placeHolder=""
                                 width={492}
                                 value={SupplierName}
                                 setValue={setSupplierName}
@@ -236,7 +274,7 @@ export default function CustomerScreen() {
                             </td>
                             <td>
                               <TextInputComponent
-                                placeHolder=''
+                                placeHolder=""
                                 width={492}
                                 value={SupplierName}
                                 setValue={setSupplierName}
@@ -249,7 +287,7 @@ export default function CustomerScreen() {
                             </td>
                             <td>
                               <TextInputComponent
-                                placeHolder=''
+                                placeHolder=""
                                 width={492}
                                 value={SupplierName}
                                 setValue={setSupplierName}
@@ -262,7 +300,7 @@ export default function CustomerScreen() {
                             </td>
                             <td>
                               <TextInputComponent
-                                placeHolder=''
+                                placeHolder=""
                                 width={492}
                                 value={SupplierName}
                                 setValue={setSupplierName}
@@ -275,7 +313,7 @@ export default function CustomerScreen() {
                             </td>
                             <td>
                               <TextInputComponent
-                                placeHolder=''
+                                placeHolder=""
                                 width={492}
                                 value={SupplierName}
                                 setValue={setSupplierName}
@@ -292,11 +330,19 @@ export default function CustomerScreen() {
                                 onClick={() => fileInputRef.current.click()}
                               >
                                 {selectedImage ? (
-                                  <img src={selectedImage} alt="Selected" style={{ width: '100%', maxHeight: '100%' }} />
+                                  <img
+                                    src={selectedImage}
+                                    alt="Selected"
+                                    style={{ width: "100%", maxHeight: "100%" }}
+                                  />
                                 ) : (
-                                  <div className="flex flex-col items-center" >
-                                    <p className="text-6xl font-thin text-gray-400">+</p>
-                                    <p className="text-gray-400">{t("supplier.uploadImage")}</p>
+                                  <div className="flex flex-col items-center">
+                                    <p className="text-6xl font-thin text-gray-400">
+                                      +
+                                    </p>
+                                    <p className="text-gray-400">
+                                      {t("supplier.uploadImage")}
+                                    </p>
                                   </div>
                                 )}
                               </div>
@@ -304,12 +350,11 @@ export default function CustomerScreen() {
                                 type="file"
                                 accept="image/*"
                                 ref={fileInputRef}
-                                style={{ display: 'none' }}
+                                style={{ display: "none" }}
                                 onChange={handleImageSelected}
                               />
                             </td>
                           </tr>
-
                         </tbody>
                       </table>
                     </div>
@@ -317,8 +362,12 @@ export default function CustomerScreen() {
                     <div className="flex justify-end gap-x-4 mt-16">
                       <ButtonComponent
                         label={t("button.save")}
-                        backgroundColor={isFormValid ? COLORS.darkYellow : COLORS.defaultWhite}
-                        color={isFormValid ? COLORS.defaultWhite : COLORS.lightGray}
+                        backgroundColor={
+                          isFormValid ? COLORS.darkYellow : COLORS.defaultWhite
+                        }
+                        color={
+                          isFormValid ? COLORS.defaultWhite : COLORS.lightGray
+                        }
                         onClick={() => isFormValid && alert("Button Clicked")}
                       />
                       <ButtonComponent
@@ -328,7 +377,6 @@ export default function CustomerScreen() {
                         onClick={closeAddSupplier}
                       />
                     </div>
-
                   </div>
                 </div>
               </div>
@@ -338,7 +386,6 @@ export default function CustomerScreen() {
         <PartnerTable
           isCustomer={false}
           filterOption={filterOptions}
-          data={SUPPLIERS}
           search={search}
         />
       </div>

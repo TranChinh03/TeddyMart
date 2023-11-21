@@ -25,13 +25,13 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
 }) => {
   // const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
   // console.log(info?.source, value);
-
+  const [value, setValue] = useState("");
   return (
     <TextInputComponent
       label={label}
       placeHolder={placeholder}
-      value={search}
-      setValue={setSearch}
+      value={value}
+      setValue={setValue}
       iconLeft={<BiSearch style={{ marginTop: "0.2em" }} />}
       textInputSize={"14px"}
       style={{
@@ -43,6 +43,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
         ...style,
       }}
       onIconClick={onClick}
+      onStopTyping={(txt) => setSearch(txt)}
     />
   );
 };

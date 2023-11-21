@@ -126,13 +126,15 @@ const ProductTable = ({
   const products = useSelector((state: RootState) => state.product);
   const warehouses = useSelector((state: RootState) => state.warehouseSlice);
 
-  console.log("PRODUCTS", products);
+  //console.log("PRODUCTS", products);
   const productsFilter = useMemo(() => {
     //console.log(warehouseName, productName);
     let listProducts: any[] = [];
 
-    if (!warehouseName && !productName) listProducts = products;
+    if (warehouseName === undefined || productName === undefined)
+      listProducts = [...products];
     else {
+      //console.log("okk", productName);
       const listProductWarehouse = warehouses.filter(
         (value) => value.warehouseName === warehouseName
       )[0].listProduct;
@@ -168,9 +170,14 @@ const ProductTable = ({
     if (sort?.quantityDescending) {
       listProducts.sort((a, b) => (a.quantity > b.quantity ? -1 : 1));
     }
+
+    if (productName) {
+      return listProducts.filter((item) =>
+        item.productName.includes(productName)
+      );
+    }
     return listProducts;
   }, [warehouseName, productName, sort]);
-  //console.log(productsFilter);
 
   const options: TOptions = {
     productId: true,
@@ -215,6 +222,10 @@ const ProductTable = ({
 
   useLayoutEffect(() => {
     setDisplayData(productsFilter.slice(0, +rowsPerPage));
+    size.current =
+      +rowsPerPage > productsFilter.length
+        ? productsFilter.length
+        : +rowsPerPage;
   }, [rowsPerPage, productsFilter]);
 
   const size = useRef<number>(+rowsPerPage);
@@ -351,7 +362,7 @@ const ProductTable = ({
 
                 {options.activities && (
                   <td className="border border-gray-300 p-2 text-sm">
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1 justify-center">
                       <Button>
                         <FiEdit />
                       </Button>
@@ -368,7 +379,7 @@ const ProductTable = ({
         </table>
       </div>
       <div className="w-full text-left my-5 flex row justify-end pr-10 items-center ">
-        <span className="text-sm mr-4 text-gray-400 ">Số mục mỗi trang:</span>
+        <span className="text-sm mr-4 text-gray-400 ">{t("rowsPerPage")}</span>
         <select
           value={rowsPerPage}
           onChange={handleRowsPerPageChange}
@@ -379,34 +390,13 @@ const ProductTable = ({
           <option value="15">15</option>
         </select>
 
-        {/* <div className="ml-4 flex items-center">
-          <span className="text-sm text-gray-400  mr-4">0 trên 0</span>
-          <Button>
-            <HiOutlineChevronDoubleLeft />
-          </Button>
-          <div className="w-2" />
-          <Button>
-            <HiOutlineChevronLeft />
-          </Button>
-          <div className="w-2" />
-
-          <Button>
-            <HiOutlineChevronRight />
-          </Button>
-          <div className="w-2" />
-
-          <Button>
-            <HiOutlineChevronDoubleRight />
-          </Button>
-        </div> */}
-
         <div className="ml-4 flex items-center">
           <span className="text-sm text-gray-400  mr-4">{`${
             Math.ceil((size.current - displayData.length) / +rowsPerPage) + 1
           }/${Math.ceil(productsFilter.length / +rowsPerPage)}`}</span>
           <Button
             onClick={() => {
-              if (size.current !== Number(rowsPerPage)) {
+              if (size.current > Number(rowsPerPage)) {
                 setDisplayData(productsFilter.slice(0, +rowsPerPage));
                 size.current = +rowsPerPage;
               }
@@ -417,7 +407,7 @@ const ProductTable = ({
           <div className="w-2" />
           <Button
             onClick={() => {
-              if (size.current !== Number(rowsPerPage)) {
+              if (size.current > Number(rowsPerPage)) {
                 size.current -=
                   displayData.length < Number(rowsPerPage)
                     ? displayData.length
@@ -437,7 +427,7 @@ const ProductTable = ({
 
           <Button
             onClick={() => {
-              if (size.current !== productsFilter.length) {
+              if (size.current < productsFilter.length) {
                 setDisplayData(
                   productsFilter.slice(
                     size.current,
@@ -457,7 +447,7 @@ const ProductTable = ({
 
           <Button
             onClick={() => {
-              if (size.current !== productsFilter.length) {
+              if (size.current < productsFilter.length) {
                 let final = productsFilter.length % Number(rowsPerPage);
                 if (final === 0) {
                   setDisplayData(productsFilter.slice(-Number(rowsPerPage)));

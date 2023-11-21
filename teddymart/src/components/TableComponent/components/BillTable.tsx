@@ -548,13 +548,15 @@ const BillTable = ({ filterOption }: { filterOption?: ColOptions }) => {
                 )}
                 {options.activities && (
                   <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                    <Button className="mr-2">
-                      <FiEdit />
-                    </Button>
+                    <div className="flex items-center gap-1">
+                      <Button>
+                        <FiEdit />
+                      </Button>
 
-                    <Button>
-                      <FiTrash color="red" />
-                    </Button>
+                      <Button>
+                        <FiTrash color="red" />
+                      </Button>
+                    </div>
                   </td>
                 )}
               </tr>

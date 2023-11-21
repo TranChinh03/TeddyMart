@@ -1,5 +1,4 @@
 import ButtonComponent from "components/ButtonComponent";
-import SearchComponent from "components/SearchComponent";
 import SwitchComponent from "components/SwitchComponent/SwitchComponent";
 import TextInputComponent from "components/TextInputComponent";
 import { COLORS } from "constants/colors";
@@ -41,12 +40,13 @@ import {
   sendEmailVerification,
 } from "firebase/auth";
 import { addData } from "controller/addData";
-
+import { SearchComponent } from "components";
 export default function Draft() {
   const [isOn, setIsOn] = useState(false);
   const [value, setValue] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const { t, i18n } = useTranslation();
+  const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const partners = useSelector((state: RootState) => state.partnerSlice);
   const [listFilter, setListFilter] = useState([
@@ -205,7 +205,7 @@ export default function Draft() {
       <GroupProductTable /> */}
       {/* <GeneralReportTable /> */}
       {/* <ReportProductTable /> */}
-      <Button onClick={() => window.localStorage.setItem("userId", "12345")}>
+      {/* <Button onClick={() => window.localStorage.setItem("userId", "12345")}>
         Add UserId to LocalStorage
       </Button>
       <Button onClick={() => window.localStorage.removeItem("userId")}>
@@ -288,7 +288,8 @@ export default function Draft() {
         }}
       >
         Add Voucher
-      </Button>
+      </Button> */}
+      <SearchComponent width={300} search={search} setSearch={setSearch} />
     </div>
   );
 }

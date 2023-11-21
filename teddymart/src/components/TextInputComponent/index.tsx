@@ -1,7 +1,7 @@
 import { COLORS } from "constants/colors";
 import { Props } from "./props";
 import TextComponent from "components/TextComponent";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useRef } from "react";
 import { useForm, SubmitHandler, UseFormRegister } from "react-hook-form";
 /**
  * Props for a custom text input component.
@@ -50,12 +50,21 @@ export default function TextInputComponent({
   registerName,
   readOnly = false,
   onClick = () => {},
-  enterAction,
+  enterAction = () => {},
   pattern,
   minLength,
+  onStopTyping,
 }: Props) {
+  const waitTime = 500;
+  const timer = useRef<any>(null);
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
+    if (onStopTyping) {
+      clearTimeout(timer.current);
+      timer.current = setTimeout(() => {
+        onStopTyping(event.target.value);
+      }, waitTime);
+    }
   };
   return (
     <div style={{ width: width, ...outStyle }} className="relative">

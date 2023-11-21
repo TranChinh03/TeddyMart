@@ -1,12 +1,12 @@
 import { Button } from "antd";
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   HiOutlineChevronLeft,
   HiOutlineChevronDoubleLeft,
   HiOutlineChevronRight,
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
-import { FiDelete, FiEdit, FiTrash } from "react-icons/fi";
+import { FiEdit, FiTrash } from "react-icons/fi";
 import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 import { RootState } from "state_management/reducers/rootReducer";
@@ -155,17 +155,23 @@ type TOptions = {
 const PartnerTable = ({
   isCustomer = false,
   filterOption,
-  data,
-  search,
+  search = "",
 }: {
   isCustomer?: boolean;
   filterOption?: TOptions;
-  data?: TPartner[];
   search?: string;
 }) => {
   const { t } = useTranslation();
-  const CUSTOMERS = useSelector((state: RootState) => state.partnerSlice);
-  const CUSTOMERS_LIST = useMemo(() => CUSTOMERS.filter((c) => c.partnerName.includes(search)),[CUSTOMERS,search]);
+  const PARTNERS = useSelector((state: RootState) => state.partnerSlice);
+  const DATA = useMemo(
+    () =>
+      PARTNERS.filter(
+        (p) =>
+          (isCustomer ? p.type === "Customer" : "Supplier") &&
+          p.partnerName.includes(search)
+      ),
+    [PARTNERS, search]
+  );
   const options: TOptions = {
     partnerID: true,
     partnerName: true,
@@ -188,23 +194,31 @@ const PartnerTable = ({
         options.partnerName && !isCustomer
           ? t("partner.supplierName")
           : t("partner.customerName"),
-        options.gender && t("partner.gender"),
+        options.gender && isCustomer && t("partner.gender"),
         options.phoneNumber && t("partner.phoneNumber"),
         options.email && t("partner.email"),
         options.address && t("partner.address"),
         options.debt && t("partner.debt"),
         options.totalBuyAmount && t("partner.totalBuyAmount"),
-        options.certificate && t("partner.certificate"),
+        options.certificate && !isCustomer && t("partner.certificate"),
         options.note && t("note"),
         t("activities"),
       ].filter((value) => Boolean(value) !== false),
-    [t]
+    [t, filterOption]
   );
+
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState("10");
+
+  const [displayData, setDisplayData] = useState(DATA.slice(0, +rowsPerPage));
+  useLayoutEffect(() => {
+    setDisplayData(DATA.slice(0, +rowsPerPage));
+    size.current = +rowsPerPage;
+  }, [rowsPerPage, DATA]);
+
+  const size = useRef<number>(+rowsPerPage);
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
-      console.log("ok");
       if (selectedRows.length === 0) {
         setSelectedRows([...CONTENT.map((content) => content.partnerId)]);
         return;
@@ -219,7 +233,6 @@ const PartnerTable = ({
     setSelectedRows([...selectedRows, rowId]);
   };
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    console.log("okkkkk");
     setRowsPerPage(e.target.value);
   };
   return (
@@ -243,7 +256,7 @@ const PartnerTable = ({
             </tr>
           </thead>
           <tbody className="text-center">
-            {CUSTOMERS_LIST.map((content, index) => (
+            {displayData.map((content, index) => (
               <tr key={index}>
                 <td className="border border-gray-300 p-2">
                   <input
@@ -266,7 +279,7 @@ const PartnerTable = ({
                     {content.partnerName}
                   </td>
                 )}
-                {options.gender && (
+                {options.gender && isCustomer && (
                   <td className="border border-gray-300 p-2 text-sm">
                     {content.type === "Customer" ? content.gender : null}
                   </td>
@@ -296,7 +309,7 @@ const PartnerTable = ({
                     {content.totalBuyAmount}
                   </td>
                 )}
-                {options.certificate && (
+                {options.certificate && !isCustomer && (
                   <td className="border border-gray-300 p-2 text-sm  items-center justify-center">
                     {content.type === "Supplier" ? (
                       <img
@@ -318,13 +331,15 @@ const PartnerTable = ({
                   </td>
                 )}
                 <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                  <Button className="mr-2">
-                    <FiEdit />
-                  </Button>
+                  <div className="flex items-center gap-1 justify-center">
+                    <Button>
+                      <FiEdit />
+                    </Button>
 
-                  <Button>
-                    <FiTrash color="red" />
-                  </Button>
+                    <Button>
+                      <FiTrash color="red" />
+                    </Button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -332,36 +347,79 @@ const PartnerTable = ({
         </table>
       </div>
       <div className="w-full text-left my-5 flex row justify-end pr-10 items-center ">
-        <span className="text-sm mr-4 text-gray-400 ">Số mục mỗi trang:</span>
+        <span className="text-sm mr-4 text-gray-400 ">{t("rowsPerPage")}</span>
         <select
           value={rowsPerPage}
           onChange={handleRowsPerPageChange}
           className=" bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:bg-white "
         >
+          <option value="5">5</option>
           <option value="10">10</option>
-          <option value="20" selected>
-            20
-          </option>
-          <option value="50">50</option>
+          <option value="15">15</option>
         </select>
 
         <div className="ml-4 flex items-center">
-          <span className="text-sm text-gray-400  mr-4">0 trên 0</span>
-          <Button>
+          <span className="text-sm text-gray-400  mr-4">{`${
+            Math.ceil((size.current - displayData.length) / +rowsPerPage) + 1
+          }/${Math.ceil(DATA.length / +rowsPerPage)}`}</span>
+          <Button
+            onClick={() => {
+              if (size.current !== Number(rowsPerPage)) {
+                setDisplayData(DATA.slice(0, +rowsPerPage));
+                size.current = +rowsPerPage;
+              }
+            }}
+          >
             <HiOutlineChevronDoubleLeft />
           </Button>
           <div className="w-2" />
-          <Button>
+          <Button
+            onClick={() => {
+              if (size.current !== Number(rowsPerPage)) {
+                size.current -=
+                  displayData.length < Number(rowsPerPage)
+                    ? displayData.length
+                    : Number(rowsPerPage);
+                setDisplayData(
+                  DATA.slice(size.current - Number(rowsPerPage), size.current)
+                );
+              }
+            }}
+          >
             <HiOutlineChevronLeft />
           </Button>
           <div className="w-2" />
 
-          <Button>
+          <Button
+            onClick={() => {
+              if (size.current !== DATA.length) {
+                setDisplayData(
+                  DATA.slice(size.current, size.current + Number(rowsPerPage))
+                );
+                size.current =
+                  size.current + Number(rowsPerPage) < DATA.length
+                    ? size.current + Number(rowsPerPage)
+                    : DATA.length;
+              }
+            }}
+          >
             <HiOutlineChevronRight />
           </Button>
           <div className="w-2" />
 
-          <Button>
+          <Button
+            onClick={() => {
+              if (size.current !== DATA.length) {
+                let final = DATA.length % Number(rowsPerPage);
+                if (final === 0) {
+                  setDisplayData(DATA.slice(-Number(rowsPerPage)));
+                } else {
+                  setDisplayData(DATA.slice(-final));
+                }
+                size.current = DATA.length;
+              }
+            }}
+          >
             <HiOutlineChevronDoubleRight />
           </Button>
         </div>
