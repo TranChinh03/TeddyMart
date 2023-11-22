@@ -103,7 +103,7 @@ export default function ProductScreen() {
 
   return (
     <div className="w-full">
-      <Header width={"100%"} title={"Product"}></Header>
+      {/* <Header width={"100%"} title={"Product"}></Header> */}
       <div
         className="bg-white border-2 p-5 mx-1.5 my-1.5 rounded-md"
         style={{

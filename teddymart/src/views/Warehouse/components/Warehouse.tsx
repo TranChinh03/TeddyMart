@@ -41,7 +41,7 @@ export default function Warehouse() {
   const count = WAREHOUSES.find((w) => w.warehouseName === warehouse)?.count;
   return (
     <div className="w-full bg-extreme_lg_grey min-h-screen">
-      <Header width={"100%"} title={t("warehouse.warehouse")} />
+      {/* <Header width={"100%"} title={t("warehouse.warehouse")} /> */}
       <div className="bg-white border-1.5 mx-5 my-1.5 rounded-md px-3 py-5">
         <div className="w-full justify-between items-center flex flex-wrap">
           <div className="flex">

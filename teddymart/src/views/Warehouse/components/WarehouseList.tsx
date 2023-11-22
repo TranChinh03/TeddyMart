@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import TextInputComponent from "components/TextInputComponent";
 import Header from "components/Header";
-import { ButtonComponent, DropdownComponent, ListCheckBox, SearchComponent } from "components";
+import {
+  ButtonComponent,
+  DropdownComponent,
+  ListCheckBox,
+  SearchComponent,
+} from "components";
 import { ModalSelectDate } from "components";
 import { COLORS } from "constants/colors";
 import {
@@ -21,15 +26,15 @@ import {
   Card,
 } from "antd";
 
-import {BiPlus} from "react-icons/bi";
+import { BiPlus } from "react-icons/bi";
 import { WareHouseTable } from "components/TableComponent";
 export default function WarehouseList() {
   const [search, setSearch] = useState("");
   const [openAddForm, setOpenAddForm] = useState(false);
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
-  const [defaultWarehouse, setDefaultWarehouse] = useState(false)
-  const {t} = useTranslation();
+  const [defaultWarehouse, setDefaultWarehouse] = useState(false);
+  const { t } = useTranslation();
   const [time, setTime] = useState<D>({
     from: new Date(),
     to: new Date(),
@@ -42,8 +47,8 @@ export default function WarehouseList() {
     {
       displayName: t("warehouse.createdAt"),
       value: true,
-    }
-  ])
+    },
+  ]);
   const OPTIONS = [
     t("warehouse.warehouseIDAscending"),
     t("warehouse.warehouseIDDescending"),
@@ -51,20 +56,18 @@ export default function WarehouseList() {
     t("warehouse.warehouseNameZA"),
   ];
   const [sort, setSort] = useState(OPTIONS[0]);
-  
-  
+
   return (
     <div className="w-full bg-extreme_lg_grey min-h-screen">
       {/* Header */}
-      <Header width={"100%"} title={t("warehouse.warehouseList")}/>
+      {/* <Header width={"100%"} title={t("warehouse.warehouseList")}/> */}
 
       {/* Body */}
       <div className="bg-white border-1.5 mx-5 my-1.5 rounded-md px-3 py-5">
-      
         <ModalSelectDate setResult={setTime} />
 
         <div className="w-full justify-between items-center flex flex-wrap py-5">
-          <div className="flex"> 
+          <div className="flex">
             <ButtonComponent
               onClick={() => {}}
               label={t("button.all")}
@@ -82,7 +85,7 @@ export default function WarehouseList() {
               setSearch={setSearch}
               placeholder={t("warehouse.searchByName")}
             />
-            
+
             <div className="w-3" />
             <ListCheckBox
               listFilter={listFilter}
@@ -105,7 +108,7 @@ export default function WarehouseList() {
               style={{ borderWidth: 0 }}
             />
 
-             <div className="w-3" />
+            <div className="w-3" />
             <ButtonComponent
               label={t("button.addNew")}
               onClick={() => {
@@ -126,12 +129,8 @@ export default function WarehouseList() {
 
         {/* Table */}
         <div className="h-3" />
-        <WareHouseTable
-          
-        />
+        <WareHouseTable />
       </div>
-      
-
 
       <Modal
         title={<h1 className="text-2xl">{t("warehouse.addNewWarehouse")}</h1>}
@@ -160,7 +159,7 @@ export default function WarehouseList() {
             <h1 className="font-bold">{t("warehouse.defaultWarehouse")}</h1>
           </Checkbox>
         </div>
-        
+
         <div className="border hidden md:flex border-gray-100"></div>
 
         <div className="flex mt-10 items-center justify-center">
