@@ -279,5 +279,18 @@
   },
   "warningTxt": "Bạn có chắc chắn muốn xóa mục này?",
   "noData": "Không có dữ liệu",
-  "rowsPerPage": "Số mục mỗi trang: "
+  "rowsPerPage": "Số mục mỗi trang: ",
+  "header": {
+    "sale": "Đơn hàng",
+    "product": "Sản phẩm",
+    "report": "Báo cáo",
+    "customer": "Khách hàng",
+    "supplier": "Nhà cung cấp",
+    "warehouse": "Kho hàng",
+    "warehouseManagement": "Quản lý kho",
+    "warehouseList": "Danh sách kho",
+    "importOrder": "Đơn nhập hàng",
+    "voucher": "Phiếu giảm giá",
+    "groupProduct": "Nhóm sản phẩm"
+  }
 }

@@ -113,7 +113,7 @@ export default function CustomerScreen() {
 
   return (
     <div className="flex flex-col w-full">
-      <Header width={"100%"} title={"Supplier"} />
+      {/* <Header width={"100%"} title={"Supplier"} /> */}
       <div
         className="bg-white border-2 p-5 mx-1.5 my-1.5 rounded-md"
         style={{

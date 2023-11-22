@@ -127,7 +127,7 @@ export default function SaleScreen() {
   return (
     <div className="w-full">
       {/*Header */}
-      <Header width={"100%"} title="Sale" />
+      {/* <Header width={"100%"} title="Sale" /> */}
 
       {/*Body */}
       <body

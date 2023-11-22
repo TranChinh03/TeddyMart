@@ -287,5 +287,18 @@
   },
 
   "noData": "No data",
-  "rowsPerPage": "Number of rows per page: "
+  "rowsPerPage": "Number of rows per page: ",
+  "header": {
+    "sale": "Sale",
+    "product": "Product",
+    "report": "Report",
+    "customer": "Customer",
+    "supplier": "Supplier",
+    "warehouse": "Warehouse",
+    "warehouseManagement": "Warehouse Management",
+    "warehouseList": "Warehouse List",
+    "importOrder": "Import Order",
+    "voucher": "Voucher",
+    "groupProduct": "Group Product"
+  }
 }

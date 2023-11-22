@@ -33,7 +33,7 @@ export default function WarehouseScreen() {
 
   return (
     <div className="w-full bg-extreme_lg_grey min-h-screen">
-      <Header width={"100%"} title={t("warehouse.warehouseManagement")} />
+      {/* <Header width={"100%"} title={t("warehouse.warehouseManagement")} /> */}
       <div className="py-5 px-32 grid lg:grid-cols-2 md:gap-x-32 grid-cols-1 gap-y-10">
         {LISTS.map((l, i) => {
           return (

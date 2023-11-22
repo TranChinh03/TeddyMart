@@ -8,16 +8,22 @@ import { COLORS } from "constants/colors";
 import { Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
-import { toggleDrawer } from "state_management/slices/controlSlice";
+import {
+  toggleDrawer,
+  toggleLanguage,
+} from "state_management/slices/controlSlice";
 import { useTranslation } from "react-i18next";
 export default function Header({
   width = "100%",
   title = "Title",
 }: HeaderProps) {
-  const [language, setLanguage] = useState("VI");
+  //const [language, setLanguage] = useState("VI");
   const { openDrawer } = useSelector((state: RootState) => state.controlSlice);
   const dispatch = useDispatch();
   const { t, i18n } = useTranslation();
+  const language = useSelector(
+    (state: RootState) => state.controlSlice
+  ).language;
   const numberOfNotifications = 2;
   useEffect(() => {
     i18n.changeLanguage(language);
@@ -54,7 +60,7 @@ export default function Header({
               { image: require("assets/images/en_flag.png"), title: "EN" },
             ]}
             value={language}
-            setValue={setLanguage}
+            setValue={(e) => dispatch(toggleLanguage(e))}
             width={"15vw"}
           />
         </div>

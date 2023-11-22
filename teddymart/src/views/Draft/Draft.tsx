@@ -2,7 +2,7 @@ import ButtonComponent from "components/ButtonComponent";
 import SwitchComponent from "components/SwitchComponent/SwitchComponent";
 import TextInputComponent from "components/TextInputComponent";
 import { COLORS } from "constants/colors";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { CiAlarmOn } from "react-icons/ci";
 import CheckboxComponent from "components/CheckBoxComponent";
 import { useTranslation } from "react-i18next";
@@ -49,6 +49,7 @@ export default function Draft() {
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const partners = useSelector((state: RootState) => state.partnerSlice);
+  const time = useRef<number>(0);
   const [listFilter, setListFilter] = useState([
     {
       displayName: "Customer Name",
@@ -290,6 +291,15 @@ export default function Draft() {
         Add Voucher
       </Button>
       <SearchComponent width={300} search={search} setSearch={setSearch} />
+      <Button
+        onClick={() => {
+          time.current = time.current + 1;
+          alert("Time: " + time.current);
+        }}
+      >
+        Use Ref
+      </Button>
+      <div>{time.current}</div>
     </div>
   );
 }

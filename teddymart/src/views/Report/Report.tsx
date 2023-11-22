@@ -106,7 +106,7 @@ export default function ReportScreen() {
   };
   return (
     <div className="bg-extreme_lg_grey pb-10 w-full">
-      <Header width={"100%"} title={t("report.report")} />
+      {/* <Header width={"100%"} title={t("report.report")} /> */}
       <SubHeader time={time} setTime={setTime} />
       <div className="p-5 grid md:grid-cols-3 gap-x-8 grid-cols-1 gap-y-4 sm:grid-cols-2">
         {cards?.map((card, i) => {
