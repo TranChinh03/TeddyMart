@@ -132,7 +132,7 @@ export default function ImportOrder() {
   return (
     <div className="w-full">
       {/*Header */}
-      <Header width={"100%"} title="Sale" />
+      <Header width={"100%"} title="Import Order" />
 
       {/*Body */}
       <body

@@ -108,6 +108,9 @@
     "totalPayment": "Total Payment",
     "status": "Status",
     "debt": "Debt",
+    "addNewOrder":"Add New Order",
+    "customerInfo": "Customer Information",
+
     "note": "Note",
     "receiver": "Receiver",
     "listProduct": "List Product",

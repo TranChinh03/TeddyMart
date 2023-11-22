@@ -14,7 +14,12 @@ import {
   Card,
 } from "antd";
 import Search, { SearchProps } from "antd/es/input/Search";
-import { ButtonComponent, ListCheckBox, SearchComponent } from "components";
+import {
+  ButtonComponent,
+  ListCheckBox,
+  ModalSelectDate,
+  SearchComponent,
+} from "components";
 import DropdownImage from "components/DropDownImage";
 import DropdownComponent from "components/DropdownComponent";
 import Header from "components/Header";
@@ -60,74 +65,53 @@ export default function SaleScreen() {
     (state: RootState) => state.warehouseSlice
   ).map((value) => value.warehouseName);
   const [warehouseName, setWarehouseName] = useState("Central Warehouse");
+  const [date, setDate] = useState();
   const { t } = useTranslation();
   const [openAddForm, setOpenAddForm] = useState(false);
-  const [listFilter, setListFilter] = useState([
-    {
-      displayName: t("sale.seller"),
-      value: true,
-    },
-    {
-      displayName: t("sale.status"),
-      value: true,
-    },
-    {
-      displayName: t("sale.payment"),
-      value: true,
-    },
-    {
-      displayName: t("sale.debt"),
-      value: true,
-    },
-    {
-      displayName: t("sale.discount"),
-      value: true,
-    },
-    {
-      displayName: t("sale.note"),
-      value: true,
-    },
-    {
-      displayName: t("sale.totalPayment"),
-      value: true,
-    },
-  ]);
+  const initialFilter = useMemo(
+    () => [
+      {
+        displayName: t("sale.seller"),
+        value: true,
+      },
+      {
+        displayName: t("sale.status"),
+        value: true,
+      },
+      {
+        displayName: t("sale.payment"),
+        value: true,
+      },
+      {
+        displayName: t("sale.debt"),
+        value: true,
+      },
+      {
+        displayName: t("sale.discount"),
+        value: true,
+      },
+      {
+        displayName: t("sale.note"),
+        value: true,
+      },
+      {
+        displayName: t("sale.totalPayment"),
+        value: true,
+      },
+    ],
+    [t]
+  );
+  const [listFilter, setListFilter] = useState(initialFilter);
   const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
     console.log(info?.source, value);
 
-  const items: TabsProps["items"] = [
-    {
-      key: "1",
-      label: "Tất cả đơn hàng (0)",
-    },
-    {
-      key: "2",
-      label: "Chưa thanh toán (0)",
-    },
-    {
-      key: "3",
-      label: "Thanh toán 1 phần",
-    },
-    {
-      key: "4",
-      label: "Thanh toán 100% (0)",
-    },
-    {
-      key: "5",
-      label: "Đơn trả (0)",
-    },
-    {
-      key: "6",
-      label: "Đơn nợ  (0)",
-    },
-  ];
   const onChange = (key: string) => {
     console.log(key);
   };
   return (
     <div className="w-full">
       {/*Header */}
-      <Header width={"100%"} title="Sale" />
+      <Header width={"100%"} title={t("drawer.order")} />
 
       {/*Body */}
       <body
@@ -139,14 +123,8 @@ export default function SaleScreen() {
         }}
       >
         <Space direction="vertical" size={10}>
-          <div>
-            <Checkbox>
-              <RangePicker showTime />
-            </Checkbox>
-            <Checkbox>
-              <h1>Lọc theo giờ kinh doanh</h1>
-            </Checkbox>
-          </div>
+          <ModalSelectDate setResult={setDate} />
+
           <Button>{t("button.all")}</Button>
           <div className=" flex items-center">
             <TextInputComponent

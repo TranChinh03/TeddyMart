@@ -47,7 +47,6 @@ function VoucherScreen() {
             {t("button.addNew")}
           </h1>
         }
-        width={"30%"}
         footer={false}
       >
         <TextInputComponent
@@ -63,13 +62,13 @@ function VoucherScreen() {
             marginBlock: 12,
           }}
         >
-          <Space>
+          <Space direction="vertical">
             <label>{t("voucher.expirationDate")}</label>
-            <DatePicker onChange={() => {}} />
+            <DatePicker onChange={() => {}} style={{ width: 200 }} />
           </Space>
-          <Space>
+          <Space direction="vertical">
             <label>{t("voucher.publicDate")}</label>
-            <DatePicker onChange={() => {}} />
+            <DatePicker onChange={() => {}} style={{ width: 200 }} />
           </Space>
         </Space>
         <TextInputComponent
@@ -100,7 +99,7 @@ function VoucherScreen() {
             {t("button.updateVoucher")}
           </h1>
         }
-        width={"30%"}
+        width={"auto"}
         footer={false}
       >
         <TextInputComponent
@@ -116,11 +115,11 @@ function VoucherScreen() {
             marginBlock: 12,
           }}
         >
-          <Space>
+          <Space direction="vertical">
             <label>{t("voucher.expirationDate")}</label>
             <DatePicker onChange={() => {}} />
           </Space>
-          <Space>
+          <Space direction="vertical">
             <label>{t("voucher.publicDate")}</label>
             <DatePicker onChange={() => {}} />
           </Space>
