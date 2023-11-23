@@ -6,7 +6,7 @@ import {
 } from "components";
 import { useTranslation } from "react-i18next";
 import { COLORS } from "constants/colors";
-import { useState } from "react";
+import { useDeferredValue, useState } from "react";
 import { ProductTable } from "components/TableComponent";
 import { useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
@@ -39,6 +39,7 @@ export default function Warehouse() {
   const [warehouse, setWarehouse] = useState(WAREHOUSES[0]?.warehouseName);
   const LIST_PRODUCTS = WAREHOUSES.find((w) => w.warehouseName === warehouse);
   const count = WAREHOUSES.find((w) => w.warehouseName === warehouse)?.count;
+  const productName = useDeferredValue(search);
   return (
     <div className="w-full bg-extreme_lg_grey min-h-screen">
       {/* <Header width={"100%"} title={t("warehouse.warehouse")} /> */}
@@ -107,7 +108,7 @@ export default function Warehouse() {
             quantityAscending: sort === OPTIONS[2],
             quantityDescending: sort === OPTIONS[3],
           }}
-          productName={search}
+          productName={productName}
         />
       </div>
     </div>

@@ -128,18 +128,19 @@ const ProductTable = ({
 
   //console.log("PRODUCTS", products);
   const productsFilter = useMemo(() => {
-    //console.log(warehouseName, productName);
     let listProducts: any[] = [];
 
     if (warehouseName === undefined || productName === undefined)
       listProducts = [...products];
     else {
-      //console.log("okk", productName);
+      // console.log("okk", productName);
+
       const listProductWarehouse = warehouses.filter(
         (value) => value.warehouseName === warehouseName
       )[0].listProduct;
       //console.log("listProductWarehouse", listProductWarehouse);
       // const listProducts: any[] = [];
+
       listProductWarehouse.map((value) => {
         const tmp = products.findIndex(
           (product) => product.productId === value.productId
@@ -172,10 +173,11 @@ const ProductTable = ({
     }
 
     if (productName) {
-      return listProducts.filter((item) =>
+      return listProducts?.filter((item) =>
         item.productName.includes(productName)
       );
     }
+
     return listProducts;
   }, [warehouseName, productName, sort]);
 

@@ -111,7 +111,7 @@ export default function SaleScreen() {
   return (
     <div className="w-full">
       {/*Header */}
-      <Header width={"100%"} title={t("drawer.order")} />
+      {/* <Header width={"100%"} title={t("drawer.order")} /> */}
 
       {/*Body */}
       <body

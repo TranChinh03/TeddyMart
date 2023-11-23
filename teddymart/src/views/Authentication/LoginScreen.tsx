@@ -140,7 +140,6 @@ export default function LoginScreen() {
         });
       }),
     ]).then((values) => {
-      //console.log("P", partners);
       dispatch(
         uploadReportProduct(
           generateProduct(values[5] as TOrder[], values[2] as TProduct[])
@@ -181,7 +180,6 @@ export default function LoginScreen() {
         });
       }),
     ]).then((values) => {
-      //console.log("P", partners);
       dispatch(
         uploadReportProduct(
           generateProduct(values[5] as TOrder[], values[2] as TProduct[])
