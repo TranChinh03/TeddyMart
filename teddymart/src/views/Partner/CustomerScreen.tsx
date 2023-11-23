@@ -129,6 +129,23 @@ export default function CustomerScreen() {
     });
     dispatch(addNewPartner(data));
   };
+
+  const [filterValues, setFilterValues] = useState({});
+  const [isTableReset, setIsTableReset] = useState(false);
+
+
+  const handleSearch = (filterValues: Record<string, any>) => {
+    setFilterValues(filterValues);
+  };
+  const handleResetTable = () => {
+    setIsTableReset(true);
+  };
+
+  useEffect(() => {
+    if (isTableReset) {
+      setIsTableReset(false);
+    }
+  }, [isTableReset]);
   return (
     <div className="w-full">
       {/* <Header width={"100%"} title={"Customer"} /> */}
@@ -143,13 +160,6 @@ export default function CustomerScreen() {
         <div className="relative">
           <div className="bg-white w-full py-2 flex items-center justify-between flex-wrap gap-x-8">
             <div className="w-100% bg-white flex items-center justify-between py-2 gap-x-2 ">
-              <ButtonComponent
-                label={t("button.all")}
-                onClick={() => alert("Button Clicked")}
-                backgroundColor={COLORS.defaultWhite}
-                color={COLORS.extra_gray}
-              />
-
               <SearchComponent
                 placeholder={t("customer.insertNameToSearch")}
                 search={search}
@@ -374,11 +384,13 @@ export default function CustomerScreen() {
             </div>
           )}
         </div>
-        <AdvancedSearch />
+        <AdvancedSearch onSearch={handleSearch} onReset={handleResetTable}/>
         <PartnerTable
           isCustomer={true}
           filterOption={filterOptions}
           search={search}
+          additionalFilters={filterValues}
+          resetTable={isTableReset}
         />
         {/* <Button onClick={addNewCustomer}>Add Data To Firebase</Button> */}
       </div>
