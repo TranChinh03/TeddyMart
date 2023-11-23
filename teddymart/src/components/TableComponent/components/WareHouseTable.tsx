@@ -108,6 +108,7 @@ const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
   };
   const HEADER = useMemo(
     () => [
+      "#",
       options.warehouseID && t("warehouse.warehouseID"),
       options.warehouseName && t("warehouse.warehouseName"),
       options.address && t("warehouse.address"),
@@ -168,6 +169,9 @@ const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
                       selectedRows.includes(content.warehouseId) ? true : false
                     }
                   />
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {index + 1}
                 </td>
                 {options.warehouseID && (
                   <td className="border border-gray-300 p-2 text-sm">

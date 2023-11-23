@@ -200,6 +200,7 @@ const ProductTable = ({
   const HEADER = useMemo(
     () =>
       [
+        "#",
         options.productId && t("product.productId"),
         options.productName && t("product.productName"),
         options.quantity && t("warehouse.quantity"),
@@ -286,6 +287,10 @@ const ProductTable = ({
                       selectedRows.includes(content.productId) ? true : false
                     }
                   />
+                </td>
+
+                <td className="border border-gray-300 p-2 text-sm">
+                  {index + 1}
                 </td>
 
                 {options.productId && (

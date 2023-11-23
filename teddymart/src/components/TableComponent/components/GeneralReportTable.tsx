@@ -130,6 +130,7 @@ const GeneralReportTable = ({
   const HEADER = useMemo(
     () =>
       [
+        "#",
         options.date && t("report.date"),
         options.revenue && t("report.revenue"),
         options.outcome && t("report.outcome"),
@@ -185,6 +186,9 @@ const GeneralReportTable = ({
           <tbody className="text-center">
             {displayData?.map((content, index) => (
               <tr key={index}>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {index + 1}
+                </td>
                 {options.date && (
                   <td className="border border-gray-300 p-2 text-sm">
                     {new Date(content.date).toLocaleDateString("vi")}

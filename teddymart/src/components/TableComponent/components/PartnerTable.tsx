@@ -176,15 +176,21 @@ const PartnerTable = ({
         return (
           (isCustomer ? p.type === "Customer" : "Supplier") &&
           p.partnerName.includes(search) &&
-          (!additionalFilters.gender || p.gender === additionalFilters.gender) &&
-          (!additionalFilters.debtBalanceFrom || p.debt >= additionalFilters.debtBalanceFrom) &&
-          (!additionalFilters.debtBalanceTo || p.debt <= additionalFilters.debtBalanceTo) &&
-          (!additionalFilters.totalPurchasesFrom || p.totalBuyAmount >= additionalFilters.totalPurchasesFrom) &&
-          (!additionalFilters.totalPurchasesTo || p.totalBuyAmount <= additionalFilters.totalPurchasesTo)
+          (!additionalFilters.gender ||
+            p.gender === additionalFilters.gender) &&
+          (!additionalFilters.debtBalanceFrom ||
+            p.debt >= additionalFilters.debtBalanceFrom) &&
+          (!additionalFilters.debtBalanceTo ||
+            p.debt <= additionalFilters.debtBalanceTo) &&
+          (!additionalFilters.totalPurchasesFrom ||
+            p.totalBuyAmount >= additionalFilters.totalPurchasesFrom) &&
+          (!additionalFilters.totalPurchasesTo ||
+            p.totalBuyAmount <= additionalFilters.totalPurchasesTo)
         );
       }),
     [PARTNERS, search, additionalFilters]
   );
+
   const options: TOptions = {
     partnerID: true,
     partnerName: true,
@@ -201,6 +207,7 @@ const PartnerTable = ({
   const HEADER = useMemo(
     () =>
       [
+        "#",
         options.partnerID && !isCustomer
           ? t("partner.supplierID")
           : t("partner.customerID"),
@@ -224,17 +231,11 @@ const PartnerTable = ({
   const [rowsPerPage, setRowsPerPage] = useState("10");
 
   const [displayData, setDisplayData] = useState(DATA.slice(0, +rowsPerPage));
-  useLayoutEffect(() => {
-    setDisplayData(DATA.slice(0, +rowsPerPage));
-    size.current = +rowsPerPage;
-  }, [rowsPerPage, DATA]);
 
   useLayoutEffect(() => {
-    if (resetTable) {
-      setDisplayData(ORIGINAL_DATA.slice(0, +rowsPerPage));
-      size.current = +rowsPerPage;
-    }
-  }, [resetTable, ORIGINAL_DATA, rowsPerPage]);
+    setDisplayData(ORIGINAL_DATA.slice(0, +rowsPerPage));
+    size.current = +rowsPerPage;
+  }, [ORIGINAL_DATA, rowsPerPage]);
 
   const size = useRef<number>(+rowsPerPage);
   const handleCheckBoxChange = (rowId: string) => {
@@ -287,6 +288,9 @@ const PartnerTable = ({
                       selectedRows.includes(content.partnerId) ? true : false
                     }
                   />
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {index + 1}
                 </td>
                 {options.partnerID && (
                   <td className="border border-gray-300 p-2 text-sm">

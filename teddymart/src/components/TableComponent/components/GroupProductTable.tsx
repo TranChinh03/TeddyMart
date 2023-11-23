@@ -42,7 +42,13 @@ type TOptions = {
   groupName?: boolean;
   note?: boolean;
 };
-const GroupProductTable = ({ filterOption, data, }: { filterOption?: TOptions, data?: TGroupProduct[] }) => {
+const GroupProductTable = ({
+  filterOption,
+  data,
+}: {
+  filterOption?: TOptions;
+  data?: TGroupProduct[];
+}) => {
   const { t } = useTranslation();
   const options: TOptions = {
     groupId: true,
@@ -53,6 +59,7 @@ const GroupProductTable = ({ filterOption, data, }: { filterOption?: TOptions, d
   const HEADER = useMemo(
     () =>
       [
+        "#",
         options.groupId && t("group.groupId"),
         options.groupName && t("group.groupName"),
         options.note && t("note"),
@@ -114,6 +121,9 @@ const GroupProductTable = ({ filterOption, data, }: { filterOption?: TOptions, d
                       selectedRows.includes(content.groupId) ? true : false
                     }
                   />
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {index + 1}
                 </td>
                 {options.groupId && (
                   <td className="border border-gray-300 p-2 text-sm">

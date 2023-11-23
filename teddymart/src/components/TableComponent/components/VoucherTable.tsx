@@ -56,6 +56,7 @@ const VoucherTable = ({ filterOption }: { filterOption?: TOptions }) => {
   const HEADER = useMemo(
     () =>
       [
+        "#",
         options.voucherID && t("voucher.voucherID"),
         options.voucherName && t("voucher.voucherName"),
         options.publicDate && t("voucher.publicDate"),
@@ -121,6 +122,9 @@ const VoucherTable = ({ filterOption }: { filterOption?: TOptions }) => {
                       selectedRows.includes(content.voucherId) ? true : false
                     }
                   />
+                </td>
+                <td className="border border-gray-300 p-2 text-sm">
+                  {index + 1}
                 </td>
                 <td className="border border-gray-300 p-2 text-sm">
                   {content.voucherId}
