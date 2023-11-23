@@ -161,7 +161,7 @@ const WareHouseTable = ({
 
     if (warehouseName) {
       return warehouselist?.filter((item) =>
-        item.warehouseName.includes(warehouseName)
+        item.warehouseName.toLowerCase().includes(warehouseName.toLowerCase())
       )
     }
     return warehouselist;
