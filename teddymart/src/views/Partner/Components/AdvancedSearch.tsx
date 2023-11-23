@@ -7,15 +7,39 @@ import { BiCalendar } from "react-icons/bi";
 import { useTranslation } from "react-i18next";
 
 
-export default function AdvancedSearch() {
-  const [creatorName, setCreatorName] = useState("");
+export default function AdvancedSearch({onSearch, onReset,}: { onSearch: (filters: Record<string, string>) => void;onReset: () => void; }) {
+  const [debtBalanceFrom, setdebtBalanceFrom] = useState("");
+    const [debtBalanceTo, setdebtBalanceTo] = useState("");
+    const [totalPurchasesFrom, settotalPurchasesFrom] = useState("");
+    const [totalPurchasesTo, settotalPurchasesTo] = useState("");
   const [isAdvancedSearchVisible, setAdvancedSearchVisible] = useState(false);
   const { t } = useTranslation();
   const OPTIONS = [
     t("customer.male"),
     t("customer.female"),
   ];
-  const [gender, setGender] = useState(OPTIONS[0]);
+  const [gender, setGender] = useState<string | null>(null);
+
+    const handleSearchClick = () => {
+      const filters = {
+        gender: gender || "",
+        debtBalanceFrom,
+        debtBalanceTo,
+        totalPurchasesFrom,
+        totalPurchasesTo,
+      };
+
+      onSearch(filters);
+    };
+
+    const resetFilters = () => {
+      setGender(null);
+      setdebtBalanceFrom("");
+      setdebtBalanceTo("");
+      settotalPurchasesFrom("");
+      settotalPurchasesTo("");
+      onReset();
+    };
 
   const [date, setDate] = useState<D>({
     from: new Date(),
@@ -40,7 +64,6 @@ export default function AdvancedSearch() {
       <div className={`overflow-hidden transition-all duration-500 ${isAdvancedSearchVisible ? "max-h-96" : "max-h-0"}`}>
         <div className="flex flex-wrap gap-8 p-5">
           <div className="flex flex-row flex-wrap gap-8">
-            <ModalSelectDate setResult={setDate} />
             <DropdownComponent
               label={t("customer.gender")}
               options={OPTIONS}
@@ -50,26 +73,26 @@ export default function AdvancedSearch() {
             <TextInputComponent
               label={t("customer.debtBalanceFrom")}
               placeHolder={"10.000"}
-              value={creatorName}
-              setValue={setCreatorName}
+              value={debtBalanceFrom}
+              setValue={setdebtBalanceFrom}
             />
             <TextInputComponent
               label={t("customer.debtBalanceTo")}
               placeHolder={"100.000"}
-              value={creatorName}
-              setValue={setCreatorName}
+              value={debtBalanceTo}
+              setValue={setdebtBalanceTo}
             />
             <TextInputComponent
               label={t("customer.totalPurchasesFrom")}
               placeHolder={"10.000"}
-              value={creatorName}
-              setValue={setCreatorName}
+              value={totalPurchasesFrom}
+              setValue={settotalPurchasesFrom}
             />
             <TextInputComponent
               label={t("customer.totalPurchasesTo")}
               placeHolder={"100.000"}
-              value={creatorName}
-              setValue={setCreatorName}
+              value={totalPurchasesTo}
+              setValue={settotalPurchasesTo}
             />
           </div>
         </div>
@@ -77,11 +100,13 @@ export default function AdvancedSearch() {
         <div className="flex justify-center gap-x-4 mt-4 pb-5">
           <ButtonComponent
             label={t("button.search")}
-            onClick={() => alert("Button Clicked")}
+            onClick={handleSearchClick}
           />
           <ButtonComponent
             label={t("button.reset")}
-            onClick={() => alert("Button Clicked")}
+            onClick={() => {
+              resetFilters();
+            }}
           />
         </div>
       </div>

@@ -156,21 +156,34 @@ const PartnerTable = ({
   isCustomer = false,
   filterOption,
   search = "",
+  additionalFilters = {},
+  resetTable = false,
 }: {
   isCustomer?: boolean;
   filterOption?: TOptions;
   search?: string;
+  additionalFilters?: any;
+  resetTable?: boolean;
 }) => {
   const { t } = useTranslation();
   const PARTNERS = useSelector((state: RootState) => state.partnerSlice);
+  const ORIGINAL_DATA = useMemo(() => PARTNERS, [PARTNERS]);
+
+  const [data, setData] = useState(ORIGINAL_DATA);
   const DATA = useMemo(
     () =>
-      PARTNERS.filter(
-        (p) =>
+      PARTNERS.filter((p) => {
+        return (
           (isCustomer ? p.type === "Customer" : "Supplier") &&
-          p.partnerName.includes(search)
-      ),
-    [PARTNERS, search]
+          p.partnerName.includes(search) &&
+          (!additionalFilters.gender || p.gender === additionalFilters.gender) &&
+          (!additionalFilters.debtBalanceFrom || p.debt >= additionalFilters.debtBalanceFrom) &&
+          (!additionalFilters.debtBalanceTo || p.debt <= additionalFilters.debtBalanceTo) &&
+          (!additionalFilters.totalPurchasesFrom || p.totalBuyAmount >= additionalFilters.totalPurchasesFrom) &&
+          (!additionalFilters.totalPurchasesTo || p.totalBuyAmount <= additionalFilters.totalPurchasesTo)
+        );
+      }),
+    [PARTNERS, search, additionalFilters]
   );
   const options: TOptions = {
     partnerID: true,
@@ -215,6 +228,13 @@ const PartnerTable = ({
     setDisplayData(DATA.slice(0, +rowsPerPage));
     size.current = +rowsPerPage;
   }, [rowsPerPage, DATA]);
+
+  useLayoutEffect(() => {
+    if (resetTable) {
+      setDisplayData(ORIGINAL_DATA.slice(0, +rowsPerPage));
+      size.current = +rowsPerPage;
+    }
+  }, [resetTable, ORIGINAL_DATA, rowsPerPage]);
 
   const size = useRef<number>(+rowsPerPage);
   const handleCheckBoxChange = (rowId: string) => {
