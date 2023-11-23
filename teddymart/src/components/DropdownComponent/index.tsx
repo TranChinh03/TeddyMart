@@ -44,7 +44,7 @@ const DropdownComponent: React.FC<DropdownComponentProps> = ({
           {placeholder}
         </option>
         {options.map((option, index) => (
-          <option key={index} value={option}>
+          <option key={index} value={index}>
             {option}
           </option>
         ))}

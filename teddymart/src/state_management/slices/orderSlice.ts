@@ -10,8 +10,14 @@ const orderSlice = createSlice({
     uploadOrder: (state: TOrder[], action: PayloadAction<TOrder[]>) => {
       return [...action.payload];
     },
-    deleteOrder: (state: TOrder[], action: PayloadAction<TOrder>) => {
+    deleteOrder: (
+      state: TOrder[],
+      action: PayloadAction<Pick<TOrder, "orderId">>
+    ) => {
       return state.filter((p) => p.orderId !== action.payload.orderId);
+    },
+    deleteMultiOrder: (state: TOrder[], action: PayloadAction<string[]>) => {
+      return state.filter((p) => !action.payload.includes(p.orderId));
     },
     updateOrder: (
       state: TOrder[],
@@ -33,6 +39,11 @@ const orderSlice = createSlice({
   },
 });
 
-export const { addNewOrder, uploadOrder, deleteOrder, updateOrder } =
-  orderSlice.actions;
+export const {
+  addNewOrder,
+  uploadOrder,
+  deleteOrder,
+  updateOrder,
+  deleteMultiOrder,
+} = orderSlice.actions;
 export default orderSlice.reducer;

@@ -65,54 +65,69 @@ export default function SaleScreen() {
     (state: RootState) => state.warehouseSlice
   ).map((value) => value.warehouseName);
   const [warehouseName, setWarehouseName] = useState("Central Warehouse");
-  const [date, setDate] = useState();
+  const [date, setDate] = useState<{ from: Date; to: Date }>();
+  const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const { t } = useTranslation();
   const [openAddForm, setOpenAddForm] = useState(false);
   const initialFilter = useMemo(
     () => [
       {
         displayName: t("sale.seller"),
+        key: "seller",
         value: true,
       },
       {
         displayName: t("sale.status"),
+        key: "status",
         value: true,
       },
       {
         displayName: t("sale.payment"),
+        key: "payment",
         value: true,
       },
       {
         displayName: t("sale.debt"),
+        key: "debt",
         value: true,
       },
       {
         displayName: t("sale.discount"),
+        key: "discount",
         value: true,
       },
       {
         displayName: t("sale.note"),
+        key: "note",
         value: true,
       },
       {
         displayName: t("sale.totalPayment"),
+        key: "totalPayment",
         value: true,
       },
     ],
     [t]
   );
+
   const [listFilter, setListFilter] = useState(initialFilter);
+  const objectFilter = useMemo(() => {
+    const resultObject: Record<string, boolean> = {};
+    listFilter.forEach((value) => {
+      resultObject[value.key] = value.value;
+    });
+    return resultObject;
+  }, [listFilter]);
+
   const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
     console.log(info?.source, value);
 
   const onChange = (key: string) => {
     console.log(key);
   };
+  console.log(sort);
   return (
     <div className="w-full">
-      {/*Header */}
-      <Header width={"100%"} title={t("drawer.order")} />
-
       {/*Body */}
       <body
         className="bg-white border-2 p-5 m-1.5 rounded-md"
@@ -181,7 +196,15 @@ export default function SaleScreen() {
             </Space>
           </div>
           {/* <Tabs defaultActiveKey="1" items={items} onChange={onChange} /> */}
-          <BillTable />
+          <BillTable
+            startDate={date?.from.getTime()}
+            endDate={date?.to.getTime()}
+            search={search}
+            selectedRows={selectedRows}
+            setSelectedRows={setSelectedRows}
+            sort={+sort}
+            filterOption={objectFilter}
+          />
         </Space>
       </body>
       <Modal

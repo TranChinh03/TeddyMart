@@ -1,6 +1,6 @@
 import { Button, Dropdown, Layout, MenuProps } from "antd";
 import dayjs from "dayjs";
-import { useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BiDetail } from "react-icons/bi";
 import { FiEdit, FiTrash } from "react-icons/fi";
@@ -10,9 +10,9 @@ import {
   HiOutlineChevronRight,
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
-
+import { deleteOrder } from "state_management/slices/orderSlice";
 type TStatus = "unpaid" | "paid";
 const COLOR_STATUS = new Map([
   ["unpaid", "#FF0000"],
@@ -55,299 +55,299 @@ type TContentImport = {
   type: "Import";
 };
 type TContent = TContentExport | TContentImport;
-const CONTENT: TContent[] = [
-  {
-    orderId: "ORD001",
-    partnerId: "P006",
-    partnerName: "Sophia Martinez",
-    payment: 21264,
-    receiver: "Teddy Mart",
-    status: "paid",
-    totalPayment: 21264,
-    type: "Import",
-    note: "Import order from supplier A",
-    listProduct: [
-      {
-        productId: "PD038",
-        productName: "Smart Digital Picture Frame",
-        quantity: 25,
-      },
-      {
-        productId: "PD007",
-        productName: "Gaming Console Pro",
-        quantity: 44,
-      },
-    ],
-    debt: 0,
-    discount: 0,
-    createdAt: "2023-10-07T17:00:00.000Z",
-  },
-  {
-    orderId: "ORD001",
-    partnerId: "P006",
-    partnerName: "Sophia Martinez",
-    payment: 21264,
-    status: "paid",
-    totalPayment: 21264,
-    type: "Export",
-    note: "Import order from supplier A",
-    listProduct: [
-      {
-        productId: "PD038",
-        productName: "Smart Digital Picture Frame",
-        quantity: 25,
-      },
-      {
-        productId: "PD007",
-        productName: "Gaming Console Pro",
-        quantity: 44,
-      },
-    ],
-    debt: 0,
-    discount: 0,
-    createdAt: "2023-10-07T17:00:00.000Z",
-    seller: "Teddy Mart",
-    voucherId: "VCH010",
-  },
-  {
-    orderId: "ORD001",
-    partnerId: "P006",
-    partnerName: "Sophia Martinez",
-    payment: 21264,
-    receiver: "Teddy Mart",
-    status: "paid",
-    totalPayment: 21264,
-    type: "Import",
-    note: "Import order from supplier A",
-    listProduct: [
-      {
-        productId: "PD038",
-        productName: "Smart Digital Picture Frame",
-        quantity: 25,
-      },
-      {
-        productId: "PD007",
-        productName: "Gaming Console Pro",
-        quantity: 44,
-      },
-    ],
-    debt: 0,
-    discount: 0,
-    createdAt: "2023-10-07T17:00:00.000Z",
-  },
-  {
-    orderId: "ORD001",
-    partnerId: "P006",
-    partnerName: "Sophia Martinez",
-    payment: 21264,
-    status: "paid",
-    totalPayment: 21264,
-    type: "Export",
-    note: "Import order from supplier A",
-    listProduct: [
-      {
-        productId: "PD038",
-        productName: "Smart Digital Picture Frame",
-        quantity: 25,
-      },
-      {
-        productId: "PD007",
-        productName: "Gaming Console Pro",
-        quantity: 44,
-      },
-    ],
-    debt: 0,
-    discount: 0,
-    createdAt: "2023-10-07T17:00:00.000Z",
-    seller: "Teddy Mart",
-    voucherId: "VCH010",
-  },
-  {
-    orderId: "ORD001",
-    partnerId: "P006",
-    partnerName: "Sophia Martinez",
-    payment: 21264,
-    receiver: "Teddy Mart",
-    status: "paid",
-    totalPayment: 21264,
-    type: "Import",
-    note: "Import order from supplier A",
-    listProduct: [
-      {
-        productId: "PD038",
-        productName: "Smart Digital Picture Frame",
-        quantity: 25,
-      },
-      {
-        productId: "PD007",
-        productName: "Gaming Console Pro",
-        quantity: 44,
-      },
-    ],
-    debt: 0,
-    discount: 0,
-    createdAt: "2023-10-07T17:00:00.000Z",
-  },
-  {
-    orderId: "ORD001",
-    partnerId: "P006",
-    partnerName: "Sophia Martinez",
-    payment: 21264,
-    status: "paid",
-    totalPayment: 21264,
-    type: "Export",
-    note: "Import order from supplier A",
-    listProduct: [
-      {
-        productId: "PD038",
-        productName: "Smart Digital Picture Frame",
-        quantity: 25,
-      },
-      {
-        productId: "PD007",
-        productName: "Gaming Console Pro",
-        quantity: 44,
-      },
-    ],
-    debt: 0,
-    discount: 0,
-    createdAt: "2023-10-07T17:00:00.000Z",
-    seller: "Teddy Mart",
-    voucherId: "VCH010",
-  },
-  {
-    orderId: "ORD001",
-    partnerId: "P006",
-    partnerName: "Sophia Martinez",
-    payment: 21264,
-    receiver: "Teddy Mart",
-    status: "paid",
-    totalPayment: 21264,
-    type: "Import",
-    note: "Import order from supplier A",
-    listProduct: [
-      {
-        productId: "PD038",
-        productName: "Smart Digital Picture Frame",
-        quantity: 25,
-      },
-      {
-        productId: "PD007",
-        productName: "Gaming Console Pro",
-        quantity: 44,
-      },
-    ],
-    debt: 0,
-    discount: 0,
-    createdAt: "2023-10-07T17:00:00.000Z",
-  },
-  {
-    orderId: "ORD001",
-    partnerId: "P006",
-    partnerName: "Sophia Martinez",
-    payment: 21264,
-    status: "paid",
-    totalPayment: 21264,
-    type: "Export",
-    note: "Import order from supplier A",
-    listProduct: [
-      {
-        productId: "PD038",
-        productName: "Smart Digital Picture Frame",
-        quantity: 25,
-      },
-      {
-        productId: "PD007",
-        productName: "Gaming Console Pro",
-        quantity: 44,
-      },
-    ],
-    debt: 0,
-    discount: 0,
-    createdAt: "2023-10-07T17:00:00.000Z",
-    seller: "Teddy Mart",
-    voucherId: "VCH010",
-  },
-  {
-    orderId: "ORD001",
-    partnerId: "P006",
-    partnerName: "Sophia Martinez",
-    payment: 21264,
-    receiver: "Teddy Mart",
-    status: "paid",
-    totalPayment: 21264,
-    type: "Import",
-    note: "Import order from supplier A",
-    listProduct: [
-      {
-        productId: "PD038",
-        productName: "Smart Digital Picture Frame",
-        quantity: 25,
-      },
-      {
-        productId: "PD007",
-        productName: "Gaming Console Pro",
-        quantity: 44,
-      },
-    ],
-    debt: 0,
-    discount: 0,
-    createdAt: "2023-10-07T17:00:00.000Z",
-  },
-  {
-    orderId: "ORD001",
-    partnerId: "P006",
-    partnerName: "Sophia Martinez",
-    payment: 21264,
-    status: "paid",
-    totalPayment: 21264,
-    type: "Export",
-    note: "Import order from supplier A",
-    listProduct: [
-      {
-        productId: "PD038",
-        productName: "Smart Digital Picture Frame",
-        quantity: 25,
-      },
-      {
-        productId: "PD007",
-        productName: "Gaming Console Pro",
-        quantity: 44,
-      },
-    ],
-    debt: 0,
-    discount: 0,
-    createdAt: "2023-10-07T17:00:00.000Z",
-    seller: "Teddy Mart",
-    voucherId: "VCH010",
-  },
-  {
-    orderId: "ORD001",
-    partnerId: "P006",
-    partnerName: "Sophia Martinez",
-    payment: 21264,
-    receiver: "Teddy Mart",
-    status: "paid",
-    totalPayment: 21264,
-    type: "Import",
-    note: "Import order from supplier A",
-    listProduct: [
-      {
-        productId: "PD038",
-        productName: "Smart Digital Picture Frame",
-        quantity: 25,
-      },
-      {
-        productId: "PD007",
-        productName: "Gaming Console Pro",
-        quantity: 44,
-      },
-    ],
-    debt: 0,
-    discount: 0,
-    createdAt: "2023-10-07T17:00:00.000Z",
-  },
-];
+// const CONTENT: TContent[] = [
+//   {
+//     orderId: "ORD001",
+//     partnerId: "P006",
+//     partnerName: "Sophia Martinez",
+//     payment: 21264,
+//     receiver: "Teddy Mart",
+//     status: "paid",
+//     totalPayment: 21264,
+//     type: "Import",
+//     note: "Import order from supplier A",
+//     listProduct: [
+//       {
+//         productId: "PD038",
+//         productName: "Smart Digital Picture Frame",
+//         quantity: 25,
+//       },
+//       {
+//         productId: "PD007",
+//         productName: "Gaming Console Pro",
+//         quantity: 44,
+//       },
+//     ],
+//     debt: 0,
+//     discount: 0,
+//     createdAt: "2023-10-07T17:00:00.000Z",
+//   },
+//   {
+//     orderId: "ORD001",
+//     partnerId: "P006",
+//     partnerName: "Sophia Martinez",
+//     payment: 21264,
+//     status: "paid",
+//     totalPayment: 21264,
+//     type: "Export",
+//     note: "Import order from supplier A",
+//     listProduct: [
+//       {
+//         productId: "PD038",
+//         productName: "Smart Digital Picture Frame",
+//         quantity: 25,
+//       },
+//       {
+//         productId: "PD007",
+//         productName: "Gaming Console Pro",
+//         quantity: 44,
+//       },
+//     ],
+//     debt: 0,
+//     discount: 0,
+//     createdAt: "2023-10-07T17:00:00.000Z",
+//     seller: "Teddy Mart",
+//     voucherId: "VCH010",
+//   },
+//   {
+//     orderId: "ORD001",
+//     partnerId: "P006",
+//     partnerName: "Sophia Martinez",
+//     payment: 21264,
+//     receiver: "Teddy Mart",
+//     status: "paid",
+//     totalPayment: 21264,
+//     type: "Import",
+//     note: "Import order from supplier A",
+//     listProduct: [
+//       {
+//         productId: "PD038",
+//         productName: "Smart Digital Picture Frame",
+//         quantity: 25,
+//       },
+//       {
+//         productId: "PD007",
+//         productName: "Gaming Console Pro",
+//         quantity: 44,
+//       },
+//     ],
+//     debt: 0,
+//     discount: 0,
+//     createdAt: "2023-10-07T17:00:00.000Z",
+//   },
+//   {
+//     orderId: "ORD001",
+//     partnerId: "P006",
+//     partnerName: "Sophia Martinez",
+//     payment: 21264,
+//     status: "paid",
+//     totalPayment: 21264,
+//     type: "Export",
+//     note: "Import order from supplier A",
+//     listProduct: [
+//       {
+//         productId: "PD038",
+//         productName: "Smart Digital Picture Frame",
+//         quantity: 25,
+//       },
+//       {
+//         productId: "PD007",
+//         productName: "Gaming Console Pro",
+//         quantity: 44,
+//       },
+//     ],
+//     debt: 0,
+//     discount: 0,
+//     createdAt: "2023-10-07T17:00:00.000Z",
+//     seller: "Teddy Mart",
+//     voucherId: "VCH010",
+//   },
+//   {
+//     orderId: "ORD001",
+//     partnerId: "P006",
+//     partnerName: "Sophia Martinez",
+//     payment: 21264,
+//     receiver: "Teddy Mart",
+//     status: "paid",
+//     totalPayment: 21264,
+//     type: "Import",
+//     note: "Import order from supplier A",
+//     listProduct: [
+//       {
+//         productId: "PD038",
+//         productName: "Smart Digital Picture Frame",
+//         quantity: 25,
+//       },
+//       {
+//         productId: "PD007",
+//         productName: "Gaming Console Pro",
+//         quantity: 44,
+//       },
+//     ],
+//     debt: 0,
+//     discount: 0,
+//     createdAt: "2023-10-07T17:00:00.000Z",
+//   },
+//   {
+//     orderId: "ORD001",
+//     partnerId: "P006",
+//     partnerName: "Sophia Martinez",
+//     payment: 21264,
+//     status: "paid",
+//     totalPayment: 21264,
+//     type: "Export",
+//     note: "Import order from supplier A",
+//     listProduct: [
+//       {
+//         productId: "PD038",
+//         productName: "Smart Digital Picture Frame",
+//         quantity: 25,
+//       },
+//       {
+//         productId: "PD007",
+//         productName: "Gaming Console Pro",
+//         quantity: 44,
+//       },
+//     ],
+//     debt: 0,
+//     discount: 0,
+//     createdAt: "2023-10-07T17:00:00.000Z",
+//     seller: "Teddy Mart",
+//     voucherId: "VCH010",
+//   },
+//   {
+//     orderId: "ORD001",
+//     partnerId: "P006",
+//     partnerName: "Sophia Martinez",
+//     payment: 21264,
+//     receiver: "Teddy Mart",
+//     status: "paid",
+//     totalPayment: 21264,
+//     type: "Import",
+//     note: "Import order from supplier A",
+//     listProduct: [
+//       {
+//         productId: "PD038",
+//         productName: "Smart Digital Picture Frame",
+//         quantity: 25,
+//       },
+//       {
+//         productId: "PD007",
+//         productName: "Gaming Console Pro",
+//         quantity: 44,
+//       },
+//     ],
+//     debt: 0,
+//     discount: 0,
+//     createdAt: "2023-10-07T17:00:00.000Z",
+//   },
+//   {
+//     orderId: "ORD001",
+//     partnerId: "P006",
+//     partnerName: "Sophia Martinez",
+//     payment: 21264,
+//     status: "paid",
+//     totalPayment: 21264,
+//     type: "Export",
+//     note: "Import order from supplier A",
+//     listProduct: [
+//       {
+//         productId: "PD038",
+//         productName: "Smart Digital Picture Frame",
+//         quantity: 25,
+//       },
+//       {
+//         productId: "PD007",
+//         productName: "Gaming Console Pro",
+//         quantity: 44,
+//       },
+//     ],
+//     debt: 0,
+//     discount: 0,
+//     createdAt: "2023-10-07T17:00:00.000Z",
+//     seller: "Teddy Mart",
+//     voucherId: "VCH010",
+//   },
+//   {
+//     orderId: "ORD001",
+//     partnerId: "P006",
+//     partnerName: "Sophia Martinez",
+//     payment: 21264,
+//     receiver: "Teddy Mart",
+//     status: "paid",
+//     totalPayment: 21264,
+//     type: "Import",
+//     note: "Import order from supplier A",
+//     listProduct: [
+//       {
+//         productId: "PD038",
+//         productName: "Smart Digital Picture Frame",
+//         quantity: 25,
+//       },
+//       {
+//         productId: "PD007",
+//         productName: "Gaming Console Pro",
+//         quantity: 44,
+//       },
+//     ],
+//     debt: 0,
+//     discount: 0,
+//     createdAt: "2023-10-07T17:00:00.000Z",
+//   },
+//   {
+//     orderId: "ORD001",
+//     partnerId: "P006",
+//     partnerName: "Sophia Martinez",
+//     payment: 21264,
+//     status: "paid",
+//     totalPayment: 21264,
+//     type: "Export",
+//     note: "Import order from supplier A",
+//     listProduct: [
+//       {
+//         productId: "PD038",
+//         productName: "Smart Digital Picture Frame",
+//         quantity: 25,
+//       },
+//       {
+//         productId: "PD007",
+//         productName: "Gaming Console Pro",
+//         quantity: 44,
+//       },
+//     ],
+//     debt: 0,
+//     discount: 0,
+//     createdAt: "2023-10-07T17:00:00.000Z",
+//     seller: "Teddy Mart",
+//     voucherId: "VCH010",
+//   },
+//   {
+//     orderId: "ORD001",
+//     partnerId: "P006",
+//     partnerName: "Sophia Martinez",
+//     payment: 21264,
+//     receiver: "Teddy Mart",
+//     status: "paid",
+//     totalPayment: 21264,
+//     type: "Import",
+//     note: "Import order from supplier A",
+//     listProduct: [
+//       {
+//         productId: "PD038",
+//         productName: "Smart Digital Picture Frame",
+//         quantity: 25,
+//       },
+//       {
+//         productId: "PD007",
+//         productName: "Gaming Console Pro",
+//         quantity: 44,
+//       },
+//     ],
+//     debt: 0,
+//     discount: 0,
+//     createdAt: "2023-10-07T17:00:00.000Z",
+//   },
+// ];
 type ColOptions = {
   orderId?: boolean;
   createdAt?: boolean;
@@ -365,7 +365,32 @@ type ColOptions = {
   note?: boolean;
   activities?: boolean;
 };
-const BillTable = ({ filterOption }: { filterOption?: ColOptions }) => {
+enum SORT {
+  ORDER_INCREASE,
+  ORDER_DECREASE,
+  TIME_DECREASE,
+  TIME_INCREASE,
+  PAYMENT_INCREASE,
+  PAYMENT_DECREASE,
+}
+const BillTable = ({
+  filterOption,
+  selectedRows = [],
+  setSelectedRows,
+  startDate,
+  endDate,
+  search,
+  sort,
+}: {
+  selectedRows?: string[];
+  setSelectedRows?: (selectedRows: string[]) => void;
+  filterOption?: ColOptions;
+  startDate?: number;
+  endDate?: number;
+  search?: string;
+  sort?: number;
+}) => {
+  console.log(search);
   const { t } = useTranslation();
   const options = {
     orderId: true,
@@ -386,6 +411,106 @@ const BillTable = ({ filterOption }: { filterOption?: ColOptions }) => {
     ...filterOption,
   };
   const bills = useSelector((state: RootState) => state.order);
+  const [tmpData, setTmpData] = useState(bills);
+  const bubbleSort = (
+    orders: TOrder[],
+    compare: (order_1: TOrder, order_2: TOrder) => boolean
+  ) => {
+    const length = orders.length;
+    let tmpValue = [...orders];
+    for (let i = 0; i < length; i++) {
+      for (let j = 0; j < length - 1 - i; j++) {
+        // refer to note below
+        if (compare(tmpValue[j], tmpValue[j + 1])) {
+          {
+            [tmpValue[j], tmpValue[j + 1]] = [tmpValue[j + 1], tmpValue[j]];
+          }
+        }
+      }
+    }
+    return tmpValue;
+  };
+  const filterData = () => {
+    let tmp: TOrder[] = bills;
+    if (startDate && endDate) {
+      let tmp_1 = bills.filter(
+        (order) =>
+          new Date(order.createdAt).getTime() >= startDate &&
+          new Date(order.createdAt).getTime() <= endDate
+      );
+      tmp = tmp_1;
+    }
+    if (search) {
+      let tmp_1 = tmp.filter(
+        (order) =>
+          order.partnerName.includes(search) || order.orderId.includes(search)
+      );
+      tmp = tmp_1;
+    }
+
+    if (sort) {
+      switch (sort) {
+        case SORT.ORDER_INCREASE: {
+          let tmp_1 = bubbleSort(
+            tmp,
+            (order_1, order_2) => order_1.orderId > order_2.orderId
+          );
+          tmp = tmp_1;
+          break;
+        }
+        case SORT.ORDER_DECREASE: {
+          let tmp_1 = bubbleSort(
+            tmp,
+            (order_1, order_2) => order_1.orderId < order_2.orderId
+          );
+          tmp = tmp_1;
+          break;
+        }
+        case SORT.PAYMENT_DECREASE: {
+          let tmp_1 = bubbleSort(
+            tmp,
+            (order_1, order_2) => order_1.payment < order_2.payment
+          );
+          tmp = tmp_1;
+          break;
+        }
+        case SORT.PAYMENT_INCREASE: {
+          let tmp_1 = bubbleSort(
+            tmp,
+            (order_1, order_2) => +order_1.payment > +order_2.payment
+          );
+          tmp = tmp_1;
+          break;
+        }
+        case SORT.TIME_DECREASE: {
+          let tmp_1 = bubbleSort(
+            tmp,
+            (order_1, order_2) =>
+              new Date(order_1.createdAt).getTime() >
+              new Date(order_2.createdAt).getTime()
+          );
+          tmp = tmp_1;
+          break;
+        }
+        case SORT.TIME_INCREASE: {
+          let tmp_1 = bubbleSort(
+            tmp,
+            (order_1, order_2) =>
+              new Date(order_1.createdAt).getTime() <
+              new Date(order_2.createdAt).getTime()
+          );
+          tmp = tmp_1;
+          break;
+        }
+      }
+    }
+    setTmpData([...tmp]);
+  };
+  useEffect(() => {
+    filterData();
+  }, [bills, startDate, endDate, search, sort]);
+  console.log(tmpData);
+  const dispatch = useDispatch();
   const HEADER = useMemo(
     () =>
       [
@@ -407,8 +532,11 @@ const BillTable = ({ filterOption }: { filterOption?: ColOptions }) => {
       ].filter((value) => Boolean(value) !== false),
     [t, options]
   );
-  const [selectedRows, setSelectedRows] = useState([]);
+  // const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const onDeleteRow = (orderId: string) => {
+    dispatch(deleteOrder({ orderId: orderId }));
+  };
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
       if (selectedRows.length < bills.length) {
@@ -456,7 +584,7 @@ const BillTable = ({ filterOption }: { filterOption?: ColOptions }) => {
             </tr>
           </thead>
           <tbody className="text-center">
-            {bills.map((content, index) => (
+            {tmpData.map((content, index) => (
               <tr key={index}>
                 <td className="border border-gray-300 p-2">
                   <input
@@ -553,7 +681,7 @@ const BillTable = ({ filterOption }: { filterOption?: ColOptions }) => {
                         <FiEdit />
                       </Button>
 
-                      <Button>
+                      <Button onClick={() => onDeleteRow(content.orderId)}>
                         <FiTrash color="red" />
                       </Button>
                     </div>
