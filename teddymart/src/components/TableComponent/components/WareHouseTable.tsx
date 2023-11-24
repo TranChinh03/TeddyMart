@@ -105,21 +105,21 @@ type TSort = {
   idDescending?: boolean;
   nameAZ?: boolean;
   nameZA?: boolean;
-}
+};
 const options: TOption = {
   warehouseID: true,
   warehouseName: true,
   address: true,
 };
 
-const WareHouseTable = ({ 
+const WareHouseTable = ({
   //filterOption,
   warehouseName,
   sort,
-}: { 
+}: {
   //filterOption?: TOption;
   warehouseName?: string;
-  sort?: TSort; 
+  sort?: TSort;
 }) => {
   const { t } = useTranslation();
   const warehouses = useSelector((state: RootState) => state.warehouseSlice);
@@ -139,22 +139,18 @@ const WareHouseTable = ({
     let warehouselist = [...warehouses];
 
     if (sort?.idAscending) {
-      warehouselist.sort((a, b) => 
-        a.warehouseId.localeCompare(b.warehouseId)
-      );
+      warehouselist.sort((a, b) => a.warehouseId.localeCompare(b.warehouseId));
     }
     if (sort?.idDescending) {
-      warehouselist.sort((a, b) => 
-        b.warehouseId.localeCompare(a.warehouseId)
-      );
+      warehouselist.sort((a, b) => b.warehouseId.localeCompare(a.warehouseId));
     }
     if (sort?.nameAZ) {
-      warehouselist.sort((a, b) => 
+      warehouselist.sort((a, b) =>
         a.warehouseName.localeCompare(b.warehouseName)
       );
     }
     if (sort?.nameZA) {
-      warehouselist.sort((a, b) => 
+      warehouselist.sort((a, b) =>
         b.warehouseName.localeCompare(a.warehouseName)
       );
     }
@@ -162,28 +158,14 @@ const WareHouseTable = ({
     if (warehouseName) {
       return warehouselist?.filter((item) =>
         item.warehouseName.toLowerCase().includes(warehouseName.toLowerCase())
-      )
+      );
     }
     return warehouselist;
-  }, [warehouseName, sort])
-
+  }, [warehouseName, sort]);
 
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [displayData, setDisplayData] = useState(
-    warehouseSort.slice(0, +rowsPerPage)
-  );
-
-  const size = useRef<number>(+rowsPerPage); 
-
-  useLayoutEffect(() => {
-    setDisplayData(warehouseSort.slice(0, +rowsPerPage));
-    size.current =
-      +rowsPerPage > warehouseSort.length
-        ? warehouseSort.length
-        : +rowsPerPage;
-  }, [rowsPerPage, warehouseSort]);
-
+  const [displayData, setDisplayData] = useState(warehouseSort);
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
       if (selectedRows.length < warehouseSort.length) {
@@ -203,7 +185,7 @@ const WareHouseTable = ({
     }
     setSelectedRows([...selectedRows, rowId]);
   };
-  
+
   const handleRowsPerPageChange = (e: any) => {
     setRowsPerPage(e.target.value);
   };
@@ -267,12 +249,12 @@ const WareHouseTable = ({
                         }
                       />
                     </td>
-                  
-                <td className="border border-gray-300 p-2 text-sm">
-                  {index + 1}
-                </td>
-                
-                {options.warehouseID && (
+
+                    <td className="border border-gray-300 p-2 text-sm">
+                      {index + 1}
+                    </td>
+
+                    {options.warehouseID && (
                       <td className="border border-gray-300 p-2 text-sm">
                         {content.warehouseId}
                       </td>
@@ -288,7 +270,7 @@ const WareHouseTable = ({
                       </td>
                     )}
                     {/* NÚT XÓA VÀ SỬA */}
-                {/* <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
+                    {/* <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
                       <Button className="mr-2">
                         <FiEdit />
                       </Button>
@@ -297,8 +279,9 @@ const WareHouseTable = ({
                     <FiTrash color="red" />
                   </Button>
                 </td> */}
-              </tr>
-            ))}
+                  </tr>
+                );
+            })}
           </tbody>
         </table>
       </div>
