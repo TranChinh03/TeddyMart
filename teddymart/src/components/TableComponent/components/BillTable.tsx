@@ -398,7 +398,7 @@ const BillTable = ({
   sort?: number;
   setOpenAlertModal?: (openAlertModal: boolean) => void;
 }) => {
-  console.log(search);
+  //console.log(search);
   const { t } = useTranslation();
   const options = {
     orderId: true,

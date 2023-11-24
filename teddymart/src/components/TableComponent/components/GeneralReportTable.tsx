@@ -146,8 +146,6 @@ const GeneralReportTable = ({
     setRowsPerPage(+e.target.value);
   };
 
-  const size = useRef<number>(+rowsPerPage);
-
   const REPORTS = useSelector((state: RootState) => state.reportSlice);
   const DATA: TReport[] = useMemo(() => {
     let tmp: TReport[] = [];
@@ -181,10 +179,6 @@ const GeneralReportTable = ({
   const onForwardAll = () => {
     setCurrentPage(maxPages);
   };
-  useLayoutEffect(() => {
-    setDisplayData(DATA.slice(0, +rowsPerPage));
-    size.current = +rowsPerPage;
-  }, [rowsPerPage, DATA]);
 
   return (
     <div className="w-full">
