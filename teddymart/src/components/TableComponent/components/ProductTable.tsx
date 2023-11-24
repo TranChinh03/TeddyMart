@@ -149,27 +149,27 @@ const ProductTable = ({
       const listProductWarehouse = warehouses.filter(
         (value) => value.warehouseName === warehouseName
       )[0].listProduct;
-      let productFilterProductTable = listProducts.map((value) => {
-        let tmp = listProductWarehouse.findIndex(
+      let productFilterProductTable = listProductWarehouse.map((value) => {
+        let tmp = listProducts.findIndex(
           (warehouse) => warehouse.productId === value.productId
         );
+
         if (tmp > -1)
           return {
             productId: value.productId,
             productName: value.productName,
-            quantity: listProductWarehouse[tmp].quantity,
-            costPrice: value.cost_price,
-            payment: listProductWarehouse[tmp].quantity * value.cost_price, //????
-            note: value.note,
+            quantity: value.quantity,
+            costPrice: listProducts[tmp].cost_price,
+            payment: value.quantity * listProducts[tmp].cost_price, //????
+            note: listProducts[tmp].note,
           };
       });
-
       listProducts = productFilterProductTable;
     }
 
     if (productName) {
       let tmp = listProducts.filter((value) =>
-        value.productName.includes(productName)
+        value.productName.toLowerCase().includes(productName.toLowerCase())
       );
       listProducts = tmp;
     }
@@ -296,6 +296,7 @@ const ProductTable = ({
     console.log(productId);
     dispatch(deleteProduct({ productId: productId }));
   };
+
   return (
     <div className="w-full">
       <div className="max-h-96 overflow-y-auto visible">

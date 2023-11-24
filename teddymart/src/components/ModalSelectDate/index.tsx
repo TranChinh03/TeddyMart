@@ -7,7 +7,7 @@ import { COLORS } from "constants/colors";
 import { timeFormat } from "constants/time";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
-import TextComponent from "components/TextComponent";
+
 type Props = {
   setResult: Function;
   width?: number | string;
@@ -181,17 +181,26 @@ export default function ModalSelectDate({ setResult, width = 200 }: Props) {
       />
       {openModal && (
         <div
-          className="overlay fixed bg-black bg-opacity-75 flex items-center justify-center inset-0"
-          onClick={() => setOpenModal(false)}
-          style={{ zIndex: 1040 }}
+          className="overlay fixed flex items-center justify-center inset-0"
+          style={{ zIndex: 999 }}
         >
           <div
-            className="bg-white min-h-[90%] flex w-[40%] "
-            onClick={(e) => e.stopPropagation()}
+            className="absolute w-full h-full bg-black bg-opacity-75"
+            onClick={() => setOpenModal(false)}
+            style={{ zIndex: 1 }}
+          ></div>
+          <div
+            className="bg-white overflow-y-auto"
+            style={{
+              zIndex: 2,
+              width: "35vw",
+              height: "90vh",
+              minWidth: "300px",
+            }}
           >
-            <div className="flex items-center justify-center flex-col w-full overflow-y-auto py-0 px-6">
+            <div className="flex items-center justify-center flex-col w-full border-t py-5 px-6">
               <div>{t("modal.selectDate")}</div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-7 gap-y-3 w-full mt-1">
+              <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-x-7 gap-y-3 w-full border-t py-2">
                 {OPTIONS.map((option, i) => (
                   <ButtonComponent
                     label={option.name}
@@ -249,7 +258,7 @@ export default function ModalSelectDate({ setResult, width = 200 }: Props) {
                   />
                 </div>
               </div>
-              <div className="flex w-full justify-end">
+              <div className="flex w-full justify-end mt-3">
                 <ButtonComponent
                   label={t("cancel")}
                   onClick={() => setOpenModal(false)}
