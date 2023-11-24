@@ -14,18 +14,29 @@ import { TiPlus } from "react-icons/ti";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
+import { uuidv4 } from "@firebase/util";
+import { addData } from "controller/addData";
+import { useDispatch } from "react-redux";
+import { addNewPartner } from "state_management/slices/partnerSlice";
 
 export default function CustomerScreen() {
   const [isChecked, setIsChecked] = useState(false);
   const [search, setSearch] = useState("");
-  const [SupplierName, setSupplierName] = useState("");
+  const [supplierName, setSupplierName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [totalBuyAmount, setTotalBuyAmount] = useState("");
+  const [debt, setDebt] = useState("");
+  const [note, setNote] = useState("");
+  const [certificate, setCertificate]=useState("");
+
   const [isAddSupplierVisible, setAddSupplierVisible] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const fileInputRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const { t } = useTranslation();
-
+  const dispatch = useDispatch();
   const SUPPLIERS = useSelector((state: RootState) => state.partnerSlice);
   const [supplier, setsupplier] = useState(SUPPLIERS[0]?.partnerId);
 
@@ -33,7 +44,9 @@ export default function CustomerScreen() {
     if (event.target.files && event.target.files[0]) {
       const selectedImageFile = event.target.files[0];
       const imageUrl = URL.createObjectURL(selectedImageFile);
+      console.log(imageUrl); 
       setSelectedImage(imageUrl);
+      setCertificate(imageUrl);
     }
   };
 
@@ -107,8 +120,31 @@ export default function CustomerScreen() {
     if (fieldName === "SupplierName") {
       setIsFormValid(value !== "" && phoneNumber !== "");
     } else if (fieldName === "phoneNumber") {
-      setIsFormValid(value !== "" && SupplierName !== "");
+      setIsFormValid(value !== "" && supplierName !== "");
     }
+  };
+
+  const addNewSupplier = async () => {
+    const id = uuidv4();
+    const certificateImageUrl = selectedImage;
+    const data: TPartner = {
+      partnerId: id,
+      partnerName: supplierName,
+      email: email,
+      phoneNumber: phoneNumber,
+      address: address,
+      note: note,
+      type: "Supplier",
+      totalBuyAmount: parseInt(totalBuyAmount),
+      debt: parseInt(debt),
+      certificate: certificateImageUrl,
+    };
+    await addData({
+      data: data,
+      id: id,
+      table: "Partner",
+    });
+    dispatch(addNewPartner(data));
   };
 
   return (
@@ -197,7 +233,7 @@ export default function CustomerScreen() {
                               <TextInputComponent
                                 placeHolder=""
                                 width={"auto"}
-                                value={SupplierName}
+                                value={supplierName}
                                 setValue={(value) =>
                                   handleInputChange(
                                     value,
@@ -233,37 +269,14 @@ export default function CustomerScreen() {
 
                           <tr>
                             <td className="pr-8 py-6">
-                              <p>{t("supplier.gender")}</p>
-                            </td>
-                            <td>
-                              <input
-                                type="radio"
-                                name="radio-gender"
-                                className="w-4 h-4 mr-4"
-                              />
-                              <label className="mr-16">
-                                {t("supplier.male")}
-                              </label>
-                              <input
-                                type="radio"
-                                name="radio-gender"
-                                className=" w-4 h-4 mr-4"
-                              />
-                              <label className="mr-16">
-                                {t("supplier.female")}
-                              </label>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="pr-8 py-6">
                               <p>{t("supplier.email")}</p>
                             </td>
                             <td>
                               <TextInputComponent
                                 placeHolder=""
                                 width={492}
-                                value={SupplierName}
-                                setValue={setSupplierName}
+                                value={email}
+                                setValue={setEmail}
                               />
                             </td>
                           </tr>
@@ -276,8 +289,8 @@ export default function CustomerScreen() {
                               <TextInputComponent
                                 placeHolder=""
                                 width={492}
-                                value={SupplierName}
-                                setValue={setSupplierName}
+                                value={address}
+                                setValue={setAddress}
                               />
                             </td>
                           </tr>
@@ -289,8 +302,8 @@ export default function CustomerScreen() {
                               <TextInputComponent
                                 placeHolder=""
                                 width={492}
-                                value={SupplierName}
-                                setValue={setSupplierName}
+                                value={totalBuyAmount}
+                                setValue={setTotalBuyAmount}
                               />
                             </td>
                           </tr>
@@ -302,8 +315,8 @@ export default function CustomerScreen() {
                               <TextInputComponent
                                 placeHolder=""
                                 width={492}
-                                value={SupplierName}
-                                setValue={setSupplierName}
+                                value={debt}
+                                setValue={setDebt}
                               />
                             </td>
                           </tr>
@@ -315,8 +328,8 @@ export default function CustomerScreen() {
                               <TextInputComponent
                                 placeHolder=""
                                 width={492}
-                                value={SupplierName}
-                                setValue={setSupplierName}
+                                value={note}
+                                setValue={setNote}
                               />
                             </td>
                           </tr>
@@ -333,9 +346,9 @@ export default function CustomerScreen() {
                                   <img
                                     src={selectedImage}
                                     alt="Selected"
-                                    style={{ width: "100%", maxHeight: "100%" }}
-                                  />
-                                ) : (
+                                    style={{ width: "100%", maxHeight: "100px" }}
+                                    />
+                                  ) : (
                                   <div className="flex flex-col items-center">
                                     <p className="text-6xl font-thin text-gray-400">
                                       +
@@ -368,7 +381,7 @@ export default function CustomerScreen() {
                         color={
                           isFormValid ? COLORS.defaultWhite : COLORS.lightGray
                         }
-                        onClick={() => isFormValid && alert("Button Clicked")}
+                        onClick={addNewSupplier}
                       />
                       <ButtonComponent
                         label={t("button.close")}

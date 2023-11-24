@@ -344,6 +344,7 @@ const PartnerTable = ({
                           alignSelf: "center",
                           borderWidth: 1,
                         }}
+                        alt="Certificate"
                       />
                     ) : null}
                   </td>

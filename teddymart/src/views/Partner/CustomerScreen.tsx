@@ -25,6 +25,18 @@ export default function CustomerScreen() {
   const [search, setSearch] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [totalBuyAmount, setTotalBuyAmount] = useState("");
+  const [debt, setDebt] = useState("");
+  const [note, setNote] = useState("");
+
+  const [selectedGender, setSelectedGender] = useState<string>("Female");
+  const handleGenderChange = (value: string) => {
+    setSelectedGender(value);
+  };
+
+
   const [isAddCustomerVisible, setAddCustomerVisible] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const { t } = useTranslation();
@@ -112,15 +124,15 @@ export default function CustomerScreen() {
     const id = uuidv4();
     const data: TPartner = {
       partnerId: id,
-      partnerName: "Ethan Smith",
-      email: "ethan@example.com",
-      phoneNumber: "+2345678901",
-      address: "111 Elm Avenue, City",
-      note: "Regular customer, foodie.",
-      gender: "female",
+      partnerName: customerName,
+      email: email,
+      phoneNumber: phoneNumber,
+      address: address,
+      note: note,
+      gender: selectedGender as "female" | "male",
       type: "Customer",
-      totalBuyAmount: 0,
-      debt: 0,
+      totalBuyAmount: parseInt(totalBuyAmount),
+      debt: parseInt(debt),
     };
     await addData({
       data: data,
@@ -276,6 +288,8 @@ export default function CustomerScreen() {
                                 type="radio"
                                 name="radio-gender"
                                 className="w-4 h-4 mr-4"
+                                checked={selectedGender === "Male"}
+                                onChange={() => handleGenderChange("Male")}
                               />
                               <label className="mr-16">
                                 {t("customer.male")}
@@ -284,6 +298,8 @@ export default function CustomerScreen() {
                                 type="radio"
                                 name="radio-gender"
                                 className=" w-4 h-4 mr-4"
+                                checked={selectedGender === "Female"}
+                                onChange={() => handleGenderChange("Female")}
                               />
                               <label className="mr-16">
                                 {t("customer.female")}
@@ -298,8 +314,8 @@ export default function CustomerScreen() {
                               <TextInputComponent
                                 placeHolder=""
                                 width={492}
-                                value={customerName}
-                                setValue={setCustomerName}
+                                value={email}
+                                setValue={setEmail}
                               />
                             </td>
                           </tr>
@@ -312,8 +328,8 @@ export default function CustomerScreen() {
                               <TextInputComponent
                                 placeHolder=""
                                 width={492}
-                                value={customerName}
-                                setValue={setCustomerName}
+                                value={address}
+                                setValue={setAddress}
                               />
                             </td>
                           </tr>
@@ -325,8 +341,8 @@ export default function CustomerScreen() {
                               <TextInputComponent
                                 placeHolder=""
                                 width={492}
-                                value={customerName}
-                                setValue={setCustomerName}
+                                value={totalBuyAmount}
+                                setValue={setTotalBuyAmount}
                               />
                             </td>
                           </tr>
@@ -338,8 +354,8 @@ export default function CustomerScreen() {
                               <TextInputComponent
                                 placeHolder=""
                                 width={492}
-                                value={customerName}
-                                setValue={setCustomerName}
+                                value={debt}
+                                setValue={setDebt}
                               />
                             </td>
                           </tr>
@@ -351,8 +367,8 @@ export default function CustomerScreen() {
                               <TextInputComponent
                                 placeHolder=""
                                 width={492}
-                                value={customerName}
-                                setValue={setCustomerName}
+                                value={note}
+                                setValue={setNote}
                               />
                             </td>
                           </tr>
@@ -369,7 +385,7 @@ export default function CustomerScreen() {
                         color={
                           isFormValid ? COLORS.defaultWhite : COLORS.lightGray
                         }
-                        onClick={() => isFormValid && alert("Button Clicked")}
+                        onClick={addNewCustomer}
                       />
                       <ButtonComponent
                         label={t("button.close")}
