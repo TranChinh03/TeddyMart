@@ -1,12 +1,5 @@
 import { Button } from "antd";
-import React, {
-  ChangeEvent,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-  useRef,
-} from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   HiOutlineChevronDoubleLeft,
@@ -148,19 +141,13 @@ const GeneralReportTable = ({
 
   const REPORTS = useSelector((state: RootState) => state.reportSlice);
   const DATA: TReport[] = useMemo(() => {
-    let tmp: TReport[] = [];
-    REPORTS.byDate?.forEach((r) => {
-      if (
+    return REPORTS.byDate?.filter(
+      (r) =>
         new Date(r.date).getTime() >= new Date(date.from).getTime() &&
         new Date(r.date).getTime() <= new Date(date.to).getTime()
-      ) {
-        tmp.push(r);
-      }
-    });
-    return tmp;
+    );
   }, [REPORTS, date]);
 
-  const [displayData, setDisplayData] = useState(DATA.slice(0, +rowsPerPage));
   const maxPages = useMemo(
     () => Math.round(REPORTS.byDate.length / rowsPerPage),
     [rowsPerPage]
@@ -194,7 +181,7 @@ const GeneralReportTable = ({
             </tr>
           </thead>
           <tbody className="text-center">
-            {displayData?.map((content, index) => {
+            {DATA?.map((content, index) => {
               if (
                 index < currentPage * rowsPerPage &&
                 index >= (currentPage - 1) * rowsPerPage

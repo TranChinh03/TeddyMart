@@ -7,6 +7,7 @@ import { COLORS } from "constants/colors";
 import { timeFormat } from "constants/time";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
+import TextComponent from "components/TextComponent";
 type Props = {
   setResult: Function;
   width?: number | string;
@@ -178,7 +179,101 @@ export default function ModalSelectDate({ setResult, width = 200 }: Props) {
         style={{ borderWidth: 1.2, borderColor: COLORS.lightGray }}
         width={width}
       />
-      <Modal
+      {openModal && (
+        <div
+          className="overlay fixed bg-black bg-opacity-75 flex items-center justify-center inset-0"
+          onClick={() => setOpenModal(false)}
+          style={{ zIndex: 1040 }}
+        >
+          <div
+            className="bg-white min-h-[90%] flex w-[40%] "
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-center flex-col w-full overflow-y-auto py-0 px-6">
+              <div>{t("modal.selectDate")}</div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-7 gap-y-3 w-full mt-1">
+                {OPTIONS.map((option, i) => (
+                  <ButtonComponent
+                    label={option.name}
+                    key={i}
+                    onClick={() => onSelectDate(option.value)}
+                    backgroundColor={
+                      mode !== option.value
+                        ? COLORS.defaultWhite
+                        : COLORS.highlight_sidebar
+                    }
+                    color={
+                      mode !== option.value
+                        ? COLORS.txt_lightgrey
+                        : COLORS.defaultWhite
+                    }
+                    style={{
+                      borderColor: COLORS.lightGray,
+                      borderWidth: 1,
+                      justifyContent: "center",
+                      fontSize: "14px",
+                    }}
+                  />
+                ))}
+              </div>
+              <div className="flex justify-between w-full mt-5">
+                <div className="w-[40%]  pb-1">
+                  <p className="text-txt_lightgrey">{t("modal.from")}</p>
+
+                  <DatePicker
+                    value={dayjs(timeFormat.format(date.from), "DD/MM/YYYY")}
+                    format={"DD/MM/YYYY"}
+                    onChange={(e: DatePickerProps["value"]) => {
+                      if (e) {
+                        setDate({
+                          from: e.toDate(),
+                          to: date.to,
+                        });
+                      }
+                    }}
+                  />
+                </div>
+                <div className="w-[40%] pb-1 ">
+                  <p className="text-txt_lightgrey">{t("modal.to")}</p>
+                  <DatePicker
+                    value={dayjs(timeFormat.format(date.to), "DD/MM/YYYY")}
+                    format={["DD/MM/YYYY"]}
+                    onChange={(e) => {
+                      if (e) {
+                        setDate({
+                          from: date.from,
+                          to: e.toDate(),
+                        });
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="flex w-full justify-end">
+                <ButtonComponent
+                  label={t("cancel")}
+                  onClick={() => setOpenModal(false)}
+                  backgroundColor={COLORS.txt_lightgrey}
+                />
+                <div className="w-2" />
+                <ButtonComponent
+                  label={t("accept")}
+                  onClick={() => {
+                    setTxtDate(
+                      `${timeFormat.format(date.from)} - ${timeFormat.format(
+                        date.to
+                      )}`
+                    );
+                    setResult(date);
+                    setOpenModal(false);
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* <Modal
         open={openModal}
         width={"40%"}
         title={t("modal.selectDate")}
@@ -267,7 +362,7 @@ export default function ModalSelectDate({ setResult, width = 200 }: Props) {
             </div>
           </div>
         </div>
-      </Modal>
+      </Modal> */}
     </div>
   );
 }

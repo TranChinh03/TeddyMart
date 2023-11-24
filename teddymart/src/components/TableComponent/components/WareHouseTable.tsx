@@ -164,7 +164,6 @@ const WareHouseTable = ({
 
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [displayData, setDisplayData] = useState(warehouseSort);
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
       if (selectedRows.length < warehouseSort.length) {
@@ -227,7 +226,7 @@ const WareHouseTable = ({
             </tr>
           </thead>
           <tbody className="text-center">
-            {displayData.map((content, index) => {
+            {warehouseSort.map((content, index) => {
               if (
                 index < currentPage * rowsPerPage &&
                 index >= (currentPage - 1) * rowsPerPage
