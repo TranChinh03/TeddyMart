@@ -42,13 +42,7 @@ type TOptions = {
   groupName?: boolean;
   note?: boolean;
 };
-const GroupProductTable = ({
-  filterOption,
-  data,
-}: {
-  filterOption?: TOptions;
-  data?: TGroupProduct[];
-}) => {
+
 const GroupProductTable = ({
   filterOption,
   data,
