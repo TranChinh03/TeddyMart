@@ -120,11 +120,29 @@ const ReportProductTable = ({
       ].filter((value) => Boolean(value) !== false),
     [t, options]
   );
-  const [rowsPerPage, setRowsPerPage] = useState("10");
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
     console.log("okkkkk");
-    setRowsPerPage(e.target.value);
+    setRowsPerPage(+e.target.value);
+  };
+  const maxPages = useMemo(
+    () => Math.round(data.length / rowsPerPage),
+    [rowsPerPage]
+  );
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const onBackAll = () => {
+    setCurrentPage(1);
+  };
+  const onBack = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+  const onForward = () => {
+    if (currentPage < maxPages) setCurrentPage(currentPage + 1);
+  };
+  const onForwardAll = () => {
+    setCurrentPage(maxPages);
   };
   return (
     <div className="w-full">
@@ -140,35 +158,41 @@ const ReportProductTable = ({
             </tr>
           </thead>
           <tbody className="text-center">
-            {data?.map((content, index) => (
-              <tr key={index}>
-                {options.productId && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.productId}
-                  </td>
-                )}
-                {options.productName && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.productName}
-                  </td>
-                )}
-                {options.quantity && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.quantity}
-                  </td>
-                )}
-                {options.revenue && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.revenue}
-                  </td>
-                )}
-                {options.profit && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.profit}
-                  </td>
-                )}
-              </tr>
-            ))}
+            {data?.map((content, index) => {
+              if (
+                index < currentPage * rowsPerPage &&
+                index >= (currentPage - 1) * rowsPerPage
+              )
+                return (
+                  <tr key={index}>
+                    {options.productId && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.productId}
+                      </td>
+                    )}
+                    {options.productName && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.productName}
+                      </td>
+                    )}
+                    {options.quantity && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.quantity}
+                      </td>
+                    )}
+                    {options.revenue && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.revenue}
+                      </td>
+                    )}
+                    {options.profit && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.profit}
+                      </td>
+                    )}
+                  </tr>
+                );
+            })}
           </tbody>
         </table>
       </div>
@@ -187,22 +211,24 @@ const ReportProductTable = ({
         </select>
 
         <div className="ml-4 flex items-center">
-          <span className="text-sm text-gray-400  mr-4">0 trên 0</span>
-          <Button>
+          <span className="text-sm text-gray-400  mr-4">
+            {currentPage} trên {maxPages}
+          </span>
+          <Button onClick={onBackAll}>
             <HiOutlineChevronDoubleLeft />
           </Button>
           <div className="w-2" />
-          <Button>
+          <Button onClick={onBack}>
             <HiOutlineChevronLeft />
           </Button>
           <div className="w-2" />
 
-          <Button>
+          <Button onClick={onForward}>
             <HiOutlineChevronRight />
           </Button>
           <div className="w-2" />
 
-          <Button>
+          <Button onClick={onForwardAll}>
             <HiOutlineChevronDoubleRight />
           </Button>
         </div>

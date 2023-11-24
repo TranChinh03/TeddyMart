@@ -42,9 +42,13 @@ import {
   BiPlus,
 } from "react-icons/bi";
 import { BsFileExcel } from "react-icons/bs";
+import { IoMdAlert } from "react-icons/io";
 import { LiaFileExcel } from "react-icons/lia";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
+import { deleteMultiOrder } from "state_management/slices/orderSlice";
+import { IoAlertCircleOutline } from "react-icons/io5";
+
 const { RangePicker } = DatePicker;
 const CUS_INFO = {
   customerName: "NVA",
@@ -55,12 +59,11 @@ const CUS_INFO = {
   debt: 0,
 };
 export default function SaleScreen() {
-  const [language, setLanguage] = useState("");
-  const [time, setTime] = useState("");
-  const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   const [openSearchModal, setOpenSearchModal] = useState(false);
+  const [openAlertModal, setOpenAlertModal] = useState(false);
+  const dispatch = useDispatch();
   const listWarehouseName = useSelector(
     (state: RootState) => state.warehouseSlice
   ).map((value) => value.warehouseName);
@@ -125,7 +128,10 @@ export default function SaleScreen() {
   const onChange = (key: string) => {
     console.log(key);
   };
-  console.log(sort);
+  const onDeleteAll = () => {
+    setOpenAlertModal(true);
+  };
+
   return (
     <div className="w-full">
       {/*Body */}
@@ -158,7 +164,7 @@ export default function SaleScreen() {
 
             <ButtonComponent
               label={t("button.delete")}
-              onClick={() => {}}
+              onClick={onDeleteAll}
               style={{ backgroundColor: "#EA5A47", marginInline: 12 }}
               iconLeft={<BiTrash size={20} color="white" />}
             />
@@ -189,6 +195,7 @@ export default function SaleScreen() {
                   t("sort.totalPaymentAscending"),
                   t("sort.totalPaymentDescending"),
                 ]}
+                isValueIndex={true}
               />
               <Button style={{ backgroundColor: "#e5a344", color: "white" }}>
                 {t("button.view")}
@@ -204,9 +211,11 @@ export default function SaleScreen() {
             setSelectedRows={setSelectedRows}
             sort={+sort}
             filterOption={objectFilter}
+            setOpenAlertModal={setOpenAlertModal}
           />
         </Space>
       </body>
+      {/*Modal add form */}
       <Modal
         title={<h1 className="text-2xl">{t("sale.addNewOrder")}</h1>}
         width={"70%"}
@@ -308,6 +317,7 @@ export default function SaleScreen() {
               }}
               productName={search}
               warehouseName={warehouseName}
+              isEditQuantity={true}
             />
           </div>
         </Card>
@@ -353,6 +363,7 @@ export default function SaleScreen() {
           />
         </div>
       </Modal>
+      {/*Modal search product */}
       <Modal
         title={
           <h1 className=" text-2xl">{t("product.searchProductFromOrder")}</h1>
@@ -396,6 +407,43 @@ export default function SaleScreen() {
                 borderWidth: 1,
                 color: "#9A9A9A",
               }}
+            />
+          </Space>
+        </div>
+      </Modal>
+      {/*Modal Alert Delete */}
+      <Modal
+        open={openAlertModal}
+        onCancel={() => setOpenAlertModal(false)}
+        footer={false}
+      >
+        <div className="flex justify-center items-center flex-col">
+          <IoAlertCircleOutline size={128} color="#F5BC89" />
+          <h1
+            className=" font-medium"
+            style={{ color: "#9A9A9A", fontSize: 36 }}
+          >
+            {t("alertTitle")}
+          </h1>
+          <h1 style={{ color: "#3E3C3C", fontSize: 24, textAlign: "center" }}>
+            {t("alertContent")}
+          </h1>
+          <Space className="my-4">
+            <ButtonComponent
+              label={t("button.confirm")}
+              onClick={() => {
+                dispatch(deleteMultiOrder(selectedRows));
+                setOpenAlertModal(false);
+              }}
+              style={{
+                backgroundColor: "#E29930",
+                borderWidth: 1,
+              }}
+            />
+            <ButtonComponent
+              label={t("button.cancel")}
+              onClick={() => setOpenAlertModal(false)}
+              backgroundColor="#D9D9D9"
             />
           </Space>
         </div>

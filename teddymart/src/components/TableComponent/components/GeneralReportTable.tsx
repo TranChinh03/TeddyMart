@@ -140,10 +140,10 @@ const GeneralReportTable = ({
       ].filter((value) => Boolean(value) !== false),
     [t, options]
   );
-  const [rowsPerPage, setRowsPerPage] = useState("10");
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setRowsPerPage(e.target.value);
+    setRowsPerPage(+e.target.value);
   };
 
   const size = useRef<number>(+rowsPerPage);
@@ -163,7 +163,24 @@ const GeneralReportTable = ({
   }, [REPORTS, date]);
 
   const [displayData, setDisplayData] = useState(DATA.slice(0, +rowsPerPage));
+  const maxPages = useMemo(
+    () => Math.round(REPORTS.byDate.length / rowsPerPage),
+    [rowsPerPage]
+  );
+  const [currentPage, setCurrentPage] = useState(1);
 
+  const onBackAll = () => {
+    setCurrentPage(1);
+  };
+  const onBack = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+  const onForward = () => {
+    if (currentPage < maxPages) setCurrentPage(currentPage + 1);
+  };
+  const onForwardAll = () => {
+    setCurrentPage(maxPages);
+  };
   useLayoutEffect(() => {
     setDisplayData(DATA.slice(0, +rowsPerPage));
     size.current = +rowsPerPage;
@@ -183,46 +200,52 @@ const GeneralReportTable = ({
             </tr>
           </thead>
           <tbody className="text-center">
-            {displayData?.map((content, index) => (
-              <tr key={index}>
-                {options.date && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {new Date(content.date).toLocaleDateString("vi")}
-                  </td>
-                )}
-                {options.outcome && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.outcome}
-                  </td>
-                )}
+            {displayData?.map((content, index) => {
+              if (
+                index < currentPage * rowsPerPage &&
+                index >= (currentPage - 1) * rowsPerPage
+              )
+                return (
+                  <tr key={index}>
+                    {options.date && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {new Date(content.date).toLocaleDateString("vi")}
+                      </td>
+                    )}
+                    {options.outcome && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.outcome}
+                      </td>
+                    )}
 
-                {options.revenue && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.revenue}
-                  </td>
-                )}
-                {options.profit && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.profit}
-                  </td>
-                )}
-                {options.numberOfOrder && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.numberOfOrder}
-                  </td>
-                )}
-                {options.importOrder && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.importOrder}
-                  </td>
-                )}
-                {options.exportOrder && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.exportOrder}
-                  </td>
-                )}
-              </tr>
-            ))}
+                    {options.revenue && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.revenue}
+                      </td>
+                    )}
+                    {options.profit && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.profit}
+                      </td>
+                    )}
+                    {options.numberOfOrder && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.numberOfOrder}
+                      </td>
+                    )}
+                    {options.importOrder && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.importOrder}
+                      </td>
+                    )}
+                    {options.exportOrder && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.exportOrder}
+                      </td>
+                    )}
+                  </tr>
+                );
+            })}
           </tbody>
         </table>
       </div>
@@ -241,67 +264,24 @@ const GeneralReportTable = ({
         </select>
 
         <div className="ml-4 flex items-center">
-          <span className="text-sm text-gray-400  mr-4">{`${
-            Math.ceil((size.current - displayData.length) / +rowsPerPage) + 1
-          }/${Math.ceil(DATA.length / +rowsPerPage)}`}</span>
-          <Button
-            onClick={() => {
-              if (size.current !== Number(rowsPerPage)) {
-                setDisplayData(DATA.slice(0, +rowsPerPage));
-                size.current = +rowsPerPage;
-              }
-            }}
-          >
+          <span className="text-sm text-gray-400  mr-4">
+            {currentPage} trên {maxPages}
+          </span>
+          <Button onClick={onBackAll}>
             <HiOutlineChevronDoubleLeft />
           </Button>
           <div className="w-2" />
-          <Button
-            onClick={() => {
-              if (size.current !== Number(rowsPerPage)) {
-                size.current -=
-                  displayData.length < Number(rowsPerPage)
-                    ? displayData.length
-                    : Number(rowsPerPage);
-                setDisplayData(
-                  DATA.slice(size.current - Number(rowsPerPage), size.current)
-                );
-              }
-            }}
-          >
+          <Button onClick={onBack}>
             <HiOutlineChevronLeft />
           </Button>
           <div className="w-2" />
 
-          <Button
-            onClick={() => {
-              if (size.current !== DATA.length) {
-                setDisplayData(
-                  DATA.slice(size.current, size.current + Number(rowsPerPage))
-                );
-                size.current =
-                  size.current + Number(rowsPerPage) < DATA.length
-                    ? size.current + Number(rowsPerPage)
-                    : DATA.length;
-              }
-            }}
-          >
+          <Button onClick={onForward}>
             <HiOutlineChevronRight />
           </Button>
           <div className="w-2" />
 
-          <Button
-            onClick={() => {
-              if (size.current !== DATA.length) {
-                let final = DATA.length % Number(rowsPerPage);
-                if (final === 0) {
-                  setDisplayData(DATA.slice(-Number(rowsPerPage)));
-                } else {
-                  setDisplayData(DATA.slice(-final));
-                }
-                size.current = DATA.length;
-              }
-            }}
-          >
+          <Button onClick={onForwardAll}>
             <HiOutlineChevronDoubleRight />
           </Button>
         </div>

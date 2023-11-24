@@ -68,7 +68,7 @@ const ManagerTable = ({ filterOption }: { filterOption?: TOptions }) => {
     [t, options]
   );
   const [selectedRows, setSelectedRows] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState("10");
+  const [rowsPerPage, setRowsPerPage] = useState(1);
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
       console.log("ok");
@@ -87,7 +87,25 @@ const ManagerTable = ({ filterOption }: { filterOption?: TOptions }) => {
   };
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
     console.log("okkkkk");
-    setRowsPerPage(e.target.value);
+    setRowsPerPage(+e.target.value);
+  };
+  const maxPages = useMemo(
+    () => Math.round(CONTENT.length / rowsPerPage),
+    [rowsPerPage]
+  );
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const onBackAll = () => {
+    setCurrentPage(1);
+  };
+  const onBack = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+  const onForward = () => {
+    if (currentPage < maxPages) setCurrentPage(currentPage + 1);
+  };
+  const onForwardAll = () => {
+    setCurrentPage(maxPages);
   };
   return (
     <div className="w-full">
@@ -113,72 +131,78 @@ const ManagerTable = ({ filterOption }: { filterOption?: TOptions }) => {
             </tr>
           </thead>
           <tbody className="text-center">
-            {CONTENT.map((content, index) => (
-              <tr key={index}>
-                <td className="border border-gray-300 p-2">
-                  <input
-                    className="w-15 h-15 bg-hover"
-                    type="checkbox"
-                    onChange={() => handleCheckBoxChange(content.userId)}
-                    checked={
-                      selectedRows.includes(content.userId) ? true : false
-                    }
-                  />
-                </td>
-                {options.userId && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.userId}
-                  </td>
-                )}
-                {options.userName && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.userName}
-                  </td>
-                )}
-                {options.photoURL && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    <img
-                      src={content.photoURL}
-                      style={{
-                        width: "100%",
-                        height: 100,
-                        alignSelf: "center",
-                        borderWidth: 1,
-                      }}
-                    />
-                  </td>
-                )}
-                {options.address && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.address}
-                  </td>
-                )}
-                {options.phoneNumber && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.phoneNumber}
-                  </td>
-                )}
-                {options.email && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.email}
-                  </td>
-                )}
-                {options.shopName && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.shopName}
-                  </td>
-                )}
-                <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                  <Button className="mr-2">
-                    <FiEdit />
-                  </Button>
+            {CONTENT.map((content, index) => {
+              if (
+                index < currentPage * rowsPerPage &&
+                index >= (currentPage - 1) * rowsPerPage
+              )
+                return (
+                  <tr key={index}>
+                    <td className="border border-gray-300 p-2">
+                      <input
+                        className="w-15 h-15 bg-hover"
+                        type="checkbox"
+                        onChange={() => handleCheckBoxChange(content.userId)}
+                        checked={
+                          selectedRows.includes(content.userId) ? true : false
+                        }
+                      />
+                    </td>
+                    {options.userId && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.userId}
+                      </td>
+                    )}
+                    {options.userName && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.userName}
+                      </td>
+                    )}
+                    {options.photoURL && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        <img
+                          src={content.photoURL}
+                          style={{
+                            width: "100%",
+                            height: 100,
+                            alignSelf: "center",
+                            borderWidth: 1,
+                          }}
+                        />
+                      </td>
+                    )}
+                    {options.address && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.address}
+                      </td>
+                    )}
+                    {options.phoneNumber && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.phoneNumber}
+                      </td>
+                    )}
+                    {options.email && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.email}
+                      </td>
+                    )}
+                    {options.shopName && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.shopName}
+                      </td>
+                    )}
+                    <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
+                      <Button className="mr-2">
+                        <FiEdit />
+                      </Button>
 
-                  <Button>
-                    <FiTrash color="red" />
-                  </Button>
-                </td>
-              </tr>
-            ))}
+                      <Button>
+                        <FiTrash color="red" />
+                      </Button>
+                    </td>
+                  </tr>
+                );
+            })}
           </tbody>
         </table>
       </div>
@@ -197,22 +221,24 @@ const ManagerTable = ({ filterOption }: { filterOption?: TOptions }) => {
         </select>
 
         <div className="ml-4 flex items-center">
-          <span className="text-sm text-gray-400  mr-4">0 trên 0</span>
-          <Button>
+          <span className="text-sm text-gray-400  mr-4">
+            {currentPage} trên {maxPages}
+          </span>
+          <Button onClick={onBackAll}>
             <HiOutlineChevronDoubleLeft />
           </Button>
           <div className="w-2" />
-          <Button>
+          <Button onClick={onBack}>
             <HiOutlineChevronLeft />
           </Button>
           <div className="w-2" />
 
-          <Button>
+          <Button onClick={onForward}>
             <HiOutlineChevronRight />
           </Button>
           <div className="w-2" />
 
-          <Button>
+          <Button onClick={onForwardAll}>
             <HiOutlineChevronDoubleRight />
           </Button>
         </div>

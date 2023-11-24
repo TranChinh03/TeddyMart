@@ -156,22 +156,69 @@ const PartnerTable = ({
   isCustomer = false,
   filterOption,
   search = "",
+  minDate,
+  maxDate,
+  gender,
+  debtFrom,
+  debtTo,
+  totalPaymentFrom,
+  totalPaymentTo,
 }: {
   isCustomer?: boolean;
   filterOption?: TOptions;
   search?: string;
+  minDate?: number;
+  maxDate?: number;
+  gender?: string; // gender should enum
+  debtFrom?: number;
+  debtTo?: number;
+  totalPaymentFrom?: number;
+  totalPaymentTo?: number;
 }) => {
   const { t } = useTranslation();
   const PARTNERS = useSelector((state: RootState) => state.partnerSlice);
-  const DATA = useMemo(
-    () =>
-      PARTNERS.filter(
+  const DATA = useMemo(() => {
+    let listPartners = [...PARTNERS];
+    if (search) {
+      let tmp = listPartners.filter(
         (p) =>
           (isCustomer ? p.type === "Customer" : "Supplier") &&
-          p.partnerName.includes(search)
-      ),
-    [PARTNERS, search]
-  );
+          p.partnerName.toLowerCase().includes(search.toLowerCase())
+      );
+      listPartners = tmp;
+    }
+    if (minDate && maxDate) {
+    }
+    if (gender) {
+      let tmp = listPartners.filter((p) => p.gender === gender);
+      listPartners = tmp;
+    }
+    if (debtFrom && debtTo) {
+      let tmp = listPartners.filter(
+        (p) => p.debt >= debtFrom && p.debt <= debtTo
+      );
+      listPartners = tmp;
+    }
+    if (totalPaymentFrom && totalPaymentTo) {
+      let tmp = listPartners.filter(
+        (p) => p.totalBuyAmount >= totalPaymentFrom && p.debt <= totalPaymentTo
+      );
+      listPartners = tmp;
+    }
+
+    return listPartners;
+  }, [
+    PARTNERS,
+    search,
+    isCustomer,
+    minDate,
+    maxDate,
+    gender,
+    debtFrom,
+    debtTo,
+    totalPaymentFrom,
+    totalPaymentTo,
+  ]);
   const options: TOptions = {
     partnerID: true,
     partnerName: true,
@@ -208,13 +255,7 @@ const PartnerTable = ({
   );
 
   const [selectedRows, setSelectedRows] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState("10");
-
-  const [displayData, setDisplayData] = useState(DATA.slice(0, +rowsPerPage));
-  useLayoutEffect(() => {
-    setDisplayData(DATA.slice(0, +rowsPerPage));
-    size.current = +rowsPerPage;
-  }, [rowsPerPage, DATA]);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const size = useRef<number>(+rowsPerPage);
   const handleCheckBoxChange = (rowId: string) => {
@@ -233,7 +274,24 @@ const PartnerTable = ({
     setSelectedRows([...selectedRows, rowId]);
   };
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setRowsPerPage(e.target.value);
+    setRowsPerPage(+e.target.value);
+  };
+  const maxPages = useMemo(
+    () => Math.round(PARTNERS.length / rowsPerPage),
+    [rowsPerPage]
+  );
+  const [currentPage, setCurrentPage] = useState(1);
+  const onBackAll = () => {
+    setCurrentPage(1);
+  };
+  const onBack = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+  const onForward = () => {
+    if (currentPage < maxPages) setCurrentPage(currentPage + 1);
+  };
+  const onForwardAll = () => {
+    setCurrentPage(maxPages);
   };
   return (
     <div className="w-full">
@@ -256,93 +314,101 @@ const PartnerTable = ({
             </tr>
           </thead>
           <tbody className="text-center">
-            {displayData.map((content, index) => (
-              <tr key={index}>
-                <td className="border border-gray-300 p-2">
-                  <input
-                    className="w-15 h-15 bg-hover"
-                    type="checkbox"
-                    onChange={() => handleCheckBoxChange(content.partnerId)}
-                    checked={
-                      selectedRows.includes(content.partnerId) ? true : false
-                    }
-                  />
-                </td>
-                {options.partnerID && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.partnerId}
-                  </td>
-                )}
-
-                {options.partnerName && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.partnerName}
-                  </td>
-                )}
-                {options.gender && isCustomer && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.type === "Customer" ? content.gender : null}
-                  </td>
-                )}
-                {options.phoneNumber && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.phoneNumber}
-                  </td>
-                )}
-                {options.email && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.email}
-                  </td>
-                )}
-                {options.address && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.address}
-                  </td>
-                )}
-                {options.debt && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.debt}
-                  </td>
-                )}
-                {options.totalBuyAmount && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.totalBuyAmount}
-                  </td>
-                )}
-                {options.certificate && !isCustomer && (
-                  <td className="border border-gray-300 p-2 text-sm  items-center justify-center">
-                    {content.type === "Supplier" ? (
-                      <img
-                        src={content.certificate}
-                        style={{
-                          width: "100%",
-                          height: 100,
-                          alignSelf: "center",
-                          borderWidth: 1,
-                        }}
+            {DATA.map((content, index) => {
+              if (
+                index < currentPage * rowsPerPage &&
+                index >= (currentPage - 1) * rowsPerPage
+              )
+                return (
+                  <tr key={index}>
+                    <td className="border border-gray-300 p-2">
+                      <input
+                        className="w-15 h-15 bg-hover"
+                        type="checkbox"
+                        onChange={() => handleCheckBoxChange(content.partnerId)}
+                        checked={
+                          selectedRows.includes(content.partnerId)
+                            ? true
+                            : false
+                        }
                       />
-                    ) : null}
-                  </td>
-                )}
+                    </td>
+                    {options.partnerID && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.partnerId}
+                      </td>
+                    )}
 
-                {options.note && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.note}
-                  </td>
-                )}
-                <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                  <div className="flex items-center gap-1 justify-center">
-                    <Button>
-                      <FiEdit />
-                    </Button>
+                    {options.partnerName && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.partnerName}
+                      </td>
+                    )}
+                    {options.gender && isCustomer && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.type === "Customer" ? content.gender : null}
+                      </td>
+                    )}
+                    {options.phoneNumber && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.phoneNumber}
+                      </td>
+                    )}
+                    {options.email && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.email}
+                      </td>
+                    )}
+                    {options.address && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.address}
+                      </td>
+                    )}
+                    {options.debt && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.debt}
+                      </td>
+                    )}
+                    {options.totalBuyAmount && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.totalBuyAmount}
+                      </td>
+                    )}
+                    {options.certificate && !isCustomer && (
+                      <td className="border border-gray-300 p-2 text-sm  items-center justify-center">
+                        {content.type === "Supplier" ? (
+                          <img
+                            src={content.certificate}
+                            style={{
+                              width: "100%",
+                              height: 100,
+                              alignSelf: "center",
+                              borderWidth: 1,
+                            }}
+                          />
+                        ) : null}
+                      </td>
+                    )}
 
-                    <Button>
-                      <FiTrash color="red" />
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                    {options.note && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.note}
+                      </td>
+                    )}
+                    <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
+                      <div className="flex items-center gap-1 justify-center">
+                        <Button>
+                          <FiEdit />
+                        </Button>
+
+                        <Button>
+                          <FiTrash color="red" />
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+            })}
           </tbody>
         </table>
       </div>
@@ -359,67 +425,24 @@ const PartnerTable = ({
         </select>
 
         <div className="ml-4 flex items-center">
-          <span className="text-sm text-gray-400  mr-4">{`${
-            Math.ceil((size.current - displayData.length) / +rowsPerPage) + 1
-          }/${Math.ceil(DATA.length / +rowsPerPage)}`}</span>
-          <Button
-            onClick={() => {
-              if (size.current !== Number(rowsPerPage)) {
-                setDisplayData(DATA.slice(0, +rowsPerPage));
-                size.current = +rowsPerPage;
-              }
-            }}
-          >
+          <span className="text-sm text-gray-400  mr-4">
+            {currentPage} trên {maxPages}
+          </span>
+          <Button onClick={onBackAll}>
             <HiOutlineChevronDoubleLeft />
           </Button>
           <div className="w-2" />
-          <Button
-            onClick={() => {
-              if (size.current !== Number(rowsPerPage)) {
-                size.current -=
-                  displayData.length < Number(rowsPerPage)
-                    ? displayData.length
-                    : Number(rowsPerPage);
-                setDisplayData(
-                  DATA.slice(size.current - Number(rowsPerPage), size.current)
-                );
-              }
-            }}
-          >
+          <Button onClick={onBack}>
             <HiOutlineChevronLeft />
           </Button>
           <div className="w-2" />
 
-          <Button
-            onClick={() => {
-              if (size.current !== DATA.length) {
-                setDisplayData(
-                  DATA.slice(size.current, size.current + Number(rowsPerPage))
-                );
-                size.current =
-                  size.current + Number(rowsPerPage) < DATA.length
-                    ? size.current + Number(rowsPerPage)
-                    : DATA.length;
-              }
-            }}
-          >
+          <Button onClick={onForward}>
             <HiOutlineChevronRight />
           </Button>
           <div className="w-2" />
 
-          <Button
-            onClick={() => {
-              if (size.current !== DATA.length) {
-                let final = DATA.length % Number(rowsPerPage);
-                if (final === 0) {
-                  setDisplayData(DATA.slice(-Number(rowsPerPage)));
-                } else {
-                  setDisplayData(DATA.slice(-final));
-                }
-                size.current = DATA.length;
-              }
-            }}
-          >
+          <Button onClick={onForwardAll}>
             <HiOutlineChevronDoubleRight />
           </Button>
         </div>

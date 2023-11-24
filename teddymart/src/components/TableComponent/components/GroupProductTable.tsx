@@ -42,7 +42,13 @@ type TOptions = {
   groupName?: boolean;
   note?: boolean;
 };
-const GroupProductTable = ({ filterOption, data, }: { filterOption?: TOptions, data?: TGroupProduct[] }) => {
+const GroupProductTable = ({
+  filterOption,
+  data,
+}: {
+  filterOption?: TOptions;
+  data?: TGroupProduct[];
+}) => {
   const { t } = useTranslation();
   const options: TOptions = {
     groupId: true,
@@ -61,7 +67,25 @@ const GroupProductTable = ({ filterOption, data, }: { filterOption?: TOptions, d
     [t]
   );
   const [selectedRows, setSelectedRows] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState("10");
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const maxPages = useMemo(
+    () => Math.round(data.length / rowsPerPage),
+    [rowsPerPage]
+  );
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const onBackAll = () => {
+    setCurrentPage(1);
+  };
+  const onBack = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+  const onForward = () => {
+    if (currentPage < maxPages) setCurrentPage(currentPage + 1);
+  };
+  const onForwardAll = () => {
+    setCurrentPage(maxPages);
+  };
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
       console.log("ok");
@@ -80,7 +104,7 @@ const GroupProductTable = ({ filterOption, data, }: { filterOption?: TOptions, d
   };
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
     console.log("okkkkk");
-    setRowsPerPage(e.target.value);
+    setRowsPerPage(+e.target.value);
   };
   return (
     <div className="w-full">
@@ -103,45 +127,51 @@ const GroupProductTable = ({ filterOption, data, }: { filterOption?: TOptions, d
             </tr>
           </thead>
           <tbody className="text-center">
-            {data?.map((content, index) => (
-              <tr key={index}>
-                <td className="border border-gray-300 p-2">
-                  <input
-                    className="w-15 h-15 bg-hover"
-                    type="checkbox"
-                    onChange={() => handleCheckBoxChange(content.groupId)}
-                    checked={
-                      selectedRows.includes(content.groupId) ? true : false
-                    }
-                  />
-                </td>
-                {options.groupId && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.groupId}
-                  </td>
-                )}
-                {options.groupName && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.groupName}
-                  </td>
-                )}
-                {options.note && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.note}
-                  </td>
-                )}
+            {data?.map((content, index) => {
+              if (
+                index < currentPage * rowsPerPage &&
+                index >= (currentPage - 1) * rowsPerPage
+              )
+                return (
+                  <tr key={index}>
+                    <td className="border border-gray-300 p-2">
+                      <input
+                        className="w-15 h-15 bg-hover"
+                        type="checkbox"
+                        onChange={() => handleCheckBoxChange(content.groupId)}
+                        checked={
+                          selectedRows.includes(content.groupId) ? true : false
+                        }
+                      />
+                    </td>
+                    {options.groupId && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.groupId}
+                      </td>
+                    )}
+                    {options.groupName && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.groupName}
+                      </td>
+                    )}
+                    {options.note && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.note}
+                      </td>
+                    )}
 
-                <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                  <Button className="mr-2">
-                    <FiEdit />
-                  </Button>
+                    <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
+                      <Button className="mr-2">
+                        <FiEdit />
+                      </Button>
 
-                  <Button>
-                    <FiTrash color="red" />
-                  </Button>
-                </td>
-              </tr>
-            ))}
+                      <Button>
+                        <FiTrash color="red" />
+                      </Button>
+                    </td>
+                  </tr>
+                );
+            })}
           </tbody>
         </table>
       </div>
@@ -160,22 +190,24 @@ const GroupProductTable = ({ filterOption, data, }: { filterOption?: TOptions, d
         </select>
 
         <div className="ml-4 flex items-center">
-          <span className="text-sm text-gray-400  mr-4">0 trên 0</span>
-          <Button>
+          <span className="text-sm text-gray-400  mr-4">
+            {currentPage} trên {maxPages}
+          </span>
+          <Button onClick={onBackAll}>
             <HiOutlineChevronDoubleLeft />
           </Button>
           <div className="w-2" />
-          <Button>
+          <Button onClick={onBack}>
             <HiOutlineChevronLeft />
           </Button>
           <div className="w-2" />
 
-          <Button>
+          <Button onClick={onForward}>
             <HiOutlineChevronRight />
           </Button>
           <div className="w-2" />
 
-          <Button>
+          <Button onClick={onForwardAll}>
             <HiOutlineChevronDoubleRight />
           </Button>
         </div>

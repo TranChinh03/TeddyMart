@@ -291,6 +291,8 @@
 
   "noData": "No data",
   "rowsPerPage": "Number of rows per page: ",
+  "alertTitle":"Are you sure?",
+  "alertContent":"Confirm you will delete this section from the system!",
   "header": {
     "sale": "Sale",
     "product": "Product",

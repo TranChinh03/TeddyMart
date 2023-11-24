@@ -10,8 +10,13 @@ const productSlice = createSlice({
     uploadProduct: (state: TProduct[], action: PayloadAction<TProduct[]>) => {
       return [...action.payload];
     },
-    deleteProduct: (state: TProduct[], action: PayloadAction<TProduct>) => {
-      return state.filter((p) => p.productId !== action.payload.productId);
+    deleteProduct: (
+      state: TProduct[],
+      action: PayloadAction<Pick<TProduct, "productId">>
+    ) => {
+      let tmp = state.filter((p) => p.productId !== action.payload.productId);
+      console.log(tmp.length);
+      return [...tmp];
     },
     updateProduct: (
       state: TProduct[],

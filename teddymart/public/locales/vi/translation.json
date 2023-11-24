@@ -280,6 +280,8 @@
   "warningTxt": "Bạn có chắc chắn muốn xóa mục này?",
   "noData": "Không có dữ liệu",
   "rowsPerPage": "Số mục mỗi trang: ",
+  "alertTitle":"Bạn có chắc chắn?",
+  "alertContent":"Xác nhận rằng bạn sẽ xóa mục này ra khỏi hệ thống",
   "header": {
     "sale": "Đơn hàng",
     "product": "Sản phẩm",

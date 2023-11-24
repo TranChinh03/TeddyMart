@@ -1,6 +1,13 @@
-import { Button, Tooltip } from "antd";
+import { Button, Space, Tooltip } from "antd";
 import { t } from "i18next";
-import { ChangeEvent, useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import {
@@ -9,8 +16,12 @@ import {
   HiOutlineChevronRight,
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
+import { TListProduct } from "./BillTable";
+import ButtonComponent from "components/ButtonComponent";
+import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
+import { deleteProduct } from "state_management/slices/productSlice";
 
 type TContent = {
   productId: string;
@@ -116,69 +127,93 @@ const ProductTable = ({
   warehouseName,
   productName,
   sort,
+  filterListProduct,
+  isEditQuantity = false,
 }: {
   filterOption?: TOptions;
   warehouseName?: string;
   productName?: string;
   sort?: TSort;
+  filterListProduct?: TListProduct[];
+  isEditQuantity?: boolean;
 }) => {
   const { t } = useTranslation();
   const products = useSelector((state: RootState) => state.product);
   const warehouses = useSelector((state: RootState) => state.warehouseSlice);
-
+  const dispatch = useDispatch();
   //console.log("PRODUCTS", products);
   const productsFilter = useMemo(() => {
     //console.log(warehouseName, productName);
-    let listProducts: any[] = [];
-
-    if (warehouseName === undefined || productName === undefined)
-      listProducts = [...products];
-    else {
-      //console.log("okk", productName);
+    let listProducts: TProduct[] = [...products];
+    if (warehouseName) {
       const listProductWarehouse = warehouses.filter(
         (value) => value.warehouseName === warehouseName
       )[0].listProduct;
-      //console.log("listProductWarehouse", listProductWarehouse);
-      // const listProducts: any[] = [];
-      listProductWarehouse.map((value) => {
-        const tmp = products.findIndex(
-          (product) => product.productId === value.productId
+      let productFilterProductTable = listProducts.map((value) => {
+        let tmp = listProductWarehouse.findIndex(
+          (warehouse) => warehouse.productId === value.productId
         );
-        listProducts?.push({
-          productId: value.productId,
-          productName: value.productName,
-          quantity: value.quantity,
-          costPrice: products[tmp].cost_price,
-          payment: 0, //????
-          note: products[tmp].note,
-        });
+        if (tmp > -1)
+          return {
+            productId: value.productId,
+            productName: value.productName,
+            quantity: listProductWarehouse[tmp].quantity,
+            costPrice: value.cost_price,
+            payment: listProductWarehouse[tmp].quantity * value.cost_price, //????
+            note: value.note,
+          };
       });
-    }
-    if (sort?.nameAscending) {
-      listProducts.sort((a, b) =>
-        a.productName.charAt(0) < b.productName.charAt(0) ? -1 : 1
-      );
-    }
-    if (sort?.nameDescending) {
-      listProducts.sort((a, b) =>
-        a.productName.charAt(0) > b.productName.charAt(0) ? -1 : 1
-      );
-    }
-    if (sort?.quantityAscending) {
-      listProducts.sort((a, b) => (a.quantity < b.quantity ? -1 : 1));
-    }
-    if (sort?.quantityDescending) {
-      listProducts.sort((a, b) => (a.quantity > b.quantity ? -1 : 1));
+
+      listProducts = productFilterProductTable;
     }
 
     if (productName) {
-      return listProducts.filter((item) =>
-        item.productName.includes(productName)
+      let tmp = listProducts.filter((value) =>
+        value.productName.includes(productName)
       );
+      listProducts = tmp;
+    }
+
+    if (filterListProduct) {
+      let tmp = listProducts.filter((value) => {
+        let index = filterListProduct.findIndex(
+          (filterProduct) => filterProduct.productId === value.productId
+        );
+        if (index > -1)
+          return {
+            productId: value.productId,
+            productName: value.productName,
+            quantity: filterListProduct[index]?.quantity,
+            costPrice: value.cost_price,
+            payment: value.totalPrice, //????
+            note: value.note,
+          };
+      });
+      listProducts = tmp;
+    }
+
+    if (sort?.nameAscending) {
+      let tmp = listProducts.sort((a, b) =>
+        a.productName.charAt(0) < b.productName.charAt(0) ? -1 : 1
+      );
+      listProducts = tmp;
+    }
+    if (sort?.nameDescending) {
+      let tmp = listProducts.sort((a, b) =>
+        a.productName.charAt(0) > b.productName.charAt(0) ? -1 : 1
+      );
+      listProducts = tmp;
+    }
+    if (sort?.quantityAscending) {
+      let tmp = listProducts.sort((a, b) => (a.quantity < b.quantity ? -1 : 1));
+      listProducts = tmp;
+    }
+    if (sort?.quantityDescending) {
+      let tmp = listProducts.sort((a, b) => (a.quantity > b.quantity ? -1 : 1));
+      listProducts = tmp;
     }
     return listProducts;
-  }, [warehouseName, productName, sort]);
-
+  }, [warehouseName, productName, sort, filterListProduct, products]);
   const options: TOptions = {
     productId: true,
     productName: true,
@@ -215,26 +250,30 @@ const ProductTable = ({
     [t, options]
   );
   const [selectedRows, setSelectedRows] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState("10");
-  const [displayData, setDisplayData] = useState(
-    productsFilter.slice(0, +rowsPerPage)
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const maxPages = useMemo(
+    () => Math.round(productsFilter.length / rowsPerPage),
+    [productsFilter]
   );
-
-  useLayoutEffect(() => {
-    setDisplayData(productsFilter.slice(0, +rowsPerPage));
-    size.current =
-      +rowsPerPage > productsFilter.length
-        ? productsFilter.length
-        : +rowsPerPage;
-  }, [rowsPerPage, productsFilter]);
-
-  const size = useRef<number>(+rowsPerPage);
+  const onBackAll = () => {
+    setCurrentPage(1);
+  };
+  const onBack = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+  const onForward = () => {
+    if (currentPage < maxPages) setCurrentPage(currentPage + 1);
+  };
+  const onForwardAll = () => {
+    setCurrentPage(maxPages);
+  };
 
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
       if (selectedRows.length < productsFilter.length) {
         setSelectedRows([
-          ...productsFilter.map((content) => content.productId),
+          ...productsFilter.map((content) => content?.productId),
         ]);
         return;
       }
@@ -250,7 +289,11 @@ const ProductTable = ({
     setSelectedRows([...selectedRows, rowId]);
   };
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setRowsPerPage(e.target.value);
+    setRowsPerPage(+e.target.value);
+  };
+  const onDeleteProduct = (productId: string) => {
+    console.log(productId);
+    dispatch(deleteProduct({ productId: productId }));
   };
   return (
     <div className="w-full">
@@ -273,108 +316,132 @@ const ProductTable = ({
             </tr>
           </thead>
           <tbody className="text-center">
-            {displayData.map((content, index) => (
-              <tr key={index}>
-                <td className="border border-gray-300 p-2">
-                  <input
-                    className="w-15 h-15 bg-hover"
-                    type="checkbox"
-                    onChange={() => handleCheckBoxChange(content.productId)}
-                    checked={
-                      selectedRows.includes(content.productId) ? true : false
-                    }
-                  />
-                </td>
-
-                {options.productId && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.productId}
-                  </td>
-                )}
-                {options.productName && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.productName}
-                  </td>
-                )}
-                {options.quantity && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.quantity ?? 0}
-                  </td>
-                )}
-
-                {options.productGroup && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.groupId}
-                  </td>
-                )}
-                {options.productGroupName && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.groupName}
-                  </td>
-                )}
-
-                {options.productImage && (
-                  <td className="border border-gray-300 p-2 text-sm ">
-                    <img
-                      src={content.image}
-                      width={45}
-                      height={45}
-                      className="inline-block"
-                    />
-                  </td>
-                )}
-                {options.sell_price && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.sell_price}
-                  </td>
-                )}
-
-                {options.costPrice && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.cost_price}
-                  </td>
-                )}
-
-                {options.price && (
-                  <Tooltip title="Price = Sell price * (1+VAT)">
-                    <td className="border border-gray-300 p-2 text-sm">
-                      {content.price}
+            {productsFilter.map((content, index) => {
+              if (
+                index < currentPage * rowsPerPage &&
+                index >= (currentPage - 1) * rowsPerPage
+              )
+                return (
+                  <tr key={index}>
+                    <td className="border border-gray-300 p-2">
+                      <input
+                        className="w-15 h-15 bg-hover"
+                        type="checkbox"
+                        onChange={() =>
+                          handleCheckBoxChange(content?.productId)
+                        }
+                        checked={
+                          selectedRows.includes(content?.productId ?? "")
+                            ? true
+                            : false
+                        }
+                      />
                     </td>
-                  </Tooltip>
-                )}
-                {options.totalPrice && (
-                  <Tooltip title="Total Price = Price * Quantity">
-                    <td className="border border-gray-300 p-2 text-sm">
-                      {content.totalPrice ?? 0}
-                    </td>
-                  </Tooltip>
-                )}
-                {options.VAT && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.VAT}
-                  </td>
-                )}
-                {options.note && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.note}
-                  </td>
-                )}
 
-                {options.activities && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    <div className="flex items-center gap-1 justify-center">
-                      <Button>
-                        <FiEdit />
-                      </Button>
+                    {options.productId && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content?.productId}
+                      </td>
+                    )}
+                    {options.productName && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content?.productName}
+                      </td>
+                    )}
+                    {options.quantity && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        <Space>
+                          {content?.quantity ?? 0}
+                          {isEditQuantity && (
+                            <Space direction="vertical" size={2}>
+                              <Button size="small">
+                                <TiArrowSortedUp size={10} />
+                              </Button>
+                              <Button size="small">
+                                <TiArrowSortedDown size={10} />
+                              </Button>
+                            </Space>
+                          )}
+                        </Space>
+                      </td>
+                    )}
 
-                      <Button>
-                        <FiTrash color="red" />
-                      </Button>
-                    </div>
-                  </td>
-                )}
-              </tr>
-            ))}
+                    {options.productGroup && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.groupId}
+                      </td>
+                    )}
+                    {options.productGroupName && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content?.groupName}
+                      </td>
+                    )}
+
+                    {options.productImage && (
+                      <td className="border border-gray-300 p-2 text-sm ">
+                        <img
+                          src={content?.image}
+                          width={45}
+                          height={45}
+                          className="inline-block"
+                        />
+                      </td>
+                    )}
+                    {options.sell_price && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content?.sell_price}
+                      </td>
+                    )}
+
+                    {options.costPrice && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content?.cost_price}
+                      </td>
+                    )}
+
+                    {options.price && (
+                      <Tooltip title="Price = Sell price * (1+VAT)">
+                        <td className="border border-gray-300 p-2 text-sm">
+                          {content?.price}
+                        </td>
+                      </Tooltip>
+                    )}
+                    {options.totalPrice && (
+                      <Tooltip title="Total Price = Price * Quantity">
+                        <td className="border border-gray-300 p-2 text-sm">
+                          {content?.totalPrice ?? 0}
+                        </td>
+                      </Tooltip>
+                    )}
+                    {options.VAT && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content?.VAT}
+                      </td>
+                    )}
+                    {options.note && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content?.note}
+                      </td>
+                    )}
+
+                    {options.activities && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        <div className="flex items-center gap-1 justify-center">
+                          <Button>
+                            <FiEdit />
+                          </Button>
+
+                          <Button
+                            onClick={() => onDeleteProduct(content?.productId)}
+                          >
+                            <FiTrash color="red" />
+                          </Button>
+                        </div>
+                      </td>
+                    )}
+                  </tr>
+                );
+            })}
           </tbody>
         </table>
       </div>
@@ -385,79 +452,30 @@ const ProductTable = ({
           onChange={handleRowsPerPageChange}
           className=" bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:bg-white "
         >
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="15">15</option>
+          <option value={5}>5</option>
+          <option value={10}>10</option>
+          <option value={15}>15</option>
         </select>
 
         <div className="ml-4 flex items-center">
-          <span className="text-sm text-gray-400  mr-4">{`${
-            Math.ceil((size.current - displayData.length) / +rowsPerPage) + 1
-          }/${Math.ceil(productsFilter.length / +rowsPerPage)}`}</span>
-          <Button
-            onClick={() => {
-              if (size.current > Number(rowsPerPage)) {
-                setDisplayData(productsFilter.slice(0, +rowsPerPage));
-                size.current = +rowsPerPage;
-              }
-            }}
-          >
+          <span className="text-sm text-gray-400  mr-4">
+            {currentPage} trên {maxPages}
+          </span>
+          <Button onClick={onBackAll}>
             <HiOutlineChevronDoubleLeft />
           </Button>
           <div className="w-2" />
-          <Button
-            onClick={() => {
-              if (size.current > Number(rowsPerPage)) {
-                size.current -=
-                  displayData.length < Number(rowsPerPage)
-                    ? displayData.length
-                    : Number(rowsPerPage);
-                setDisplayData(
-                  productsFilter.slice(
-                    size.current - Number(rowsPerPage),
-                    size.current
-                  )
-                );
-              }
-            }}
-          >
+          <Button onClick={onBack}>
             <HiOutlineChevronLeft />
           </Button>
           <div className="w-2" />
 
-          <Button
-            onClick={() => {
-              if (size.current < productsFilter.length) {
-                setDisplayData(
-                  productsFilter.slice(
-                    size.current,
-                    size.current + Number(rowsPerPage)
-                  )
-                );
-                size.current =
-                  size.current + Number(rowsPerPage) < productsFilter.length
-                    ? size.current + Number(rowsPerPage)
-                    : productsFilter.length;
-              }
-            }}
-          >
+          <Button onClick={onForward}>
             <HiOutlineChevronRight />
           </Button>
           <div className="w-2" />
 
-          <Button
-            onClick={() => {
-              if (size.current < productsFilter.length) {
-                let final = productsFilter.length % Number(rowsPerPage);
-                if (final === 0) {
-                  setDisplayData(productsFilter.slice(-Number(rowsPerPage)));
-                } else {
-                  setDisplayData(productsFilter.slice(-final));
-                }
-                size.current = productsFilter.length;
-              }
-            }}
-          >
+          <Button onClick={onForwardAll}>
             <HiOutlineChevronDoubleRight />
           </Button>
         </div>

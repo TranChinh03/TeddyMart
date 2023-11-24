@@ -136,6 +136,24 @@ const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
   const handleRowsPerPageChange = (e: any) => {
     setRowsPerPage(e.target.value);
   };
+  const maxPages = useMemo(
+    () => Math.round(CONTENT.length / rowsPerPage),
+    [rowsPerPage]
+  );
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const onBackAll = () => {
+    setCurrentPage(1);
+  };
+  const onBack = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+  const onForward = () => {
+    if (currentPage < maxPages) setCurrentPage(currentPage + 1);
+  };
+  const onForwardAll = () => {
+    setCurrentPage(maxPages);
+  };
   return (
     <div className="w-full">
       <div className="max-h-96 overflow-y-auto visible">
@@ -157,44 +175,54 @@ const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
             </tr>
           </thead>
           <tbody className="text-center">
-            {CONTENT.map((content, index) => (
-              <tr key={index}>
-                <td className="border border-gray-300 p-2">
-                  <input
-                    className="w-15 h-15 bg-hover"
-                    type="checkbox"
-                    onChange={() => handleCheckBoxChange(content.warehouseId)}
-                    checked={
-                      selectedRows.includes(content.warehouseId) ? true : false
-                    }
-                  />
-                </td>
-                {options.warehouseID && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.warehouseId}
-                  </td>
-                )}
-                {content.warehouseName && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.warehouseName}
-                  </td>
-                )}
-                {content.address && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.address}
-                  </td>
-                )}
-                <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                  <Button className="mr-2">
-                    <FiEdit />
-                  </Button>
+            {CONTENT.map((content, index) => {
+              if (
+                index < currentPage * rowsPerPage &&
+                index >= (currentPage - 1) * rowsPerPage
+              )
+                return (
+                  <tr key={index}>
+                    <td className="border border-gray-300 p-2">
+                      <input
+                        className="w-15 h-15 bg-hover"
+                        type="checkbox"
+                        onChange={() =>
+                          handleCheckBoxChange(content.warehouseId)
+                        }
+                        checked={
+                          selectedRows.includes(content.warehouseId)
+                            ? true
+                            : false
+                        }
+                      />
+                    </td>
+                    {options.warehouseID && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.warehouseId}
+                      </td>
+                    )}
+                    {content.warehouseName && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.warehouseName}
+                      </td>
+                    )}
+                    {content.address && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.address}
+                      </td>
+                    )}
+                    <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
+                      <Button className="mr-2">
+                        <FiEdit />
+                      </Button>
 
-                  <Button>
-                    <FiTrash color="red" />
-                  </Button>
-                </td>
-              </tr>
-            ))}
+                      <Button>
+                        <FiTrash color="red" />
+                      </Button>
+                    </td>
+                  </tr>
+                );
+            })}
           </tbody>
         </table>
       </div>
@@ -211,22 +239,24 @@ const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
         </select>
 
         <div className="ml-4 flex items-center">
-          <span className="text-sm text-gray-400  mr-4">0 trên 0</span>
-          <Button>
+          <span className="text-sm text-gray-400  mr-4">
+            {currentPage} trên {maxPages}
+          </span>
+          <Button onClick={onBackAll}>
             <HiOutlineChevronDoubleLeft />
           </Button>
           <div className="w-2" />
-          <Button>
+          <Button onClick={onBack}>
             <HiOutlineChevronLeft />
           </Button>
           <div className="w-2" />
 
-          <Button>
+          <Button onClick={onForward}>
             <HiOutlineChevronRight />
           </Button>
           <div className="w-2" />
 
-          <Button>
+          <Button onClick={onForwardAll}>
             <HiOutlineChevronDoubleRight />
           </Button>
         </div>

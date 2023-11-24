@@ -7,6 +7,7 @@ interface DropdownComponentProps {
   placeholder?: string;
   value?: string;
   setValue?: (value: string) => void;
+  isValueIndex?: boolean;
 }
 
 // size: kích thước: small, default, big
@@ -18,6 +19,7 @@ const DropdownComponent: React.FC<DropdownComponentProps> = ({
   placeholder = "Choose an option",
   value = "",
   setValue = () => {},
+  isValueIndex = false,
 }) => {
   return (
     <div className="relative">
@@ -44,7 +46,7 @@ const DropdownComponent: React.FC<DropdownComponentProps> = ({
           {placeholder}
         </option>
         {options.map((option, index) => (
-          <option key={index} value={index}>
+          <option key={index} value={isValueIndex ? index : option}>
             {option}
           </option>
         ))}

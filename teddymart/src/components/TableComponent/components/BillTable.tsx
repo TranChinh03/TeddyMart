@@ -1,4 +1,4 @@
-import { Button, Dropdown, Layout, MenuProps } from "antd";
+import { Button, Dropdown, Layout, MenuProps, Modal } from "antd";
 import dayjs from "dayjs";
 import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,6 +13,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { deleteOrder } from "state_management/slices/orderSlice";
+import ProductTable from "./ProductTable";
 type TStatus = "unpaid" | "paid";
 const COLOR_STATUS = new Map([
   ["unpaid", "#FF0000"],
@@ -373,6 +374,11 @@ enum SORT {
   PAYMENT_INCREASE,
   PAYMENT_DECREASE,
 }
+export type TListProduct = {
+  productId: string;
+  quantity: number;
+  productName: string;
+};
 const BillTable = ({
   filterOption,
   selectedRows = [],
@@ -381,6 +387,7 @@ const BillTable = ({
   endDate,
   search,
   sort,
+  setOpenAlertModal,
 }: {
   selectedRows?: string[];
   setSelectedRows?: (selectedRows: string[]) => void;
@@ -389,6 +396,7 @@ const BillTable = ({
   endDate?: number;
   search?: string;
   sort?: number;
+  setOpenAlertModal?: (openAlertModal: boolean) => void;
 }) => {
   console.log(search);
   const { t } = useTranslation();
@@ -412,6 +420,8 @@ const BillTable = ({
   };
   const bills = useSelector((state: RootState) => state.order);
   const [tmpData, setTmpData] = useState(bills);
+  const [openListProduct, setOpenListProduct] = useState(false);
+  const [listProduct, setListProduct] = useState<TListProduct[]>([]);
   const bubbleSort = (
     orders: TOrder[],
     compare: (order_1: TOrder, order_2: TOrder) => boolean
@@ -509,7 +519,6 @@ const BillTable = ({
   useEffect(() => {
     filterData();
   }, [bills, startDate, endDate, search, sort]);
-  console.log(tmpData);
   const dispatch = useDispatch();
   const HEADER = useMemo(
     () =>
@@ -534,8 +543,10 @@ const BillTable = ({
   );
   // const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
   const onDeleteRow = (orderId: string) => {
-    dispatch(deleteOrder({ orderId: orderId }));
+    setOpenAlertModal(true);
+    setSelectedRows([...selectedRows, orderId]);
   };
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
@@ -556,6 +567,28 @@ const BillTable = ({
   };
   const handleRowsPerPageChange = (e: any) => {
     setRowsPerPage(e.target.value);
+  };
+  const maxPages = useMemo(
+    () => Math.round(bills.length / rowsPerPage),
+    [rowsPerPage]
+  );
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const onBackAll = () => {
+    setCurrentPage(1);
+  };
+  const onBack = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+  const onForward = () => {
+    if (currentPage < maxPages) setCurrentPage(currentPage + 1);
+  };
+  const onForwardAll = () => {
+    setCurrentPage(maxPages);
+  };
+  const onOpenListModal = (listProduct: TListProduct[]) => {
+    setOpenListProduct(true);
+    setListProduct(listProduct);
   };
   return (
     <div>
@@ -584,111 +617,119 @@ const BillTable = ({
             </tr>
           </thead>
           <tbody className="text-center">
-            {tmpData.map((content, index) => (
-              <tr key={index}>
-                <td className="border border-gray-300 p-2">
-                  <input
-                    className="w-15 h-15 bg-hover"
-                    type="checkbox"
-                    onChange={() => handleCheckBoxChange(content.orderId)}
-                    checked={
-                      selectedRows.includes(content.orderId) ? true : false
-                    }
-                  />
-                </td>
-                {options.orderId && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.orderId}
-                  </td>
-                )}
-                {options.createdAt && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {new Date(content.createdAt).toLocaleDateString("vi")}{" "}
-                    {dayjs(content.createdAt).format("HH:mm:ss")}
-                  </td>
-                )}
-                {options.partnerID && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.partnerId}
-                  </td>
-                )}
+            {tmpData.map((content, index) => {
+              if (
+                index < currentPage * rowsPerPage &&
+                index >= (currentPage - 1) * rowsPerPage
+              )
+                return (
+                  <tr key={index}>
+                    <td className="border border-gray-300 p-2">
+                      <input
+                        className="w-15 h-15 bg-hover"
+                        type="checkbox"
+                        onChange={() => handleCheckBoxChange(content.orderId)}
+                        checked={
+                          selectedRows.includes(content.orderId) ? true : false
+                        }
+                      />
+                    </td>
+                    {options.orderId && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.orderId}
+                      </td>
+                    )}
+                    {options.createdAt && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {new Date(content.createdAt).toLocaleDateString("vi")}{" "}
+                        {dayjs(content.createdAt).format("HH:mm:ss")}
+                      </td>
+                    )}
+                    {options.partnerID && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.partnerId}
+                      </td>
+                    )}
 
-                {options.partnerName && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.partnerName}
-                  </td>
-                )}
-                {options.receiver && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.type === "Import" ? content.receiver : null}
-                  </td>
-                )}
-                {options.listProduct && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    <Button>
-                      <BiDetail />
-                    </Button>
-                  </td>
-                )}
-                {options.payment && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.payment}
-                  </td>
-                )}
-                {options.debt && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.debt}
-                  </td>
-                )}
-                {options.discount && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.discount}
-                  </td>
-                )}
-                {options.totalPayment && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.totalPayment}
-                  </td>
-                )}
-                {options.voucherID && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.type === "Export" ? content.voucherId : null}
-                  </td>
-                )}
-                {options.seller && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.type === "Export" ? content.seller : null}
-                  </td>
-                )}
+                    {options.partnerName && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.partnerName}
+                      </td>
+                    )}
+                    {options.receiver && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.type === "Import" ? content.receiver : null}
+                      </td>
+                    )}
+                    {options.listProduct && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        <Button
+                          onClick={() => onOpenListModal(content.listProduct)}
+                        >
+                          <BiDetail />
+                        </Button>
+                      </td>
+                    )}
+                    {options.payment && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.payment}
+                      </td>
+                    )}
+                    {options.debt && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.debt}
+                      </td>
+                    )}
+                    {options.discount && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.discount}
+                      </td>
+                    )}
+                    {options.totalPayment && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.totalPayment}
+                      </td>
+                    )}
+                    {options.voucherID && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.type === "Export" ? content.voucherId : null}
+                      </td>
+                    )}
+                    {options.seller && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.type === "Export" ? content.seller : null}
+                      </td>
+                    )}
 
-                {options.status && (
-                  <td
-                    className="border border-gray-300 p-2 font-[500] text-sm"
-                    style={{ color: COLOR_STATUS.get(content.status) }}
-                  >
-                    {content.status}
-                  </td>
-                )}
-                {options.note && (
-                  <td className="border border-gray-300 p-2 text-sm">
-                    {content.note}
-                  </td>
-                )}
-                {options.activities && (
-                  <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                    <div className="flex items-center gap-1">
-                      <Button>
-                        <FiEdit />
-                      </Button>
+                    {options.status && (
+                      <td
+                        className="border border-gray-300 p-2 font-[500] text-sm"
+                        style={{ color: COLOR_STATUS.get(content.status) }}
+                      >
+                        {content.status}
+                      </td>
+                    )}
+                    {options.note && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.note}
+                      </td>
+                    )}
+                    {options.activities && (
+                      <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
+                        <div className="flex items-center justify-center">
+                          {/* <Button>
+                            <FiEdit />
+                          </Button> */}
 
-                      <Button onClick={() => onDeleteRow(content.orderId)}>
-                        <FiTrash color="red" />
-                      </Button>
-                    </div>
-                  </td>
-                )}
-              </tr>
-            ))}
+                          <Button onClick={() => onDeleteRow(content.orderId)}>
+                            <FiTrash color="red" />
+                          </Button>
+                        </div>
+                      </td>
+                    )}
+                  </tr>
+                );
+            })}
           </tbody>
         </table>
       </div>
@@ -700,32 +741,46 @@ const BillTable = ({
           onChange={handleRowsPerPageChange}
           className=" bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:bg-white "
         >
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
+          <option value={10}>10</option>
+          <option value={20}>20</option>
+          <option value={50}>50</option>
         </select>
 
         <div className="ml-4 flex items-center">
-          <span className="text-sm text-gray-400  mr-4">0 trên 0</span>
-          <Button>
+          <span className="text-sm text-gray-400  mr-4">
+            {currentPage} trên {maxPages}
+          </span>
+          <Button onClick={onBackAll}>
             <HiOutlineChevronDoubleLeft />
           </Button>
           <div className="w-2" />
-          <Button>
+          <Button onClick={onBack}>
             <HiOutlineChevronLeft />
           </Button>
           <div className="w-2" />
 
-          <Button>
+          <Button onClick={onForward}>
             <HiOutlineChevronRight />
           </Button>
           <div className="w-2" />
 
-          <Button>
+          <Button onClick={onForwardAll}>
             <HiOutlineChevronDoubleRight />
           </Button>
         </div>
       </div>
+      {/*Modal Open Product */}
+      <Modal
+        open={openListProduct}
+        onCancel={() => setOpenListProduct(false)}
+        footer={false}
+        width={"80%"}
+      >
+        <ProductTable
+          filterOption={{ activities: false, quantity: true }}
+          filterListProduct={listProduct}
+        />
+      </Modal>
     </div>
   );
 };

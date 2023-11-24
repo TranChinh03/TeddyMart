@@ -8,6 +8,7 @@ import { PiWarningCircle } from "react-icons/pi";
 function VoucherScreen() {
   const { t } = useTranslation();
   const [openAddVoucher, setOpenAddVoucher] = useState(false);
+  const [searchVoucher, setSearchVoucher] = useState("");
   const [openUpdateVoucher, setOpenUpdateVoucher] = useState(false);
   const [openWarningDelete, setOpenWarningDelete] = useState(false);
   return (
@@ -25,6 +26,8 @@ function VoucherScreen() {
           <div className="flex items-center justify-between">
             <TextInputComponent
               iconLeft={<BiSearch />}
+              value={searchVoucher}
+              setValue={setSearchVoucher}
               placeHolder={t("voucher.searchVoucher")}
               width={"70%"}
             />
@@ -35,7 +38,7 @@ function VoucherScreen() {
             />
           </div>
           <div className="my-4">
-            <VoucherTable />
+            <VoucherTable searchVoucherName={searchVoucher} />
           </div>
         </Space>
       </body>

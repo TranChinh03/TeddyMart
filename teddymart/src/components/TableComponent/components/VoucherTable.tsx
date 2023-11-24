@@ -9,9 +9,9 @@ import {
   HiOutlineChevronRight,
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
-
+import { deleteVoucher } from "state_management/slices/voucherSlice";
 type TContent = {
   voucherId: string;
   discountAmount: number;
@@ -42,7 +42,13 @@ type TOptions = {
   expirationDate?: boolean;
   discountAmount?: boolean;
 };
-const VoucherTable = ({ filterOption }: { filterOption?: TOptions }) => {
+const VoucherTable = ({
+  filterOption,
+  searchVoucherName,
+}: {
+  filterOption?: TOptions;
+  searchVoucherName?: string;
+}) => {
   const { t } = useTranslation();
   const options: TOptions = {
     voucherID: true,
@@ -65,8 +71,14 @@ const VoucherTable = ({ filterOption }: { filterOption?: TOptions }) => {
       ].filter((value) => Boolean(value) !== false),
     [t, options]
   );
+  const dispatch = useDispatch();
   const [selectedRows, setSelectedRows] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState("10");
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const maxPages = useMemo(
+    () => Math.round(vouchers.length / rowsPerPage),
+    [rowsPerPage]
+  );
+  const [currentPage, setCurrentPage] = useState(1);
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
       console.log("ok");
@@ -87,8 +99,35 @@ const VoucherTable = ({ filterOption }: { filterOption?: TOptions }) => {
   };
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
     console.log("okkkkk");
-    setRowsPerPage(e.target.value);
+    setRowsPerPage(+e.target.value);
   };
+  const onBackAll = () => {
+    setCurrentPage(1);
+  };
+  const onBack = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+  const onForward = () => {
+    if (currentPage < maxPages) setCurrentPage(currentPage + 1);
+  };
+  const onForwardAll = () => {
+    setCurrentPage(maxPages);
+  };
+  const onDeleteVoucher = (voucherId: string) => {
+    dispatch(deleteVoucher(voucherId));
+  };
+  const voucherFilter = useMemo(() => {
+    let listVouchers = [...vouchers];
+    if (searchVoucherName) {
+      let tmp = listVouchers.filter((value) =>
+        value.voucherName
+          .toLowerCase()
+          .includes(searchVoucherName.toLowerCase())
+      );
+      listVouchers = tmp;
+    }
+    return listVouchers;
+  }, [vouchers, searchVoucherName]);
   return (
     <div className="w-full">
       <div className="max-h-96 overflow-y-auto visible">
@@ -110,44 +149,57 @@ const VoucherTable = ({ filterOption }: { filterOption?: TOptions }) => {
             </tr>
           </thead>
           <tbody className="text-center">
-            {vouchers.map((content, index) => (
-              <tr key={index}>
-                <td className="border border-gray-300 p-2">
-                  <input
-                    className="w-15 h-15 bg-hover"
-                    type="checkbox"
-                    onChange={() => handleCheckBoxChange(content.voucherId)}
-                    checked={
-                      selectedRows.includes(content.voucherId) ? true : false
-                    }
-                  />
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.voucherId}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.voucherName}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {new Date(content.publicDate).toLocaleDateString("vi")}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {new Date(content.expirationDate).toLocaleDateString("vi")}
-                </td>
-                <td className="border border-gray-300 p-2 text-sm">
-                  {content.discountAmount}
-                </td>
-                <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                  <Button className="mr-2">
-                    <FiEdit />
-                  </Button>
+            {voucherFilter.map((content, index) => {
+              if (
+                index < currentPage * rowsPerPage &&
+                index >= (currentPage - 1) * rowsPerPage
+              ) {
+                return (
+                  <tr key={index}>
+                    <td className="border border-gray-300 p-2">
+                      <input
+                        className="w-15 h-15 bg-hover"
+                        type="checkbox"
+                        onChange={() => handleCheckBoxChange(content.voucherId)}
+                        checked={
+                          selectedRows.includes(content.voucherId)
+                            ? true
+                            : false
+                        }
+                      />
+                    </td>
+                    <td className="border border-gray-300 p-2 text-sm">
+                      {content.voucherId}
+                    </td>
+                    <td className="border border-gray-300 p-2 text-sm">
+                      {content.voucherName}
+                    </td>
+                    <td className="border border-gray-300 p-2 text-sm">
+                      {new Date(content.publicDate).toLocaleDateString("vi")}
+                    </td>
+                    <td className="border border-gray-300 p-2 text-sm">
+                      {new Date(content.expirationDate).toLocaleDateString(
+                        "vi"
+                      )}
+                    </td>
+                    <td className="border border-gray-300 p-2 text-sm">
+                      {content.discountAmount}
+                    </td>
+                    <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
+                      <Button className="mr-2">
+                        <FiEdit />
+                      </Button>
 
-                  <Button>
-                    <FiTrash color="red" />
-                  </Button>
-                </td>
-              </tr>
-            ))}
+                      <Button
+                        onClick={() => onDeleteVoucher(content.voucherId)}
+                      >
+                        <FiTrash color="red" />
+                      </Button>
+                    </td>
+                  </tr>
+                );
+              }
+            })}
           </tbody>
         </table>
       </div>
@@ -158,30 +210,30 @@ const VoucherTable = ({ filterOption }: { filterOption?: TOptions }) => {
           onChange={handleRowsPerPageChange}
           className=" bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:bg-white "
         >
-          <option value="10">10</option>
-          <option value="20" selected>
-            20
-          </option>
-          <option value="50">50</option>
+          <option value={10}>10</option>
+          <option value={20}>20</option>
+          <option value={50}>50</option>
         </select>
 
         <div className="ml-4 flex items-center">
-          <span className="text-sm text-gray-400  mr-4">0 trên 0</span>
-          <Button>
+          <span className="text-sm text-gray-400  mr-4">
+            {currentPage} trên {maxPages}
+          </span>
+          <Button onClick={onBackAll}>
             <HiOutlineChevronDoubleLeft />
           </Button>
           <div className="w-2" />
-          <Button>
+          <Button onClick={onBack}>
             <HiOutlineChevronLeft />
           </Button>
           <div className="w-2" />
 
-          <Button>
+          <Button onClick={onForward}>
             <HiOutlineChevronRight />
           </Button>
           <div className="w-2" />
 
-          <Button>
+          <Button onClick={onForwardAll}>
             <HiOutlineChevronDoubleRight />
           </Button>
         </div>
