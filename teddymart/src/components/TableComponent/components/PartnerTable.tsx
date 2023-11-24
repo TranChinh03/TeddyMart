@@ -237,7 +237,6 @@ const PartnerTable = ({
   const HEADER = useMemo(
     () =>
       [
-        "#",
         options.partnerID && !isCustomer
           ? t("partner.supplierID")
           : t("partner.customerID"),

@@ -60,7 +60,6 @@ const GroupProductTable = ({
   const HEADER = useMemo(
     () =>
       [
-        "#",
         options.groupId && t("group.groupId"),
         options.groupName && t("group.groupName"),
         options.note && t("note"),

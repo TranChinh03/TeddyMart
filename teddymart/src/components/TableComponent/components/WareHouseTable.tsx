@@ -126,7 +126,6 @@ const WareHouseTable = ({
 
   const HEADER = useMemo(
     () => [
-      "#",
       options.warehouseID && t("warehouse.warehouseID"),
       options.warehouseName && t("warehouse.warehouseName"),
       options.address && t("warehouse.address"),
@@ -248,10 +247,6 @@ const WareHouseTable = ({
                             : false
                         }
                       />
-                    </td>
-
-                    <td className="border border-gray-300 p-2 text-sm">
-                      {index + 1}
                     </td>
 
                     {options.warehouseID && (

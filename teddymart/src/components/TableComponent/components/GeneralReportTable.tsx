@@ -130,7 +130,6 @@ const GeneralReportTable = ({
   const HEADER = useMemo(
     () =>
       [
-        "#",
         options.date && t("report.date"),
         options.revenue && t("report.revenue"),
         options.outcome && t("report.outcome"),

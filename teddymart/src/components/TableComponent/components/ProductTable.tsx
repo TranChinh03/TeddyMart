@@ -234,7 +234,6 @@ const ProductTable = ({
   const HEADER = useMemo(
     () =>
       [
-        "#",
         options.productId && t("product.productId"),
         options.productName && t("product.productName"),
         options.quantity && t("warehouse.quantity"),
