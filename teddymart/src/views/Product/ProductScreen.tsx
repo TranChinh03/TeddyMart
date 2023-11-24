@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useDeferredValue, useEffect, useState } from "react";
 import Header from "components/Header";
 import DropdownComponent from "components/DropdownComponent";
 import ButtonSelect from "components/ButtonSelect";
 import { IoMdArrowDropdown } from "react-icons/io";
-import SearchComponent from "components/SearchComponent";
+import { SearchComponent } from "components";
 import ButtonComponent from "components/ButtonComponent";
 import { COLORS } from "constants/colors";
 import {
@@ -23,9 +23,9 @@ import { t } from "i18next";
 import { Divider, Modal, Space } from "antd";
 
 export default function ProductScreen() {
-  const [PRODUCT, setPRODUCT] = useState(
-    useSelector((state: RootState) => state.product)
-  );
+  const [search, setSearch] = useState("");
+  const productName = useDeferredValue(search);
+  const [PRODUCT, setPRODUCT] = useState([]);
   const GROUP = useSelector((state: RootState) => state.groupProduct);
   const [screens, setScreens] = useState();
   const [type, setType] = useState();
@@ -33,9 +33,7 @@ export default function ProductScreen() {
   const [status, setStatus] = useState();
   const [storeManagement, setStoreManagement] = useState();
   const [sort, setSort] = useState();
-  const [search, setSearch] = useState("");
   const [openAddForm, setOpenAddForm] = useState(false);
-
   const [listFilter, setListFilter] = useState([
     {
       displayName: t("product.productId"),
@@ -83,27 +81,8 @@ export default function ProductScreen() {
     },
   ]);
 
-  useEffect(() => {
-    const addGroupNameToProduct = () => {
-      const updatedProduct = PRODUCT.map((productItem) => {
-        const correspondingGroup = GROUP.find(
-          (groupItem) => groupItem.groupId === productItem.groupId
-        );
-        return {
-          ...productItem,
-          groupName: correspondingGroup
-            ? correspondingGroup.groupName
-            : "Unknown Group",
-        };
-      });
-      setPRODUCT(updatedProduct);
-    };
-    addGroupNameToProduct();
-  }, [PRODUCT, GROUP]);
-
   return (
     <div className="w-full">
-      {/* <Header width={"100%"} title={"Product"}></Header> */}
       <div
         className="bg-white border-2 p-5 mx-1.5 my-1.5 rounded-md"
         style={{
@@ -131,6 +110,7 @@ export default function ProductScreen() {
               <SearchComponent
                 placeholder={t("product.searchByProduct")}
                 setSearch={setSearch}
+                search={search}
               />
             </div>
             <div className="mx-2">
@@ -214,7 +194,7 @@ export default function ProductScreen() {
           </div>
         </div>
         <div style={{ width: "100%", margin: "20px auto auto auto" }}>
-          <ProductTable productName={search} />
+          <ProductTable productName={productName} />
         </div>
       </div>
       <Modal

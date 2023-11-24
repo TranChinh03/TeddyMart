@@ -62,6 +62,7 @@ const VoucherTable = ({
   const HEADER = useMemo(
     () =>
       [
+        "#",
         options.voucherID && t("voucher.voucherID"),
         options.voucherName && t("voucher.voucherName"),
         options.publicDate && t("voucher.publicDate"),

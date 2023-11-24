@@ -1,16 +1,19 @@
 import { Button, Dropdown, MenuProps } from "antd";
 import dayjs from "dayjs";
 import { t } from "i18next";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useLayoutEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { BiDetail } from "react-icons/bi";
 import { FiEdit, FiTrash } from "react-icons/fi";
+import { useSelector } from "react-redux";
+import { RootState } from "state_management/reducers/rootReducer";
 import {
   HiOutlineChevronLeft,
   HiOutlineChevronDoubleLeft,
   HiOutlineChevronRight,
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
+import warehouseSlice from "state_management/slices/warehouseSlice";
 /**
  * Chưa thanh toán (Unpaid): Hóa đơn vẫn chưa được thanh toán hoặc chưa đến hạn thanh toán.
 
@@ -97,35 +100,102 @@ type TOption = {
   warehouseName?: boolean;
   address?: boolean;
 };
-const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
-  const { t } = useTranslation();
-  const options: TOption = {
-    warehouseID: true,
-    warehouseName: true,
-    address: true,
+type TSort = {
+  idAscending?: boolean;
+  idDescending?: boolean;
+  nameAZ?: boolean;
+  nameZA?: boolean;
+}
+const options: TOption = {
+  warehouseID: true,
+  warehouseName: true,
+  address: true,
+};
 
-    ...filterOption,
-  };
+const WareHouseTable = ({ 
+  //filterOption,
+  warehouseName,
+  sort,
+}: { 
+  //filterOption?: TOption;
+  warehouseName?: string;
+  sort?: TSort; 
+}) => {
+  const { t } = useTranslation();
+  const warehouses = useSelector((state: RootState) => state.warehouseSlice);
+
   const HEADER = useMemo(
     () => [
+      "#",
       options.warehouseID && t("warehouse.warehouseID"),
       options.warehouseName && t("warehouse.warehouseName"),
       options.address && t("warehouse.address"),
-      t("activities"),
+      //t("activities"),
     ],
     [t, options]
   );
+
+  const warehouseSort = useMemo(() => {
+    let warehouselist = [...warehouses];
+
+    if (sort?.idAscending) {
+      warehouselist.sort((a, b) => 
+        a.warehouseId.localeCompare(b.warehouseId)
+      );
+    }
+    if (sort?.idDescending) {
+      warehouselist.sort((a, b) => 
+        b.warehouseId.localeCompare(a.warehouseId)
+      );
+    }
+    if (sort?.nameAZ) {
+      warehouselist.sort((a, b) => 
+        a.warehouseName.localeCompare(b.warehouseName)
+      );
+    }
+    if (sort?.nameZA) {
+      warehouselist.sort((a, b) => 
+        b.warehouseName.localeCompare(a.warehouseName)
+      );
+    }
+
+    if (warehouseName) {
+      return warehouselist?.filter((item) =>
+        item.warehouseName.toLowerCase().includes(warehouseName.toLowerCase())
+      )
+    }
+    return warehouselist;
+  }, [warehouseName, sort])
+
+
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [displayData, setDisplayData] = useState(
+    warehouseSort.slice(0, +rowsPerPage)
+  );
+
+  const size = useRef<number>(+rowsPerPage); 
+
+  useLayoutEffect(() => {
+    setDisplayData(warehouseSort.slice(0, +rowsPerPage));
+    size.current =
+      +rowsPerPage > warehouseSort.length
+        ? warehouseSort.length
+        : +rowsPerPage;
+  }, [rowsPerPage, warehouseSort]);
+
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
-      console.log("ok");
-      if (selectedRows.length === 0) {
-        setSelectedRows([...CONTENT.map((content) => content.warehouseId)]);
+      if (selectedRows.length < warehouseSort.length) {
+        setSelectedRows([
+          ...warehouseSort.map((content) => content.warehouseId),
+        ]);
         return;
       }
-      setSelectedRows([]);
-      return;
+      if (selectedRows.length === warehouseSort.length) {
+        setSelectedRows([]);
+        return;
+      }
     }
     if (selectedRows.includes(rowId)) {
       setSelectedRows([...selectedRows.filter((id) => id !== rowId)]);
@@ -133,6 +203,7 @@ const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
     }
     setSelectedRows([...selectedRows, rowId]);
   };
+  
   const handleRowsPerPageChange = (e: any) => {
     setRowsPerPage(e.target.value);
   };
@@ -175,7 +246,7 @@ const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
             </tr>
           </thead>
           <tbody className="text-center">
-            {CONTENT.map((content, index) => {
+            {displayData.map((content, index) => {
               if (
                 index < currentPage * rowsPerPage &&
                 index >= (currentPage - 1) * rowsPerPage
@@ -196,7 +267,12 @@ const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
                         }
                       />
                     </td>
-                    {options.warehouseID && (
+                  
+                <td className="border border-gray-300 p-2 text-sm">
+                  {index + 1}
+                </td>
+                
+                {options.warehouseID && (
                       <td className="border border-gray-300 p-2 text-sm">
                         {content.warehouseId}
                       </td>
@@ -211,31 +287,31 @@ const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
                         {content.address}
                       </td>
                     )}
-                    <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
+                    {/* NÚT XÓA VÀ SỬA */}
+                {/* <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
                       <Button className="mr-2">
                         <FiEdit />
                       </Button>
 
-                      <Button>
-                        <FiTrash color="red" />
-                      </Button>
-                    </td>
-                  </tr>
-                );
-            })}
+                  <Button>
+                    <FiTrash color="red" />
+                  </Button>
+                </td> */}
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
       <div className="w-full text-left my-5 flex row justify-end pr-10 items-center ">
-        <span className="text-sm mr-4 text-gray-400 ">Số mục mỗi trang:</span>
+        <span className="text-sm mr-4 text-gray-400 ">{t("rowsPerPage")}:</span>
         <select
           value={rowsPerPage}
           onChange={handleRowsPerPageChange}
           className=" bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:bg-white "
         >
+          <option value="5">5</option>
           <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
+          <option value="15">15</option>
         </select>
 
         <div className="ml-4 flex items-center">
@@ -245,6 +321,7 @@ const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
           <Button onClick={onBackAll}>
             <HiOutlineChevronDoubleLeft />
           </Button>
+
           <div className="w-2" />
           <Button onClick={onBack}>
             <HiOutlineChevronLeft />
@@ -254,6 +331,7 @@ const WareHouseTable = ({ filterOption }: { filterOption?: TOption }) => {
           <Button onClick={onForward}>
             <HiOutlineChevronRight />
           </Button>
+
           <div className="w-2" />
 
           <Button onClick={onForwardAll}>

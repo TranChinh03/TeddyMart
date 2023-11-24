@@ -44,5 +44,4 @@ export type Props = {
     value: number;
     message: string;
   };
-  onStopTyping?: (value: string) => void;
 };

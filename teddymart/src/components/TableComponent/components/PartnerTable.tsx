@@ -167,6 +167,8 @@ const PartnerTable = ({
   isCustomer?: boolean;
   filterOption?: TOptions;
   search?: string;
+  additionalFilters?: any;
+  resetTable?: boolean;
   minDate?: number;
   maxDate?: number;
   gender?: string; // gender should enum
@@ -235,6 +237,7 @@ const PartnerTable = ({
   const HEADER = useMemo(
     () =>
       [
+        "#",
         options.partnerID && !isCustomer
           ? t("partner.supplierID")
           : t("partner.customerID"),

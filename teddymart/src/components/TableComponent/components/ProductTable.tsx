@@ -212,6 +212,7 @@ const ProductTable = ({
       let tmp = listProducts.sort((a, b) => (a.quantity > b.quantity ? -1 : 1));
       listProducts = tmp;
     }
+
     return listProducts;
   }, [warehouseName, productName, sort, filterListProduct, products]);
   const options: TOptions = {
@@ -233,6 +234,7 @@ const ProductTable = ({
   const HEADER = useMemo(
     () =>
       [
+        "#",
         options.productId && t("product.productId"),
         options.productName && t("product.productName"),
         options.quantity && t("warehouse.quantity"),

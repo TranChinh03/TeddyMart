@@ -53,18 +53,9 @@ export default function TextInputComponent({
   enterAction = () => {},
   pattern,
   minLength,
-  onStopTyping,
 }: Props) {
-  const waitTime = 500;
-  const timer = useRef<any>(null);
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
-    if (onStopTyping) {
-      clearTimeout(timer.current);
-      timer.current = setTimeout(() => {
-        onStopTyping(event.target.value);
-      }, waitTime);
-    }
   };
   return (
     <div style={{ width: width, ...outStyle }} className="relative">

@@ -523,6 +523,7 @@ const BillTable = ({
   const HEADER = useMemo(
     () =>
       [
+        "#",
         options.orderId && t("sale.orderId"),
         options.createdAt && t("sale.createdAt"),
         options.partnerID && t("sale.customerId"),
@@ -633,6 +634,9 @@ const BillTable = ({
                           selectedRows.includes(content.orderId) ? true : false
                         }
                       />
+                    </td>
+                    <td className="border border-gray-300 p-2 text-sm">
+                      {index + 1}
                     </td>
                     {options.orderId && (
                       <td className="border border-gray-300 p-2 text-sm">

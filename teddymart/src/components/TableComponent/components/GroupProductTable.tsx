@@ -49,6 +49,13 @@ const GroupProductTable = ({
   filterOption?: TOptions;
   data?: TGroupProduct[];
 }) => {
+const GroupProductTable = ({
+  filterOption,
+  data,
+}: {
+  filterOption?: TOptions;
+  data?: TGroupProduct[];
+}) => {
   const { t } = useTranslation();
   const options: TOptions = {
     groupId: true,
@@ -59,6 +66,7 @@ const GroupProductTable = ({
   const HEADER = useMemo(
     () =>
       [
+        "#",
         options.groupId && t("group.groupId"),
         options.groupName && t("group.groupName"),
         options.note && t("note"),
