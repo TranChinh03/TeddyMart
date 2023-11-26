@@ -144,8 +144,15 @@
     "productInfo": "Thông tin sản phẩm",
     "searchProduct": "Tìm kiếm theo sản phẩm",
     "totalProduct": "Số lượng sản phẩm",
+    "image": "Hình ảnh",
     "price": "Giá tiền ",
-    "quantity": "Số lượng"
+    "quantity": "Số lượng",
+    "productPriceUp": "Giá sản phẩm: Thấp → Cao",
+    "productPriceDown": "Giá sản phẩm: Cao → Thấp", 
+    "productNameAZ": "Tên sản phẩm: A → Z",
+    "productNameZA": "Tên sản phẩm: Z → A",
+    "lastUpdateOldest": "Cập nhật lần cuối: Cũ nhất",
+    "lastUpdateNewest": "Cập nhật lần cuối: Mới nhất"
   },
   "group": {
     "groupId": "Mã nhóm",

@@ -46,17 +46,12 @@ export default function ProductScreen() {
         <div className="grid grid-cols-2 gap-4">
           <div className="flex justify-start">
             <div className="mx-2">
-              <ButtonSelect
-                iconRight={
-                  <IoMdArrowDropdown
-                    style={{ marginLeft: 50, color: "gray" }}
-                  />
-                }
-                title="All"
-                value={type}
-                setValue={setType}
-                options={["All", "Product", "Combo"]}
-              />
+              <ButtonComponent
+                  label={t("button.all")}
+                  onClick={() => alert("Button Clicked")}
+                  backgroundColor={COLORS.defaultWhite}
+                  color={COLORS.extra_gray}
+                />
             </div>
             <div className="mx-2">
               <SearchComponent

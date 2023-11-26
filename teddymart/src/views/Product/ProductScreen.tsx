@@ -32,54 +32,91 @@ export default function ProductScreen() {
   const [productGroup, setProductGroup] = useState();
   const [status, setStatus] = useState();
   const [storeManagement, setStoreManagement] = useState();
-  const [sort, setSort] = useState();
+  const OPTIONS = [
+    t("product.productNameAZ"),
+    t("product.productNameZA"),
+    t("product.productPriceDown"),
+    t("product.productPriceUp"),
+  ];
+  const [sort, setSort] = useState(OPTIONS[0]);
   const [openAddForm, setOpenAddForm] = useState(false);
   const [listFilter, setListFilter] = useState([
     {
+      id: 0,
       displayName: t("product.productId"),
       value: true,
     },
     {
+      id: 1,
       displayName: t("product.productName"),
       value: true,
     },
     {
+      id: 2,
       displayName: t("product.quantity"),
       value: true,
     },
     {
+      id: 3,
       displayName: t("product.productGroup"),
       value: true,
     },
     {
+      id: 4,
       displayName: t("product.productGroupName"),
       value: true,
     },
     {
+      id: 5,
       displayName: t("product.sell_price"),
       value: true,
     },
     {
+      id: 6,
       displayName: t("product.costPrice"),
       value: true,
     },
     {
+      id: 7,
       displayName: t("sale.totalPayment"),
       value: true,
     },
     {
+      id: 8,
       displayName: t("product.price"),
       value: true,
     },
     {
+      id:9,
       displayName: t("note"),
       value: true,
     },
     {
+      id: 10,
       displayName: t("activities"),
       value: true,
     },
+    {
+      id: 11,
+      displayName: t("product.image"),
+      value: true,
+    }
   ]);
+
+  const filterOptions = {
+    productId: true,
+    productName: listFilter[1].value,
+    productGroup: listFilter[3].value,
+    productGroupName: listFilter[4].value,
+    productImage: listFilter[11].value,
+    sell_price: listFilter[5].value,
+    costPrice: listFilter[6].value,
+    note: listFilter[9].value,
+    quantity: listFilter[2].value,
+    totalPrice: listFilter[7].value,
+    activities: listFilter[10].value,
+    price: listFilter[8].value
+  }
 
   return (
     <div className="w-full">
@@ -94,16 +131,11 @@ export default function ProductScreen() {
         <div className="grid grid-cols-2 gap-4">
           <div className="flex justify-start">
             <div className="mx-2">
-              <ButtonSelect
-                iconRight={
-                  <IoMdArrowDropdown
-                    style={{ marginLeft: 50, color: "gray" }}
-                  />
-                }
-                title="All"
-                value={type}
-                setValue={setType}
-                options={["All", "Product", "Combo"]}
+            <ButtonComponent
+                label={t("button.all")}
+                onClick={() => alert("Button Clicked")}
+                backgroundColor={COLORS.defaultWhite}
+                color={COLORS.extra_gray}
               />
             </div>
             <div className="mx-2">
@@ -120,7 +152,7 @@ export default function ProductScreen() {
               />
             </div>
           </div>
-          <div className="flex justify-around">
+          <div className="flex justify-end">
             <div>
               <ButtonComponent
                 label={t("button.delete")}
@@ -165,14 +197,7 @@ export default function ProductScreen() {
                 label={t("button.sortBy")}
                 value={sort}
                 setValue={setSort}
-                options={[
-                  "Name: A-Z",
-                  "Name: Z-A",
-                  "Price: Low-High",
-                  "Price: High-Low",
-                  "Last update: Oldest",
-                  "Last update: Latest",
-                ]}
+                options={OPTIONS}
               />
             </div>
 
@@ -194,7 +219,15 @@ export default function ProductScreen() {
           </div>
         </div>
         <div style={{ width: "100%", margin: "20px auto auto auto" }}>
-          <ProductTable productName={productName} />
+          <ProductTable 
+          productName={productName} 
+          filterOption={filterOptions}
+          sort={{
+            nameAscending: sort === OPTIONS[0],
+            nameDescending: sort === OPTIONS[1],
+            quantityAscending: sort === OPTIONS[2],
+            quantityDescending: sort === OPTIONS[3],
+          }}/>
         </div>
       </div>
       <Modal

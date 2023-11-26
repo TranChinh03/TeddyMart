@@ -166,7 +166,14 @@
     "searchProductFromOrder": "Search Product From Order",
     "searchProduct": "Search Product",
     "price": "Price",
-    "quantity": "Quantity"
+    "quantity": "Quantity",
+    "image": "Image",
+    "productPriceUp": "Product Price: Low → High",
+    "productPriceDown": "Product Price: High → Low", 
+    "productNameAZ": "Product Name: A → Z",
+    "productNameZA": "Product Name: Z → A",
+    "lastUpdateOldest": "Last Update: Cũ nhất",
+    "lastUpdateNewest": "Last Update: Mới nhất"
   },
   "warehouse": {
     "warehouse": "Warehouse",
