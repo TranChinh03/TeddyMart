@@ -71,7 +71,7 @@ const AddForm = ({
   const onAddOrder = async () => {
     const orderId = createOrderID();
     const data: TOrder = {
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(),
       debt: sum - discount - +payment,
       discount: discount,
       listProduct: listProduct,

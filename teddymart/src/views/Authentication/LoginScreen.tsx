@@ -46,109 +46,109 @@ export default function LoginScreen() {
   const onLogin: SubmitHandler<Inputs> = async (data) => {
     //console.log("submit");
     //console.log(data);
-    // setLoading(true);
-    // const snapshot = await getDocs(collection(db, "Manager"));
-    // const user = snapshot.docs.find(
-    //   (d) =>
-    //     d.data().email === data.userName || d.data().userName === data.userName
-    // );
-    // if (!user) {
-    //   setError("userName", {
-    //     type: "custom",
-    //     message: t("login.errUser"),
-    //   });
-    //   setLoading(false);
-    //   return;
-    // }
-    // if (data.userName.includes("@")) {
-    //   await signInWithEmailAndPassword(auth, data.userName, data.password)
-    //     .then(async (userCredential) => {
-    //       if (!userCredential.user.emailVerified) {
-    //         setError("userName", {
-    //           type: "custom",
-    //           message: t("login.errVerify"),
-    //         });
-    //         return;
-    //       }
-    //       await updateDoc(doc(db, "Manager", userCredential.user.uid), {
-    //         emailVerified: true,
-    //       });
-    //       await onFetchData(userCredential.user.uid);
-    //       window.localStorage.setItem("USER_ID", userCredential.user.uid);
-    //       //console.log("login success");
-    //     })
-    //     .catch((e) => {
-    //       setError("password", {
-    //         type: "custom",
-    //         message: t("login.wrongPassword"),
-    //       });
-    //       console.log(e);
-    //     });
-    // } else {
-    //   await signInWithEmailAndPassword(auth, user.data().email, data.password)
-    //     .then(async (userCredential) => {
-    //       if (!userCredential.user.emailVerified) {
-    //         setError("userName", {
-    //           type: "custom",
-    //           message: t("login.errVerify"),
-    //         });
-    //         return;
-    //       }
-    //       await updateDoc(doc(db, "Manager", userCredential.user.uid), {
-    //         emailVerified: true,
-    //       });
-    //       await onFetchData(userCredential.user.uid);
-    //       window.localStorage.setItem("USER_ID", userCredential.user.uid);
-    //     })
-    //     .catch((e) => {
-    //       setError("password", {
-    //         type: "custom",
-    //         message: t("login.wrongPassword"),
-    //       });
-    //       console.log(e);
-    //     });
-    // }
+    setLoading(true);
+    const snapshot = await getDocs(collection(db, "Manager"));
+    const user = snapshot.docs.find(
+      (d) =>
+        d.data().email === data.userName || d.data().userName === data.userName
+    );
+    if (!user) {
+      setError("userName", {
+        type: "custom",
+        message: t("login.errUser"),
+      });
+      setLoading(false);
+      return;
+    }
+    if (data.userName.includes("@")) {
+      await signInWithEmailAndPassword(auth, data.userName, data.password)
+        .then(async (userCredential) => {
+          if (!userCredential.user.emailVerified) {
+            setError("userName", {
+              type: "custom",
+              message: t("login.errVerify"),
+            });
+            return;
+          }
+          await updateDoc(doc(db, "Manager", userCredential.user.uid), {
+            emailVerified: true,
+          });
+          await onFetchData(userCredential.user.uid);
+          window.localStorage.setItem("USER_ID", userCredential.user.uid);
+          //console.log("login success");
+        })
+        .catch((e) => {
+          setError("password", {
+            type: "custom",
+            message: t("login.wrongPassword"),
+          });
+          console.log(e);
+        });
+    } else {
+      await signInWithEmailAndPassword(auth, user.data().email, data.password)
+        .then(async (userCredential) => {
+          if (!userCredential.user.emailVerified) {
+            setError("userName", {
+              type: "custom",
+              message: t("login.errVerify"),
+            });
+            return;
+          }
+          await updateDoc(doc(db, "Manager", userCredential.user.uid), {
+            emailVerified: true,
+          });
+          await onFetchData(userCredential.user.uid);
+          window.localStorage.setItem("USER_ID", userCredential.user.uid);
+        })
+        .catch((e) => {
+          setError("password", {
+            type: "custom",
+            message: t("login.wrongPassword"),
+          });
+          console.log(e);
+        });
+    }
     //setLoading(false);
 
     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    setLoading(true);
-    await Promise.all([
-      getData("/Manager/M001/Voucher").then((data: TVoucher[]) =>
-        dispatch(uploadVoucher(data))
-      ),
-      getData("/Manager/M001/Group_Product").then((data: TGroupProduct[]) =>
-        dispatch(uploadGroupProduct(data))
-      ),
-      new Promise((resolve) => {
-        getData("/Manager/M001/Product").then((data: TProduct[]) => {
-          dispatch(uploadProduct(data));
-          resolve(data);
-        });
-      }),
-      getData("/Manager/M001/Partner").then((data: TPartner[]) => {
-        dispatch(uploadPartner(data));
-      }),
-      getData("/Manager/M001/Ware_House").then((data: TWarehouse[]) => {
-        dispatch(uploadWarehouse(data));
-      }),
-      new Promise((resolve) => {
-        getData("/Manager/M001/Orders", "createdAt").then((data: TOrder[]) => {
-          dispatch(uploadOrder(data));
-          dispatch(uploadReport(generateReport(data)));
-          resolve(data);
-          //console.log(generateProduct(data));
-        });
-      }),
-    ]).then((values) => {
-      dispatch(
-        uploadReportProduct(
-          generateProduct(values[5] as TOrder[], values[2] as TProduct[])
-        )
-      );
-      //console.log("VALUES", values[2], values[5]);
-      setLoading(false);
-      navigate(NAV_LINK.SALE);
-    });
+    //setLoading(true);
+    // await Promise.all([
+    //   getData("/Manager/M001/Voucher").then((data: TVoucher[]) =>
+    //     dispatch(uploadVoucher(data))
+    //   ),
+    //   getData("/Manager/M001/Group_Product").then((data: TGroupProduct[]) =>
+    //     dispatch(uploadGroupProduct(data))
+    //   ),
+    //   new Promise((resolve) => {
+    //     getData("/Manager/M001/Product").then((data: TProduct[]) => {
+    //       dispatch(uploadProduct(data));
+    //       resolve(data);
+    //     });
+    //   }),
+    //   getData("/Manager/M001/Partner").then((data: TPartner[]) => {
+    //     dispatch(uploadPartner(data));
+    //   }),
+    //   getData("/Manager/M001/Ware_House").then((data: TWarehouse[]) => {
+    //     dispatch(uploadWarehouse(data));
+    //   }),
+    //   new Promise((resolve) => {
+    //     getData("/Manager/M001/Orders", "createdAt").then((data: TOrder[]) => {
+    //       dispatch(uploadOrder(data));
+    //       dispatch(uploadReport(generateReport(data)));
+    //       resolve(data);
+    //       //console.log(generateProduct(data));
+    //     });
+    //   }),
+    // ]).then((values) => {
+    //   dispatch(
+    //     uploadReportProduct(
+    //       generateProduct(values[5] as TOrder[], values[2] as TProduct[])
+    //     )
+    //   );
+    //   //console.log("VALUES", values[2], values[5]);
+    //   setLoading(false);
+    //   navigate(NAV_LINK.SALE);
+    // });
   };
 
   const onFetchData = async (userId: string) => {
