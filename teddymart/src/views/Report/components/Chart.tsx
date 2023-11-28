@@ -77,8 +77,7 @@ function Chart({ time, options }: Props) {
   const GAPS = [t("report.day"), t("report.month"), t("report.year")];
   //const ORDERS = useSelector((state: RootState) => state.order);
   const REPORTS = useSelector((state: RootState) => state.reportSlice);
-  const [data, setData] = useState<TReport[]>([]);
-  useEffect(() => {
+  const DATA: TReport[] = useMemo(() => {
     let tmp: TReport[] = [];
     if (gap === 0) {
       REPORTS?.byDate?.forEach((r) => {
@@ -110,7 +109,7 @@ function Chart({ time, options }: Props) {
         }
       });
     }
-    setData(tmp.reverse());
+    return tmp.reverse();
   }, [time, REPORTS, gap]);
 
   const tickFormat = useCallback(
@@ -174,7 +173,7 @@ function Chart({ time, options }: Props) {
         </div>
       </div>
       {/* Chart */}
-      {data.length === 0 ? (
+      {DATA.length === 0 ? (
         <div className="flex w-full justify-center items-center flex-col">
           <img
             src={require("assets/images/nodata.jpg")}
@@ -184,10 +183,10 @@ function Chart({ time, options }: Props) {
           <div className="text-txt_lightgrey">{t("noData")}</div>
         </div>
       ) : (
-        <div className="p-5">
-          <ResponsiveContainer width={"100%"} height={500}>
+        <div className="p-5" style={{ overflowX: "auto", width: "100%" }}>
+          <ResponsiveContainer minWidth={"100%"} height={500}>
             <LineChart
-              data={data}
+              data={DATA}
               margin={{
                 top: 5,
                 right: 30,
