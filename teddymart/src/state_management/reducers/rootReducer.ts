@@ -15,7 +15,7 @@ export type RootState = {
   warehouseSlice: TWarehouse[];
   product: TProduct[];
   groupProduct: TGroupProduct[];
-  manager: TManager[];
+  manager: TManager;
   order: TOrder[];
   reportSlice: TReportSlice;
   controlSlice: TControl;

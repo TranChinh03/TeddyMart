@@ -104,7 +104,9 @@
     "expirationDate": "Ngày hết hạn",
     "discountAmount": "Số lượng giảm giá",
     "note": "Ghi chú",
-    "voucherInfo": "Thông tin sản phẩm"
+    "voucherInfo": "Thông tin mã giảm giá",    
+    "placeholderNote":"Nhập ghi chú"
+
   },
   "partner": {
     "customer": "Khách hàng",

@@ -63,7 +63,7 @@ declare type TOrder = {
   orderId: string;
   partnerId: string;
   partnerName: string;
-  createdAt?: Date;
+  createdAt?: string;
   payment: number;
   discount?: number;
   totalPayment: number;

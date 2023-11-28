@@ -125,7 +125,8 @@
     "expirationDate": "Expiration Date",
     "discountAmount": "Discount Amount",
     "voucherInfo": "Voucher Information",
-    "note": "Note"
+    "note": "Note",
+    "placeholderNote":"Enter your note"
   },
   "partner": {
     "customer": "Customer",

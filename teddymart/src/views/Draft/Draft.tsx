@@ -24,7 +24,6 @@ import { addDbGroupProduct } from "firebase-tools/addDbGroupProduct";
 import {
   BillTable,
   GroupProductTable,
-  ManagerTable,
   PartnerTable,
   ProductTable,
   VoucherTable,
