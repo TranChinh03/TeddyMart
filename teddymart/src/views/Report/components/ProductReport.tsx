@@ -1,8 +1,8 @@
 import { ModalSelectDate, SearchComponent } from "components";
-import { ButtonComponent } from "components";
+import { ButtonComponent, BtnExport } from "components";
 import TextComponent from "components/TextComponent";
 import { COLORS } from "constants/colors";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ReportProductTable } from "components/TableComponent";
 import { useSelector } from "react-redux";
@@ -16,7 +16,7 @@ export default function ProductReport() {
   });
   const [search, setSearch] = useState("");
   const PRODUCTS = useSelector((state: RootState) => state.reportProduct);
-
+  const productRef = useRef(null);
   return (
     <div className="bg-white border-1.5 mx-5 my-1.5 rounded-md">
       <div className="divide-y">
@@ -52,16 +52,15 @@ export default function ProductReport() {
               width={"250px"}
             />
           </div>
-          <ButtonComponent
-            onClick={() => {}}
-            label={t("button.exportReport")}
-            backgroundColor={COLORS.mediumBlack}
-            color={COLORS.defaultWhite}
-            iconLeft={<LiaFileExcel size={20} color="white" />}
+
+          <BtnExport
+            fileName={t("drawer.product")}
+            sheet="Sheet1"
+            tableRef={productRef}
           />
         </div>
         <div className="w-[98%] self-center flex mx-auto">
-          <ReportProductTable data={PRODUCTS} />
+          <ReportProductTable data={PRODUCTS} ref={productRef} />
         </div>
       </div>
     </div>

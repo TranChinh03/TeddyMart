@@ -1,9 +1,9 @@
-import { ModalSelectDate } from "components";
+import { ModalSelectDate, BtnExport } from "components";
 import ButtonComponent from "components/ButtonComponent";
 import GeneralReportTable from "components/TableComponent/components/GeneralReportTable";
 import TextComponent from "components/TextComponent";
 import { COLORS } from "constants/colors";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { LiaFileExcel } from "react-icons/lia";
 export default function GeneralReport() {
@@ -12,7 +12,7 @@ export default function GeneralReport() {
     from: new Date(),
     to: new Date(),
   });
-
+  const reportRef = useRef(null);
   return (
     <div className="bg-white border-1.5 mx-5 my-1.5 rounded-md">
       <div className="divide-y">
@@ -29,17 +29,22 @@ export default function GeneralReport() {
         <div className="w-full py-2 px-3 flex items-center justify-between flex-wrap">
           <ModalSelectDate setResult={setDate} width={"90%"} />
 
-          <ButtonComponent
+          {/* <ButtonComponent
             onClick={() => {}}
             label={t("button.exportReport")}
             backgroundColor={COLORS.mediumBlack}
             color={COLORS.defaultWhite}
             iconLeft={<LiaFileExcel size={20} color="white" />}
+          /> */}
+          <BtnExport
+            fileName={t("drawer.report")}
+            sheet="sheet1"
+            tableRef={reportRef}
           />
         </div>
       </div>
       <div className="w-[98%] self-center flex mx-auto">
-        <GeneralReportTable date={date} />
+        <GeneralReportTable date={date} ref={reportRef} />
       </div>
     </div>
   );

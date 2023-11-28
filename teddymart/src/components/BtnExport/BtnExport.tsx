@@ -4,13 +4,13 @@ import { DownloadTableExcel, downloadExcel } from "react-export-table-to-excel";
 import { useTranslation } from "react-i18next";
 import { LiaFileExcel } from "react-icons/lia";
 type Props = {
-  fileName: string;
-  sheet: string;
+  fileName?: string;
+  sheet?: string;
   tableRef: any;
 };
 export default function BtnExport({
-  fileName = "report",
-  sheet = "report",
+  fileName = "sheet1",
+  sheet = "sheet1",
   tableRef,
 }: Props) {
   const { t } = useTranslation();

@@ -22,6 +22,8 @@ import { Divider } from "antd";
 import { COLORS } from "constants/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
+import { auth } from "firebaseConfig";
+import { signOut } from "firebase/auth";
 type DrawerItemProps = {
   name?: string;
   link?: string;
@@ -139,9 +141,11 @@ export default function Drawer() {
         style={{ borderWidth: 0 }}
         onClick={(e) => {
           if (e.key === "SignOut") {
-            dispatch({ type: "RESET_ALL_STORES" });
-            navigate(NAV_LINK.LOGIN);
-            window.localStorage.removeItem("USER_ID");
+            signOut(auth).then(() => {
+              navigate(NAV_LINK.LOGIN);
+              dispatch({ type: "RESET_ALL_STORES" });
+              window.localStorage.removeItem("USER_ID");
+            });
           } else {
             navigate(e.key);
             setCurrentTab(e.key);
