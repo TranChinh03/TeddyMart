@@ -28,7 +28,7 @@ import ReportProductTable from "components/TableComponent/components/ReportProdu
 import TextInputComponent from "components/TextInputComponent";
 import { COLORS } from "constants/colors";
 import { title } from "process";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BiDotsVerticalRounded,
@@ -51,7 +51,7 @@ import { IoAlertCircleOutline } from "react-icons/io5";
 import AddForm from "./components/AddForm";
 import SearchProductForm from "./components/SearchProductForm";
 import AlertDelete from "./components/AlertDelete";
-
+import { BtnExport } from "components";
 const { RangePicker } = DatePicker;
 const CUS_INFO = {
   customerName: "NVA",
@@ -130,6 +130,8 @@ export default function SaleScreen() {
     setOpenAlertModal(true);
   };
 
+  const orderRef = useRef(null);
+
   return (
     <div className="w-full">
       {/*Body */}
@@ -166,11 +168,16 @@ export default function SaleScreen() {
               style={{ backgroundColor: "#EA5A47", marginInline: 12 }}
               iconLeft={<BiTrash size={20} color="white" />}
             />
-            <ButtonComponent
+            {/* <ButtonComponent
               label={t("button.exportExcel")}
               onClick={() => {}}
               style={{ backgroundColor: "#211F30", marginRight: 12 }}
               iconLeft={<LiaFileExcel size={20} color="white" />}
+            /> */}
+            <BtnExport
+              fileName={t("drawer.sale")}
+              sheet={t("drawer.sale")}
+              tableRef={orderRef}
             />
             <ButtonComponent
               label={t("button.addNew")}
@@ -180,7 +187,7 @@ export default function SaleScreen() {
               iconLeft={<BiPlus size={20} color="white" />}
             />
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center ">
             <Space direction="horizontal" size={10}>
               <DropdownComponent
                 value={sort}
@@ -210,6 +217,7 @@ export default function SaleScreen() {
             sort={+sort}
             filterOption={objectFilter}
             setOpenAlertModal={setOpenAlertModal}
+            ref={orderRef}
           />
         </Space>
       </body>

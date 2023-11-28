@@ -24,9 +24,12 @@ import {
   query,
   where,
   or,
+  getDoc,
 } from "firebase/firestore";
 import { db, auth } from "firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { uploadManager } from "state_management/slices/managerSlice";
+
 type Inputs = {
   userName: string;
   password: string;
@@ -97,6 +100,11 @@ export default function LoginScreen() {
           await updateDoc(doc(db, "Manager", userCredential.user.uid), {
             emailVerified: true,
           });
+          await getDoc(doc(db, "Manager", userCredential.user.uid)).then(
+            (d) => {
+              dispatch(uploadManager(d.data() as TManager));
+            }
+          );
           await onFetchData(userCredential.user.uid);
           window.localStorage.setItem("USER_ID", userCredential.user.uid);
         })
@@ -105,6 +113,7 @@ export default function LoginScreen() {
             type: "custom",
             message: t("login.wrongPassword"),
           });
+          setLoading(false);
           console.log(e);
         });
     }

@@ -9,6 +9,7 @@ import SearchComponent from "./SearchComponent";
 import SwitchComponent from "./SwitchComponent/SwitchComponent";
 import TextInputComponent from "./TextInputComponent";
 import ModalSelectDate from "./ModalSelectDate";
+import BtnExport from "./BtnExport/BtnExport";
 export {
   ButtonComponent,
   ButtonSelect,
@@ -21,4 +22,5 @@ export {
   SwitchComponent,
   TextInputComponent,
   ModalSelectDate,
+  BtnExport,
 };
