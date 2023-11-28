@@ -146,9 +146,9 @@ const ProductTable = ({
     //console.log(warehouseName, productName);
     let listProducts: TProduct[] = [...products];
     if (warehouseName) {
-      const listProductWarehouse = warehouses.filter(
-        (value) => value.warehouseName === warehouseName
-      )[0].listProduct;
+      const listProductWarehouse =
+        warehouses.filter((value) => value.warehouseName === warehouseName)[0]
+          ?.listProduct ?? [];
       let productFilterProductTable = listProductWarehouse.map((value) => {
         let tmp = listProducts.findIndex(
           (warehouse) => warehouse.productId === value.productId
@@ -213,7 +213,7 @@ const ProductTable = ({
       listProducts = tmp;
     }
 
-    return listProducts;
+    return listProducts ?? [];
   }, [warehouseName, productName, sort, filterListProduct, products]);
   const options: TOptions = {
     productId: true,

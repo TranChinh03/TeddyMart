@@ -687,7 +687,9 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
                       {options.listProduct && (
                         <td className="border border-gray-300 p-2 text-sm">
                           <Button
-                            onClick={() => onOpenListModal(content.listProduct)}
+                            onClick={() =>
+                              onOpenListModal(content?.listProduct ?? [])
+                            }
                           >
                             <BiDetail />
                           </Button>
