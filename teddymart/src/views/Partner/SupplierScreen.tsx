@@ -161,12 +161,6 @@ export default function CustomerScreen() {
         <div className="relative">
           <div className="bg-white w-full py-2 flex items-center justify-between flex-wrap gap-x-8 pb-8">
             <div className="w-100% bg-white flex items-center justify-between py-2 gap-x-2 ">
-              <ButtonComponent
-                label={t("button.all")}
-                onClick={() => alert("Button Clicked")}
-                backgroundColor={COLORS.defaultWhite}
-                color={COLORS.extra_gray}
-              />
               <SearchComponent
                 placeholder={t("supplier.insertNameToSearch")}
                 search={search}
