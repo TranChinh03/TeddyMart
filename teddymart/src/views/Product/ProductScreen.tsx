@@ -21,6 +21,7 @@ import { RootState } from "state_management/reducers/rootReducer";
 import { ListCheckBox } from "components";
 import { t } from "i18next";
 import { Divider, Modal, Space } from "antd";
+import AddNewProduct from "./components/AddNewProduct";
 
 export default function ProductScreen() {
   const [search, setSearch] = useState("");
@@ -87,7 +88,7 @@ export default function ProductScreen() {
       value: true,
     },
     {
-      id:9,
+      id: 9,
       displayName: t("note"),
       value: true,
     },
@@ -100,7 +101,7 @@ export default function ProductScreen() {
       id: 11,
       displayName: t("product.image"),
       value: true,
-    }
+    },
   ]);
 
   const filterOptions = {
@@ -115,8 +116,8 @@ export default function ProductScreen() {
     quantity: listFilter[2].value,
     totalPrice: listFilter[7].value,
     activities: listFilter[10].value,
-    price: listFilter[8].value
-  }
+    price: listFilter[8].value,
+  };
 
   return (
     <div className="w-full">
@@ -131,7 +132,7 @@ export default function ProductScreen() {
         <div className="grid grid-cols-2 gap-4">
           <div className="flex justify-start">
             <div className="mx-2">
-            <ButtonComponent
+              <ButtonComponent
                 label={t("button.all")}
                 onClick={() => alert("Button Clicked")}
                 backgroundColor={COLORS.defaultWhite}
@@ -219,140 +220,22 @@ export default function ProductScreen() {
           </div>
         </div>
         <div style={{ width: "100%", margin: "20px auto auto auto" }}>
-          <ProductTable 
-          productName={productName} 
-          filterOption={filterOptions}
-          sort={{
-            nameAscending: sort === OPTIONS[0],
-            nameDescending: sort === OPTIONS[1],
-            quantityAscending: sort === OPTIONS[2],
-            quantityDescending: sort === OPTIONS[3],
-          }}/>
+          <ProductTable
+            productName={productName}
+            filterOption={filterOptions}
+            sort={{
+              nameAscending: sort === OPTIONS[0],
+              nameDescending: sort === OPTIONS[1],
+              quantityAscending: sort === OPTIONS[2],
+              quantityDescending: sort === OPTIONS[3],
+            }}
+          />
         </div>
       </div>
-      <Modal
-        title={<h1 className="text-2xl">{t("product.addNewProduct")}</h1>}
-        width={"60%"}
-        open={openAddForm}
-        onCancel={() => setOpenAddForm(false)}
-        footer={false}
-      >
-        <Divider style={{ backgroundColor: "black" }} />
-        <div className="grid grid-cols-4">
-          <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
-            {t("product.productGroup")}{" "}
-            <p className="inline-block text-red-600">*</p>
-          </label>
-          <div className="col-span-3 inline-block">
-            <ButtonSelect
-              iconRight={
-                <IoMdArrowDropdown style={{ marginLeft: 50, color: "gray" }} />
-              }
-              width="100%"
-              title="All"
-              label={t("group.groupName")}
-              value={productGroup}
-              setValue={setProductGroup}
-              options={GROUP.map((item) => item.groupName)}
-            />
-          </div>
-
-          <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
-            {t("product.productName")}{" "}
-            <p className="inline-block text-red-600">*</p>
-          </label>
-          <div className="col-span-3 inline-block">
-            <input
-              type="text"
-              className="border text-gray-900 text-sm rounded-lg block w-full m-2 p-2"
-              required
-            />
-          </div>
-
-          <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
-            {t("product.productImage")}{" "}
-            <p className="inline-block text-red-600">*</p>
-          </label>
-          <div className="col-span-3 inline-block">
-            <div
-              style={{
-                padding: "5px",
-                border: "1px solid gray",
-                borderRadius: "10px",
-                width: "fit-content",
-              }}
-              className="cursor-pointer m-auto"
-            >
-              <img src={require("../../assets/images/Camera.png")} />
-            </div>
-          </div>
-
-          <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
-            {t("product.price")} <p className="inline-block text-red-600">*</p>
-          </label>
-          <div className="col-span-3 inline-block">
-            <input
-              type="text"
-              className="border text-gray-900 text-sm rounded-lg block w-full m-2 p-2"
-              required
-            />
-          </div>
-
-          <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
-            {t("product.sell_price")}{" "}
-            <p className="inline-block text-red-600">*</p>
-          </label>
-          <div className="col-span-3 inline-block">
-            <input
-              type="text"
-              className="border text-gray-900 text-sm rounded-lg block w-full m-2 p-2"
-              required
-            />
-          </div>
-
-          <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
-            {t("product.VAT")}
-          </label>
-          <div className="col-span-3 inline-block">
-            <input
-              type="text"
-              className="border text-gray-900 text-sm rounded-lg block w-full m-2 p-2"
-              required
-            />
-          </div>
-
-          <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
-            {t("note")}
-          </label>
-          <div className="col-span-3 inline-block">
-            <input
-              type="text"
-              className="border text-gray-900 text-sm rounded-lg block w-full m-2 p-2"
-              required
-            />
-          </div>
-        </div>
-        <div className="flex mt-10 items-center justify-center">
-          <Space>
-            <ButtonComponent
-              label={t("button.save")}
-              onClick={() => {}}
-              backgroundColor="#9A9A9A"
-            />
-            <ButtonComponent
-              label={t("button.cancel")}
-              onClick={() => {
-                setOpenAddForm(false);
-              }}
-              style={{
-                backgroundColor: "white",
-                borderWidth: 1,
-                color: "#9A9A9A",
-              }}
-            />
-          </Space>
-        </div>
-      </Modal>
+      <AddNewProduct
+        openAddForm={openAddForm}
+        setOpenAddForm={setOpenAddForm}
+      />
     </div>
   );
 }

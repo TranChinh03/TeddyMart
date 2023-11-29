@@ -15,6 +15,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { addNewOrder } from "state_management/slices/orderSlice";
 import { createOrderID } from "utils/appUtils";
+import AddNewCustomerForm from "./AddNewCustomer";
+import AddNewProduct from "views/Product/components/AddNewProduct";
 const CUS_INFO = {
   customerName: "NVA",
   gender: "Male",
@@ -43,6 +45,8 @@ const AddForm = ({
   const [voucher, setVoucher] = useState("");
   const [payment, setPayment] = useState("");
   const [note, setNote] = useState("");
+  const [openAddCustomerForm, setOpenAddCustomerForm] = useState(false);
+  const [openAddProductForm, setOpenAddProductForm] = useState(false);
   const listWarehouseName = useSelector(
     (state: RootState) => state.warehouseSlice
   ).map((value) => value.warehouseName);
@@ -118,7 +122,7 @@ const AddForm = ({
           />
           <ButtonComponent
             label={t("partner.addNewCustomer")}
-            onClick={() => {}}
+            onClick={() => setOpenAddCustomerForm(true)}
           />
         </div>
         <div className="grid grid-cols-4 gap-3 my-5">
@@ -176,7 +180,7 @@ const AddForm = ({
           />
           <ButtonComponent
             label={t("product.addNewProduct")}
-            onClick={() => {}}
+            onClick={() => setOpenAddProductForm(true)}
           />
         </div>
         <div className="my-5">
@@ -264,6 +268,14 @@ const AddForm = ({
           fontSize={26}
         />
       </div>
+      <AddNewCustomerForm
+        openAddNewCustomer={openAddCustomerForm}
+        setOpenAddNewCustomer={setOpenAddCustomerForm}
+      />
+      <AddNewProduct
+        openAddForm={openAddProductForm}
+        setOpenAddForm={setOpenAddProductForm}
+      />
     </Modal>
   );
 };
