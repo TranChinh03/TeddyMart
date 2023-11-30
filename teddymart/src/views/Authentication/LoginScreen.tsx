@@ -118,10 +118,10 @@ export default function LoginScreen() {
           console.log(e);
         });
     }
-    //setLoading(false);
+    setLoading(false);
 
     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    //setLoading(true);
+    // setLoading(true);
     // await Promise.all([
     //   getData("/Manager/M001/Voucher").then((data: TVoucher[]) =>
     //     dispatch(uploadVoucher(data))
@@ -150,11 +150,7 @@ export default function LoginScreen() {
     //     });
     //   }),
     // ]).then((values) => {
-    //   dispatch(
-    //     uploadReportProduct(
-    //       generateProduct(values[5] as TOrder[], values[2] as TProduct[])
-    //     )
-    //   );
+    //   dispatch(uploadReportProduct(generateProduct(values[5] as TOrder[])));
     //   //console.log("VALUES", values[2], values[5]);
     //   setLoading(false);
     //   navigate(NAV_LINK.SALE);
@@ -190,12 +186,9 @@ export default function LoginScreen() {
         });
       }),
     ]).then((values) => {
-      dispatch(
-        uploadReportProduct(
-          generateProduct(values[5] as TOrder[], values[2] as TProduct[])
-        )
-      );
+      dispatch(uploadReportProduct(generateProduct(values[5] as TOrder[])));
       //console.log("VALUES", values[2], values[5]);
+      //console.log(generateProduct(values[5] as TOrder[]));
       setLoading(false);
       navigate(NAV_LINK.SALE);
     });

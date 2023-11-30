@@ -45,17 +45,6 @@ export default function Warehouse() {
       <div className="bg-white border-1.5 mx-5 my-1.5 rounded-md px-3 py-5">
         <div className="w-full justify-between items-center flex flex-wrap">
           <div className="flex">
-            <ButtonComponent
-              onClick={() => {}}
-              label={t("button.all")}
-              backgroundColor={COLORS.defaultWhite}
-              color={COLORS.txt_lightgrey}
-              style={{
-                borderColor: COLORS.lightGray,
-                borderWidth: 1.5,
-              }}
-            />
-            <div className="w-3" />
             <SearchComponent
               search={search}
               setSearch={setSearch}
@@ -64,13 +53,6 @@ export default function Warehouse() {
             />
           </div>
           <div className="flex">
-            <ButtonComponent
-              onClick={() => {}}
-              label={t("button.delete")}
-              backgroundColor={COLORS.checkbox_bg}
-              style={{ borderWidth: 0 }}
-            />
-            <div className="w-3" />
             <ButtonComponent
               onClick={() => {}}
               label={t("button.exportExcel")}

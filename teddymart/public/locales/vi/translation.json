@@ -94,7 +94,10 @@
     "placeholderSearch": "Tìm kiếm đơn hàng và thông tin khách hàng",
     "addNewOrder": "Thêm đơn hàng mới",
     "customerInfo": "Thông tin khách hàng",
-    "searchCusPhoneNumber": "Tìm thông tin khách hàng theo số điện thoại"
+    "searchCusPhoneNumber": "Tìm thông tin khách hàng theo số điện thoại",
+    "import": "Hàng nhập",
+    "export": "Hàng xuất",
+    "stock": "Tồn kho"
   },
   "voucher": {
     "searchVoucher": "Tìm kiếm theo tên voucher",
@@ -104,9 +107,8 @@
     "expirationDate": "Ngày hết hạn",
     "discountAmount": "Số lượng giảm giá",
     "note": "Ghi chú",
-    "voucherInfo": "Thông tin mã giảm giá",    
-    "placeholderNote":"Nhập ghi chú"
-
+    "voucherInfo": "Thông tin mã giảm giá",
+    "placeholderNote": "Nhập ghi chú"
   },
   "partner": {
     "customer": "Khách hàng",
@@ -150,7 +152,7 @@
     "price": "Giá tiền ",
     "quantity": "Số lượng",
     "productPriceUp": "Giá sản phẩm: Thấp → Cao",
-    "productPriceDown": "Giá sản phẩm: Cao → Thấp", 
+    "productPriceDown": "Giá sản phẩm: Cao → Thấp",
     "productNameAZ": "Tên sản phẩm: A → Z",
     "productNameZA": "Tên sản phẩm: Z → A",
     "lastUpdateOldest": "Cập nhật lần cuối: Cũ nhất",
@@ -289,8 +291,8 @@
   "warningTxt": "Bạn có chắc chắn muốn xóa mục này?",
   "noData": "Không có dữ liệu",
   "rowsPerPage": "Số mục mỗi trang: ",
-  "alertTitle":"Bạn có chắc chắn?",
-  "alertContent":"Xác nhận rằng bạn sẽ xóa mục này ra khỏi hệ thống",
+  "alertTitle": "Bạn có chắc chắn?",
+  "alertContent": "Xác nhận rằng bạn sẽ xóa mục này ra khỏi hệ thống",
   "header": {
     "sale": "Đơn hàng",
     "product": "Sản phẩm",
@@ -303,5 +305,6 @@
     "importOrder": "Đơn nhập hàng",
     "voucher": "Phiếu giảm giá",
     "groupProduct": "Nhóm sản phẩm"
-  }
+  },
+  "on": "trên"
 }

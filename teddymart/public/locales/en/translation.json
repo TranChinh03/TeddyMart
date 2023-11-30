@@ -108,9 +108,9 @@
     "totalPayment": "Total Payment",
     "status": "Status",
     "debt": "Debt",
-    "addNewOrder":"Add New Order",
+    "addNewOrder": "Add New Order",
     "customerInfo": "Customer Information",
-
+    "searchCusPhoneNumber": "Search customer by phone number",
     "note": "Note",
     "receiver": "Receiver",
     "listProduct": "List Product",
@@ -126,7 +126,7 @@
     "discountAmount": "Discount Amount",
     "voucherInfo": "Voucher Information",
     "note": "Note",
-    "placeholderNote":"Enter your note"
+    "placeholderNote": "Enter your note"
   },
   "partner": {
     "customer": "Customer",
@@ -170,7 +170,7 @@
     "quantity": "Quantity",
     "image": "Image",
     "productPriceUp": "Product Price: Low → High",
-    "productPriceDown": "Product Price: High → Low", 
+    "productPriceDown": "Product Price: High → Low",
     "productNameAZ": "Product Name: A → Z",
     "productNameZA": "Product Name: Z → A",
     "lastUpdateOldest": "Last Update: Cũ nhất",
@@ -255,7 +255,10 @@
     "createdAt": "Created At",
     "product": "Product",
     "quantity": "Quantity",
-    "date": "Date"
+    "date": "Date",
+    "import": "Import",
+    "export": "Export",
+    "stock": "Stock"
   },
   "warningTxt": "Confirm you will delete this section from the system!",
   "customer": {
@@ -299,8 +302,8 @@
 
   "noData": "No data",
   "rowsPerPage": "Number of rows per page: ",
-  "alertTitle":"Are you sure?",
-  "alertContent":"Confirm you will delete this section from the system!",
+  "alertTitle": "Are you sure?",
+  "alertContent": "Confirm you will delete this section from the system!",
   "header": {
     "sale": "Sale",
     "product": "Product",
@@ -313,5 +316,6 @@
     "importOrder": "Import Order",
     "voucher": "Voucher",
     "groupProduct": "Group Product"
-  }
+  },
+  "on": "on"
 }

@@ -7,6 +7,8 @@ import {
   HiOutlineChevronLeft,
   HiOutlineChevronRight,
 } from "react-icons/hi2";
+import { useSelector } from "react-redux";
+import { RootState } from "state_management/reducers/rootReducer";
 type TContent = {
   productId: string;
   productName: string;
@@ -89,23 +91,24 @@ type TContent = {
 type TOptions = {
   productId?: boolean;
   productName?: boolean;
-  quantity?: boolean;
-  revenue?: boolean;
-  profit?: boolean;
+  import?: boolean;
+  export?: boolean;
+  stock?: boolean;
 };
 type Props = {
   filterOption?: TOptions;
-  data?: TReportProduct[];
+  date: D;
+  search?: string;
 };
 const ReportProductTable = forwardRef<HTMLTableElement, Props>(
-  ({ filterOption, data }: Props, ref) => {
+  ({ filterOption, date, search }: Props, ref) => {
     const { t } = useTranslation();
     const options: TOptions = {
       productId: true,
       productName: true,
-      quantity: true,
-      revenue: true,
-      profit: true,
+      import: true,
+      export: true,
+      stock: true,
       ...filterOption,
     };
     const HEADER = useMemo(
@@ -113,16 +116,47 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
         [
           options.productId && t("product.ID"),
           options.productName && t("product.productName"),
-          options.quantity && t("report.quantity"),
-          options.revenue && t("report.revenue"),
-          options.profit && t("report.profit"),
+          options.import && t("report.quantity"),
+          options.export && t("report.revenue"),
+          options.stock && t("report.profit"),
         ].filter((value) => Boolean(value) !== false),
       [t, options]
     );
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const PRODUCTS = useSelector((state: RootState) => state.reportProduct);
+
+    const data = useMemo(() => {
+      let tmp: TRProduct[] = [];
+      PRODUCTS.forEach((p) => {
+        if (
+          new Date(p.date).getTime() > date.from.getTime() &&
+          new Date(p.date).getTime() < date.to.getTime()
+        ) {
+          if (tmp.length === 0) {
+            tmp = [...p.products];
+          } else {
+            p.products.forEach((item) => {
+              let index = tmp.findIndex((t) => t.productId === item.productId);
+              if (index) {
+                tmp.push(item);
+              } else {
+                tmp[index].export += item.export;
+                tmp[index].import += item.import;
+                tmp[index].stock += item.import - item.export;
+              }
+            });
+          }
+        }
+      });
+      if (search !== "") {
+        return tmp.filter((t) => t.productName.includes(search));
+      }
+      return tmp;
+    }, [PRODUCTS, date, search]);
+
+    //console.log("DATA", data);
 
     const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
-      console.log("okkkkk");
       setRowsPerPage(+e.target.value);
     };
     const maxPages = useMemo(
@@ -183,19 +217,19 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
                           {content.productName}
                         </td>
                       )}
-                      {options.quantity && (
+                      {options.import && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content.quantity}
+                          {content.import}
                         </td>
                       )}
-                      {options.revenue && (
+                      {options.export && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content.revenue}
+                          {content.export}
                         </td>
                       )}
-                      {options.profit && (
+                      {options.stock && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content.profit}
+                          {content.stock}
                         </td>
                       )}
                     </tr>
@@ -211,11 +245,11 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
             onChange={handleRowsPerPageChange}
             className=" bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:bg-white "
           >
-            <option value="10">10</option>
-            <option value="20" selected>
-              20
+            <option value="5">5</option>
+            <option value="10" selected>
+              10
             </option>
-            <option value="50">50</option>
+            <option value="15">15</option>
           </select>
 
           <div className="ml-4 flex items-center">

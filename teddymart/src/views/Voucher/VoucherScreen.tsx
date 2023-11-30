@@ -21,7 +21,6 @@ function VoucherScreen() {
   };
   return (
     <div className="w-full">
-      {/* <Header width={"100%"} title="Voucher" /> */}
       <body
         className="bg-white border-2 p-5 m-1.5 rounded-md"
         style={{

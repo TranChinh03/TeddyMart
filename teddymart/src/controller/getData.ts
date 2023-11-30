@@ -146,25 +146,77 @@ const generateReport = (data: TOrder[]) => {
   };
 };
 
-const generateProduct = (data: TOrder[], product: TProduct[]) => {
+// const generateProduct = (data: TOrder[], product: TProduct[]) => {
+//   let result = new Map<string, TReportProduct>();
+//   data.forEach((d: TOrder) => {
+//     if (d.status === "paid" && d.type === "Export") {
+//       d.listProduct?.forEach((item) => {
+//         if (!result.has(item.productId)) {
+//           result.set(item.productId, { ...item });
+//         } else {
+//           result.get(item.productId).quantity += item.quantity;
+//         }
+//       });
+//     }
+//   });
+
+//   result.forEach((r) => {
+//     let tmp = product.find((p) => p.productId === r.productId);
+//     r.revenue = r.quantity * tmp.sell_price;
+//     r.profit = r.quantity * tmp.sell_price - r.quantity * tmp.cost_price;
+//   });
+//   return Array.from(result, ([_, item]) => ({ ...item }));
+// };
+
+const generateProduct = (data: TOrder[]) => {
   let result = new Map<string, TReportProduct>();
   data.forEach((d: TOrder) => {
-    if (d.status === "paid" && d.type === "Export") {
+    const isExport = d.type === "Export" ? true : false;
+    if (!result.has(new Date(d.createdAt).toDateString())) {
+      result.set(new Date(d.createdAt).toDateString(), {
+        date: d.createdAt,
+        products: d.listProduct.map((item) => ({
+          productId: item.productId,
+          productName: item.productName,
+          import: isExport ? 0 : item.quantity,
+          export: isExport ? item.quantity : 0,
+        })),
+      });
+    } else {
+      let tmp = result.get(new Date(d.createdAt).toDateString()).products;
       d.listProduct?.forEach((item) => {
-        if (!result.has(item.productId)) {
-          result.set(item.productId, { ...item });
+        let index = tmp.findIndex((t) => t.productId === item.productId);
+        if (index === -1) {
+          tmp.push({
+            productId: item.productId,
+            productName: item.productName,
+            import: isExport ? 0 : item.quantity,
+            export: isExport ? item.quantity : 0,
+          });
         } else {
-          result.get(item.productId).quantity += item.quantity;
+          if (isExport) {
+            tmp[index].export += item.quantity;
+          } else {
+            tmp[index].import += item.quantity;
+          }
         }
+      });
+      result.set(new Date(d.createdAt).toDateString(), {
+        date: d.createdAt,
+        products: tmp,
       });
     }
   });
 
-  result.forEach((r) => {
-    let tmp = product.find((p) => p.productId === r.productId);
-    r.revenue = r.quantity * tmp.sell_price;
-    r.profit = r.quantity * tmp.sell_price - r.quantity * tmp.cost_price;
-  });
-  return Array.from(result, ([_, item]) => ({ ...item }));
+  return Array.from(result, ([_, item]) => ({
+    ...item,
+    products: item.products.map((product) => ({
+      ...product,
+      stock:
+        product?.import > product?.export
+          ? product?.import - product?.export
+          : 0,
+    })),
+  }));
 };
 export { getData, generateReport, generateProduct };

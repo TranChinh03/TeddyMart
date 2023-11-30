@@ -259,7 +259,6 @@ const PartnerTable = ({
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const size = useRef<number>(+rowsPerPage);
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
       if (selectedRows.length === 0) {

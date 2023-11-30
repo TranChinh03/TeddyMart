@@ -141,9 +141,8 @@ const ProductTable = ({
   const products = useSelector((state: RootState) => state.product);
   const warehouses = useSelector((state: RootState) => state.warehouseSlice);
   const dispatch = useDispatch();
-  //console.log("PRODUCTS", products);
+
   const productsFilter = useMemo(() => {
-    //console.log(warehouseName, productName);
     let listProducts: TProduct[] = [...products];
     if (warehouseName) {
       const listProductWarehouse =

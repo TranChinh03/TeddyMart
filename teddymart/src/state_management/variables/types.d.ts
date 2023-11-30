@@ -103,10 +103,14 @@ declare type D = {
   to: Date;
 };
 
-declare type TReportProduct = {
+declare type TRProduct = {
   productId: string;
   productName: string;
-  quantity: number;
-  revenue?: number;
-  profit?: number;
+  import?: number;
+  export?: number;
+  stock?: number;
+};
+declare type TReportProduct = {
+  date: Date;
+  products: TRProduct[];
 };

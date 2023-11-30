@@ -18,6 +18,8 @@ export default function RootRoutes() {
         ) : (
           <Route path={NAV_LINK.HOME} element={<HomeRoutes />} />
         )}
+        {/* <Route path={NAV_LINK.AUTH} element={<AuthRoutes />} />
+        <Route path={NAV_LINK.HOME} element={<HomeRoutes />} /> */}
       </Routes>
     </BrowserRouter>
   );
