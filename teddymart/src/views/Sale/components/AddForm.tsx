@@ -14,7 +14,7 @@ import { BiSearch } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { addNewOrder } from "state_management/slices/orderSlice";
-import { createOrderID } from "utils/appUtils";
+import { addOrderFirebase, createOrderID } from "utils/appUtils";
 import AddNewCustomerForm from "./AddNewCustomer";
 import AddNewProduct from "views/Product/components/AddNewProduct";
 const CUS_INFO = {
@@ -91,7 +91,7 @@ const AddForm = ({
       voucherId: voucherId,
       receiver: "TeddyMart",
     };
-    await setDoc(doc(db, `/Manager/${userId}/Orders`, orderId), data);
+    addOrderFirebase(data, userId, orderId);
     dispatch(addNewOrder(data));
   };
   console.log(voucher);

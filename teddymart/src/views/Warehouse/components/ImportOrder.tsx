@@ -52,6 +52,7 @@ import AddForm from "views/Sale/components/AddForm";
 import SearchProductForm from "views/Sale/components/SearchProductForm";
 import AlertDelete from "views/Sale/components/AlertDelete";
 import { BtnExport } from "components";
+import { deleteOrderFirebase } from "utils/appUtils";
 const { RangePicker } = DatePicker;
 const CUS_INFO = {
   customerName: "NVA",
@@ -69,6 +70,8 @@ export default function ImportOrder() {
   const [openAddForm, setOpenAddForm] = useState(false);
   const [date, setDate] = useState<{ from: Date; to: Date }>();
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
+  const { userId } = useSelector((state: RootState) => state.manager);
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const initialFilter = useMemo(
     () => [
@@ -128,6 +131,8 @@ export default function ImportOrder() {
   };
   const onDeleteAll = () => {
     setOpenAlertModal(true);
+    dispatch(deleteMultiOrder(selectedRows));
+    deleteOrderFirebase(selectedRows, userId);
   };
 
   const orderRef = useRef(null);

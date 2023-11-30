@@ -26,8 +26,8 @@ declare type TVoucher = {
   voucherId: string;
   voucherName: string;
   discountAmount: number;
-  expirationDate: Date;
-  publicDate: Date;
+  expirationDate: Date | string;
+  publicDate: Date | string;
 };
 
 declare type TProduct = {

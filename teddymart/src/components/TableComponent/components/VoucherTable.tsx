@@ -12,6 +12,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { deleteVoucher } from "state_management/slices/voucherSlice";
+import { deleteVoucherFirebase } from "utils/appUtils";
 type TContent = {
   voucherId: string;
   discountAmount: number;
@@ -45,9 +46,11 @@ type TOptions = {
 const VoucherTable = ({
   filterOption,
   searchVoucherName,
+  openEditForm,
 }: {
   filterOption?: TOptions;
   searchVoucherName?: string;
+  openEditForm?: (voucher: TVoucher) => void;
 }) => {
   const { t } = useTranslation();
   const options: TOptions = {
@@ -59,6 +62,7 @@ const VoucherTable = ({
     ...filterOption,
   };
   const vouchers = useSelector((state: RootState) => state.voucherSlice);
+  const { userId } = useSelector((state: RootState) => state.manager);
   const HEADER = useMemo(
     () =>
       [
@@ -115,6 +119,7 @@ const VoucherTable = ({
   };
   const onDeleteVoucher = (voucherId: string) => {
     dispatch(deleteVoucher(voucherId));
+    deleteVoucherFirebase([voucherId], userId);
   };
   const voucherFilter = useMemo(() => {
     let listVouchers = [...vouchers];
@@ -186,7 +191,10 @@ const VoucherTable = ({
                       {content.discountAmount}
                     </td>
                     <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                      <Button className="mr-2">
+                      <Button
+                        className="mr-2"
+                        onClick={() => openEditForm(content)}
+                      >
                         <FiEdit />
                       </Button>
 
