@@ -50,7 +50,7 @@ export default function AddNewCustomerForm({
       setIsFormValid(value !== "" && customerName !== "");
     }
   };
-  const onAddNewVoucher = () => {
+  const onAddNewCustomer = () => {
     const partnerId = createPartnerID();
     const data: TPartner = {
         partnerId: partnerId,
@@ -217,7 +217,7 @@ export default function AddNewCustomerForm({
             isFormValid ? COLORS.darkYellow : COLORS.defaultWhite
           }
           color={isFormValid ? COLORS.defaultWhite : COLORS.lightGray}
-          onClick={onAddNewVoucher}
+          onClick={onAddNewCustomer}
         />
         <ButtonComponent
           label={t("button.close")}
