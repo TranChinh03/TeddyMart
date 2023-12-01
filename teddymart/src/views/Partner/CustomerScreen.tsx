@@ -21,31 +21,18 @@ import { addData } from "controller/addData";
 import { useDispatch } from "react-redux";
 import { addNewPartner } from "state_management/slices/partnerSlice";
 import { Button } from "antd";
+import AddNewCustomerForm from "./Components/AddNewCustomer";
+
 export default function CustomerScreen() {
   const [search, setSearch] = useState("");
-  const [customerName, setCustomerName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
-  const [totalBuyAmount, setTotalBuyAmount] = useState("");
-  const [debt, setDebt] = useState("");
-  const [note, setNote] = useState("");
 
-  const [selectedGender, setSelectedGender] = useState<string>("Female");
-  const handleGenderChange = (value: string) => {
-    setSelectedGender(value);
-  };
-
-
-  const [isAddCustomerVisible, setAddCustomerVisible] = useState(false);
-  const [isFormValid, setIsFormValid] = useState(false);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const CUSTOMERS = useSelector((state: RootState) => state.partnerSlice);
   const [customer, setCustomer] = useState(CUSTOMERS[0]?.partnerId);
 
   //console.log(search);
-
+  const [opernAddNewCustomer, setOpernAddNewCustomer] = useState(false);
   const [listFilter, setListFilter] = useState([
     {
       displayName: t("customer.phoneNumber"),
@@ -90,61 +77,8 @@ export default function CustomerScreen() {
     note: listFilter[6].value,
   };
 
-  const openAddCustomer = () => {
-    setAddCustomerVisible(true);
-  };
-  const closeAddCustomer = () => {
-    setAddCustomerVisible(false);
-  };
-
-  const handleOverlayClick = () => {
-    setAddCustomerVisible(false);
-  };
-  const handleAddCustomerClick = (e: any) => {
-    e.stopPropagation();
-  };
-  const handleInputChange = (
-    value: string,
-    setValue: React.Dispatch<React.SetStateAction<string>>,
-    fieldName: string
-  ) => {
-    setValue(value);
-    validateForm(fieldName, value);
-  };
-
-  const validateForm = (fieldName: string, value: string) => {
-    if (fieldName === "customerName") {
-      setIsFormValid(value !== "" && phoneNumber !== "");
-    } else if (fieldName === "phoneNumber") {
-      setIsFormValid(value !== "" && customerName !== "");
-    }
-  };
-
-  const addNewCustomer = async () => {
-    const id = uuidv4();
-    const data: TPartner = {
-      partnerId: id,
-      partnerName: customerName,
-      email: email,
-      phoneNumber: phoneNumber,
-      address: address,
-      note: note,
-      gender: selectedGender as "female" | "male",
-      type: "Customer",
-      totalBuyAmount: parseInt(totalBuyAmount),
-      debt: parseInt(debt),
-    };
-    await addData({
-      data: data,
-      id: id,
-      table: "Partner",
-    });
-    dispatch(addNewPartner(data));
-  };
-
   const [filterValues, setFilterValues] = useState({});
   const [isTableReset, setIsTableReset] = useState(false);
-
 
   const handleSearch = (filterValues: Record<string, any>) => {
     setFilterValues(filterValues);
@@ -207,7 +141,7 @@ export default function CustomerScreen() {
               />
               <ButtonComponent
                 label={t("button.addNew")}
-                onClick={openAddCustomer}
+                onClick={() => setOpernAddNewCustomer(true)}
                 iconLeft={
                   <TiPlus
                     style={{ marginRight: 10, color: "white", fontSize: 22 }}
@@ -216,191 +150,12 @@ export default function CustomerScreen() {
               />
             </div>
           </div>
-
-          {isAddCustomerVisible && (
-            <div
-              className="overlay fixed inset-0 flex items-center justify-center bg-black bg-opacity-75"
-              style={{ zIndex: 1040 }}
-              onClick={handleOverlayClick}
-            >
-              <div onClick={handleAddCustomerClick}>
-                <div className="flex justify-center">
-                  <div className="bg-white border p-5 my-4 rounded-md shadow-md w-fit">
-                    <h1 className="pr-8 text-3xl">
-                      {t("customer.addNewCustomer")}
-                    </h1>
-                    <hr className="h-0.5 my-4 bg-black" />
-                    <div className="overflow-y-auto h-96">
-                      {" "}
-                      <table>
-                        <tbody>
-                          <tr>
-                            <td className="pr-8 py-6">
-                              <p>
-                                {t("customer.customerName")}
-                                <span className="text-red-600">*</span>
-                              </p>
-                            </td>
-                            <td>
-                              <TextInputComponent
-                                placeHolder=""
-                                width={492}
-                                value={customerName}
-                                setValue={(value) =>
-                                  handleInputChange(
-                                    value,
-                                    setCustomerName,
-                                    "customerName"
-                                  )
-                                }
-                              />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="pr-8 py-6">
-                              <p>
-                                {t("customer.phoneNumber")}
-                                <span className="text-red-600">*</span>
-                              </p>
-                            </td>
-                            <td>
-                              <TextInputComponent
-                                placeHolder=""
-                                width={492}
-                                value={phoneNumber}
-                                setValue={(value) =>
-                                  handleInputChange(
-                                    value,
-                                    setPhoneNumber,
-                                    "phoneNumber"
-                                  )
-                                }
-                              />
-                            </td>
-                          </tr>
-
-                          <tr>
-                            <td className="pr-8 py-6">
-                              <p>{t("customer.gender")}</p>
-                            </td>
-                            <td>
-                              <input
-                                type="radio"
-                                name="radio-gender"
-                                className="w-4 h-4 mr-4"
-                                checked={selectedGender === "Male"}
-                                onChange={() => handleGenderChange("Male")}
-                              />
-                              <label className="mr-16">
-                                {t("customer.male")}
-                              </label>
-                              <input
-                                type="radio"
-                                name="radio-gender"
-                                className=" w-4 h-4 mr-4"
-                                checked={selectedGender === "Female"}
-                                onChange={() => handleGenderChange("Female")}
-                              />
-                              <label className="mr-16">
-                                {t("customer.female")}
-                              </label>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="pr-8 py-6">
-                              <p>{t("customer.email")}</p>
-                            </td>
-                            <td>
-                              <TextInputComponent
-                                placeHolder=""
-                                width={492}
-                                value={email}
-                                setValue={setEmail}
-                              />
-                            </td>
-                          </tr>
-
-                          <tr>
-                            <td className="pr-8 py-6">
-                              <p>{t("customer.address")}</p>
-                            </td>
-                            <td>
-                              <TextInputComponent
-                                placeHolder=""
-                                width={492}
-                                value={address}
-                                setValue={setAddress}
-                              />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="pr-8 py-6">
-                              <p>{t("customer.totalBuyAmount")}</p>
-                            </td>
-                            <td>
-                              <TextInputComponent
-                                placeHolder=""
-                                width={492}
-                                value={totalBuyAmount}
-                                setValue={setTotalBuyAmount}
-                              />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="pr-8 py-6">
-                              <p>{t("customer.debt")}</p>
-                            </td>
-                            <td>
-                              <TextInputComponent
-                                placeHolder=""
-                                width={492}
-                                value={debt}
-                                setValue={setDebt}
-                              />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="pr-8 py-6">
-                              <p>{t("customer.note")}</p>
-                            </td>
-                            <td>
-                              <TextInputComponent
-                                placeHolder=""
-                                width={492}
-                                value={note}
-                                setValue={setNote}
-                              />
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-
-                    <div className="flex justify-end gap-x-4 mt-4">
-                      <ButtonComponent
-                        label={t("button.save")}
-                        backgroundColor={
-                          isFormValid ? COLORS.darkYellow : COLORS.defaultWhite
-                        }
-                        color={
-                          isFormValid ? COLORS.defaultWhite : COLORS.lightGray
-                        }
-                        onClick={addNewCustomer}
-                      />
-                      <ButtonComponent
-                        label={t("button.close")}
-                        backgroundColor={COLORS.defaultWhite}
-                        color={COLORS.extra_gray}
-                        onClick={closeAddCustomer}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
-        <AdvancedSearch onSearch={handleSearch} onReset={handleResetTable}/>
+        <AddNewCustomerForm
+          opernAddNewCustomer={opernAddNewCustomer}
+          setOpernAddNewCustomer={setOpernAddNewCustomer}
+        />
+        <AdvancedSearch onSearch={handleSearch} onReset={handleResetTable} />
         <PartnerTable
           isCustomer={true}
           filterOption={filterOptions}

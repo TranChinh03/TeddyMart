@@ -2,11 +2,18 @@ import { deleteDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "firebaseConfig";
 import { store } from "state_management/stores/store";
 
+const createID = (prefix: string): string => {
+  return `${prefix}${Math.floor(Math.random() * 100000)}`;
+};
+
 const createOrderID = () => {
-  return "ORD" + Math.floor(Math.random() * 100000);
+  return createID("ORD");
 };
 const createVoucherID = () => {
-  return "VCH" + Math.floor(Math.random() * 100000);
+  return createID("VCH"); 
+};
+const createPartnerID = () => {
+  return createID("P"); 
 };
 //order
 const addOrderFirebase = async (
@@ -45,12 +52,42 @@ const deleteVoucherFirebase = async (vouchers: string[], userId: string) => {
     await deleteDoc(doc(db, `/Manager/${userId}/Voucher`, voucher));
   }
 };
+
+//Partner
+const addPartnerFirebase = async (
+  data: TPartner,
+  userId: string,
+  partnerId: string
+) => {
+  await setDoc(doc(db, `/Manager/${userId}/Partner`, partnerId), data);
+};
+const updatePartnerFirebase = async (
+  data: TPartner,
+  userId: string,
+  partnerId: string
+) => {
+  const partnerRef = doc(db, `/Manager/${userId}/Partner`, partnerId);
+  await updateDoc(partnerRef, {
+    ...data,
+  });
+};
+const deletePartnerFirebase = async (partners: string[], userId: string) => {
+  for (const partner in partners) {
+    await deleteDoc(doc(db, `/Manager/${userId}/Partner`, partner));
+  }
+};
+
+
 export {
   createOrderID,
   createVoucherID,
+  createPartnerID,
   addOrderFirebase,
   deleteOrderFirebase,
   addVoucherFirebase,
   updateVoucherFirebase,
   deleteVoucherFirebase,
+  addPartnerFirebase,
+  updatePartnerFirebase,
+  deletePartnerFirebase,
 };
