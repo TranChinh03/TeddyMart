@@ -50,13 +50,6 @@ const deleteVoucherFirebase = async (vouchers: string[], userId: string) => {
 };
 
 //Partner
-const addPartnerFirebase = async (
-  data: TPartner,
-  userId: string,
-  partnerId: string
-) => {
-  await setDoc(doc(db, `/Manager/${userId}/Partner`, partnerId), data);
-};
 const updatePartnerFirebase = async (
   data: TPartner,
   userId: string,
@@ -81,7 +74,6 @@ export {
   addVoucherFirebase,
   updateVoucherFirebase,
   deleteVoucherFirebase,
-  addPartnerFirebase,
   updatePartnerFirebase,
   deletePartnerFirebase,
 };
