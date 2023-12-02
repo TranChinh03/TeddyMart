@@ -3,8 +3,9 @@ import { ResponsiveContainer } from "recharts";
 import { PartnerTable } from "components/TableComponent";
 import FieldCustomer from "./Components/FieldCustomer";
 import AdvancedSearch from "./Components/AdvancedSearch";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
+  BtnExport,
   ButtonComponent,
   ListCheckBox,
   SearchComponent,
@@ -25,7 +26,7 @@ import AddNewCustomerForm from "./Components/AddNewCustomer";
 
 export default function CustomerScreen() {
   const [search, setSearch] = useState("");
-
+  const excelRef = useRef(null);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const CUSTOMERS = useSelector((state: RootState) => state.partnerSlice);
@@ -129,16 +130,7 @@ export default function CustomerScreen() {
                 }}
                 style={{ backgroundColor: "#EA5A47", marginInline: 12 }}
               />
-              <ButtonComponent
-                label={t("customer.importOrExportExcel")}
-                onClick={() => alert("Button Clicked")}
-                backgroundColor={COLORS.lightBlack}
-                iconLeft={
-                  <LiaFileExcel
-                    style={{ marginRight: 10, color: "white", fontSize: 22 }}
-                  />
-                }
-              />
+              <BtnExport fileName="Sheet1" sheet="Sheet1" tableRef={excelRef} />
               <ButtonComponent
                 label={t("button.addNew")}
                 onClick={() => setOpernAddNewCustomer(true)}
@@ -162,6 +154,7 @@ export default function CustomerScreen() {
           search={search}
           additionalFilters={filterValues}
           resetTable={isTableReset}
+          ref={excelRef}
         />
         {/* <Button onClick={addNewCustomer}>Add Data To Firebase</Button> */}
       </div>

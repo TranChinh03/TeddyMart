@@ -18,7 +18,7 @@
   },
   "welcome": "Xin chào",
   "login": {
-    "userName": "Tên đăng nhập",
+    "userName": "Tên đăng nhập/Email",
     "password": "Mật khẩu",
     "forgotpassword": "Quên mật khẩu",
     "login": "Đăng nhập",

@@ -44,6 +44,7 @@ export default function LoginScreen() {
     register,
     handleSubmit,
     setError,
+    reset,
     formState: { errors },
   } = useForm<Inputs>();
   const onLogin: SubmitHandler<Inputs> = async (data) => {
@@ -76,6 +77,12 @@ export default function LoginScreen() {
           await updateDoc(doc(db, "Manager", userCredential.user.uid), {
             emailVerified: true,
           });
+          await getDoc(doc(db, "Manager", userCredential.user.uid)).then(
+            (d) => {
+              let { emailVerified, ...rest } = d.data();
+              dispatch(uploadManager(rest as TManager));
+            }
+          );
           await onFetchData(userCredential.user.uid);
           window.localStorage.setItem("USER_ID", userCredential.user.uid);
           //console.log("login success");
@@ -118,7 +125,7 @@ export default function LoginScreen() {
           console.log(e);
         });
     }
-    setLoading(false);
+    //setLoading(false);
 
     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     // setLoading(true);
@@ -191,6 +198,7 @@ export default function LoginScreen() {
       //console.log(generateProduct(values[5] as TOrder[]));
       setLoading(false);
       navigate(NAV_LINK.SALE);
+      reset();
     });
   };
 
@@ -214,62 +222,64 @@ export default function LoginScreen() {
             <p className="text-center">{t("login.signInToManageStore")}</p>
 
             <form onSubmit={handleSubmit(onLogin)}>
-              <div className="grid gap-y-1 mt-4">
-                <TextInputComponent
-                  placeHolder=""
-                  label={t("login.userName")}
-                  width={"100%"}
-                  required={true}
-                  register={register}
-                  registerName="userName"
-                />
-                {errors.userName && (
-                  <p className="text-xs text-red-500">
-                    {errors.userName.message}
-                  </p>
-                )}
-              </div>
-              <div className="grid gap-y-1 mt-5">
-                <TextInputComponent
-                  placeHolder=""
-                  label={t("login.password")}
-                  width={"100%"}
-                  required={true}
-                  inputType={visible ? "text" : "password"}
-                  icon={visible ? <AiFillEyeInvisible /> : <AiFillEye />}
-                  onIconClick={() => setVisible(!visible)}
-                  register={register}
-                  registerName="password"
-                />
-                {errors.password && (
-                  <p className="text-xs text-red-500">
-                    {errors.password.message}
-                  </p>
-                )}
-              </div>
+              <div>
+                <div className="grid gap-y-1 mt-4">
+                  <TextInputComponent
+                    placeHolder=""
+                    label={t("login.userName")}
+                    width={"100%"}
+                    required={true}
+                    register={register}
+                    registerName="userName"
+                  />
+                  {errors.userName && (
+                    <p className="text-xs text-red-500">
+                      {errors.userName.message}
+                    </p>
+                  )}
+                </div>
+                <div className="grid gap-y-1 mt-5">
+                  <TextInputComponent
+                    placeHolder=""
+                    label={t("login.password")}
+                    width={"100%"}
+                    required={true}
+                    inputType={visible ? "text" : "password"}
+                    icon={visible ? <AiFillEyeInvisible /> : <AiFillEye />}
+                    //onIconClick={() => setVisible(!visible)}
+                    register={register}
+                    registerName="password"
+                  />
+                  {errors.password && (
+                    <p className="text-xs text-red-500">
+                      {errors.password.message}
+                    </p>
+                  )}
+                </div>
 
-              <div className="flex flex-col justify-center items-center gap-y-3 mt-4">
-                <button
-                  className="w-5/12 py-2 bg-sidebar text-white text-xl rounded-md hover:bg-hover"
-                  onClick={() => onLogin}
-                >
-                  {t("login.login")}
-                </button>
-                <button
-                  className="w-5/12 text-sidebar text-14"
-                  onClick={() => navigate(NAV_LINK.FORGOT_PASSWORD)}
-                >
-                  {t("login.forgotpassword")}
-                </button>
-
-                <div className="flex justify-center gap-2 text-16 pt-5">
-                  <p>{t("login.newTeddyMart")}</p>
+                <div className="flex flex-col justify-center items-center gap-y-3 mt-4">
                   <button
-                    className="text-sidebar font-medium"
-                    onClick={() => navigate(NAV_LINK.SIGN_UP)}
+                    className="w-5/12 py-2 bg-sidebar text-white text-xl rounded-md hover:bg-hover"
+                    onClick={() => onLogin}
                   >
-                    {t("login.signUp")}
+                    {t("login.login")}
                   </button>
+                  <button
+                    className="w-5/12 text-sidebar text-14"
+                    onClick={() => navigate(NAV_LINK.FORGOT_PASSWORD)}
+                  >
+                    {t("login.forgotpassword")}
+                  </button>
+
+                  <div className="flex justify-center gap-2 text-16 pt-5">
+                    <p>{t("login.newTeddyMart")}</p>
+                    <button
+                      className="text-sidebar font-medium"
+                      onClick={() => navigate(NAV_LINK.SIGN_UP)}
+                    >
+                      {t("login.signUp")}
+                    </button>
+                  </div>
                 </div>
               </div>
             </form>

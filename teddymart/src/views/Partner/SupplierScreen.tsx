@@ -3,6 +3,7 @@ import { PartnerTable } from "components/TableComponent";
 import FieldSupplier from "./Components/FieldSupplier";
 import React, { useState, useRef } from "react";
 import {
+  BtnExport,
   ButtonComponent,
   ListCheckBox,
   SearchComponent,
@@ -21,6 +22,7 @@ import { addNewPartner } from "state_management/slices/partnerSlice";
 import AddNewSupplierForm from "./Components/AddNewSupplier";
 
 export default function CustomerScreen() {
+  const excelRef = useRef(null);
   const [isChecked, setIsChecked] = useState(false);
   const [search, setSearch] = useState("");
   const { t } = useTranslation();
@@ -104,16 +106,7 @@ export default function CustomerScreen() {
                 onClick={() => {}}
                 style={{ backgroundColor: "#EA5A47", marginInline: 12 }}
               />
-              <ButtonComponent
-                label={t("supplier.importOrExportExcel")}
-                onClick={() => alert("Button Clicked")}
-                backgroundColor={COLORS.lightBlack}
-                iconLeft={
-                  <LiaFileExcel
-                    style={{ marginRight: 10, color: "white", fontSize: 22 }}
-                  />
-                }
-              />
+              <BtnExport fileName="Sheet1" sheet="Sheet1" tableRef={excelRef} />
               <ButtonComponent
                 label={t("button.addNew")}
                 onClick={() => setOpernAddNewSupplier(true)}
@@ -134,6 +127,7 @@ export default function CustomerScreen() {
           isCustomer={false}
           filterOption={filterOptions}
           search={search}
+          ref={excelRef}
         />
       </div>
     </div>

@@ -310,10 +310,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     return (
       <div className="w-full">
         <div className="max-h-96 overflow-y-auto visible">
-          <table 
-            className="w-full border-collapse border border-gray-300 bg-gray-50"
-            ref={ref}
-          >
+          <table className="w-full border-collapse border border-gray-300 bg-gray-50">
             <thead
               className="bg-gray-200 sticky left-0 z-50"
               style={{ top: -1 }}
