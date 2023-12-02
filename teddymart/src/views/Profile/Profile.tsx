@@ -82,11 +82,18 @@ export default function Profile() {
             className="flex justify-center items-center border border-slate-400 relative mb-5"
             style={{ width: "100px", height: "100px", borderRadius: "100px" }}
           >
-            <img
-              src={Info.photoURL}
-              alt="User Photo"
-              style={{ width: "90px", height: "90px", borderRadius: "90px" }}
-            />
+            {Info.photoURL ? (
+              <img
+                src={Info.photoURL}
+                alt="User Photo"
+                style={{ width: "90px", height: "90px", borderRadius: "90px" }}
+              />
+            ) : (
+              <div className="text-xl font-semibold">
+                {Info.shopName.charAt(0).toLocaleUpperCase()}
+              </div>
+            )}
+
             <button
               onClick={() => fileRef?.current.click()}
               className="absolute bottom-0 right-0 flex items-center justify-center bg-light_grey "
@@ -111,7 +118,7 @@ export default function Profile() {
           </div>
           <div className="h-4" />
           <ButtonComponent
-            label="Change Password"
+            label={t("profile.changePassword")}
             onClick={() => setOpenPassword(true)}
             backgroundColor={COLORS.defaultWhite}
             color={COLORS.txt_mediumgrey}

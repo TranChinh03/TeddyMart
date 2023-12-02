@@ -130,9 +130,18 @@ export default function Drawer() {
         className="flex flex-row px-5 mt-5 items-center text-txt_white gap-2"
         onClick={() => navigate(NAV_LINK.PROFILE)}
       >
-        <div className="flex w-10 h-10 bg-hover rounded-full items-center justify-center ">
-          {Info.shopName.charAt(0).toUpperCase()}
-        </div>
+        {Info.photoURL ? (
+          <img
+            src={Info.photoURL}
+            alt="User Photo"
+            style={{ width: "40px", height: "40px", borderRadius: "60px" }}
+          />
+        ) : (
+          <div className="flex w-10 h-10 bg-hover rounded-full items-center justify-center ">
+            {Info.shopName.charAt(0).toUpperCase()}
+          </div>
+        )}
+
         {!openDrawer && (
           <div className="text-white text-lg">{Info.shopName}</div>
         )}

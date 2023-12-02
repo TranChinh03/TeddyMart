@@ -1,12 +1,6 @@
-import {
-  ButtonComponent,
-  DropdownComponent,
-  Header,
-  SearchComponent,
-} from "components";
+import { BtnExport, DropdownComponent, SearchComponent } from "components";
 import { useTranslation } from "react-i18next";
-import { COLORS } from "constants/colors";
-import { useDeferredValue, useState } from "react";
+import { useDeferredValue, useRef, useState } from "react";
 import { ProductTable } from "components/TableComponent";
 import { useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
@@ -25,6 +19,7 @@ const filterOptions = {
   activities: false,
 };
 export default function Warehouse() {
+  const excelRef = useRef(null);
   const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const WAREHOUSES = useSelector((state: RootState) => state.warehouseSlice);
@@ -53,12 +48,7 @@ export default function Warehouse() {
             />
           </div>
           <div className="flex">
-            <ButtonComponent
-              onClick={() => {}}
-              label={t("button.exportExcel")}
-              backgroundColor={COLORS.defaultBlack}
-              style={{ borderWidth: 0 }}
-            />
+            <BtnExport fileName="Sheet1" sheet="sheet1" tableRef={excelRef} />
           </div>
         </div>
         <div className="flex flex-wrap mt-5 w-full justify-between items-end">

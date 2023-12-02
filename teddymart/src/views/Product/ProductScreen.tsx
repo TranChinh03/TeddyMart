@@ -1,9 +1,9 @@
-import React, { useDeferredValue, useEffect, useState } from "react";
+import React, { useDeferredValue, useEffect, useRef, useState } from "react";
 import Header from "components/Header";
 import DropdownComponent from "components/DropdownComponent";
 import ButtonSelect from "components/ButtonSelect";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { SearchComponent } from "components";
+import { BtnExport, SearchComponent } from "components";
 import ButtonComponent from "components/ButtonComponent";
 import { COLORS } from "constants/colors";
 import {
@@ -24,6 +24,7 @@ import { Divider, Modal, Space } from "antd";
 import AddNewProduct from "./components/AddNewProduct";
 
 export default function ProductScreen() {
+  const productRef = useRef(null);
   const [search, setSearch] = useState("");
   const productName = useDeferredValue(search);
   const [PRODUCT, setPRODUCT] = useState([]);
@@ -162,7 +163,7 @@ export default function ProductScreen() {
               />
             </div>
             <div>
-              <ButtonComponent
+              {/* <ButtonComponent
                 label={t("button.exportExcel")}
                 onClick={() => alert("Button Clicked")}
                 backgroundColor={COLORS.lightBlack}
@@ -171,6 +172,11 @@ export default function ProductScreen() {
                     style={{ marginRight: 10, color: "white", fontSize: 22 }}
                   />
                 }
+              /> */}
+              <BtnExport
+                fileName="Sheet1"
+                sheet="sheet1"
+                tableRef={productRef}
               />
             </div>
             <div>
