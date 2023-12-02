@@ -1,11 +1,11 @@
 import { Button, Dropdown, MenuProps } from "antd";
 import dayjs from "dayjs";
 import { t } from "i18next";
-import { useMemo, useState, useLayoutEffect, useRef } from "react";
+import { useMemo, useState, useLayoutEffect, useRef, forwardRef } from "react";
 import { useTranslation } from "react-i18next";
 import { BiDetail } from "react-icons/bi";
 import { FiEdit, FiTrash } from "react-icons/fi";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import {
   HiOutlineChevronLeft,
@@ -14,6 +14,7 @@ import {
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
 import warehouseSlice from "state_management/slices/warehouseSlice";
+import {deleteWarehouse} from "state_management/slices/warehouseSlice";
 /**
  * Chưa thanh toán (Unpaid): Hóa đơn vẫn chưa được thanh toán hoặc chưa đến hạn thanh toán.
 
@@ -112,211 +113,229 @@ const options: TOption = {
   address: true,
 };
 
-const WareHouseTable = ({
-  //filterOption,
-  warehouseName,
-  sort,
-}: {
-  //filterOption?: TOption;
+type Props = {
   warehouseName?: string;
   sort?: TSort;
-}) => {
-  const { t } = useTranslation();
-  const warehouses = useSelector((state: RootState) => state.warehouseSlice);
+  setOpenAlertModal?: (openAlertModal: boolean) => void;
+};
 
-  const HEADER = useMemo(
-    () => [
-      options.warehouseID && t("warehouse.warehouseID"),
-      options.warehouseName && t("warehouse.warehouseName"),
-      options.address && t("warehouse.address"),
-      //t("activities"),
-    ],
-    [t, options]
-  );
+const WareHouseTable = forwardRef<HTMLTableElement, Props>(
+  (
+    {
+      warehouseName,
+      sort,  
+      setOpenAlertModal,
+    }: Props,
+    ref
+  ) => {
+    const { t } = useTranslation();
+    const warehouses = useSelector((state: RootState) => state.warehouseSlice);
+    const dispatch = useDispatch();
 
-  const warehouseSort = useMemo(() => {
-    let warehouselist = [...warehouses];
+    const HEADER = useMemo(
+      () => [
+        options.warehouseID && t("warehouse.warehouseID"),
+        options.warehouseName && t("warehouse.warehouseName"),
+        options.address && t("warehouse.address"),
+        t("activities"),
+      ],
+      [t, options]
+    );
 
-    if (sort?.idAscending) {
-      warehouselist.sort((a, b) => a.warehouseId.localeCompare(b.warehouseId));
-    }
-    if (sort?.idDescending) {
-      warehouselist.sort((a, b) => b.warehouseId.localeCompare(a.warehouseId));
-    }
-    if (sort?.nameAZ) {
-      warehouselist.sort((a, b) =>
-        a.warehouseName.localeCompare(b.warehouseName)
-      );
-    }
-    if (sort?.nameZA) {
-      warehouselist.sort((a, b) =>
-        b.warehouseName.localeCompare(a.warehouseName)
-      );
-    }
+    const warehouseSort = useMemo(() => {
+      let warehouselist = [...warehouses];
 
-    if (warehouseName) {
-      return warehouselist?.filter((item) =>
-        item.warehouseName.toLowerCase().includes(warehouseName.toLowerCase())
-      );
-    }
-    return warehouselist;
-  }, [warehouseName, sort]);
+      if (sort?.idAscending) {
+        warehouselist.sort((a, b) => a.warehouseId.localeCompare(b.warehouseId));
+      }
+      if (sort?.idDescending) {
+        warehouselist.sort((a, b) => b.warehouseId.localeCompare(a.warehouseId));
+      }
+      if (sort?.nameAZ) {
+        warehouselist.sort((a, b) =>
+          a.warehouseName.localeCompare(b.warehouseName)
+        );
+      }
+      if (sort?.nameZA) {
+        warehouselist.sort((a, b) =>
+          b.warehouseName.localeCompare(a.warehouseName)
+        );
+      }
 
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const handleCheckBoxChange = (rowId: string) => {
-    if (rowId === null) {
-      if (selectedRows.length < warehouseSort.length) {
-        setSelectedRows([
-          ...warehouseSort.map((content) => content.warehouseId),
-        ]);
+      if (warehouseName) {
+        return warehouselist?.filter((item) =>
+          item.warehouseName.toLowerCase().includes(warehouseName.toLowerCase())
+        );
+      }
+      return warehouselist;
+    }, [warehouseName, sort]);
+
+    const [selectedRows, setSelectedRows] = useState([]);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+
+    const onDeleteRow = (warehouseId: string) => {
+      setOpenAlertModal(true);
+      dispatch(deleteWarehouse({ warehouseId: warehouseId }));
+      //deleteOrderFirebase([orderId], userId);
+    };
+
+    const handleCheckBoxChange = (rowId: string) => {
+      if (rowId === null) {
+        if (selectedRows.length < warehouseSort.length) {
+          setSelectedRows([
+            ...warehouseSort.map((content) => content.warehouseId),
+          ]);
+          return;
+        }
+        if (selectedRows.length === warehouseSort.length) {
+          setSelectedRows([]);
+          return;
+        }
+      }
+      if (selectedRows.includes(rowId)) {
+        setSelectedRows([...selectedRows.filter((id) => id !== rowId)]);
         return;
       }
-      if (selectedRows.length === warehouseSort.length) {
-        setSelectedRows([]);
-        return;
-      }
-    }
-    if (selectedRows.includes(rowId)) {
-      setSelectedRows([...selectedRows.filter((id) => id !== rowId)]);
-      return;
-    }
-    setSelectedRows([...selectedRows, rowId]);
-  };
+      setSelectedRows([...selectedRows, rowId]);
+    };
 
-  const handleRowsPerPageChange = (e: any) => {
-    setRowsPerPage(e.target.value);
-  };
-  const maxPages = useMemo(
-    () => Math.round(CONTENT.length / rowsPerPage),
-    [rowsPerPage]
-  );
-  const [currentPage, setCurrentPage] = useState(1);
+    const handleRowsPerPageChange = (e: any) => {
+      setRowsPerPage(e.target.value);
+    };
+    const maxPages = useMemo(
+      () => Math.round(CONTENT.length / rowsPerPage),
+      [rowsPerPage]
+    );
+    const [currentPage, setCurrentPage] = useState(1);
 
-  const onBackAll = () => {
-    setCurrentPage(1);
-  };
-  const onBack = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
-  const onForward = () => {
-    if (currentPage < maxPages) setCurrentPage(currentPage + 1);
-  };
-  const onForwardAll = () => {
-    setCurrentPage(maxPages);
-  };
-  return (
-    <div className="w-full">
-      <div className="max-h-96 overflow-y-auto visible">
-        <table className="w-full border-collapse border border-gray-300 bg-gray-50">
-          <thead className="bg-gray-200 sticky left-0 z-50" style={{ top: -1 }}>
-            <tr>
-              <th className="border border-gray-300 p-2 text-xs">
-                <input
-                  className="w-15 h-15 bg-hover"
-                  type="checkbox"
-                  onChange={() => handleCheckBoxChange(null)}
-                />
-              </th>
-              {HEADER.map((header, index) => (
-                <th key={index} className="border border-gray-300 p-2 text-xs">
-                  {header}
+    const onBackAll = () => {
+      setCurrentPage(1);
+    };
+    const onBack = () => {
+      if (currentPage > 1) setCurrentPage(currentPage - 1);
+    };
+    const onForward = () => {
+      if (currentPage < maxPages) setCurrentPage(currentPage + 1);
+    };
+    const onForwardAll = () => {
+      setCurrentPage(maxPages);
+    };
+    return (
+      <div className="w-full">
+        <div className="max-h-96 overflow-y-auto visible">
+          <table 
+            className="w-full border-collapse border border-gray-300 bg-gray-50"
+            ref={ref}
+          >
+            <thead className="bg-gray-200 sticky left-0 z-50" style={{ top: -1 }}>
+              <tr>
+                <th className="border border-gray-300 p-2 text-xs">
+                  <input
+                    className="w-15 h-15 bg-hover"
+                    type="checkbox"
+                    onChange={() => handleCheckBoxChange(null)}
+                  />
                 </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="text-center">
-            {warehouseSort.map((content, index) => {
-              if (
-                index < currentPage * rowsPerPage &&
-                index >= (currentPage - 1) * rowsPerPage
-              )
-                return (
-                  <tr key={index}>
-                    <td className="border border-gray-300 p-2">
-                      <input
-                        className="w-15 h-15 bg-hover"
-                        type="checkbox"
-                        onChange={() =>
-                          handleCheckBoxChange(content.warehouseId)
-                        }
-                        checked={
-                          selectedRows.includes(content.warehouseId)
-                            ? true
-                            : false
-                        }
-                      />
-                    </td>
-
-                    {options.warehouseID && (
-                      <td className="border border-gray-300 p-2 text-sm">
-                        {content.warehouseId}
+                {HEADER.map((header, index) => (
+                  <th key={index} className="border border-gray-300 p-2 text-xs">
+                    {header}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="text-center">
+              {warehouseSort.map((content, index) => {
+                if (
+                  index < currentPage * rowsPerPage &&
+                  index >= (currentPage - 1) * rowsPerPage
+                )
+                  return (
+                    <tr key={index}>
+                      <td className="border border-gray-300 p-2">
+                        <input
+                          className="w-15 h-15 bg-hover"
+                          type="checkbox"
+                          onChange={() =>
+                            handleCheckBoxChange(content.warehouseId)
+                          }
+                          checked={
+                            selectedRows.includes(content.warehouseId)
+                              ? true
+                              : false
+                          }
+                        />
                       </td>
-                    )}
-                    {content.warehouseName && (
-                      <td className="border border-gray-300 p-2 text-sm">
-                        {content.warehouseName}
+
+                      {options.warehouseID && (
+                        <td className="border border-gray-300 p-2 text-sm">
+                          {content.warehouseId}
+                        </td>
+                      )}
+                      {content.warehouseName && (
+                        <td className="border border-gray-300 p-2 text-sm">
+                          {content.warehouseName}
+                        </td>
+                      )}
+                      {content.address && (
+                        <td className="border border-gray-300 p-2 text-sm">
+                          {content.address}
+                        </td>
+                      )}
+                      {/* NÚT XÓA VÀ SỬA */}
+                      <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
+                        <Button className="mr-2">
+                          <FiEdit />
+                        </Button>
+
+                        <Button>
+                          <FiTrash color="red" />
+                        </Button>
                       </td>
-                    )}
-                    {content.address && (
-                      <td className="border border-gray-300 p-2 text-sm">
-                        {content.address}
-                      </td>
-                    )}
-                    {/* NÚT XÓA VÀ SỬA */}
-                    {/* <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                      <Button className="mr-2">
-                        <FiEdit />
-                      </Button>
+                    </tr>
+                  );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <div className="w-full text-left my-5 flex row justify-end pr-10 items-center ">
+          <span className="text-sm mr-4 text-gray-400 ">{t("rowsPerPage")}:</span>
+          <select
+            value={rowsPerPage}
+            onChange={handleRowsPerPageChange}
+            className=" bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:bg-white "
+          >
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+          </select>
 
-                  <Button>
-                    <FiTrash color="red" />
-                  </Button>
-                </td> */}
-                  </tr>
-                );
-            })}
-          </tbody>
-        </table>
-      </div>
-      <div className="w-full text-left my-5 flex row justify-end pr-10 items-center ">
-        <span className="text-sm mr-4 text-gray-400 ">{t("rowsPerPage")}:</span>
-        <select
-          value={rowsPerPage}
-          onChange={handleRowsPerPageChange}
-          className=" bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:bg-white "
-        >
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="15">15</option>
-        </select>
+          <div className="ml-4 flex items-center">
+            <span className="text-sm text-gray-400  mr-4">
+              {currentPage} trên {maxPages}
+            </span>
+            <Button onClick={onBackAll}>
+              <HiOutlineChevronDoubleLeft />
+            </Button>
 
-        <div className="ml-4 flex items-center">
-          <span className="text-sm text-gray-400  mr-4">
-            {currentPage} trên {maxPages}
-          </span>
-          <Button onClick={onBackAll}>
-            <HiOutlineChevronDoubleLeft />
-          </Button>
+            <div className="w-2" />
+            <Button onClick={onBack}>
+              <HiOutlineChevronLeft />
+            </Button>
+            <div className="w-2" />
 
-          <div className="w-2" />
-          <Button onClick={onBack}>
-            <HiOutlineChevronLeft />
-          </Button>
-          <div className="w-2" />
+            <Button onClick={onForward}>
+              <HiOutlineChevronRight />
+            </Button>
 
-          <Button onClick={onForward}>
-            <HiOutlineChevronRight />
-          </Button>
+            <div className="w-2" />
 
-          <div className="w-2" />
-
-          <Button onClick={onForwardAll}>
-            <HiOutlineChevronDoubleRight />
-          </Button>
+            <Button onClick={onForwardAll}>
+              <HiOutlineChevronDoubleRight />
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+);
 export default WareHouseTable;

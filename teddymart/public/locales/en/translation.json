@@ -18,7 +18,7 @@
   },
   "welcome": "Welcome",
   "login": {
-    "userName": "Username",
+    "userName": "Username/Email",
     "password": "Password",
     "forgotpassword": "Forgot password",
     "login": "Login",

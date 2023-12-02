@@ -19,7 +19,6 @@ const filterOptions = {
   activities: false,
 };
 export default function Warehouse() {
-  const excelRef = useRef(null);
   const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const WAREHOUSES = useSelector((state: RootState) => state.warehouseSlice);
@@ -34,6 +33,7 @@ export default function Warehouse() {
   const [warehouse, setWarehouse] = useState(WAREHOUSES[0]?.warehouseName);
   const count = WAREHOUSES.find((w) => w.warehouseName === warehouse)?.count;
   const productName = useDeferredValue(search);
+  const excelRef = useRef(null);
   return (
     <div className="w-full bg-extreme_lg_grey min-h-screen">
       {/* <Header width={"100%"} title={t("warehouse.warehouse")} /> */}
@@ -48,7 +48,10 @@ export default function Warehouse() {
             />
           </div>
           <div className="flex">
-            <BtnExport fileName="Sheet1" sheet="sheet1" tableRef={excelRef} />
+            <BtnExport 
+              fileName="Sheet1" 
+              sheet="sheet1" 
+              tableRef={excelRef} />
           </div>
         </div>
         <div className="flex flex-wrap mt-5 w-full justify-between items-end">
@@ -80,6 +83,7 @@ export default function Warehouse() {
             quantityDescending: sort === OPTIONS[3],
           }}
           productName={productName}
+          ref={excelRef}
         />
       </div>
     </div>
