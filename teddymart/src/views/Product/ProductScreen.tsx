@@ -235,6 +235,7 @@ export default function ProductScreen() {
               quantityAscending: sort === OPTIONS[2],
               quantityDescending: sort === OPTIONS[3],
             }}
+            ref={productRef}
           />
         </div>
       </div>
