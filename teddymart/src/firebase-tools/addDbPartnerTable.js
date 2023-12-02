@@ -248,6 +248,13 @@ export const PARTNER = [
 ];
 export const addDBPartnerTable = () => {
   PARTNER.map(async (partner) => {
-    await setDoc(doc(db, "/Manager/M001/Partner", partner.partnerId), partner);
+    await setDoc(
+      doc(
+        db,
+        "/Manager/0viI4onPd8eJkSC8QZxNUM9mPyX2/Partner",
+        partner.partnerId
+      ),
+      partner
+    );
   });
 };

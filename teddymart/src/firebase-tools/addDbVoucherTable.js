@@ -145,6 +145,13 @@ export const VOUCHER = [
 ];
 export const addDbVoucherTable = () => {
   VOUCHER.map(async (voucher) => {
-    await setDoc(doc(db, "/Manager/M001/Voucher", voucher.voucherId), voucher);
+    await setDoc(
+      doc(
+        db,
+        "/Manager/0viI4onPd8eJkSC8QZxNUM9mPyX2/Voucher",
+        voucher.voucherId
+      ),
+      voucher
+    );
   });
 };

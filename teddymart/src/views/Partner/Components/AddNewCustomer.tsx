@@ -5,8 +5,8 @@ import { COLORS } from "constants/colors";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { useTranslation } from "react-i18next";
-import { Modal,message } from "antd";
-import { createEntityID } from "utils/appUtils";
+import { Modal, message } from "antd";
+import { createID } from "utils/appUtils";
 import { addNewPartner } from "state_management/slices/partnerSlice";
 import { addData } from "controller/addData";
 
@@ -52,7 +52,7 @@ export default function AddNewCustomerForm({
     }
   };
   const onAddNewCustomer = () => {
-    const partnerId = createEntityID("P");
+    const partnerId = createID({ prefix: "P" });
     const data: TPartner = {
       partnerId: partnerId,
       partnerName: customerName,

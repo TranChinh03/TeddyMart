@@ -54,6 +54,13 @@ const PRODUCT_GROUPS = [
 ];
 export const addDbGroupProduct = async () => {
   PRODUCT_GROUPS.map(async (gp) => {
-    await setDoc(doc(db, "/Manager/M001/Group_Product", gp.groupId), gp);
+    await setDoc(
+      doc(
+        db,
+        "/Manager/0viI4onPd8eJkSC8QZxNUM9mPyX2/Group_Product",
+        gp.groupId
+      ),
+      gp
+    );
   });
 };

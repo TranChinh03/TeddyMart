@@ -448,6 +448,13 @@ export const PRODUCT = [
 ];
 export const addDBProduct = () => {
   PRODUCT.map(async (product) => {
-    await setDoc(doc(db, "/Manager/M001/Product", product.productId), product);
+    await setDoc(
+      doc(
+        db,
+        "/Manager/0viI4onPd8eJkSC8QZxNUM9mPyX2/Product",
+        product.productId
+      ),
+      product
+    );
   });
 };

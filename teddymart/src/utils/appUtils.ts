@@ -1,16 +1,13 @@
 import { deleteDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "firebaseConfig";
 import { store } from "state_management/stores/store";
-
-const createID = (prefix: string): string => {
+type params = {
+  prefix: "ORD" | "VCH" | "P" | "GP" | "PD";
+};
+const createID = ({ prefix }: params): string => {
   return `${prefix}${Math.floor(Math.random() * 100000)}`;
 };
 
-type EntityType = "ORD" | "VCH" | "P"|"GP"|"PD";
-
-const createEntityID = (entityType: EntityType): string => {
-  return createID(entityType);
-};
 //order
 const addOrderFirebase = async (
   data: TOrder,
@@ -66,9 +63,8 @@ const deletePartnerFirebase = async (partners: string[], userId: string) => {
   }
 };
 
-
 export {
-  createEntityID,
+  createID,
   addOrderFirebase,
   deleteOrderFirebase,
   addVoucherFirebase,

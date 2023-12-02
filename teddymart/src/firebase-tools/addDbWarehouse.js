@@ -290,7 +290,11 @@ export const WAREHOUSE = [
 export const addDbWarehouse = () => {
   WAREHOUSE.map(async (warehouse) => {
     await setDoc(
-      doc(db, "/Manager/M001/Ware_House", warehouse.warehouseId),
+      doc(
+        db,
+        "/Manager/0viI4onPd8eJkSC8QZxNUM9mPyX2/Ware_House",
+        warehouse.warehouseId
+      ),
       warehouse
     );
   });
