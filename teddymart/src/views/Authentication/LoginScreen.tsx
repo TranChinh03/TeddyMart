@@ -102,7 +102,7 @@ export default function LoginScreen() {
           });
           await getDoc(doc(db, "Manager", userCredential.user.uid)).then(
             (d) => {
-              let { password, emailVerified, ...rest } = d.data();
+              let { emailVerified, ...rest } = d.data();
               dispatch(uploadManager(rest as TManager));
             }
           );

@@ -42,6 +42,7 @@ export default function Drawer() {
   const dispatch = useDispatch();
   const location = useLocation();
   const { t } = useTranslation();
+  const Info = useSelector((state: RootState) => state.manager);
   const DRAWER_ITEM: DrawerProps[] = [
     {
       name: t("drawer.sale"),
@@ -125,11 +126,16 @@ export default function Drawer() {
   return (
     <div className="h-full justify-center">
       {/* Avatar */}
-      <button className="flex flex-row px-5 mt-5 items-center text-txt_white gap-2">
-        <div className="flex w-10 h-10 bg-hover rounded-full items-center justify-center">
-          P
+      <button
+        className="flex flex-row px-5 mt-5 items-center text-txt_white gap-2"
+        onClick={() => navigate(NAV_LINK.PROFILE)}
+      >
+        <div className="flex w-10 h-10 bg-hover rounded-full items-center justify-center ">
+          {Info.shopName.charAt(0).toUpperCase()}
         </div>
-        {!openDrawer && <div>Shop's Name</div>}
+        {!openDrawer && (
+          <div className="text-white text-lg">{Info.shopName}</div>
+        )}
       </button>
       <Divider className="bg-slate-400" />
       <Menu

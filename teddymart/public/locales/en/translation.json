@@ -11,7 +11,10 @@
     "errEmail": "Invalid email address",
     "errPassword": "Password must be at least 9 characters",
     "errPhoneNumber": "Invalid Phone number",
-    "errUserName": "User name has been used"
+    "errUserName": "User name has been used",
+    "confirmPassword": "Confirm New Password",
+    "newPass": "New password",
+    "errConfirm": "Please confirm your new password again!"
   },
   "welcome": "Welcome",
   "login": {
@@ -315,7 +318,12 @@
     "warehouseList": "Warehouse List",
     "importOrder": "Import Order",
     "voucher": "Voucher",
-    "groupProduct": "Group Product"
+    "groupProduct": "Group Product",
+    "profile": "Profile"
   },
-  "on": "on"
+  "on": "on",
+  "profile": {
+    "changeProfile": "Change Profile",
+    "changePassword": "Change Password"
+  }
 }

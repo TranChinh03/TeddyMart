@@ -7,7 +7,6 @@ import SupplierScreen from "views/Partner/SupplierScreen";
 import WarehouseScreen from "views/Warehouse/WarehouseScreen";
 import Drawer from "../components/Drawer";
 import Draft from "views/Draft/Draft";
-import Layout from "antd/es/layout/layout";
 import VoucherScreen from "views/Voucher/VoucherScreen";
 import GroupProductScreen from "views/GroupProduct/GroupProductScreen";
 import { useSelector } from "react-redux";
@@ -21,6 +20,7 @@ import { Header } from "components";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import { useMemo } from "react";
+import Profile from "views/Profile/Profile";
 
 export default function HomeRoutes() {
   const { openDrawer } = useSelector((state: RootState) => state.controlSlice);
@@ -66,6 +66,11 @@ export default function HomeRoutes() {
       path: "groupproduct",
       element: <GroupProductScreen />,
       name: t("header.groupProduct"),
+    },
+    {
+      path: "profile",
+      element: <Profile />,
+      name: t("header.profile"),
     },
   ];
 

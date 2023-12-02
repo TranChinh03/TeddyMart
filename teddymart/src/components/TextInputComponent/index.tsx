@@ -24,6 +24,7 @@ import { useForm, SubmitHandler, UseFormRegister } from "react-hook-form";
  * @param setValue - Function to update the value of the input.
  * @param outerStyle - style outline of textinput
  * @param enterAction - hanlde enter press
+ * @param disabled - disable the input
  */
 export default function TextInputComponent({
   labelFontWeight = "font-medium",
@@ -53,6 +54,7 @@ export default function TextInputComponent({
   enterAction = () => {},
   pattern,
   minLength,
+  disabled = false,
 }: Props) {
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -78,6 +80,7 @@ export default function TextInputComponent({
 
         {register ? (
           <input
+            disabled={disabled}
             type={inputType}
             id={id}
             className={`bg-gray-50 block w-full focus:outline-none py-1`}
@@ -95,6 +98,7 @@ export default function TextInputComponent({
           />
         ) : (
           <input
+            disabled={disabled}
             type={inputType}
             id={id}
             className={`bg-gray-50 block w-full focus:outline-none py-1`}

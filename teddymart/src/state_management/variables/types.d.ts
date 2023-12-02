@@ -16,10 +16,11 @@ declare type TManager = {
   userId: string;
   shopName?: string;
   userName: string;
-  photoUrl?: string;
+  photoURL?: string;
   address?: string;
   phoneNumber?: string;
   email: string;
+  password?: string;
 };
 
 declare type TVoucher = {

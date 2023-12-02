@@ -7,10 +7,8 @@ import { useTranslation } from "react-i18next";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-import { 
-  collection, 
-  getDocs 
-} from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
+
 import { db } from "firebaseConfig";
 
 type Inputs = {

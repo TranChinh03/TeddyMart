@@ -11,7 +11,10 @@
     "errEmail": "Email không hợp lệ",
     "errPassword": "Mật khẩu phải có ít nhất 8 kí tự",
     "errPhoneNumber": "Số điện thoại không hợp lệ",
-    "errUserName": "Tên đăng nhập đã tồn tại"
+    "errUserName": "Tên đăng nhập đã tồn tại",
+    "confirmPassword": "Xác nhận mật khẩu mới",
+    "newPass": "Mật khẩu mới",
+    "errConfirm": "Vui lòng xác nhận đúng mật khẩu mới"
   },
   "welcome": "Xin chào",
   "login": {
@@ -304,7 +307,12 @@
     "warehouseList": "Danh sách kho",
     "importOrder": "Đơn nhập hàng",
     "voucher": "Phiếu giảm giá",
-    "groupProduct": "Nhóm sản phẩm"
+    "groupProduct": "Nhóm sản phẩm",
+    "profile": "Thông tin cửa hàng"
   },
-  "on": "trên"
+  "on": "trên",
+  "profile": {
+    "changeProfile": "Đổi thông tin shop",
+    "changePassword": "Đổi mật khẩu"
+  }
 }

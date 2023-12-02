@@ -44,4 +44,5 @@ export type Props = {
     value: number;
     message: string;
   };
+  disabled?: boolean;
 };

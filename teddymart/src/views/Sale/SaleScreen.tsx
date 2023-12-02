@@ -150,8 +150,6 @@ export default function SaleScreen() {
       >
         <Space direction="vertical" size={10}>
           <ModalSelectDate setResult={setDate} />
-
-          <Button>{t("button.all")}</Button>
           <div className=" flex items-center">
             <TextInputComponent
               value={search}
@@ -173,12 +171,7 @@ export default function SaleScreen() {
               style={{ backgroundColor: "#EA5A47", marginInline: 12 }}
               iconLeft={<BiTrash size={20} color="white" />}
             />
-            {/* <ButtonComponent
-              label={t("button.exportExcel")}
-              onClick={() => {}}
-              style={{ backgroundColor: "#211F30", marginRight: 12 }}
-              iconLeft={<LiaFileExcel size={20} color="white" />}
-            /> */}
+
             <BtnExport
               fileName={t("drawer.sale")}
               sheet={t("drawer.sale")}
@@ -207,9 +200,6 @@ export default function SaleScreen() {
                 ]}
                 isValueIndex={true}
               />
-              <Button style={{ backgroundColor: "#e5a344", color: "white" }}>
-                {t("button.view")}
-              </Button>
             </Space>
           </div>
           {/* <Tabs defaultActiveKey="1" items={items} onChange={onChange} /> */}
