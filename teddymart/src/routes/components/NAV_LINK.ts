@@ -16,4 +16,5 @@ export const NAV_LINK = {
   WAREHOUSE_LIST: "/home/warehouse/warehouseList",
   IMPORT_ORDER: "/home/warehouse/importOrder",
   PROFILE: "/home/profile",
+  SHELF: "/home/shelf",
 };

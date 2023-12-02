@@ -48,7 +48,8 @@
     "voucher": "Phiếu giảm giá",
     "warehouse": "Quản lý kho",
     "report": "Báo cáo",
-    "signOut": "Đăng xuất"
+    "signOut": "Đăng xuất",
+    "shelf": "Kệ"
   },
   "button": {
     "filter": "Bộ lọc",
@@ -294,6 +295,7 @@
   "warningTxt": "Bạn có chắc chắn muốn xóa mục này?",
   "noData": "Không có dữ liệu",
   "rowsPerPage": "Số mục mỗi trang: ",
+  "fillData": "Bạn vui lòng điền đầy đủ các trường thông tin bắt buộc!",
   "alertTitle": "Bạn có chắc chắn?",
   "alertContent": "Xác nhận rằng bạn sẽ xóa mục này ra khỏi hệ thống",
   "header": {
@@ -308,11 +310,21 @@
     "importOrder": "Đơn nhập hàng",
     "voucher": "Phiếu giảm giá",
     "groupProduct": "Nhóm sản phẩm",
-    "profile": "Thông tin cửa hàng"
+    "profile": "Thông tin cửa hàng",
+    "shelf": "Kệ"
   },
   "on": "trên",
   "profile": {
     "changeProfile": "Đổi thông tin shop",
     "changePassword": "Đổi mật khẩu"
+  },
+  "shelf": {
+    "addNewShelf": "Thêm kệ mới",
+    "searchByName": "Tìm kiếm theo tên kệ",
+    "shelfId": "Mã kệ",
+    "shelfName": "Tên kệ",
+    "capacity": "Sức chứa",
+    "note": "Ghi chú",
+    "capacityMustBeANumber": "Sức chứa phải là một số nguyên"
   }
 }

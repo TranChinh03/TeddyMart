@@ -87,14 +87,19 @@ export default function Drawer() {
       icon2: <BsCaretDownFill size={15} />,
       subDrawer: [
         {
-          name: t("drawer.product"),
-          link: NAV_LINK.PRODUCT,
-          icon1: <BsBox size={20} />,
+          name: t("drawer.shelf"),
+          link: NAV_LINK.SHELF,
+          icon1: <BsBoxes size={20} />, 
         },
         {
           name: t("drawer.groupProduct"),
           link: NAV_LINK.GROUP_PRODUCT,
           icon1: <BsBoxes size={20} />,
+        },
+        {
+          name: t("drawer.product"),
+          link: NAV_LINK.PRODUCT,
+          icon1: <BsBox size={20} />,
         },
       ],
     },

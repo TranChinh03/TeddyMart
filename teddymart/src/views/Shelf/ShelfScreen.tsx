@@ -1,38 +1,18 @@
-import React, { useState } from "react";
-import Header from "components/Header";
-import DropdownComponent from "components/DropdownComponent";
-import ButtonSelect from "components/ButtonSelect";
-import { IoMdArrowDropdown } from "react-icons/io";
+import { useState } from "react";
 import SearchComponent from "components/SearchComponent";
 import ButtonComponent from "components/ButtonComponent";
 import { COLORS } from "constants/colors";
-import {
-  LiaBarcodeSolid,
-  LiaFileExcel,
-  LiaRecycleSolid,
-  LiaScribd,
-} from "react-icons/lia";
 import { TiPlus } from "react-icons/ti";
-import { BiFilter } from "react-icons/bi";
-import { ResponsiveContainer } from "recharts";
-import { GroupProductTable } from "components/TableComponent";
+import { GroupProductTable, ShelfTable } from "components/TableComponent";
 import { useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { t } from "i18next";
-import { Divider, Modal, Space } from "antd";
-import { addData } from "controller/addData";
-import AddNewGroupProduct from "./components/AddNewGroupProduct";
+import AddNewShelf from "./components/AddNewShelf";
 
-export default function ProductScreen() {
-  const GROUP = useSelector((state: RootState) => state.groupProduct);
-  const [screens, setScreens] = useState();
-  const [type, setType] = useState();
-  const [productGroup, setProductGroup] = useState();
-  const [status, setStatus] = useState();
-  const [storeManagement, setStoreManagement] = useState();
-  const [sort, setSort] = useState();
-  const [search, setSearch] = useState();
+export default function ShelfScreen() {
+  const SHELF = useSelector((state: RootState) => state.shelf);
   const [openAddForm, setOpenAddForm] = useState(false);
+  const [search, setSearch] = useState("");
 
   return (
     <div className="w-full">
@@ -49,7 +29,9 @@ export default function ProductScreen() {
           <div className="flex justify-start">
             <div className="mx-2">
               <SearchComponent
-                placeholder={t("product.searchByProductGroup")}
+                search={search}
+                setSearch={setSearch}
+                placeholder={t("shelf.searchByName")}
               />
             </div>
           </div>
@@ -63,7 +45,7 @@ export default function ProductScreen() {
             </div>
             <div className="mr-10">
               <ButtonComponent
-                label={t("product.addNewProductGroup")}
+                label={t("shelf.addNewShelf")}
                 onClick={() => setOpenAddForm(true)}
                 iconLeft={
                   <TiPlus
@@ -75,15 +57,14 @@ export default function ProductScreen() {
           </div>
         </div>
         <div style={{ width: "100%", margin: "20px auto auto auto" }}>
-          <GroupProductTable data={GROUP} />
+          <ShelfTable data={SHELF}/>
         </div>
       </div>
 
       {/* ------------------------------------------------------------------------------------------------------------------- */}
-      <AddNewGroupProduct 
-        openAddNewGroupProduct={openAddForm}
-        setOpenAddNewSupplier={setOpenAddForm}
-      />
+      <AddNewShelf 
+          openAddNewShelf = {openAddForm}
+          setOpenAddShelf = {setOpenAddForm}/>
     </div>
   );
 }

@@ -7,11 +7,12 @@ type params = {
     | "Voucher"
     | "Partner"
     | "Group_Product"
+    | "Shelf"
     | "Product"
     | "Orders"
     | "Warehouse";
 
-  data: TVoucher | TPartner | TGroupProduct | TProduct | TOrder;
+  data: TVoucher | TPartner | TGroupProduct | TProduct | TOrder | TShelf;
 };
 const addData = async ({ data, table, id }: params) => {
   let userId = window.localStorage.getItem("USER_ID");

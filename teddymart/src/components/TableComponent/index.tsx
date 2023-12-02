@@ -7,6 +7,7 @@ import GroupProductTable from "./components/GroupProductTable";
 // import ManagerTable from "./components/ManagerTable";
 import ReportProductTable from "./components/ReportProductTable";
 import GeneralReportTable from "./components/GeneralReportTable";
+import ShelfTable from "./components/ShelfTable";
 export {
   BillTable,
   PartnerTable,
@@ -17,4 +18,5 @@ export {
   // ManagerTable,
   ReportProductTable,
   GeneralReportTable,
+  ShelfTable,
 };

@@ -48,7 +48,8 @@
     "voucher": "Voucher",
     "warehouse": "Warehouse",
     "report": "Report",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "shelf": "Shelf"
   },
   "manager": {
     "userId": "User ID",
@@ -303,6 +304,7 @@
     "uploadImage": "Upload Image"
   },
 
+  "fillData": "Please fill full required fields",
   "noData": "No data",
   "rowsPerPage": "Number of rows per page: ",
   "alertTitle": "Are you sure?",
@@ -319,11 +321,21 @@
     "importOrder": "Import Order",
     "voucher": "Voucher",
     "groupProduct": "Group Product",
-    "profile": "Profile"
+    "profile": "Profile",
+    "shelf": "Shelf"
   },
   "on": "on",
   "profile": {
     "changeProfile": "Change Profile",
     "changePassword": "Change Password"
+  },
+  "shelf": {
+    "addNewShelf": "Add new shelf",
+    "searchByName": "Search By Shelf's Name",
+    "shelfId": "ID",
+    "shelfName": "Shelf Name",
+    "capacity": "Capacity",
+    "note": "Note",
+    "capacityMustBeANumber": "Capacity must be a number"
   }
 }

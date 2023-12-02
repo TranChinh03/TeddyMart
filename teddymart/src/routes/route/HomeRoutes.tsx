@@ -21,6 +21,7 @@ import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import { useMemo } from "react";
 import Profile from "views/Profile/Profile";
+import ShelfScreen from "views/Shelf/ShelfScreen";
 
 export default function HomeRoutes() {
   const { openDrawer } = useSelector((state: RootState) => state.controlSlice);
@@ -62,6 +63,11 @@ export default function HomeRoutes() {
     },
     { path: "voucher", element: <VoucherScreen />, name: t("header.voucher") },
     { path: "draft", element: <Draft /> },
+    {
+      path: "shelf",
+      element: <ShelfScreen />,
+      name: t("header.shelf")
+    },
     {
       path: "groupproduct",
       element: <GroupProductScreen />,

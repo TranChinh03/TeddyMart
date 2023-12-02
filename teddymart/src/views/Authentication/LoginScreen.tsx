@@ -29,6 +29,7 @@ import {
 import { db, auth } from "firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { uploadManager } from "state_management/slices/managerSlice";
+import { uploadShelf } from "state_management/slices/shelfSlice";
 
 type Inputs = {
   userName: string;
@@ -162,6 +163,9 @@ export default function LoginScreen() {
       getData(`/Manager/${userId}/Voucher`).then((data: TVoucher[]) =>
         dispatch(uploadVoucher(data))
       ),
+      getData(`/Manager/${userId}/Shelf`).then(
+        (data: TShelf[]) => dispatch(uploadShelf(data))
+      ),
       getData(`/Manager/${userId}/Group_Product`).then(
         (data: TGroupProduct[]) => dispatch(uploadGroupProduct(data))
       ),
@@ -186,7 +190,7 @@ export default function LoginScreen() {
         });
       }),
     ]).then((values) => {
-      dispatch(uploadReportProduct(generateProduct(values[5] as TOrder[])));
+      dispatch(uploadReportProduct(generateProduct(values[6] as TOrder[])));
       //console.log("VALUES", values[2], values[5]);
       //console.log(generateProduct(values[5] as TOrder[]));
       setLoading(false);
