@@ -5,9 +5,10 @@ import { COLORS } from "constants/colors";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { useTranslation } from "react-i18next";
-import { Modal } from "antd";
-import { addPartnerFirebase, createEntityID } from "utils/appUtils";
+import { Modal,message } from "antd";
+import { createEntityID } from "utils/appUtils";
 import { addNewPartner } from "state_management/slices/partnerSlice";
+import { addData } from "controller/addData";
 
 type Props = {
   opernAddNewCustomer: boolean;
@@ -53,19 +54,21 @@ export default function AddNewCustomerForm({
   const onAddNewCustomer = () => {
     const partnerId = createEntityID("P");
     const data: TPartner = {
-        partnerId: partnerId,
-        partnerName: customerName,
-        email: email,
-        phoneNumber: phoneNumber,
-        address: address,
-        note: note,
-        gender: selectedGender as "female" | "male",
-        type: "Customer",
-        totalBuyAmount: parseInt(totalBuyAmount),
-        debt: parseInt(debt),
+      partnerId: partnerId,
+      partnerName: customerName,
+      email: email,
+      phoneNumber: phoneNumber,
+      address: address,
+      note: note,
+      gender: selectedGender as "female" | "male",
+      type: "Customer",
+      totalBuyAmount: parseInt(totalBuyAmount),
+      debt: parseInt(debt),
     };
     dispatch(addNewPartner(data));
-    addPartnerFirebase(data, userId, partnerId);
+    addData({ data, table: "Partner", id: partnerId });
+    message.success("Supplier added successfully");
+    setOpernAddNewCustomer(false);
   };
   return (
     <Modal

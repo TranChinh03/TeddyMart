@@ -5,9 +5,13 @@ import { COLORS } from "constants/colors";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { useTranslation } from "react-i18next";
-import { Modal } from "antd";
-import { addPartnerFirebase, createEntityID } from "utils/appUtils";
+import { Modal, message } from "antd";
+import { createEntityID } from "utils/appUtils";
 import { addNewPartner } from "state_management/slices/partnerSlice";
+import { addData } from "controller/addData";
+import { db, storage } from "firebaseConfig";
+import { doc, updateDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 type Props = {
   opernAddNewSupplier: boolean;
@@ -28,13 +32,24 @@ export default function AddNewSupplierForm({
   const [certificate, setCertificate] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
-  const handleImageSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleImageSelected = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (event.target.files && event.target.files[0]) {
       const selectedImageFile = event.target.files[0];
-      const imageUrl = URL.createObjectURL(selectedImageFile);
-      console.log(imageUrl);
-      setSelectedImage(imageUrl);
-      setCertificate(imageUrl);
+      const storageRef = ref(
+        storage,
+        `/Supplier/Certificate/${createEntityID("P")}`
+      );
+      try {
+        const snapshot = await uploadBytes(storageRef, selectedImageFile);
+        const imageUrl = await getDownloadURL(snapshot.ref);
+        setSelectedImage(imageUrl);
+        setCertificate(imageUrl);
+      } catch (error) {
+        console.error("Error uploading image to Firebase Storage:", error);
+      }
     }
   };
 
@@ -74,7 +89,9 @@ export default function AddNewSupplierForm({
       certificate: certificateImageUrl,
     };
     dispatch(addNewPartner(data));
-    addPartnerFirebase(data, userId, partnerId);
+    addData({ data, table: "Partner", id: partnerId });
+    message.success("Supplier added successfully");
+    setOpernAddNewSupplier(false);
   };
   return (
     <Modal
