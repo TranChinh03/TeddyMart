@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { useTranslation } from "react-i18next";
 import { Modal } from "antd";
-import { addPartnerFirebase, createPartnerID } from "utils/appUtils";
+import { addPartnerFirebase, createEntityID } from "utils/appUtils";
 import { addNewPartner } from "state_management/slices/partnerSlice";
 
 type Props = {
@@ -51,7 +51,7 @@ export default function AddNewCustomerForm({
     }
   };
   const onAddNewCustomer = () => {
-    const partnerId = createPartnerID();
+    const partnerId = createEntityID("P");
     const data: TPartner = {
         partnerId: partnerId,
         partnerName: customerName,

@@ -61,7 +61,7 @@ export default function AdvancedSearch({onSearch, onReset,}: { onSearch: (filter
       </div>
 
 
-      <div className={`overflow-hidden transition-all duration-500 ${isAdvancedSearchVisible ? "max-h-96" : "max-h-0"}`}>
+      <div className={`overflow-hidden transition-all duration-700 ${isAdvancedSearchVisible ? "max-h-96" : "max-h-0"}`}>
         <div className="flex flex-wrap gap-8 p-5">
           <div className="flex flex-row flex-wrap gap-8">
             <DropdownComponent
