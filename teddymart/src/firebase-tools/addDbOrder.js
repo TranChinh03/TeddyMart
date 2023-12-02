@@ -206,11 +206,21 @@ export const addDbOrder = () => {
         data["receiver"] = "Teddy Mart";
       }
       console.log("data", data);
-      await setDoc(doc(db, "/Manager/M001/Orders", data.orderId), data);
-      await updateDoc(doc(db, "/Manager/M001/Partner", partner.partnerId), {
-        debt: increment(debt),
-        totalBuyAmount: increment(totalPayment),
-      });
+      await setDoc(
+        doc(db, "/Manager/0viI4onPd8eJkSC8QZxNUM9mPyX2/Orders", data.orderId),
+        data
+      );
+      await updateDoc(
+        doc(
+          db,
+          "/Manager/0viI4onPd8eJkSC8QZxNUM9mPyX2/Partner",
+          partner.partnerId
+        ),
+        {
+          debt: increment(debt),
+          totalBuyAmount: increment(totalPayment),
+        }
+      );
     } catch (error) {
       console.log(error);
     }

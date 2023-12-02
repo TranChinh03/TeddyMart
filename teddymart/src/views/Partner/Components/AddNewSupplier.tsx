@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { useTranslation } from "react-i18next";
 import { Modal, message } from "antd";
-import { createEntityID } from "utils/appUtils";
+import { createID } from "utils/appUtils";
 import { addNewPartner } from "state_management/slices/partnerSlice";
 import { addData } from "controller/addData";
 import { db, storage } from "firebaseConfig";
@@ -40,7 +40,7 @@ export default function AddNewSupplierForm({
       const selectedImageFile = event.target.files[0];
       const storageRef = ref(
         storage,
-        `/Supplier/Certificate/${createEntityID("P")}`
+        `/Supplier/Certificate/${createID({ prefix: "P" })}`
       );
       try {
         const snapshot = await uploadBytes(storageRef, selectedImageFile);
@@ -74,7 +74,7 @@ export default function AddNewSupplierForm({
     }
   };
   const onAddNewSupplier = () => {
-    const partnerId = createEntityID("P");
+    const partnerId = createID({ prefix: "P" });
     const certificateImageUrl = selectedImage;
     const data: TPartner = {
       partnerId: partnerId,

@@ -41,6 +41,7 @@ import {
 import { addData } from "controller/addData";
 import { SearchComponent } from "components";
 import { DownloadTableExcel } from "react-export-table-to-excel";
+import { ADD_ORDER } from "state_management/actions/actions";
 export default function Draft() {
   const tableRef = useRef(null);
   const [isOn, setIsOn] = useState(false);
@@ -168,7 +169,7 @@ export default function Draft() {
       {/* <Button onClick={addDbManagerTable}>
         <h1>Add Manager Into Database</h1>
       </Button> */}
-      {/* <Button onClick={addDBPartnerTable}>
+      <Button onClick={addDBPartnerTable}>
         <h1>Add Partner Into Database</h1>
       </Button>
       <Button onClick={addDbVoucherTable}>
@@ -188,7 +189,8 @@ export default function Draft() {
       </Button>
       <Button
         onClick={() =>
-          dispatch({ type: "DELETE_PRODUCT", payload: { data: "AA" } })
+          //dispatch({ type: "DELETE_PRODUCT", payload: { data: "AA" } })
+          dispatch({ type: ADD_ORDER, payload: 1 })
         }
       >
         <h1>Extra Reducer</h1>
@@ -197,7 +199,7 @@ export default function Draft() {
         <h1>List Checkbox</h1>
       </Button>
       <ListCheckBox listFilter={listFilter} setListFilter={setListFilter} />
-      <Button onClick={onCreateAccount}>Create Account</Button> */}
+      <Button onClick={onCreateAccount}>Create Account</Button>
       {/* <BillTable />
       <PartnerTable />
       <ProductTable />
@@ -207,7 +209,7 @@ export default function Draft() {
       <GroupProductTable /> */}
       {/* <GeneralReportTable /> */}
       {/* <ReportProductTable /> */}
-      <Button onClick={() => window.localStorage.setItem("userId", "12345")}>
+      {/* <Button onClick={() => window.localStorage.setItem("userId", "12345")}>
         Add UserId to LocalStorage
       </Button>
       <Button onClick={() => window.localStorage.removeItem("userId")}>
@@ -290,7 +292,7 @@ export default function Draft() {
         }}
       >
         Add Voucher
-      </Button>
+      </Button> */}
       <SearchComponent width={300} search={search} setSearch={setSearch} />
       <Button
         onClick={() => {

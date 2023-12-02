@@ -14,9 +14,10 @@ import { BiSearch } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { addNewOrder } from "state_management/slices/orderSlice";
-import { addOrderFirebase, createEntityID } from "utils/appUtils";
+import { addOrderFirebase, createID } from "utils/appUtils";
 import AddNewCustomerForm from "./AddNewCustomer";
 import AddNewProduct from "views/Product/components/AddNewProduct";
+import { ADD_ORDER } from "state_management/actions/actions";
 const CUS_INFO = {
   customerName: "NVA",
   gender: "Male",
@@ -73,9 +74,13 @@ const AddForm = ({
     return customer;
   }, [searchCustomer]);
   const onAddOrder = async () => {
-    const orderId = createEntityID("ORD");
+    const y = new Date().getFullYear();
+    const m = new Date().getMonth();
+    const d = new Date().getDate();
+    const createdAt = new Date(y, m, d, 0, 0, 0, 0);
+    const orderId = createID({ prefix: "ORD" });
     const data: TOrder = {
-      createdAt: new Date(),
+      createdAt: createdAt,
       debt: sum - discount - +payment,
       discount: discount,
       listProduct: listProduct,
@@ -93,6 +98,7 @@ const AddForm = ({
     };
     addOrderFirebase(data, userId, orderId);
     dispatch(addNewOrder(data));
+    //dispatch({ type: ADD_ORDER, payload: data });
   };
   console.log(voucher);
   return (
