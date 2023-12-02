@@ -5,7 +5,7 @@ import { useMemo, useState, useLayoutEffect, useRef, forwardRef } from "react";
 import { useTranslation } from "react-i18next";
 import { BiDetail } from "react-icons/bi";
 import { FiEdit, FiTrash } from "react-icons/fi";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import {
   HiOutlineChevronLeft,
@@ -14,6 +14,7 @@ import {
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
 import warehouseSlice from "state_management/slices/warehouseSlice";
+import {deleteWarehouse} from "state_management/slices/warehouseSlice";
 /**
  * Chưa thanh toán (Unpaid): Hóa đơn vẫn chưa được thanh toán hoặc chưa đến hạn thanh toán.
 
@@ -115,6 +116,7 @@ const options: TOption = {
 type Props = {
   warehouseName?: string;
   sort?: TSort;
+  setOpenAlertModal?: (openAlertModal: boolean) => void;
 };
 
 const WareHouseTable = forwardRef<HTMLTableElement, Props>(
@@ -122,18 +124,20 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
     {
       warehouseName,
       sort,  
+      setOpenAlertModal,
     }: Props,
     ref
   ) => {
     const { t } = useTranslation();
     const warehouses = useSelector((state: RootState) => state.warehouseSlice);
+    const dispatch = useDispatch();
 
     const HEADER = useMemo(
       () => [
         options.warehouseID && t("warehouse.warehouseID"),
         options.warehouseName && t("warehouse.warehouseName"),
         options.address && t("warehouse.address"),
-        //t("activities"),
+        t("activities"),
       ],
       [t, options]
     );
@@ -168,6 +172,13 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
 
     const [selectedRows, setSelectedRows] = useState([]);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+
+    const onDeleteRow = (warehouseId: string) => {
+      setOpenAlertModal(true);
+      dispatch(deleteWarehouse({ warehouseId: warehouseId }));
+      //deleteOrderFirebase([orderId], userId);
+    };
+
     const handleCheckBoxChange = (rowId: string) => {
       if (rowId === null) {
         if (selectedRows.length < warehouseSort.length) {
@@ -212,7 +223,10 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
     return (
       <div className="w-full">
         <div className="max-h-96 overflow-y-auto visible">
-          <table className="w-full border-collapse border border-gray-300 bg-gray-50">
+          <table 
+            className="w-full border-collapse border border-gray-300 bg-gray-50"
+            ref={ref}
+          >
             <thead className="bg-gray-200 sticky left-0 z-50" style={{ top: -1 }}>
               <tr>
                 <th className="border border-gray-300 p-2 text-xs">
@@ -268,15 +282,15 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
                         </td>
                       )}
                       {/* NÚT XÓA VÀ SỬA */}
-                      {/* <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
+                      <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
                         <Button className="mr-2">
                           <FiEdit />
                         </Button>
 
-                    <Button>
-                      <FiTrash color="red" />
-                    </Button>
-                  </td> */}
+                        <Button>
+                          <FiTrash color="red" />
+                        </Button>
+                      </td>
                     </tr>
                   );
               })}

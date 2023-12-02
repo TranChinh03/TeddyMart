@@ -17,8 +17,11 @@ const warehouseSlice = createSlice({
     ) => {
       return [...action.payload];
     },
-    deleteWarehouse: (state: TWarehouse[], action: PayloadAction<string>) => {
-      return state.filter((w) => w.warehouseId !== action.payload);
+    deleteWarehouse: (state: TWarehouse[], action: PayloadAction<Pick<TWarehouse, "warehouseId">>) => {
+      return state.filter((w) => w.warehouseId !== action.payload.warehouseId);
+    },
+    deleteMultiOrder: (state: TWarehouse[], action: PayloadAction<string[]>) => {
+      return state.filter((w) => !action.payload.includes(w.warehouseId));
     },
     updateWarehouse: (
       state: TWarehouse[],
@@ -47,6 +50,7 @@ export const {
   addNewWarehouse,
   uploadWarehouse,
   deleteWarehouse,
+  deleteMultiOrder,
   updateWarehouse,
 } = warehouseSlice.actions;
 export default warehouseSlice.reducer;

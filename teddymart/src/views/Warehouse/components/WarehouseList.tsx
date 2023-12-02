@@ -8,28 +8,25 @@ import {
   ListCheckBox,
   SearchComponent,
 } from "components";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { COLORS } from "constants/colors";
 import {
   Button,
   Checkbox,
   Space,
-  DatePicker,
-  Dropdown,
-  MenuProps,
-  Tooltip,
-  TabsProps,
-  Tabs,
-  Popconfirm,
   Modal,
-  Divider,
-  Card,
+  message
 } from "antd";
 import { LiaFileExcel } from "react-icons/lia";
 import { BiPlus } from "react-icons/bi";
 import { WareHouseTable } from "components/TableComponent";
 import { BtnExport } from "components";
+import { createID } from "utils/appUtils";
+import { addNewWarehouse } from "state_management/slices/warehouseSlice";
+import { addData } from "controller/addData";
+import { deleteMultiOrder } from "state_management/slices/warehouseSlice";
+
 
 export default function WarehouseList() {
   const [search, setSearch] = useState("");
@@ -38,20 +35,7 @@ export default function WarehouseList() {
   const [address, setAddress] = useState("");
   const [defaultWarehouse, setDefaultWarehouse] = useState(false);
   const { t } = useTranslation();
-  // const [time, setTime] = useState<D>({
-  //   from: new Date(),
-  //   to: new Date(),
-  // });
-  // const [listFilter, setListFilter] = useState([
-  //   {
-  //     displayName: t("warehouse.address"),
-  //     value: true,
-  //   },
-  //   {
-  //     displayName: t("warehouse.createdAt"),
-  //     value: true,
-  //   },
-  // ]);
+ 
   const OPTIONS = [
     t("warehouse.warehouseIDAscending"),
     t("warehouse.warehouseIDDescending"),
@@ -63,6 +47,8 @@ export default function WarehouseList() {
   const [warehouse, setWarehouse] = useState(WAREHOUSES[0]?.warehouseName);
   const warehouseName = useDeferredValue(search);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [openAlertModal, setOpenAlertModal] = useState(false);
+  const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
   const handleInputChange = (
     value: string,
@@ -82,6 +68,22 @@ export default function WarehouseList() {
   };
 
   const wareListRef = useRef(null);
+  const dispatch = useDispatch();
+
+  const onAddWarehouse = async () => {
+    const warehouseId = createID({ prefix: "WH" });
+    const data: TWarehouse = {
+      warehouseId: warehouseId,
+      warehouseName: name,
+      address: address,
+      listProduct: [], 
+      count: 0,
+    };
+    dispatch(addNewWarehouse(data));
+    addData({ data, table: "Warehouse", id: warehouseId});
+    message.success("Warehouse added successfully");
+    setOpenAddForm(false)
+  };
 
   return (
     <div className="w-full bg-extreme_lg_grey min-h-screen">
@@ -140,12 +142,10 @@ export default function WarehouseList() {
               }
             /> */}
             <BtnExport
-              fileName={t("drawer.sale")}
-              sheet={t("drawer.sale")}
+              fileName={t("warehouse.warehouseList")}
+              sheet={t("warehouse.warehouseList")}
               tableRef={wareListRef}
             />
-
-
 
             {/* <div className="w-3" /> */}
             <ButtonComponent
@@ -176,6 +176,7 @@ export default function WarehouseList() {
             nameAZ: sort === OPTIONS[2],
             nameZA: sort === OPTIONS[3],
           }}
+          ref={wareListRef}
           
         />
       </div>
@@ -235,7 +236,7 @@ export default function WarehouseList() {
               color={
                 isFormValid ? COLORS.defaultWhite : COLORS.lightGray
               }
-              onClick={() => alert("Button Clicked")}
+              onClick={onAddWarehouse}
             />
             <ButtonComponent
               label={t("button.cancel")}
