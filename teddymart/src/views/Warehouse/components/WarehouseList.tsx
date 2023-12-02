@@ -1,4 +1,4 @@
-import React, { useState, useDeferredValue } from "react";
+import React, { useState, useDeferredValue, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import TextInputComponent from "components/TextInputComponent";
 import Header from "components/Header";
@@ -29,6 +29,8 @@ import {
 import { LiaFileExcel } from "react-icons/lia";
 import { BiPlus } from "react-icons/bi";
 import { WareHouseTable } from "components/TableComponent";
+import { BtnExport } from "components";
+
 export default function WarehouseList() {
   const [search, setSearch] = useState("");
   const [openAddForm, setOpenAddForm] = useState(false);
@@ -79,6 +81,8 @@ export default function WarehouseList() {
     }
   };
 
+  const wareListRef = useRef(null);
+
   return (
     <div className="w-full bg-extreme_lg_grey min-h-screen">
       {/* Header */}
@@ -124,7 +128,7 @@ export default function WarehouseList() {
             />
 
             <div className="w-3" />
-            <ButtonComponent
+            {/* <ButtonComponent
               onClick={() => alert("Button Clicked")}
               label={t("button.exportExcel")}
               backgroundColor={COLORS.defaultBlack}
@@ -134,9 +138,16 @@ export default function WarehouseList() {
                   style={{ marginRight: 10, color: "white", fontSize: 22 }}
                 />
               }
+            /> */}
+            <BtnExport
+              fileName={t("drawer.sale")}
+              sheet={t("drawer.sale")}
+              tableRef={wareListRef}
             />
 
-            <div className="w-3" />
+
+
+            {/* <div className="w-3" /> */}
             <ButtonComponent
               label={t("button.addNew")}
               onClick={() => {
@@ -224,7 +235,7 @@ export default function WarehouseList() {
               color={
                 isFormValid ? COLORS.defaultWhite : COLORS.lightGray
               }
-              onClick={() => isFormValid && alert("Button Clicked")}
+              onClick={() => alert("Button Clicked")}
             />
             <ButtonComponent
               label={t("button.cancel")}
