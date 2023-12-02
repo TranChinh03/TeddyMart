@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { addNewVoucher } from "state_management/slices/voucherSlice";
-import { addVoucherFirebase, createVoucherID } from "utils/appUtils";
+import { addVoucherFirebase, createEntityID } from "utils/appUtils";
 type Props = {
   openAddVoucher: boolean;
   setOpenAddVoucher: (openAddVoucher: boolean) => void;
@@ -19,7 +19,7 @@ const AddNewVoucherForm = ({ openAddVoucher, setOpenAddVoucher }: Props) => {
   const { userId } = useSelector((state: RootState) => state.manager);
   const dispatch = useDispatch();
   const onAddNewVoucher = () => {
-    const voucherId = createVoucherID();
+    const voucherId = createEntityID("VCH");
     const data: TVoucher = {
       voucherId: voucherId,
       voucherName: voucherName,

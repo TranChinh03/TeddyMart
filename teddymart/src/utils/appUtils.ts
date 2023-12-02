@@ -6,14 +6,10 @@ const createID = (prefix: string): string => {
   return `${prefix}${Math.floor(Math.random() * 100000)}`;
 };
 
-const createOrderID = () => {
-  return createID("ORD");
-};
-const createVoucherID = () => {
-  return createID("VCH"); 
-};
-const createPartnerID = () => {
-  return createID("P"); 
+type EntityType = "ORD" | "VCH" | "P"|"GP"|"PD";
+
+const createEntityID = (entityType: EntityType): string => {
+  return createID(entityType);
 };
 //order
 const addOrderFirebase = async (
@@ -79,9 +75,7 @@ const deletePartnerFirebase = async (partners: string[], userId: string) => {
 
 
 export {
-  createOrderID,
-  createVoucherID,
-  createPartnerID,
+  createEntityID,
   addOrderFirebase,
   deleteOrderFirebase,
   addVoucherFirebase,

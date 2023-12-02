@@ -14,7 +14,7 @@ import { BiSearch } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { addNewOrder } from "state_management/slices/orderSlice";
-import { addOrderFirebase, createOrderID } from "utils/appUtils";
+import { addOrderFirebase, createEntityID } from "utils/appUtils";
 import AddNewCustomerForm from "./AddNewCustomer";
 import AddNewProduct from "views/Product/components/AddNewProduct";
 const CUS_INFO = {
@@ -73,7 +73,7 @@ const AddForm = ({
     return customer;
   }, [searchCustomer]);
   const onAddOrder = async () => {
-    const orderId = createOrderID();
+    const orderId = createEntityID("ORD");
     const data: TOrder = {
       createdAt: new Date(),
       debt: sum - discount - +payment,
