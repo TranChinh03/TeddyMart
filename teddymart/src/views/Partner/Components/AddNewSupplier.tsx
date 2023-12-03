@@ -38,18 +38,8 @@ export default function AddNewSupplierForm({
   ) => {
     if (event.target.files && event.target.files[0]) {
       const selectedImageFile = event.target.files[0];
-      const storageRef = ref(
-        storage,
-        `/Supplier/Certificate/${createID({ prefix: "P" })}`
-      );
-      try {
-        const snapshot = await uploadBytes(storageRef, selectedImageFile);
-        const imageUrl = await getDownloadURL(snapshot.ref);
-        setSelectedImage(imageUrl);
-        setCertificate(imageUrl);
-      } catch (error) {
-        console.error("Error uploading image to Firebase Storage:", error);
-      }
+      const imageUrl = URL.createObjectURL(selectedImageFile);
+      setSelectedImage(imageUrl);
     }
   };
 
@@ -73,25 +63,43 @@ export default function AddNewSupplierForm({
       setIsFormValid(value !== "" && supplierName !== "");
     }
   };
-  const onAddNewSupplier = () => {
-    const partnerId = createID({ prefix: "P" });
-    const certificateImageUrl = selectedImage;
-    const data: TPartner = {
-      partnerId: partnerId,
-      partnerName: supplierName,
-      email: email,
-      phoneNumber: phoneNumber,
-      address: address,
-      note: note,
-      type: "Supplier",
-      totalBuyAmount: parseInt(totalBuyAmount),
-      debt: parseInt(debt),
-      certificate: certificateImageUrl,
-    };
-    dispatch(addNewPartner(data));
-    addData({ data, table: "Partner", id: partnerId });
-    message.success("Supplier added successfully");
-    setOpernAddNewSupplier(false);
+  const onAddNewSupplier = async () => {
+    try {
+      const partnerId = createID({ prefix: "P" });
+      let certificateImageUrl = null;
+      if (selectedImage) {
+        const storageRef = ref(storage, `/Manager/Supplier/Certificate/${partnerId}`);
+        const selectedImageFile = await getImageFileFromUrl(selectedImage);
+        await uploadBytes(storageRef, selectedImageFile);
+        certificateImageUrl = await getDownloadURL(storageRef);
+      }
+      const data: TPartner = {
+        partnerId: partnerId,
+        partnerName: supplierName,
+        email: email,
+        phoneNumber: phoneNumber,
+        address: address,
+        note: note,
+        type: "Supplier",
+        totalBuyAmount: parseInt(totalBuyAmount),
+        debt: parseInt(debt),
+        certificate: certificateImageUrl,
+      };
+  
+      dispatch(addNewPartner(data));
+      addData({ data, table: "Partner", id: partnerId });
+  
+      message.success("Supplier added successfully");
+      setOpernAddNewSupplier(false);
+    } catch (error) {
+      console.error("Error adding new supplier:", error);
+    }
+  };
+
+  const getImageFileFromUrl = async (imageUrl: string): Promise<File> => {
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+    return new File([blob], "selectedImageFile");
   };
   return (
     <Modal
