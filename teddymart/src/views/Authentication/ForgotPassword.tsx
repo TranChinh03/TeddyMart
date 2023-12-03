@@ -8,6 +8,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 
 import { db } from "firebaseConfig";
 
@@ -37,6 +38,11 @@ export default function ForgotPassword() {
         return;
       } else {
         await sendPasswordResetEmail(auth, data.email);
+        const userDocRef = doc(db, "Manager", user.id);
+        await updateDoc(userDocRef, {
+          passwordReset: true,
+          lastPasswordResetTime: new Date(),
+        });
         setSuccessMessage("Password reset email sent successfully.");
         message.success("Password reset email sent successfully.");
         setTimeout(function () {

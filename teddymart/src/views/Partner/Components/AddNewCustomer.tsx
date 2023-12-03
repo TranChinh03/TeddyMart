@@ -52,6 +52,12 @@ export default function AddNewCustomerForm({
     }
   };
   const onAddNewCustomer = () => {
+    const trimmedName = customerName.trim();
+    const trimmedPhone = phoneNumber.trim();
+    if (!trimmedName || !trimmedPhone || !isFormValid) {
+      message.warning("Please fill in full name and phone");
+      return;
+    }
     const partnerId = createID({ prefix: "P" });
     const data: TPartner = {
       partnerId: partnerId,

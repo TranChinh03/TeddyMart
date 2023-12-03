@@ -65,10 +65,19 @@ export default function AddNewSupplierForm({
   };
   const onAddNewSupplier = async () => {
     try {
+      const trimmedName = supplierName.trim();
+      const trimmedPhone = phoneNumber.trim();
+      if (!trimmedName || !trimmedPhone || !isFormValid) {
+        message.warning("Please fill in full name and phone");
+        return;
+      }
       const partnerId = createID({ prefix: "P" });
       let certificateImageUrl = null;
       if (selectedImage) {
-        const storageRef = ref(storage, `/Manager/Supplier/Certificate/${partnerId}`);
+        const storageRef = ref(
+          storage,
+          `/Manager/Supplier/Certificate/${partnerId}`
+        );
         const selectedImageFile = await getImageFileFromUrl(selectedImage);
         await uploadBytes(storageRef, selectedImageFile);
         certificateImageUrl = await getDownloadURL(storageRef);
@@ -85,10 +94,10 @@ export default function AddNewSupplierForm({
         debt: parseInt(debt),
         certificate: certificateImageUrl,
       };
-  
+
       dispatch(addNewPartner(data));
       addData({ data, table: "Partner", id: partnerId });
-  
+
       message.success("Supplier added successfully");
       setOpernAddNewSupplier(false);
     } catch (error) {
