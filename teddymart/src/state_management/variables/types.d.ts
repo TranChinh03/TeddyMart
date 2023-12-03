@@ -59,7 +59,7 @@ declare type TShelf = {
   shelfName: string;
   capacity: number;
   note?: string;
-}
+};
 
 declare type TWarehouse = {
   warehouseId: string;
@@ -73,7 +73,7 @@ declare type TOrder = {
   orderId: string;
   partnerId: string;
   partnerName: string;
-  createdAt?: Date;
+  createdAt?: Date | string;
   payment: number;
   discount?: number;
   totalPayment: number;

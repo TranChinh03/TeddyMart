@@ -170,8 +170,8 @@ export default function LoginScreen() {
       getData(`/Manager/${userId}/Voucher`).then((data: TVoucher[]) =>
         dispatch(uploadVoucher(data))
       ),
-      getData(`/Manager/${userId}/Shelf`).then(
-        (data: TShelf[]) => dispatch(uploadShelf(data))
+      getData(`/Manager/${userId}/Shelf`).then((data: TShelf[]) =>
+        dispatch(uploadShelf(data))
       ),
       getData(`/Manager/${userId}/Group_Product`).then(
         (data: TGroupProduct[]) => dispatch(uploadGroupProduct(data))
@@ -189,17 +189,19 @@ export default function LoginScreen() {
         dispatch(uploadWarehouse(data));
       }),
       new Promise((resolve) => {
-        getData(`/Manager/${userId}/Orders`).then((data: TOrder[]) => {
-          dispatch(uploadOrder(data));
-          dispatch(uploadReport(generateReport(data)));
-          resolve(data);
-          //console.log(generateProduct(data));
-        });
+        getData(`/Manager/${userId}/Orders`, "createdAt").then(
+          (data: TOrder[]) => {
+            dispatch(uploadOrder(data));
+            dispatch(uploadReport(generateReport(data)));
+            resolve(data);
+            //console.log(generateProduct(data));
+          }
+        );
       }),
     ]).then((values) => {
       dispatch(uploadReportProduct(generateProduct(values[6] as TOrder[])));
       //console.log("VALUES", values[2], values[5]);
-      //console.log(generateProduct(values[5] as TOrder[]));
+      //console.log("VALUES", generateProduct(values[6] as TOrder[]));
       setLoading(false);
       navigate(NAV_LINK.SALE);
       reset();
@@ -250,7 +252,7 @@ export default function LoginScreen() {
                     required={true}
                     inputType={visible ? "text" : "password"}
                     icon={visible ? <AiFillEyeInvisible /> : <AiFillEye />}
-                    //onIconClick={() => setVisible(!visible)}
+                    onIconClick={() => setVisible(!visible)}
                     register={register}
                     registerName="password"
                   />

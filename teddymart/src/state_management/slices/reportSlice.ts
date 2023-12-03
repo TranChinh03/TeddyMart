@@ -22,19 +22,22 @@ const reportSlice = createSlice({
       (state: TReportSlice, action: PayloadAction<TOrder>) => {
         let order = action.payload;
         let i = state.byDate.findIndex(
-          (d) => d.date.getTime() === order.createdAt.getTime()
+          (d) =>
+            new Date(d.date).getTime() === new Date(order.createdAt).getTime()
         );
 
         let iM = state.byMonth.findIndex(
-          (d) => d.date.getTime() === order.createdAt.getTime()
+          (d) =>
+            new Date(d.date).getTime() === new Date(order.createdAt).getTime()
         );
 
         let iY = state.byYear.findIndex(
-          (d) => d.date.getTime() === order.createdAt.getTime()
+          (d) =>
+            new Date(d.date).getTime() === new Date(order.createdAt).getTime()
         );
 
         const data = {
-          date: order.createdAt,
+          date: new Date(order.createdAt),
           outcome:
             order.type === "Import" && order.status === "paid"
               ? order.totalPayment
@@ -47,7 +50,9 @@ const reportSlice = createSlice({
           importOrder: order.type === "Import" ? 1 : 0,
           exportOrder: order.type === "Export" ? 1 : 0,
           profit:
-            order.type === "Import" ? -order.totalPayment : order.totalPayment,
+            order.type === "Import" && order.status === "paid"
+              ? -order.totalPayment
+              : order.totalPayment,
         };
 
         if (iM === -1) {

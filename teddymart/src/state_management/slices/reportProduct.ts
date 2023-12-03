@@ -21,11 +21,12 @@ const reportProduct = createSlice({
         const order = action.payload;
         const isExport = order.type === "Export" ? true : false;
         let i = state.findIndex(
-          (s) => s.date.getTime() === order.createdAt.getTime()
+          (s) =>
+            new Date(s.date).getTime() === new Date(order.createdAt).getTime()
         );
         if (i === -1) {
           state.unshift({
-            date: order.createdAt,
+            date: new Date(order.createdAt),
             products: order.listProduct.map((item) => ({
               productId: item.productId,
               productName: item.productName,

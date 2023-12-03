@@ -1,5 +1,11 @@
 import { Button } from "antd";
-import React, { ChangeEvent, forwardRef, useMemo, useState } from "react";
+import React, {
+  ChangeEvent,
+  forwardRef,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import {
   HiOutlineChevronDoubleLeft,
@@ -116,9 +122,9 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
         [
           options.productId && t("product.ID"),
           options.productName && t("product.productName"),
-          options.import && t("report.quantity"),
-          options.export && t("report.revenue"),
-          options.stock && t("report.profit"),
+          options.import && t("report.import"),
+          options.export && t("report.export"),
+          options.stock && t("report.stock"),
         ].filter((value) => Boolean(value) !== false),
       [t, options]
     );
@@ -137,33 +143,44 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
           } else {
             p.products.forEach((item) => {
               let index = tmp.findIndex((t) => t.productId === item.productId);
-              if (index) {
+              if (index === -1) {
                 tmp.push(item);
               } else {
-                tmp[index].export += item.export;
-                tmp[index].import += item.import;
-                tmp[index].stock += item.import - item.export;
+                tmp[index] = {
+                  ...tmp[index], // Create a new object before modifying
+                  export: tmp[index].export + item.export,
+                  import: tmp[index].import + item.import,
+                  stock: tmp[index].stock + item.import - item.export,
+                };
               }
             });
           }
         }
       });
-      if (search !== "") {
-        return tmp.filter((t) => t.productName.includes(search));
-      }
+      // if (search !== "") {
+      //   return tmp.filter((t) => t.productName.includes(search));
+      // }
       return tmp;
     }, [PRODUCTS, date, search]);
-
-    //console.log("DATA", data);
+    //const data: TRProduct[] = [];
+    // console.log("DATA", data);
+    // console.log("PRODUCT", PRODUCTS);
 
     const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
       setRowsPerPage(+e.target.value);
     };
     const maxPages = useMemo(
       () => Math.round(data.length / rowsPerPage),
-      [rowsPerPage]
+      [rowsPerPage, data]
     );
     const [currentPage, setCurrentPage] = useState(1);
+
+    // console.log("ROWS", rowsPerPage);
+    // console.log("CURRENT", currentPage);
+
+    useEffect(() => {
+      setCurrentPage(1);
+    }, [rowsPerPage]);
 
     const onBackAll = () => {
       setCurrentPage(1);
@@ -245,16 +262,14 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
             onChange={handleRowsPerPageChange}
             className=" bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:bg-white "
           >
-            <option value="5">5</option>
-            <option value="10" selected>
-              10
-            </option>
-            <option value="15">15</option>
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={15}>15</option>
           </select>
 
           <div className="ml-4 flex items-center">
             <span className="text-sm text-gray-400  mr-4">
-              {currentPage} trên {maxPages}
+              {currentPage} {t("on")} {maxPages}
             </span>
             <Button onClick={onBackAll}>
               <HiOutlineChevronDoubleLeft />

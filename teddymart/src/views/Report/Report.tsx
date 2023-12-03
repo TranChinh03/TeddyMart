@@ -30,9 +30,13 @@ export default function ReportScreen() {
     t("report.importOrder"),
     t("report.exportOrder"),
   ];
+  const y = new Date().getFullYear();
+  const m = new Date().getMonth();
+  const d = new Date().getDate();
+
   const [time, setTime] = useState<D>({
-    from: new Date(),
-    to: new Date(),
+    from: new Date(y, m, d, 0, 0, 0, 0),
+    to: new Date(y, m, d, 0, 0, 0, 0),
   });
   const REPORTS = useSelector((state: RootState) => state.reportSlice);
   const [general, setGeneral] = useState<TReport>(initialValue);

@@ -252,7 +252,10 @@
     "createdAt": "Ngày tạo",
     "product": "Sản phẩm",
     "quantity": "Số lượng",
-    "date": "Ngày"
+    "date": "Ngày",
+    "import": "Hàng nhập",
+    "export": "Hàng xuất",
+    "stock": "Hàng tồn kho"
   },
 
   "customer": {

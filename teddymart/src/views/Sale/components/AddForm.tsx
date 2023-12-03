@@ -80,7 +80,7 @@ const AddForm = ({
     const createdAt = new Date(y, m, d, 0, 0, 0, 0);
     const orderId = createID({ prefix: "ORD" });
     const data: TOrder = {
-      createdAt: createdAt,
+      createdAt: createdAt.toISOString(),
       debt: sum - discount - +payment,
       discount: discount,
       listProduct: listProduct,
@@ -98,7 +98,7 @@ const AddForm = ({
     };
     addOrderFirebase(data, userId, orderId);
     dispatch(addNewOrder(data));
-    //dispatch({ type: ADD_ORDER, payload: data });
+    dispatch({ type: ADD_ORDER, payload: data });
   };
   console.log(voucher);
   return (

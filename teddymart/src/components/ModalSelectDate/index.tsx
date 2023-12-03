@@ -75,7 +75,10 @@ export default function ModalSelectDate({ setResult, width = 200 }: Props) {
   const [mode, setMode] = useState(OPTIONS[0].value);
   const onSelectDate = (value: string) => {
     setMode(value);
-    let currentDate = new Date();
+    const y = new Date().getFullYear();
+    const m = new Date().getMonth();
+    const d = new Date().getDate();
+    let currentDate = new Date(y, m, d, 0, 0, 0, 0);
     let gap1 = currentDate.getDay();
     let quater = +((currentDate.getMonth() + 1) / 4).toFixed();
     switch (value) {
