@@ -3,7 +3,7 @@ import TextInputComponent from "components/TextInputComponent";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { NAV_LINK } from "routes/components/NAV_LINK";
-import { Spin } from "antd";
+import { Button, Spin } from "antd";
 import { getData, generateReport, generateProduct } from "controller/getData";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadVoucher } from "state_management/slices/voucherSlice";
@@ -22,12 +22,17 @@ import {
   updateDoc,
   doc,
   query,
-  where,
   or,
+  where,
   getDoc,
 } from "firebase/firestore";
 import { db, auth } from "firebaseConfig";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from "firebase/auth";
 import { uploadManager } from "state_management/slices/managerSlice";
 import { uploadShelf } from "state_management/slices/shelfSlice";
 
@@ -35,6 +40,7 @@ type Inputs = {
   userName: string;
   password: string;
 };
+const provider = new GoogleAuthProvider();
 export default function LoginScreen() {
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
@@ -208,6 +214,41 @@ export default function LoginScreen() {
     });
   };
 
+  const onLoginGoogle = async () => {
+    const auth = getAuth();
+
+    signInWithPopup(auth, provider)
+      .then(async (result) => {
+        console.log("RES", result.user);
+        //await getDoc(doc(db, ))
+        // const q = query(
+        //   collection(db, "Manager"),
+        //   where("userId", "==", result.user.uid)
+        // );
+        // const snapshot = await getDocs(q);
+        // if (snapshot.size === 0) {
+        //   navigate(`/signup/${result.user.uid}/${result.user.email}`);
+        // } else {
+
+        // }
+
+        const user = await getDoc(doc(db, "Manager", result.user.uid));
+        if (!user.data()) {
+          navigate(`/signup/${result.user.uid}/${result.user.email}`);
+        } else {
+          setLoading(true);
+          let { emailVerified, ...rest } = user.data();
+          dispatch(uploadManager(rest as TManager));
+          await onFetchData(result.user.uid);
+          window.localStorage.setItem("USER_ID", result.user.uid);
+        }
+      })
+      .catch((e) => {
+        console.log("ERROR", e);
+      })
+      .finally(() => setLoading(false));
+  };
+
   return (
     <Spin spinning={loading}>
       <div className="flex justify-center items-center min-h-screen bg-gradient-to-t from-sidebar to-white">
@@ -277,7 +318,7 @@ export default function LoginScreen() {
                     {t("login.forgotpassword")}
                   </button>
 
-                  <div className="flex justify-center gap-2 text-16 pt-5">
+                  <div className="flex justify-center gap-2 text-16 pt-2 pb-2">
                     <p>{t("login.newTeddyMart")}</p>
                     <button
                       className="text-sidebar font-medium"
@@ -286,6 +327,23 @@ export default function LoginScreen() {
                       {t("login.signUp")}
                     </button>
                   </div>
+
+                  <Button onClick={onLoginGoogle}>
+                    <div className="flex">
+                      <img
+                        src={
+                          "https://static-00.iconduck.com/assets.00/google-icon-2048x2048-czn3g8x8.png"
+                        }
+                        style={{
+                          width: 20,
+                          height: 20,
+                          marginRight: 10,
+                        }}
+                        alt="image"
+                      />
+                      <div>{t("login.loginWithGG")}</div>
+                    </div>
+                  </Button>
                 </div>
               </div>
             </form>

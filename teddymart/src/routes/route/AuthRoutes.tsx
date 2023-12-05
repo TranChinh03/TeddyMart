@@ -6,7 +6,7 @@ export default function AuthRoutes() {
   return (
     <Routes>
       <Route path="/" index element={<LoginScreen />} />
-      <Route path="signup" element={<SignUpScreen />} />
+      <Route path="signup/:userId?/:email?" element={<SignUpScreen />} />
       <Route path="forgotpassword" element={<ForgotPassword />} />
     </Routes>
   );

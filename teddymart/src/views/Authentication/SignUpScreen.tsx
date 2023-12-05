@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextInputComponent from "components/TextInputComponent";
 import {
   AiFillEye,
   AiFillEyeInvisible,
   AiOutlineArrowLeft,
 } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { NAV_LINK } from "routes/components/NAV_LINK";
 import { useTranslation } from "react-i18next";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -24,6 +24,8 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import { useDispatch } from "react-redux";
+import { uploadManager } from "state_management/slices/managerSlice";
 type Inputs = {
   userName: string;
   email: string;
@@ -33,6 +35,8 @@ type Inputs = {
   address: string;
 };
 export default function SignUpScreen() {
+  const dispatch = useDispatch();
+  const params = useParams();
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const { t, i18n } = useTranslation();
@@ -41,39 +45,77 @@ export default function SignUpScreen() {
     handleSubmit,
     setError,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<Inputs>();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (params) {
+      setValue("email", params.email);
+    }
+  }, []);
   const onSignUp: SubmitHandler<Inputs> = async (data) => {
-    //console.log(data);
     setLoading(true);
-    const snapshot = await getDocs(
-      query(collection(db, "Manager"), where("userName", "==", data.userName))
-    );
-    if (snapshot.size !== 0) {
-      setError("userName", {
-        type: "custom",
-        message: t("signUp.errUserName"),
-      });
-      setLoading(false);
-      return;
-    } else {
-      const auth = getAuth();
-      await createUserWithEmailAndPassword(auth, data.email, data.password)
-        .then(async (userCredential) => {
-          sendEmailVerification(userCredential.user);
-          await setDoc(doc(db, "Manager", userCredential.user.uid), {
-            emailVerified: false,
-            ...data,
-            userId: userCredential.user.uid,
+    if (!params) {
+      const snapshot = await getDocs(
+        query(collection(db, "Manager"), where("userName", "==", data.userName))
+      );
+      if (snapshot.size !== 0) {
+        setError("userName", {
+          type: "custom",
+          message: t("signUp.errUserName"),
+        });
+        setLoading(false);
+        return;
+      } else {
+        const auth = getAuth();
+        await createUserWithEmailAndPassword(auth, data.email, data.password)
+          .then(async (userCredential) => {
+            sendEmailVerification(userCredential.user);
+            await setDoc(doc(db, "Manager", userCredential.user.uid), {
+              emailVerified: false,
+              ...data,
+              userId: userCredential.user.uid,
+            });
+          })
+          .catch((e) => {
+            console.log(e);
+          })
+          .finally(() => {
+            setLoading(false);
+            reset();
           });
+      }
+    } else {
+      //console.log("USER_ID", params.userId);
+      await setDoc(doc(db, "Manager", params.userId), {
+        ...data,
+        email: params.email,
+        emailVerified: true,
+        photoURL: "",
+        userId: params.userId,
+        userName: "",
+      })
+        .then(async () => {
+          reset();
+          dispatch(
+            uploadManager({
+              ...data,
+              email: params.email,
+              photoURL: "",
+              userId: params.userId,
+              userName: "",
+            })
+          );
+          window.localStorage.setItem("USER_ID", params.uid);
         })
         .catch((e) => {
           console.log(e);
         })
         .finally(() => {
           setLoading(false);
-          reset();
+          navigate(NAV_LINK.SALE);
         });
     }
   };
@@ -102,45 +144,52 @@ export default function SignUpScreen() {
             <form onSubmit={handleSubmit(onSignUp)}>
               <div className="flex">
                 <div className="w-full grid grid-cols-2 gap-y-7 py-2 gap-2">
-                  <div>
-                    <TextInputComponent
-                      label={t("signUp.userName")}
-                      width={"100%"}
-                      required={true}
-                      register={register}
-                      registerName={"userName"}
-                    />
-                    {errors.userName && (
-                      <p className="text-xs text-red-500">
-                        {errors.userName.message}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <TextInputComponent
-                      label={t("signUp.password")}
-                      //labelFontSize={11}
-                      width={"100%"}
-                      required={true}
-                      inputType={visible ? "text" : "password"}
-                      icon={visible ? <AiFillEyeInvisible /> : <AiFillEye />}
-                      onIconClick={() => setVisible(!visible)}
-                      register={register}
-                      registerName="password"
-                      minLength={{
-                        value: 9,
-                        message: t("signUp.errPassword"),
-                      }}
-                    />
-                    {errors.password && (
-                      <p className="text-xs text-red-500">
-                        {errors.password.message}
-                      </p>
-                    )}
-                  </div>
+                  {!params && (
+                    <div>
+                      <TextInputComponent
+                        label={t("signUp.userName")}
+                        width={"100%"}
+                        required={true}
+                        register={register}
+                        registerName={"userName"}
+                      />
+                      {errors.userName && (
+                        <p className="text-xs text-red-500">
+                          {errors.userName.message}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {!params && (
+                    <div>
+                      <TextInputComponent
+                        label={t("signUp.password")}
+                        //labelFontSize={11}
+                        width={"100%"}
+                        required={true}
+                        inputType={visible ? "text" : "password"}
+                        icon={visible ? <AiFillEyeInvisible /> : <AiFillEye />}
+                        onIconClick={() => setVisible(!visible)}
+                        register={register}
+                        registerName="password"
+                        minLength={{
+                          value: 9,
+                          message: t("signUp.errPassword"),
+                        }}
+                      />
+                      {errors.password && (
+                        <p className="text-xs text-red-500">
+                          {errors.password.message}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
                   <div>
                     <TextInputComponent
                       label={t("signUp.email")}
+                      disabled={params ? true : false}
                       width={"100%"}
                       required={true}
                       register={register}

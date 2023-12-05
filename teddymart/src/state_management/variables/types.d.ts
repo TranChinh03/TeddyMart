@@ -15,7 +15,7 @@ declare type TPartner = {
 declare type TManager = {
   userId: string;
   shopName?: string;
-  userName: string;
+  userName?: string;
   photoURL?: string;
   address?: string;
   phoneNumber?: string;

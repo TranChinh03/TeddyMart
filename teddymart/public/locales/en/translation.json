@@ -35,7 +35,8 @@
     "continue": "Continue",
     "newPassword": "New Password",
     "confirmPassword": "Confirm Password",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "loginWithGG": "Login With Google"
   },
   "drawer": {
     "sale": "Sale",

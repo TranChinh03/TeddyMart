@@ -35,7 +35,8 @@
     "continue": "Tiếp tục",
     "newPassword": "Mật khẩu mới",
     "confirmPassword": "Xác nhận mật khẩu",
-    "confirm": "Xác nhận"
+    "confirm": "Xác nhận",
+    "loginWithGG": "Tiếp tục với Google"
   },
   "drawer": {
     "sale": "Bán hàng",
