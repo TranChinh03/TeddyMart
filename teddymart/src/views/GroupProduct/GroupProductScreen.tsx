@@ -31,12 +31,11 @@ export default function ProductScreen() {
   const [status, setStatus] = useState();
   const [storeManagement, setStoreManagement] = useState();
   const [sort, setSort] = useState();
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState("");
   const [openAddForm, setOpenAddForm] = useState(false);
 
   return (
     <div className="w-full">
-      {/* <Header width={"100%"} title={"Product"} ></Header> */}
       <div
         className="bg-white border-2 p-5 mx-1.5 my-1.5 rounded-md"
         style={{
@@ -45,42 +44,35 @@ export default function ProductScreen() {
           flexDirection: "column",
         }}
       >
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex justify-start">
-            <div className="mx-2">
-              <SearchComponent
-                placeholder={t("product.searchByProductGroup")}
-              />
-            </div>
-          </div>
-          <div className="flex justify-end items-center">
-            <div className="mr-10">
-              <ButtonComponent
-                label={t("button.delete")}
-                onClick={() => alert("Button Clicked")}
-                backgroundColor={COLORS.checkbox_bg}
-              />
-            </div>
-            <div className="mr-10">
-              <ButtonComponent
-                label={t("product.addNewProductGroup")}
-                onClick={() => setOpenAddForm(true)}
-                iconLeft={
-                  <TiPlus
-                    style={{ marginRight: 10, color: "white", fontSize: 22 }}
-                  />
-                }
-              />
-            </div>
+        <div className="flex items-center justify-between">
+          <SearchComponent
+            placeholder={t("product.searchByProductGroup")}
+            outStyle={{ width: "50%" }}
+            search={search}
+            setSearch={setSearch}
+          />
+          <div className="flex items-center">
+            <ButtonComponent
+              label={t("button.delete")}
+              onClick={() => alert("Button Clicked")}
+              backgroundColor={COLORS.checkbox_bg}
+              style={{ marginRight: 12 }}
+            />
+            <ButtonComponent
+              label={t("product.addNewProductGroup")}
+              onClick={() => setOpenAddForm(true)}
+              iconLeft={<TiPlus style={{ fontSize: 22 }} />}
+            />
           </div>
         </div>
+
         <div style={{ width: "100%", margin: "20px auto auto auto" }}>
           <GroupProductTable data={GROUP} />
         </div>
       </div>
 
       {/* ------------------------------------------------------------------------------------------------------------------- */}
-      <AddNewGroupProduct 
+      <AddNewGroupProduct
         openAddNewGroupProduct={openAddForm}
         setOpenAddNewSupplier={setOpenAddForm}
       />

@@ -15,6 +15,7 @@ import {
   BsBoxArrowInLeft,
   BsBoxes,
 } from "react-icons/bs";
+import { FaBarsProgress } from "react-icons/fa6";
 import { BiBox } from "react-icons/bi";
 import { Menu } from "antd";
 import { useTranslation } from "react-i18next";
@@ -89,7 +90,7 @@ export default function Drawer() {
         {
           name: t("drawer.shelf"),
           link: NAV_LINK.SHELF,
-          icon1: <BsBoxes size={20} />, 
+          icon1: <FaBarsProgress size={20} />,
         },
         {
           name: t("drawer.groupProduct"),

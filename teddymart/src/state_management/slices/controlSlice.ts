@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export type TControl = {
   openDrawer: boolean;
-  language?: string;
+  language: string;
 };
 const controlSlice = createSlice({
   name: "controlSlice",
-  initialState: { openDrawer: false },
+  initialState: { openDrawer: false, language: "EN" },
   reducers: {
     toggleDrawer: (state: TControl) => {
       state.openDrawer = !state.openDrawer;

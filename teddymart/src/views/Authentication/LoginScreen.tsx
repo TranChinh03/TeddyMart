@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { NAV_LINK } from "routes/components/NAV_LINK";
 import { Button, Spin } from "antd";
 import { getData, generateReport, generateProduct } from "controller/getData";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { uploadVoucher } from "state_management/slices/voucherSlice";
 import { uploadPartner } from "state_management/slices/partnerSlice";
 import { uploadGroupProduct } from "state_management/slices/groupProductSlice";
@@ -21,9 +21,6 @@ import {
   collection,
   updateDoc,
   doc,
-  query,
-  or,
-  where,
   getDoc,
 } from "firebase/firestore";
 import { db, auth } from "firebaseConfig";
@@ -206,8 +203,6 @@ export default function LoginScreen() {
       }),
     ]).then((values) => {
       dispatch(uploadReportProduct(generateProduct(values[6] as TOrder[])));
-      //console.log("VALUES", values[2], values[5]);
-      //console.log("VALUES", generateProduct(values[6] as TOrder[]));
       setLoading(false);
       navigate(NAV_LINK.SALE);
       reset();

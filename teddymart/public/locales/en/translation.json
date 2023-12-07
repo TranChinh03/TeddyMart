@@ -162,7 +162,7 @@
     "productGroupName": "Product Group Name",
     "note": "Note",
     "addNewProductGroup": "Add New Product Group",
-    "addNewProduct": "Add New Product",
+    "addNewProduct": "Add New",
     "productImage": "Product Image",
     "productName": "Product Name",
     "sell_price": "Retail Price",
@@ -178,8 +178,8 @@
     "productPriceDown": "Product Price: High → Low",
     "productNameAZ": "Product Name: A → Z",
     "productNameZA": "Product Name: Z → A",
-    "lastUpdateOldest": "Last Update: Cũ nhất",
-    "lastUpdateNewest": "Last Update: Mới nhất"
+    "lastUpdateOldest": "Last Update: Lastest",
+    "lastUpdateNewest": "Last Update: Newest"
   },
   "warehouse": {
     "warehouse": "Warehouse",

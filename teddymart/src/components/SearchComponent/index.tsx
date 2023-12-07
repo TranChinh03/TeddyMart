@@ -12,6 +12,7 @@ interface SearchComponentProps {
   width?: number | string;
   style?: React.CSSProperties;
   onClick?: () => void;
+  outStyle?: React.CSSProperties;
 }
 
 const SearchComponent: React.FC<SearchComponentProps> = ({
@@ -22,10 +23,8 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
   width,
   style,
   onClick = () => {},
+  outStyle,
 }) => {
-  // const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
-  // console.log(info?.source, value);
-  //const [value, setValue] = useState("");
   return (
     <TextInputComponent
       label={label}
@@ -43,7 +42,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({
         ...style,
       }}
       onIconClick={onClick}
-      //onStopTyping={(txt) => setSearch(txt)}
+      outStyle={outStyle}
     />
   );
 };
