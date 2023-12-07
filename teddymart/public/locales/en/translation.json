@@ -331,12 +331,13 @@
     "changePassword": "Change Password"
   },
   "shelf": {
-    "addNewShelf": "Add new shelf",
+    "addNewShelf": "Add New Shelf",
     "searchByName": "Search By Shelf's Name",
     "shelfId": "ID",
     "shelfName": "Shelf Name",
     "capacity": "Capacity",
     "note": "Note",
-    "capacityMustBeANumber": "Capacity must be a number"
+    "capacityMustBeANumber": "Capacity must be a number",
+    "deleteShelf": "Delete shelf successfully"
   }
 }

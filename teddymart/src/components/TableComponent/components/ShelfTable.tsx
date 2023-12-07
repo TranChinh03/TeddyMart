@@ -1,6 +1,8 @@
 import { Button } from "antd";
+import AlertModal from "components/AlertModal";
+import { deleteData } from "controller/deleteData";
 import { t } from "i18next";
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import {
@@ -9,7 +11,10 @@ import {
   HiOutlineChevronRight,
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
-
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "state_management/reducers/rootReducer";
+import { deleteShelf } from "state_management/slices/shelfSlice";
+import { message } from "antd";
 type TContent = {
   shelfId: string;
   shelfName: string;
@@ -51,12 +56,17 @@ type TOptions = {
 
 const ShelfTable = ({
   filterOption,
-  data,
+  search,
+  selectedRows,
+  setSelectedRows,
 }: {
   filterOption?: TOptions;
-  data?: TShelf[];
+  search: string;
+  selectedRows: string[];
+  setSelectedRows: (selectedRows: string[]) => void;
 }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const options: TOptions = {
     shelfId: true,
     shelfName: true,
@@ -75,13 +85,23 @@ const ShelfTable = ({
       ].filter((value) => Boolean(value) !== false),
     [t]
   );
-  const [selectedRows, setSelectedRows] = useState([]);
+  const SHELF = useSelector((state: RootState) => state.shelf);
+  const idSelected = useRef<string>("");
+  const data = useMemo(() => {
+    if (search !== "") {
+      return SHELF.filter((s) => s.shelfName.includes(search));
+    }
+    return SHELF;
+  }, [search, SHELF]);
+
+  // const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const maxPages = useMemo(
     () => Math.round(data.length / rowsPerPage),
     [rowsPerPage]
   );
   const [currentPage, setCurrentPage] = useState(1);
+  const [open, setOpen] = useState(false);
 
   const onBackAll = () => {
     setCurrentPage(1);
@@ -97,9 +117,9 @@ const ShelfTable = ({
   };
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
-      console.log("ok");
+      //console.log("ok");
       if (selectedRows.length === 0) {
-        setSelectedRows([...CONTENT.map((content) => content.shelfId)]);
+        setSelectedRows([...data.map((content) => content.shelfId)]);
         return;
       }
       setSelectedRows([]);
@@ -111,10 +131,24 @@ const ShelfTable = ({
     }
     setSelectedRows([...selectedRows, rowId]);
   };
+
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    console.log("okkkkk");
     setRowsPerPage(+e.target.value);
   };
+
+  const onUpdate = () => {};
+  const onDelete = (id: string) => {
+    // indexDelete?.current = "AAA";
+    idSelected.current = id;
+    setOpen(true);
+  };
+  const onConfirm = async () => {
+    await deleteData({ id: idSelected.current, table: "Shelf" });
+    dispatch(deleteShelf(idSelected.current));
+    setOpen(false);
+    message.success(t("shelf.deleteShelf"));
+  };
+
   return (
     <div className="w-full">
       <div className="max-h-96 overflow-y-auto visible">
@@ -175,11 +209,11 @@ const ShelfTable = ({
                     )}
 
                     <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                      <Button className="mr-2">
+                      <Button className="mr-2" onClick={onUpdate}>
                         <FiEdit />
                       </Button>
 
-                      <Button>
+                      <Button onClick={() => onDelete(content.shelfId)}>
                         <FiTrash color="red" />
                       </Button>
                     </td>
@@ -190,7 +224,7 @@ const ShelfTable = ({
         </table>
       </div>
       <div className="w-full text-left my-5 flex row justify-end pr-10 items-center ">
-        <span className="text-sm mr-4 text-gray-400 ">Số mục mỗi trang:</span>
+        <span className="text-sm mr-4 text-gray-400 ">{t("rowsPerPage")}</span>
         <select
           value={rowsPerPage}
           onChange={handleRowsPerPageChange}
@@ -205,7 +239,7 @@ const ShelfTable = ({
 
         <div className="ml-4 flex items-center">
           <span className="text-sm text-gray-400  mr-4">
-            {currentPage} trên {maxPages}
+            {currentPage} {t("on")} {maxPages}
           </span>
           <Button onClick={onBackAll}>
             <HiOutlineChevronDoubleLeft />
@@ -226,6 +260,7 @@ const ShelfTable = ({
           </Button>
         </div>
       </div>
+      <AlertModal open={open} setOpen={setOpen} onConfirm={onConfirm} />
     </div>
   );
 };

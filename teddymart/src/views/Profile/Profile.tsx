@@ -29,7 +29,7 @@ export default function Profile() {
   const onUpFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       //console.log("IMAGE", event.target.files[0]);
-      const storageRef = ref(storage, `/Manager/Avatar/${Info.userId}/`);
+      const storageRef = ref(storage, `/Manager/${Info.userId}/`);
       uploadBytes(storageRef, event.target.files[0]).then((snapshot) => {
         //console.log("Uploaded a blob or file!");
         getDownloadURL(storageRef).then(async (url) => {

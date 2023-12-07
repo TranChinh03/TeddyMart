@@ -24,18 +24,18 @@ const AddNewProduct = ({
   const [groupProductName, setGroupProductName] = useState("");
   const [productName, setProductName] = useState("");
   const [image, setImage] = useState("");
-  const [price, setPrice] = useState(null)
-  const [retailPrice, setRetailPrice] = useState(null)
-  const [quantity, setQuantity] = useState()
-  const [VAT, setVAT] = useState(null)
-  const [note, setNote] = useState("")
+  const [price, setPrice] = useState(null);
+  const [retailPrice, setRetailPrice] = useState(null);
+  const [quantity, setQuantity] = useState();
+  const [VAT, setVAT] = useState(null);
+  const [note, setNote] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
   const GROUP = useSelector((state: RootState) => state.groupProduct);
   const GroupOptions = GROUP.map((item) => ({
     ID: item.groupId,
-    groupname: item.groupName
-  }))
+    groupname: item.groupName,
+  }));
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -55,7 +55,7 @@ const AddNewProduct = ({
         const imageUrl = await getDownloadURL(snapshot.ref);
         setSelectedImage(imageUrl);
         setImage(imageUrl);
-        validateForm("all", "selected")
+        validateForm("all", "selected");
       } catch (error) {
         console.error("Error uploading image to Firebase Storage:", error);
       }
@@ -73,38 +73,67 @@ const AddNewProduct = ({
 
   const [isFormValid, setIsFormValid] = useState(false);
   const validateForm = (fieldName: string, value: string) => {
+    // console.log("GroupProductID", groupProductID)
+    // console.log("RetailPrice", retailPrice)
+    // console.log("Price", price)
+    // console.log("Quantity", quantity)
+    // console.log("ProductName", productName)
+    // console.log(value)
 
-      // console.log("GroupProductID", groupProductID)
-      // console.log("RetailPrice", retailPrice)
-      // console.log("Price", price)
-      // console.log("Quantity", quantity)
-      // console.log("ProductName", productName)
-      // console.log(value)
-
-      if(fieldName === "ignore" || selectedImage === null)
-         return
-      else if (fieldName === "GroupProductID") {
-         setIsFormValid(value !== "" && productName !== "" && price !== null && retailPrice !== null && quantity !== null)
-      }
-      else if (fieldName === "RetailPrice") {
-         setIsFormValid(value !== null && productName !== "" && price !== null && groupProductID !== "" && quantity !== null)
-      }
-      else if (fieldName === "Price") {
-         setIsFormValid(value !== null && productName !== "" && retailPrice !== null && groupProductID !== "" && quantity !== null)
-      }
-      else if (fieldName === "Quantity") {
-         setIsFormValid(value !== null && productName !== "" && price !== null && retailPrice !== null && groupProductID !== "")
-      }
-      else if (fieldName === "ProductName") {
-         setIsFormValid(value !== "" && quantity !== null && price !== null && retailPrice !== null && groupProductID !== "")
-      }
-      else {
-         setIsFormValid(productName !== "" && quantity !== null && price !== null && retailPrice !== null && groupProductID !== "")
-      }
+    if (fieldName === "ignore" || selectedImage === null) return;
+    else if (fieldName === "GroupProductID") {
+      setIsFormValid(
+        value !== "" &&
+          productName !== "" &&
+          price !== null &&
+          retailPrice !== null &&
+          quantity !== null
+      );
+    } else if (fieldName === "RetailPrice") {
+      setIsFormValid(
+        value !== null &&
+          productName !== "" &&
+          price !== null &&
+          groupProductID !== "" &&
+          quantity !== null
+      );
+    } else if (fieldName === "Price") {
+      setIsFormValid(
+        value !== null &&
+          productName !== "" &&
+          retailPrice !== null &&
+          groupProductID !== "" &&
+          quantity !== null
+      );
+    } else if (fieldName === "Quantity") {
+      setIsFormValid(
+        value !== null &&
+          productName !== "" &&
+          price !== null &&
+          retailPrice !== null &&
+          groupProductID !== ""
+      );
+    } else if (fieldName === "ProductName") {
+      setIsFormValid(
+        value !== "" &&
+          quantity !== null &&
+          price !== null &&
+          retailPrice !== null &&
+          groupProductID !== ""
+      );
+    } else {
+      setIsFormValid(
+        productName !== "" &&
+          quantity !== null &&
+          price !== null &&
+          retailPrice !== null &&
+          groupProductID !== ""
+      );
+    }
   };
 
   const onAddNewProduct = () => {
-    const ProductID = createID({ prefix: "P"});
+    const ProductID = createID({ prefix: "P" });
     const image = selectedImage;
     const data: TProduct = {
       productId: ProductID,
@@ -117,13 +146,12 @@ const AddNewProduct = ({
       quantity: quantity,
       VAT: VAT,
       note: note,
-    }
+    };
     dispatch(addNewProduct(data));
     addData({ data, table: "Product", id: ProductID });
-    message.success("Product added successfully!")
-    setOpenAddForm(false)
-  }  
-
+    message.success("Product added successfully!");
+    setOpenAddForm(false);
+  };
 
   return (
     <Modal
@@ -148,12 +176,14 @@ const AddNewProduct = ({
             title="All"
             label={t("group.groupName")}
             value={productGroup}
-            setValue={
-              (value) => {
-                setGroupProductName(GroupOptions[value].groupname)
-                handleInputChange(GroupOptions[value].ID, setGroupProductID, "GroupProductID")
-              }
-            }
+            setValue={(value) => {
+              setGroupProductName(GroupOptions[value].groupname);
+              handleInputChange(
+                GroupOptions[value].ID,
+                setGroupProductID,
+                "GroupProductID"
+              );
+            }}
             options={GroupOptions.map((item) => item.groupname)}
           />
         </div>
@@ -166,7 +196,9 @@ const AddNewProduct = ({
           <TextInputComponent
             width="100%"
             value={productName}
-            setValue={(value) => handleInputChange(value, setProductName, "ProductName")}
+            setValue={(value) =>
+              handleInputChange(value, setProductName, "ProductName")
+            }
             required
           />
         </div>
@@ -187,19 +219,21 @@ const AddNewProduct = ({
             className="cursor-pointer m-auto"
           >
             {selectedImage ? (
-                <img
+              <img
                 src={selectedImage}
                 alt="Selected"
                 style={{ width: "100%", maxHeight: "100px" }}
               />
-            ) : <img src={require("../../../assets/images/Camera.png")} />}
-                <input
-                  type="file"
-                  accept="image/*"
-                  ref={fileInputRef}
-                  style={{ display: "none" }}
-                  onChange={handleImageSelected}
-                />
+            ) : (
+              <img src={require("../../../assets/images/Camera.png")} />
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              onChange={handleImageSelected}
+            />
           </div>
         </div>
 
@@ -208,11 +242,13 @@ const AddNewProduct = ({
         </label>
         <div className="px-2 mt-2 col-span-3 inline-block">
           <TextInputComponent
-              width="100%"
-              value={quantity}
-              setValue={(value) => handleInputChange(value, setQuantity, "Quantity")}
-              required
-            />
+            width="100%"
+            value={quantity}
+            setValue={(value) =>
+              handleInputChange(value, setQuantity, "Quantity")
+            }
+            required
+          />
         </div>
 
         <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
@@ -220,11 +256,11 @@ const AddNewProduct = ({
         </label>
         <div className="px-2 mt-2 col-span-3 inline-block">
           <TextInputComponent
-              width="100%"
-              value={price}
-              setValue={(value) => handleInputChange(value, setPrice, "Price")}
-              required
-            />
+            width="100%"
+            value={price}
+            setValue={(value) => handleInputChange(value, setPrice, "Price")}
+            required
+          />
         </div>
 
         <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
@@ -233,11 +269,13 @@ const AddNewProduct = ({
         </label>
         <div className="px-2 mt-2 col-span-3 inline-block">
           <TextInputComponent
-              width="100%"
-              value={retailPrice}
-              setValue={(value) => handleInputChange(value, setRetailPrice, "RetailPrice")}
-              required
-            />
+            width="100%"
+            value={retailPrice}
+            setValue={(value) =>
+              handleInputChange(value, setRetailPrice, "RetailPrice")
+            }
+            required
+          />
         </div>
 
         <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
@@ -245,10 +283,10 @@ const AddNewProduct = ({
         </label>
         <div className="px-2 mt-2 col-span-3 inline-block">
           <TextInputComponent
-              width="100%"
-              value={VAT}
-              setValue={(value) => handleInputChange(value, setVAT, "ignore")}
-            />
+            width="100%"
+            value={VAT}
+            setValue={(value) => handleInputChange(value, setVAT, "ignore")}
+          />
         </div>
 
         <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
@@ -256,10 +294,10 @@ const AddNewProduct = ({
         </label>
         <div className="px-2 mt-2 col-span-3 inline-block">
           <TextInputComponent
-                width="100%"
-                value={note}
-                setValue={(value) => handleInputChange(value, setNote, "ignore")}
-              />
+            width="100%"
+            value={note}
+            setValue={(value) => handleInputChange(value, setNote, "ignore")}
+          />
         </div>
       </div>
       <div className="flex mt-10 items-center justify-center">
@@ -270,7 +308,9 @@ const AddNewProduct = ({
               isFormValid ? COLORS.darkYellow : COLORS.defaultWhite
             }
             color={isFormValid ? COLORS.defaultWhite : COLORS.lightGray}
-            onClick={() => {isFormValid?onAddNewProduct() : message.error(t("fillData"))}}
+            onClick={() => {
+              isFormValid ? onAddNewProduct() : message.error(t("fillData"));
+            }}
           />
           <ButtonComponent
             label={t("button.cancel")}
@@ -293,4 +333,3 @@ export default AddNewProduct;
 function setSelectedImage(imageUrl: string) {
   throw new Error("Function not implemented.");
 }
-

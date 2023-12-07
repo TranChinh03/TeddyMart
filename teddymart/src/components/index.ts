@@ -10,6 +10,7 @@ import SwitchComponent from "./SwitchComponent/SwitchComponent";
 import TextInputComponent from "./TextInputComponent";
 import ModalSelectDate from "./ModalSelectDate";
 import BtnExport from "./BtnExport/BtnExport";
+import AlertModal from "./AlertModal";
 export {
   ButtonComponent,
   ButtonSelect,
@@ -23,4 +24,5 @@ export {
   TextInputComponent,
   ModalSelectDate,
   BtnExport,
+  AlertModal,
 };

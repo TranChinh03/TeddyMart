@@ -44,7 +44,6 @@ export default function ChangeInfo({ openModal, setOpenModal }: Props) {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    //console.log(data);
     setLoading(true);
     await updateDoc(doc(db, `/Manager/${Info.userId}`), {
       ...Info,
@@ -54,6 +53,7 @@ export default function ChangeInfo({ openModal, setOpenModal }: Props) {
       .finally(() => {
         setLoading(false);
         setOpenModal(false);
+        reset();
       });
     dispatch(
       uploadManager({
@@ -85,7 +85,9 @@ export default function ChangeInfo({ openModal, setOpenModal }: Props) {
           >
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="flex items-center justify-center flex-col w-full border-t py-5 px-6">
-                <div className="mb-10">{t("profile.changeProfile")}</div>
+                <div className="mb-10 text-lg">
+                  {t("profile.changeProfile")}
+                </div>
 
                 <div className="grid-cols-1 grid gap-6 w-[80%] mb-2">
                   <TextInputComponent

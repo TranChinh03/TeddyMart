@@ -323,12 +323,13 @@
     "changePassword": "Đổi mật khẩu"
   },
   "shelf": {
-    "addNewShelf": "Thêm kệ mới",
+    "addNewShelf": "Thêm Kệ Mới",
     "searchByName": "Tìm kiếm theo tên kệ",
     "shelfId": "Mã kệ",
     "shelfName": "Tên kệ",
     "capacity": "Sức chứa",
     "note": "Ghi chú",
-    "capacityMustBeANumber": "Sức chứa phải là một số nguyên"
+    "capacityMustBeANumber": "Sức chứa phải là một số nguyên",
+    "deleteShelf": "Xóa kệ thành công"
   }
 }

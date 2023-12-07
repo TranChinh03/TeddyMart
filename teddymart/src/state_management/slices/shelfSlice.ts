@@ -4,23 +4,14 @@ const shelfSlice = createSlice({
   name: "shelfSlice",
   initialState: [],
   reducers: {
-    addNewShelf: (
-      state: TShelf[],
-      action: PayloadAction<TShelf>
-    ) => {
+    addNewShelf: (state: TShelf[], action: PayloadAction<TShelf>) => {
       state.push(action.payload);
     },
-    uploadShelf: (
-      state: TShelf[],
-      action: PayloadAction<TShelf[]>
-    ) => {
+    uploadShelf: (state: TShelf[], action: PayloadAction<TShelf[]>) => {
       return [...action.payload];
     },
-    deleteShelf: (
-      state: TShelf[],
-      action: PayloadAction<TShelf>
-    ) => {
-      return state.filter((p) => p.shelfId !== action.payload.shelfId);
+    deleteShelf: (state: TShelf[], action: PayloadAction<string>) => {
+      return state.filter((p) => p.shelfId !== action.payload);
     },
     updateShelf: (
       state: TShelf[],
@@ -45,10 +36,6 @@ const shelfSlice = createSlice({
   },
 });
 
-export const {
-  addNewShelf,
-  uploadShelf,
-  deleteShelf,
-  updateShelf,
-} = shelfSlice.actions;
+export const { addNewShelf, uploadShelf, deleteShelf, updateShelf } =
+  shelfSlice.actions;
 export default shelfSlice.reducer;
