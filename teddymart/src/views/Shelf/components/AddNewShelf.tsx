@@ -1,70 +1,114 @@
 import { Divider, Modal, Space, message } from "antd";
 import { ButtonComponent, TextInputComponent } from "components";
 import { COLORS } from "constants/colors";
-import { addData } from "controller/addData";
-import { t } from "i18next";
-import { useState } from "react";
+import { addData, updateData } from "controller/addData";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { addNewShelf } from "state_management/slices/shelfSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "state_management/reducers/rootReducer";
+import { updateGroupProduct } from "state_management/slices/groupProductSlice";
+import { addNewShelf, updateShelf } from "state_management/slices/shelfSlice";
 import { createID } from "utils/appUtils";
 
 type Props = {
   openAddNewShelf: boolean;
   setOpenAddShelf: (openAddNewShelf: boolean) => void;
+  data?: TShelf;
+  setData?: (data: TShelf) => void;
+  isAdd?: boolean;
 };
 
 export default function AddNewShelf({
   openAddNewShelf,
   setOpenAddShelf,
+  data,
+  setData,
+  isAdd = true,
 }: Props) {
-  const [shelfName, setShelfName] = useState("");
-  const [capacity, setCapacity] = useState("");
-  const [note, setNote] = useState("");
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
-  const clearValue = () => {
-    setShelfName("");
-    setCapacity("");
-    setNote("");
+  const SHELF = useSelector((state: RootState) => state.shelf);
+  const GROUP_PRODUCT = useSelector((state: RootState) => state.groupProduct);
+  const onChange = (value: string, fieldName: string) => {
+    setData({
+      ...data,
+      [fieldName]: value,
+    });
   };
 
-  const handleInputChange = (
-    value: string,
-    setValue: React.Dispatch<React.SetStateAction<string>>,
-    fieldname: string
-  ) => {
-    setValue(value);
-    validateForm(fieldname, value);
-  };
-  const [isFormValid, setIsFormValid] = useState(false);
-  const validateForm = (fieldName: string, value: string) => {
-    if (fieldName === "shelfName") {
-      setIsFormValid(value !== "" && capacity !== "");
-    } else if (fieldName === "capacity") {
-      setIsFormValid(value !== "" && shelfName !== "");
+  const onAddNewShelf = async () => {
+    if (data.shelfName === "" || data.capacity === "") {
+      message.error(t("fillData"));
+      return;
     }
-  };
 
-  const onAddNewShelf = () => {
-    const ShelfID = createID({ prefix: "S" });
-    const data: TShelf = {
-      shelfId: ShelfID,
-      shelfName: shelfName,
-      capacity: +capacity,
-      note: note,
-    };
-    dispatch(addNewShelf(data));
-    addData({ data, table: "Shelf", id: ShelfID });
-    message.success("Shelf added successfully!");
+    if (isAdd) {
+      if (
+        SHELF.findIndex((shelf) => shelf.shelfName === data.shelfName) !== -1
+      ) {
+        message.error(t("shelf.shelfExist"));
+        return;
+      }
+      // Add new shelf
+      const ShelfID = createID({ prefix: "S" });
+      const newdata: TShelf = {
+        shelfId: ShelfID,
+        shelfName: data.shelfName,
+        capacity: +data.capacity,
+        note: data.note,
+      };
+      dispatch(addNewShelf(newdata));
+      addData({ data: newdata, table: "Shelf", id: ShelfID });
+      message.success(t("shelf.shelfAddSuccess"));
+    } else {
+      // Update shelf
+      dispatch(updateShelf({ currentShelfId: data.shelfId, newShelf: data }));
+      await updateData({ data: data, table: "Shelf", id: data.shelfId });
+      GROUP_PRODUCT.forEach(async (g) => {
+        if (g.shelfID === data.shelfId) {
+          if (g.shelfName !== data.shelfName) {
+            await updateData({
+              data: { ...g, shelfName: data.shelfName },
+              table: "Group_Product",
+              id: g.groupId,
+            });
+            dispatch(
+              updateGroupProduct({
+                currentGroupProduct: g,
+                newGroupProduct: { ...g, shelfName: data.shelfName },
+              })
+            );
+          }
+        }
+      });
+      message.success(t("shelf.updateSuccess"));
+    }
     setOpenAddShelf(false);
-    clearValue();
+    setData({
+      shelfId: "",
+      shelfName: "",
+      capacity: "",
+      note: "",
+    });
   };
 
+  const backgroundColor = useMemo(
+    () =>
+      data.shelfName !== "" && data.capacity !== ""
+        ? COLORS.darkYellow
+        : COLORS.defaultWhite,
+    [data.shelfName, data.capacity]
+  );
+  const color = useMemo(
+    () =>
+      data.shelfName !== "" && data.capacity !== ""
+        ? COLORS.defaultWhite
+        : COLORS.lightGray,
+    [data.shelfName, data.capacity]
+  );
   return (
     <Modal
-      title={<h1 className="text-2xl">{t("shelf.addNewShelf")}</h1>}
+      title={<h1 className="text-2xl">{t("shelf.shelfInfo")}</h1>}
       width={"60%"}
       open={openAddNewShelf}
       onCancel={() => setOpenAddShelf(false)}
@@ -77,10 +121,8 @@ export default function AddNewShelf({
         </label>
         <div className="col-span-3 inline-block">
           <TextInputComponent
-            value={shelfName}
-            setValue={(value) =>
-              handleInputChange(value, setShelfName, "shelfName")
-            }
+            value={data.shelfName}
+            setValue={(value) => onChange(value, "shelfName")}
             width="100%"
           />
         </div>
@@ -90,13 +132,12 @@ export default function AddNewShelf({
         </label>
         <div className="mt-5 col-span-3 inline-block">
           <TextInputComponent
-            value={capacity}
-            setValue={(value) =>
-              isNaN(Number(value))
-                ? message.error(t("shelf.capacityMustBeANumber"))
-                : handleInputChange(value, setCapacity, "capacity")
-            }
+            value={data.capacity.toString()}
+            inputType="number"
+            placeHolder="0"
+            setValue={(value) => onChange(value, "capacity")}
             width="100%"
+            min="0"
           />
         </div>
 
@@ -104,19 +145,21 @@ export default function AddNewShelf({
           {t("shelf.note")}
         </label>
         <div className="mt-5 col-span-3 inline-block">
-          <TextInputComponent value={note} setValue={setNote} width="100%" />
+          <TextInputComponent
+            value={data.note}
+            setValue={(value) => onChange(value, "note")}
+            width="100%"
+          />
         </div>
       </div>
       <div className="flex mt-10 items-center justify-center">
         <Space>
           <ButtonComponent
             label={t("button.save")}
-            backgroundColor={
-              isFormValid ? COLORS.darkYellow : COLORS.defaultWhite
-            }
-            color={isFormValid ? COLORS.defaultWhite : COLORS.lightGray}
+            backgroundColor={backgroundColor}
+            color={color}
             onClick={() => {
-              isFormValid ? onAddNewShelf() : message.error(t("fillData"));
+              onAddNewShelf();
             }}
           />
           <ButtonComponent

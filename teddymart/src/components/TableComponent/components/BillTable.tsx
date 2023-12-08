@@ -440,7 +440,9 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
         </div>
 
         <div className="w-full text-left my-5 flex row justify-end pr-10 items-center ">
-          <span className="text-sm mr-4 text-gray-400 ">Số mục mỗi trang:</span>
+          <span className="text-sm mr-4 text-gray-400 ">
+            {t("rowsPerPage")}
+          </span>
           <select
             value={rowsPerPage}
             onChange={handleRowsPerPageChange}

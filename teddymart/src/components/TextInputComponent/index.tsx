@@ -55,6 +55,7 @@ export default function TextInputComponent({
   pattern,
   minLength,
   disabled = false,
+  min,
 }: Props) {
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -95,6 +96,7 @@ export default function TextInputComponent({
               }))}
             readOnly={readOnly}
             onClick={onClick}
+            min={min}
           />
         ) : (
           <input
@@ -112,6 +114,7 @@ export default function TextInputComponent({
             onKeyDownCapture={(e) => {
               if (e.key === "Enter") enterAction();
             }}
+            min={min}
           />
         )}
 

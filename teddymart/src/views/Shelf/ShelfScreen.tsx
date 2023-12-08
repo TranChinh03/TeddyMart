@@ -4,24 +4,56 @@ import ButtonComponent from "components/ButtonComponent";
 import { COLORS } from "constants/colors";
 import { TiPlus } from "react-icons/ti";
 import { ShelfTable } from "components/TableComponent";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "state_management/reducers/rootReducer";
+import { useDispatch, useSelector } from "react-redux";
 import { t } from "i18next";
 import AddNewShelf from "./components/AddNewShelf";
 import { AlertModal } from "components";
 import { deleteShelf } from "state_management/slices/shelfSlice";
 import { deleteData } from "controller/deleteData";
-
+import { message } from "antd";
+import { RootState } from "state_management/reducers/rootReducer";
+import { updateGroupProduct } from "state_management/slices/groupProductSlice";
+import { updateData } from "controller/addData";
+export type Input = {
+  shelfId: string;
+  shelfName: string;
+  capacity: string;
+  note: string;
+};
 export default function ShelfScreen() {
   const [openAddForm, setOpenAddForm] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedRows, setSelectedRows] = useState([]);
   const [open, setOpen] = useState(false);
+  const [dataInput, setDataInput] = useState<TShelf>({
+    shelfId: "",
+    shelfName: "",
+    capacity: "",
+    note: "",
+  });
+  const GROUP_PRODUCT = useSelector((state: RootState) => state.groupProduct);
   const dispatch = useDispatch();
   const onDeleteMultiShelf = () => {
     selectedRows.forEach(async (item) => {
       await deleteData({ id: item, table: "Shelf" });
       dispatch(deleteShelf(item));
+      GROUP_PRODUCT.forEach(async (group) => {
+        if (group.shelfID === item) {
+          await updateData({
+            data: { ...group, shelfId: "", shelfName: "" },
+            table: "Group_Product",
+            id: group.groupId,
+          });
+          dispatch(
+            updateGroupProduct({
+              currentGroupProduct: group,
+              newGroupProduct: { ...group, shelfID: "", shelfName: "" },
+            })
+          );
+        }
+      });
+      message.success(t("shelf.deleteShelf"));
+      setOpen(false);
     });
   };
 
@@ -45,7 +77,9 @@ export default function ShelfScreen() {
           <div className="flex items-center">
             <ButtonComponent
               label={t("button.delete")}
-              onClick={() => setOpen(true)}
+              onClick={() => {
+                if (selectedRows.length > 0) setOpen(true);
+              }}
               backgroundColor={COLORS.checkbox_bg}
               style={{ marginRight: 12 }}
             />
@@ -69,6 +103,8 @@ export default function ShelfScreen() {
       <AddNewShelf
         openAddNewShelf={openAddForm}
         setOpenAddShelf={setOpenAddForm}
+        data={dataInput}
+        setData={setDataInput}
       />
       <AlertModal
         open={open}

@@ -19,7 +19,8 @@ export type Props = {
     | "color"
     | "date"
     | "file"
-    | "password";
+    | "password"
+    | "number";
   borderRadius?: number;
   label?: string;
   width?: number | string;
@@ -45,4 +46,5 @@ export type Props = {
     message: string;
   };
   disabled?: boolean;
+  min?: string;
 };

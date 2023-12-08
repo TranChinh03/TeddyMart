@@ -165,7 +165,9 @@
   },
   "group": {
     "groupId": "Mã nhóm",
-    "groupName": "Tên nhóm"
+    "groupName": "Tên nhóm",
+    "shelfId": "Mã kệ",
+    "shelfName": "Tên kệ"
   },
   "manager": {
     "userId": "Mã người dùng",
@@ -330,6 +332,10 @@
     "capacity": "Sức chứa",
     "note": "Ghi chú",
     "capacityMustBeANumber": "Sức chứa phải là một số nguyên",
-    "deleteShelf": "Xóa kệ thành công"
+    "deleteShelf": "Xóa kệ thành công",
+    "shelfExist": "Kệ đã có trong danh sách",
+    "shelfAddSuccess": "Thêm mới kệ thành công",
+    "updateSuccess": "Sửa thông tin kệ thành công",
+    "shelfInfo": "Thông tin kệ"
   }
 }

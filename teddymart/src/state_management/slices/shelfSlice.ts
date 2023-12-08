@@ -16,13 +16,12 @@ const shelfSlice = createSlice({
     updateShelf: (
       state: TShelf[],
       action: PayloadAction<{
-        currentShelf: TShelf;
+        currentShelfId: string;
         newShelf: TShelf;
       }>
     ) => {
-      // Only allow to update Group Name, Note
       const index = state.findIndex(
-        (p) => p.shelfId === action.payload.currentShelf.shelfId
+        (p) => p.shelfId === action.payload.currentShelfId
       );
       if (index > 0) {
         state[index] = { ...action.payload.newShelf };

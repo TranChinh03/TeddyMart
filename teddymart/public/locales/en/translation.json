@@ -97,7 +97,9 @@
   },
   "group": {
     "groupId": "Group ID",
-    "groupName": "Group Name"
+    "groupName": "Group Name",
+    "shelfId": "Shelf ID",
+    "shelfName": "Shelf Name"
   },
   "sale": {
     "importOrder": "Import Order",
@@ -338,6 +340,10 @@
     "capacity": "Capacity",
     "note": "Note",
     "capacityMustBeANumber": "Capacity must be a number",
-    "deleteShelf": "Delete shelf successfully"
+    "deleteShelf": "Delete shelf successfully",
+    "shelfExist": "This shelf has already existed",
+    "shelfAddSuccess": "Shelf added successfully",
+    "updateSuccess": "Shelf updated successfully",
+    "shelfInfo": "Shelf Infomation"
   }
 }

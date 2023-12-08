@@ -49,15 +49,15 @@ declare type TProduct = {
 declare type TGroupProduct = {
   groupId: string;
   groupName: string;
-  shelfID: string;
-  shelfName: string;
+  shelfID?: string;
+  shelfName?: string;
   note?: string;
 };
 
 declare type TShelf = {
   shelfId: string;
   shelfName: string;
-  capacity: number;
+  capacity: number | string;
   note?: string;
 };
 

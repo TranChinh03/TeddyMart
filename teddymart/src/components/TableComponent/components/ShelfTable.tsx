@@ -15,6 +15,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { deleteShelf } from "state_management/slices/shelfSlice";
 import { message } from "antd";
+import AddNewShelf from "views/Shelf/components/AddNewShelf";
+import { updateGroupProduct } from "state_management/slices/groupProductSlice";
+import { updateData } from "controller/addData";
 type TContent = {
   shelfId: string;
   shelfName: string;
@@ -86,6 +89,7 @@ const ShelfTable = ({
     [t]
   );
   const SHELF = useSelector((state: RootState) => state.shelf);
+  const GROUP_PRODUCT = useSelector((state: RootState) => state.groupProduct);
   const idSelected = useRef<string>("");
   const data = useMemo(() => {
     if (search !== "") {
@@ -102,6 +106,13 @@ const ShelfTable = ({
   );
   const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
+  const [openModalUpdate, setOpenModalUpdate] = useState(false);
+  const [dataInput, setDataInput] = useState<TShelf>({
+    shelfId: "",
+    shelfName: "",
+    capacity: "",
+    note: "",
+  });
 
   const onBackAll = () => {
     setCurrentPage(1);
@@ -136,15 +147,37 @@ const ShelfTable = ({
     setRowsPerPage(+e.target.value);
   };
 
-  const onUpdate = () => {};
+  const onUpdate = (shelf: TShelf) => {
+    setOpenModalUpdate(true);
+    setDataInput({
+      shelfId: shelf.shelfId,
+      shelfName: shelf.shelfName,
+      capacity: shelf.capacity.toString(),
+      note: shelf.note,
+    });
+  };
   const onDelete = (id: string) => {
-    // indexDelete?.current = "AAA";
     idSelected.current = id;
     setOpen(true);
   };
   const onConfirm = async () => {
     await deleteData({ id: idSelected.current, table: "Shelf" });
     dispatch(deleteShelf(idSelected.current));
+    GROUP_PRODUCT.forEach(async (item) => {
+      if (item.shelfID === idSelected.current) {
+        await updateData({
+          data: { ...item, shelfID: "", shelfName: "" },
+          table: "Group_Product",
+          id: item.groupId,
+        });
+        dispatch(
+          updateGroupProduct({
+            currentGroupProduct: item,
+            newGroupProduct: { ...item, shelfID: "", shelfName: "" },
+          })
+        );
+      }
+    });
     setOpen(false);
     message.success(t("shelf.deleteShelf"));
   };
@@ -209,7 +242,10 @@ const ShelfTable = ({
                     )}
 
                     <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                      <Button className="mr-2" onClick={onUpdate}>
+                      <Button
+                        className="mr-2"
+                        onClick={() => onUpdate(content)}
+                      >
                         <FiEdit />
                       </Button>
 
@@ -230,11 +266,11 @@ const ShelfTable = ({
           onChange={handleRowsPerPageChange}
           className=" bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:bg-white "
         >
-          <option value="10">10</option>
-          <option value="20" selected>
-            20
+          <option value="5">5</option>
+          <option value="10" selected>
+            10
           </option>
-          <option value="50">50</option>
+          <option value="15">15</option>
         </select>
 
         <div className="ml-4 flex items-center">
@@ -261,6 +297,13 @@ const ShelfTable = ({
         </div>
       </div>
       <AlertModal open={open} setOpen={setOpen} onConfirm={onConfirm} />
+      <AddNewShelf
+        openAddNewShelf={openModalUpdate}
+        setOpenAddShelf={setOpenModalUpdate}
+        isAdd={false}
+        data={dataInput}
+        setData={setDataInput}
+      />
     </div>
   );
 };

@@ -9,6 +9,8 @@ import {
   HiOutlineChevronRight,
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
+import { useSelector } from "react-redux";
+import { RootState } from "state_management/reducers/rootReducer";
 
 type TContent = {
   groupId: string;
@@ -41,19 +43,30 @@ type TOptions = {
   groupId?: boolean;
   groupName?: boolean;
   note?: boolean;
+  shelf?: boolean;
+  shelfId?: boolean;
 };
 
 const GroupProductTable = ({
   filterOption,
-  data,
+  search,
 }: {
   filterOption?: TOptions;
-  data?: TGroupProduct[];
+  search?: string;
 }) => {
   const { t } = useTranslation();
+  const GROUP_PRODUCT = useSelector((state: RootState) => state.groupProduct);
+  const data = useMemo(() => {
+    if (search !== "") {
+      return GROUP_PRODUCT.filter((g) => g.groupName.includes(search));
+    }
+    return GROUP_PRODUCT;
+  }, [GROUP_PRODUCT]);
   const options: TOptions = {
     groupId: true,
     groupName: true,
+    shelf: true,
+    shelfId: true,
     note: true,
     ...filterOption,
   };
@@ -62,7 +75,10 @@ const GroupProductTable = ({
       [
         options.groupId && t("group.groupId"),
         options.groupName && t("group.groupName"),
+        options.shelf && t("group.shelfId"),
+        options.shelf && t("group.shelfName"),
         options.note && t("note"),
+
         t("activities"),
       ].filter((value) => Boolean(value) !== false),
     [t]
@@ -153,6 +169,16 @@ const GroupProductTable = ({
                     {options.groupName && (
                       <td className="border border-gray-300 p-2 text-sm">
                         {content.groupName}
+                      </td>
+                    )}
+                    {options.shelfId && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.shelfID}
+                      </td>
+                    )}
+                    {options.shelf && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content.shelfName}
                       </td>
                     )}
                     {options.note && (

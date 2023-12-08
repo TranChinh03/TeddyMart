@@ -67,7 +67,7 @@ export default function ProductScreen() {
         </div>
 
         <div style={{ width: "100%", margin: "20px auto auto auto" }}>
-          <GroupProductTable data={GROUP} />
+          <GroupProductTable search={search} />
         </div>
       </div>
 

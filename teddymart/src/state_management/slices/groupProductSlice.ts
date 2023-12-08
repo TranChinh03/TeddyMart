@@ -33,7 +33,8 @@ const groupProductSlice = createSlice({
       const index = state.findIndex(
         (p) => p.groupId === action.payload.currentGroupProduct.groupId
       );
-      if (index > 0) {
+
+      if (index !== -1) {
         state[index] = { ...action.payload.newGroupProduct };
       }
     },
