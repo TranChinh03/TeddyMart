@@ -18,6 +18,8 @@ import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 import { RootState } from "state_management/reducers/rootReducer";
 import { useSelector } from "react-redux";
+import AddNewCustomerForm from "views/Partner/Components/AddNewCustomer";
+import AddNewSupplierForm from "views/Partner/Components/AddNewSupplier";
 
 type TContentCustomer = {
   address: string;
@@ -308,6 +310,27 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
     const onForwardAll = () => {
       setCurrentPage(maxPages);
     };
+
+    const [updateModalVisible, setUpdateModalVisible] = useState(false);
+    const [updateDataInput, setUpdateDataInput] = useState<TPartner>({
+      partnerId: "",
+      partnerName: "",
+      gender: "male",
+      phoneNumber: "",
+      email: "",
+      address: "",
+      debt: 0,
+      totalBuyAmount: 0,
+      certificate: "",
+      note: "",
+      type: "Customer",
+    });
+
+    const onUpdate = (partner: TPartner) => {
+      setUpdateModalVisible(true);
+      console.log("Update clicked", partner);
+      setUpdateDataInput(partner);
+    };
     return (
       <div className="w-full">
         <div className="max-h-96 overflow-y-auto visible">
@@ -424,7 +447,7 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
                       <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
                         <div className="flex items-center gap-1 justify-center">
                           <Button>
-                            <FiEdit />
+                            <FiEdit onClick={() => onUpdate(content)} />
                           </Button>
 
                           <Button>
@@ -475,6 +498,23 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
             </Button>
           </div>
         </div>
+        {updateDataInput.type === "Customer" ? (
+          <AddNewCustomerForm
+            openAddNewCustomer={updateModalVisible}
+            setOpenAddNewCustomer={setUpdateModalVisible}
+            isAdd={false}
+            data={updateDataInput}
+            setData={setUpdateDataInput}
+          />
+        ) : (
+          <AddNewSupplierForm
+            opernAddNewSupplier={updateModalVisible}
+            setOpernAddNewSupplier={setUpdateModalVisible}
+            isAdd={false}
+            data={updateDataInput}
+            setData={setUpdateDataInput}
+          />
+        )}
       </div>
     );
   }

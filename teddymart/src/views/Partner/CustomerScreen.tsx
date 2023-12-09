@@ -80,7 +80,19 @@ export default function CustomerScreen() {
 
   const [filterValues, setFilterValues] = useState({});
   const [isTableReset, setIsTableReset] = useState(false);
-
+  const [dataInput, setDataInput] = useState<TPartner>({
+    partnerId: "",
+    partnerName: "",
+    gender: "male",
+    phoneNumber: "",
+    email: "",
+    address: "",
+    debt: 0,
+    totalBuyAmount: 0,
+    certificate: "",
+    note: "",
+    type: "Customer",
+  });
   const handleSearch = (filterValues: Record<string, any>) => {
     setFilterValues(filterValues);
   };
@@ -144,8 +156,10 @@ export default function CustomerScreen() {
           </div>
         </div>
         <AddNewCustomerForm
-          opernAddNewCustomer={opernAddNewCustomer}
-          setOpernAddNewCustomer={setOpernAddNewCustomer}
+          openAddNewCustomer={opernAddNewCustomer}
+          setOpenAddNewCustomer={setOpernAddNewCustomer}
+          data={dataInput}
+          setData={setDataInput}
         />
         <AdvancedSearch onSearch={handleSearch} onReset={handleResetTable} />
         <PartnerTable
