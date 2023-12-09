@@ -23,11 +23,12 @@ import { BiPlus } from "react-icons/bi";
 import { WareHouseTable } from "components/TableComponent";
 import { BtnExport } from "components";
 import { createID } from "utils/appUtils";
-import { addNewWarehouse } from "state_management/slices/warehouseSlice";
+import { deleteWarehouse } from "state_management/slices/warehouseSlice";
 import { addData } from "controller/addData";
 import { deleteMultiOrder } from "state_management/slices/warehouseSlice";
-
-
+import AddNewWarehouseList from "./AddNewWarehouseList";
+import { AlertModal } from "components";
+import { deleteData } from "controller/deleteData";
 export default function WarehouseList() {
   const [search, setSearch] = useState("");
   const [openAddForm, setOpenAddForm] = useState(false);
@@ -35,6 +36,7 @@ export default function WarehouseList() {
   const [address, setAddress] = useState("");
   const [defaultWarehouse, setDefaultWarehouse] = useState(false);
   const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
  
   const OPTIONS = [
     t("warehouse.warehouseIDAscending"),
@@ -50,40 +52,16 @@ export default function WarehouseList() {
   const [openAlertModal, setOpenAlertModal] = useState(false);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
-  const handleInputChange = (
-    value: string,
-    setValue: React.Dispatch<React.SetStateAction<string>>,
-    fieldName: string
-  ) => {
-    setValue(value);
-    validateForm(fieldName, value);
-  };
-
-  const validateForm = (fieldName: string, value: string) => {
-    if (fieldName === "warehouseName") {
-      setIsFormValid(value !== "" && name !== "");
-    } else if (fieldName === "address") {
-      setIsFormValid(value !== "" && address !== "");
-    }
-  };
-
   const wareListRef = useRef(null);
   const dispatch = useDispatch();
-
-  const onAddWarehouse = async () => {
-    const warehouseId = createID({ prefix: "WH" });
-    const data: TWarehouse = {
-      warehouseId: warehouseId,
-      warehouseName: name,
-      address: address,
-      listProduct: [], 
-      count: 0,
-    };
-    dispatch(addNewWarehouse(data));
-    addData({ data, table: "Warehouse", id: warehouseId});
-    message.success("Warehouse added successfully");
-    setOpenAddForm(false)
-  };
+  
+  const [dataInput, setDataInput] = useState<TWarehouse>({
+    warehouseId: "",
+    warehouseName: "",
+    address: "",
+    listProduct: [],
+    count: 0
+  })
 
   return (
     <div className="w-full bg-extreme_lg_grey min-h-screen">
@@ -96,30 +74,13 @@ export default function WarehouseList() {
 
         <div className="w-full justify-between items-center flex flex-wrap py-5">
           <div className="flex">
-            {/* <ButtonComponent
-              onClick={() => {}}
-              label={t("button.all")}
-              backgroundColor={COLORS.defaultWhite}
-              color={COLORS.txt_lightgrey}
-              style={{
-                borderColor: COLORS.lightGray,
-                borderWidth: 1.5,
-              }}
-            />
-
-            <div className="w-3" /> */}
             <SearchComponent
               search={search}
               setSearch={setSearch}
               placeholder={t("warehouse.searchByName")}
               width={"35vw"}
             />
-{/* 
-            <div className="w-3" />
-            <ListCheckBox
-              listFilter={listFilter}
-              setListFilter={setListFilter}
-            /> */}
+
           </div>
           <div className="flex">
             <ButtonComponent
@@ -130,17 +91,6 @@ export default function WarehouseList() {
             />
 
             <div className="w-3" />
-            {/* <ButtonComponent
-              onClick={() => alert("Button Clicked")}
-              label={t("button.exportExcel")}
-              backgroundColor={COLORS.defaultBlack}
-              style={{ borderWidth: 0 }}
-              iconLeft={
-                <LiaFileExcel
-                  style={{ marginRight: 10, color: "white", fontSize: 22 }}
-                />
-              }
-            /> */}
             <BtnExport
               fileName={t("warehouse.warehouseList")}
               sheet={t("warehouse.warehouseList")}
@@ -180,78 +130,18 @@ export default function WarehouseList() {
           
         />
       </div>
-
+      
       {/* ADD NEW WAREHOUSE */}
-      <Modal
-        title={<h1 className="text-2xl">{t("warehouse.addNewWarehouse")}</h1>}
-        width={"60%"}
-        open={openAddForm}
-        onCancel={() => setOpenAddForm(false)}
-        footer={false}
-      >
-        <div className="border hidden md:flex border-gray-100"></div>
+      <AddNewWarehouseList
+        openAddNewWarehouse={openAddForm}
+        setOpenAddNewWarehouse={setOpenAddForm}
+        data={dataInput}
+        setData={setDataInput}
+      />
 
-        <div className="flex flex-col gap-y-5 px-5 py-10">
-          <TextInputComponent
-            label={t("warehouse.warehouseName")}
-            width={"100%"}
-            value={name}
-            setValue={
-              (value) =>
-                handleInputChange(
-                value,
-                setName,
-                "warehouseName"
-              )
-            }
-          />
-          <TextInputComponent
-            label={t("warehouse.address")}
-            width={"100%"}
-            value={address}
-            setValue={
-              (value) =>
-                handleInputChange(
-                value,
-                setAddress,
-                "address"
-              )
-            }
-          />
-
-          <Checkbox>
-            <h1 className="font-bold">{t("warehouse.defaultWarehouse")}</h1>
-          </Checkbox>
-        </div>
-
-        <div className="border hidden md:flex border-gray-100"></div>
-
-        <div className="flex mt-10 items-center justify-center">
-          <Space>
-            <ButtonComponent
-              label={t("button.save")}
-              backgroundColor={
-                isFormValid ? COLORS.darkYellow : COLORS.defaultWhite
-              }
-              color={
-                isFormValid ? COLORS.defaultWhite : COLORS.lightGray
-              }
-              onClick={onAddWarehouse}
-            />
-            <ButtonComponent
-              label={t("button.cancel")}
-              onClick={() => {
-                setOpenAddForm(false);
-              }}
-              style={{
-                backgroundColor: "white",
-                borderWidth: 1,
-                color: "#9A9A9A",
-              }}
-            />
-          </Space>
-        </div>
-      </Modal>
+      
     </div>
+
+    
   );
 }

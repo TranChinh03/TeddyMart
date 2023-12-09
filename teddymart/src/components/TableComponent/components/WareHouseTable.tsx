@@ -15,6 +15,9 @@ import {
 } from "react-icons/hi2";
 import warehouseSlice from "state_management/slices/warehouseSlice";
 import {deleteWarehouse} from "state_management/slices/warehouseSlice";
+import AddNewWarehouseList from "views/Warehouse/components/AddNewWarehouseList";
+import { deleteData } from "controller/deleteData";
+
 /**
  * Chưa thanh toán (Unpaid): Hóa đơn vẫn chưa được thanh toán hoặc chưa đến hạn thanh toán.
 
@@ -220,6 +223,43 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
     const onForwardAll = () => {
       setCurrentPage(maxPages);
     };
+
+    const [openModalUpdate, setOpenModalUpdate] = useState(false);
+    const [dataInput, setDataInput] = useState<TWarehouse>({
+      warehouseId: "",
+      warehouseName: "",
+      address: "",
+      listProduct: [],
+      count: 0
+    })
+
+    const onUpdate = (warehouse: TWarehouse) => {
+      setOpenModalUpdate(true);
+      setDataInput({
+        warehouseId: warehouse.warehouseId,
+        warehouseName: warehouse.warehouseName,
+        address: warehouse.address,
+        listProduct: warehouse.listProduct,
+        count: warehouse.count
+      });
+    };
+
+    const [open, setOpen] = useState(false);
+    const WAREHOUSE = useSelector((state: RootState) => state.warehouseSlice);
+    const idSelected = useRef<string>("");
+    const data = useMemo(() => {
+      if (warehouseName !== "") {
+        return WAREHOUSE.filter((w) => w.warehouseName.includes(warehouseName));
+      }
+      return WAREHOUSE;
+    }, [warehouseName, WAREHOUSE]);
+
+    const onDelete = (id: string) => {
+      idSelected.current = id;
+      setOpen(true);
+    };
+
+   
     return (
       <div className="w-full">
         <div className="max-h-96 overflow-y-auto visible">
@@ -283,11 +323,16 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
                       )}
                       {/* NÚT XÓA VÀ SỬA */}
                       <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                        <Button className="mr-2">
-                          <FiEdit />
+                        <Button 
+                          className="mr-2"
+                          onClick={() => onUpdate(content)}
+                        >
+                          <FiEdit/>
                         </Button>
 
-                        <Button>
+                        <Button 
+                          onClick={() => {}}
+                        >
                           <FiTrash color="red" />
                         </Button>
                       </td>
@@ -334,6 +379,14 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
             </Button>
           </div>
         </div>
+        <AddNewWarehouseList
+          openAddNewWarehouse={openModalUpdate}
+          setOpenAddNewWarehouse={setOpenModalUpdate}
+          isAdd={false}
+          data={dataInput}
+          setData={setDataInput}
+
+        />
       </div>
     );
   }

@@ -201,7 +201,10 @@
     "warehouseNameAZ": "Tên kho: A → Z",
     "warehouseNameZA": "Tên kho: Z → A",
     "addNewWarehouse": "Thêm Kho Mới",
-    "defaultWarehouse": "Kho chính"
+    "defaultWarehouse": "Kho chính",
+    "addSuccess": " Thêm kho mới thành công!",
+    "updateSuccess": "Sửa thông tin kho thành công!"
+
   },
   "activities": "Chức năng",
 

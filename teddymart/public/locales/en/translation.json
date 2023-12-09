@@ -207,7 +207,9 @@
     "warehouseNameAZ": "Warehouse Name: A → Z",
     "warehouseNameZA": "Warehouse Name: Z → A",
     "addNewWarehouse": "Add New Warehouse",
-    "defaultWarehouse": "Default warehouse"
+    "defaultWarehouse": "Default warehouse",
+    "addSuccess": "Warehouse added successfully!",
+    "updateSuccess": "Warehouse updated successfully!"
   },
   "activities": "Activities",
   "note": "Note",

@@ -104,7 +104,7 @@ export default function ProductScreen() {
             }}
             outStyle={{ width: "100%" }}
           />
-
+dele
           <div style={{ width: 36 }} />
           <ListCheckBox listFilter={listFilter} setListFilter={setListFilter} />
 
