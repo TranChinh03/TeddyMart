@@ -1,4 +1,4 @@
-import { Card, Divider, Modal, Space, Tooltip } from "antd";
+import { Card, Divider, Modal, Space, Tooltip, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import {
   ButtonComponent,
@@ -18,6 +18,7 @@ import { addOrderFirebase, createID } from "utils/appUtils";
 import AddNewCustomerForm from "./AddNewCustomer";
 import AddNewProduct from "views/Product/components/AddNewProduct";
 import { ADD_ORDER } from "state_management/actions/actions";
+import AddProductToMenu from "views/Warehouse/components/AddProductToMenu";
 const CUS_INFO = {
   customerName: "NVA",
   gender: "Male",
@@ -53,9 +54,9 @@ const AddForm = ({
   ).map((value) => value.warehouseName);
   const vouchers = useSelector((state: RootState) => state.voucherSlice);
   const { userId } = useSelector((state: RootState) => state.manager);
-  const [sum, setSum] = useState(1000);
+  // const [sum, setSum] = useState(1000);
   const [listProduct, setListProduct] = useState<ListProduct[]>([]);
-
+  const [productMenu, setProductMenu] = useState<TProduct[]>([]);
   const getVoucherInfo = (voucherName: string) => {
     let item = vouchers.find((value) => value.voucherName === voucherName);
     return {
@@ -73,6 +74,12 @@ const AddForm = ({
     );
     return customer;
   }, [searchCustomer]);
+  const sum = useMemo(() => {
+    return productMenu.reduce(
+      (pre, cur) => pre + cur.cost_price * cur.quantity,
+      0
+    );
+  }, [productMenu]);
   const onAddOrder = async () => {
     const y = new Date().getFullYear();
     const m = new Date().getMonth();
@@ -83,7 +90,13 @@ const AddForm = ({
       createdAt: createdAt.toISOString(),
       debt: sum - discount - +payment,
       discount: discount,
-      listProduct: listProduct,
+      listProduct: [
+        ...productMenu.map((product) => ({
+          productId: product.productId,  
+          productName: product.productName,
+          quantity: product.quantity,
+        })),
+      ],
       note: note,
       orderId: orderId,
       partnerId: customerInfo.partnerId,
@@ -98,9 +111,10 @@ const AddForm = ({
     };
     addOrderFirebase(data, userId, orderId);
     dispatch(addNewOrder(data));
+    message.success("Add Order Success");
+    setOpenAddForm(false);
     dispatch({ type: ADD_ORDER, payload: data });
   };
-  console.log(voucher);
   return (
     <Modal
       title={<h1 className="text-2xl">{t("sale.addNewOrder")}</h1>}
@@ -202,6 +216,8 @@ const AddForm = ({
             }}
             productName={search}
             warehouseName={warehouseName}
+            data={productMenu}
+            setData={setProductMenu}
             isEditQuantity={true}
           />
         </div>
@@ -219,7 +235,7 @@ const AddForm = ({
         <DropdownComponent
           value={voucher}
           setValue={setVoucher}
-          options={["Voucher A - 50%", "Voucher B - 20%", "Voucher C - 10%"]}
+          options={[...vouchers.map((voucher) => voucher.voucherName)]}
         />
       </Card>
       <Card
@@ -260,7 +276,9 @@ const AddForm = ({
             className=" text-base italic"
             defaultValue={payment}
             placeholder="0"
-            onChange={(e) => setPayment(e.target.value)}
+            onChange={(e) => {
+              setPayment(e.target.value);
+            }}
           ></input>
           <h1 className=" text-base font-medium">{t("sale.debt")}:</h1>
           <h1 className=" text-base italic">{sum - discount - +payment}</h1>
@@ -278,9 +296,14 @@ const AddForm = ({
         openAddNewCustomer={openAddCustomerForm}
         setOpenAddNewCustomer={setOpenAddCustomerForm}
       />
-      <AddNewProduct
+      {/* <AddNewProduct
         openAddForm={openAddProductForm}
         setOpenAddForm={setOpenAddProductForm}
+      /> */}
+      <AddProductToMenu
+        openMenu={openAddProductForm}
+        setOpenMenu={setOpenAddProductForm}
+        setProducts={setProductMenu}
       />
     </Modal>
   );

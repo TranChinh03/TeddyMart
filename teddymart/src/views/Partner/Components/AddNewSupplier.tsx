@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import ButtonComponent from "components/ButtonComponent";
 import TextInputComponent from "components/TextInputComponent";
 import { COLORS } from "constants/colors";
@@ -7,8 +7,11 @@ import { RootState } from "state_management/reducers/rootReducer";
 import { useTranslation } from "react-i18next";
 import { Modal, message } from "antd";
 import { createID } from "utils/appUtils";
-import { addNewPartner } from "state_management/slices/partnerSlice";
-import { addData } from "controller/addData";
+import {
+  addNewPartner,
+  updatePartner,
+} from "state_management/slices/partnerSlice";
+import { addData, updateData } from "controller/addData";
 import { db, storage } from "firebaseConfig";
 import { doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -16,20 +19,19 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 type Props = {
   opernAddNewSupplier: boolean;
   setOpernAddNewSupplier: (opernAddNewSupplier: boolean) => void;
+  data?: TPartner;
+  setData?: (data: TPartner) => void;
+  isAdd?: boolean;
 };
 
 export default function AddNewSupplierForm({
   opernAddNewSupplier,
   setOpernAddNewSupplier,
+  data,
+  setData,
+  isAdd = true,
 }: Props) {
-  const [supplierName, setSupplierName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
-  const [totalBuyAmount, setTotalBuyAmount] = useState("");
-  const [debt, setDebt] = useState("");
-  const [note, setNote] = useState("");
-  const [certificate, setCertificate] = useState("");
+
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
 
@@ -40,69 +42,83 @@ export default function AddNewSupplierForm({
       const selectedImageFile = event.target.files[0];
       const imageUrl = URL.createObjectURL(selectedImageFile);
       setSelectedImage(imageUrl);
+      setData({
+        ...data,
+      });
     }
   };
 
   const { t } = useTranslation();
   const { userId } = useSelector((state: RootState) => state.manager);
   const dispatch = useDispatch();
-
-  const handleInputChange = (
-    value: string,
-    setValue: React.Dispatch<React.SetStateAction<string>>,
-    fieldName: string
-  ) => {
-    setValue(value);
-    validateForm(fieldName, value);
+  const onChange = (value: string, fieldName: string) => {
+    setData({
+      ...data,
+      [fieldName]: value,
+    });
   };
-  const [isFormValid, setIsFormValid] = useState(false);
-  const validateForm = (fieldName: string, value: string) => {
-    if (fieldName === "supplierName") {
-      setIsFormValid(value !== "" && phoneNumber !== "");
-    } else if (fieldName === "phoneNumber") {
-      setIsFormValid(value !== "" && supplierName !== "");
-    }
-  };
+  
   const onAddNewSupplier = async () => {
     try {
-      const trimmedName = supplierName.trim();
-      const trimmedPhone = phoneNumber.trim();
-      if (!trimmedName || !trimmedPhone || !isFormValid) {
+      const trimmedName = data.partnerName.trim();
+      const trimmedPhone = data.phoneNumber.trim();
+      if (!trimmedName || !trimmedPhone) {
         message.warning("Please fill in full name and phone");
         return;
       }
-      const partnerId = createID({ prefix: "P" });
-      let certificateImageUrl = null;
-      if (selectedImage) {
-        const storageRef = ref(
-          storage,
-          `/Manager/Supplier/Certificate/${partnerId}`
-        );
-        const selectedImageFile = await getImageFileFromUrl(selectedImage);
-        await uploadBytes(storageRef, selectedImageFile);
-        certificateImageUrl = await getDownloadURL(storageRef);
+
+      if (isAdd) {
+        const partnerId = createID({ prefix: "P" });
+        let certificateImageUrl = null;
+        if (selectedImage) {
+          const storageRef = ref(
+            storage,
+            `/Manager/Supplier/Certificate/${partnerId}`
+          );
+          const selectedImageFile = await getImageFileFromUrl(selectedImage);
+          await uploadBytes(storageRef, selectedImageFile);
+          certificateImageUrl = await getDownloadURL(storageRef);
+        }
+        const newData: TPartner = {
+          partnerId: partnerId,
+          partnerName: data.partnerName,
+          email: data.email,
+          phoneNumber: data.phoneNumber,
+          address: data.address,
+          note: data.note,
+          type: "Supplier",
+          totalBuyAmount: data.totalBuyAmount,
+          debt: data.debt,
+          certificate: certificateImageUrl,
+        };
+
+        dispatch(addNewPartner(newData));
+        addData({ data: newData, table: "Partner", id: partnerId });
+
+        message.success("Supplier added successfully");
+        setOpernAddNewSupplier(false);
+      } else {
+        dispatch(updatePartner({ partnerId: data.partnerId, newData: data }));
+        await updateData({ data: data, table: "Partner", id: data.partnerId });
+        message.success(t("supplier.updateSuccess"));
+        setOpernAddNewSupplier(false);
       }
-      const data: TPartner = {
-        partnerId: partnerId,
-        partnerName: supplierName,
-        email: email,
-        phoneNumber: phoneNumber,
-        address: address,
-        note: note,
-        type: "Supplier",
-        totalBuyAmount: parseInt(totalBuyAmount),
-        debt: parseInt(debt),
-        certificate: certificateImageUrl,
-      };
-
-      dispatch(addNewPartner(data));
-      addData({ data, table: "Partner", id: partnerId });
-
-      message.success("Supplier added successfully");
-      setOpernAddNewSupplier(false);
     } catch (error) {
       console.error("Error adding new supplier:", error);
     }
+    setData({
+      partnerId: "",
+      partnerName: "",
+      gender: "male",
+      phoneNumber: "",
+      email: "",
+      address: "",
+      debt: 0,
+      totalBuyAmount: 0,
+      certificate: "",
+      note: "",
+      type: "Supplier",
+    });
   };
 
   const getImageFileFromUrl = async (imageUrl: string): Promise<File> => {
@@ -110,13 +126,27 @@ export default function AddNewSupplierForm({
     const blob = await response.blob();
     return new File([blob], "selectedImageFile");
   };
+  const backgroundColor = useMemo(
+    () =>
+      data.partnerName !== "" && data.phoneNumber !== ""
+        ? COLORS.darkYellow
+        : COLORS.defaultWhite,
+    [data.partnerName, data.phoneNumber]
+  );
+  const color = useMemo(
+    () =>
+      data.partnerName !== "" && data.phoneNumber !== ""
+        ? COLORS.defaultWhite
+        : COLORS.lightGray,
+    [data.partnerName, data.phoneNumber]
+  );
   return (
     <Modal
       open={opernAddNewSupplier}
       onCancel={() => setOpernAddNewSupplier(false)}
       footer={false}
       title={<h1 className="pr-8 text-3xl">{t("supplier.addNewSupplier")}</h1>}
-      width={720}
+      width={"60%"}
     >
       <hr className="h-0.5 my-4 bg-black" />
       <div className="overflow-y-auto max-h-96">
@@ -132,11 +162,9 @@ export default function AddNewSupplierForm({
               <td>
                 <TextInputComponent
                   placeHolder=""
-                  width={"auto"}
-                  value={supplierName}
-                  setValue={(value) =>
-                    handleInputChange(value, setSupplierName, "supplierName")
-                  }
+                  width={"100%"}
+                  value={data.partnerName}
+                  setValue={(value) => onChange(value, "partnerName")}
                 />
               </td>
             </tr>
@@ -151,10 +179,8 @@ export default function AddNewSupplierForm({
                 <TextInputComponent
                   placeHolder=""
                   width={"auto"}
-                  value={phoneNumber}
-                  setValue={(value) =>
-                    handleInputChange(value, setPhoneNumber, "phoneNumber")
-                  }
+                  value={data.phoneNumber}
+                  setValue={(value) => onChange(value, "phoneNumber")}
                 />
               </td>
             </tr>
@@ -167,8 +193,8 @@ export default function AddNewSupplierForm({
                 <TextInputComponent
                   placeHolder=""
                   width={492}
-                  value={email}
-                  setValue={setEmail}
+                  value={data.email}
+                  setValue={(value) => onChange(value, "email")}
                 />
               </td>
             </tr>
@@ -181,8 +207,8 @@ export default function AddNewSupplierForm({
                 <TextInputComponent
                   placeHolder=""
                   width={492}
-                  value={address}
-                  setValue={setAddress}
+                  value={data.address}
+                  setValue={(value) => onChange(value, "address")}
                 />
               </td>
             </tr>
@@ -194,8 +220,8 @@ export default function AddNewSupplierForm({
                 <TextInputComponent
                   placeHolder=""
                   width={492}
-                  value={totalBuyAmount}
-                  setValue={setTotalBuyAmount}
+                  value={data.totalBuyAmount.toString()}
+                  setValue={(value) => onChange(value, "totalBuyAmount")}
                 />
               </td>
             </tr>
@@ -207,8 +233,8 @@ export default function AddNewSupplierForm({
                 <TextInputComponent
                   placeHolder=""
                   width={492}
-                  value={debt}
-                  setValue={setDebt}
+                  value={data.debt.toString()}
+                  setValue={(value) => onChange(value, "debt")}
                 />
               </td>
             </tr>
@@ -220,8 +246,8 @@ export default function AddNewSupplierForm({
                 <TextInputComponent
                   placeHolder=""
                   width={492}
-                  value={note}
-                  setValue={setNote}
+                  value={data.note}
+                  setValue={(value) => onChange(value, "note")}
                 />
               </td>
             </tr>
@@ -265,10 +291,8 @@ export default function AddNewSupplierForm({
       <div className="flex justify-end gap-x-4 mt-4">
         <ButtonComponent
           label={t("button.save")}
-          backgroundColor={
-            isFormValid ? COLORS.darkYellow : COLORS.defaultWhite
-          }
-          color={isFormValid ? COLORS.defaultWhite : COLORS.lightGray}
+          backgroundColor={backgroundColor}
+          color={color}
           onClick={onAddNewSupplier}
         />
         <ButtonComponent

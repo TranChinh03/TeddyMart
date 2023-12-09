@@ -75,6 +75,20 @@ export default function CustomerScreen() {
     note: listFilter[5].value,
   };
 
+  const [dataInput, setDataInput] = useState<TPartner>({
+    partnerId: "",
+    partnerName: "",
+    gender: "male",
+    phoneNumber: "",
+    email: "",
+    address: "",
+    debt: 0,
+    totalBuyAmount: 0,
+    certificate: "",
+    note: "",
+    type: "Customer",
+  });
+
   return (
     <div className="flex flex-col w-full">
       {/* <Header width={"100%"} title={"Supplier"} /> */}
@@ -122,6 +136,8 @@ export default function CustomerScreen() {
         <AddNewSupplierForm
           opernAddNewSupplier={opernAddNewSupplier}
           setOpernAddNewSupplier={setOpernAddNewSupplier}
+          data={dataInput}
+          setData={setDataInput}
         />
         <PartnerTable
           isCustomer={false}

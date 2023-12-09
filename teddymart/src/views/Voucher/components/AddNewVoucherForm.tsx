@@ -1,4 +1,4 @@
-import { DatePicker, Modal, Space } from "antd";
+import { DatePicker, Modal, Space, message } from "antd";
 import { ButtonComponent, TextInputComponent } from "components";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -29,6 +29,8 @@ const AddNewVoucherForm = ({ openAddVoucher, setOpenAddVoucher }: Props) => {
     };
     dispatch(addNewVoucher(data));
     addVoucherFirebase(data, userId, voucherId);
+    setOpenAddVoucher(false);
+    message.success("Add voucher success");
   };
   return (
     <Modal
@@ -46,6 +48,8 @@ const AddNewVoucherForm = ({ openAddVoucher, setOpenAddVoucher }: Props) => {
         labelColor="#9A9A9A"
         width={"100%"}
         style={{ marginBlock: 12 }}
+        setValue={setVoucherName}
+        value={voucherName}
       />
       <Space
         style={{
@@ -56,11 +60,21 @@ const AddNewVoucherForm = ({ openAddVoucher, setOpenAddVoucher }: Props) => {
       >
         <Space direction="vertical">
           <label>{t("voucher.expirationDate")}</label>
-          <DatePicker onChange={() => {}} style={{ width: 200 }} />
+          <DatePicker
+            onChange={(e) => {
+              setDateFrom(e.format("DD/MM/YYYY"));
+            }}
+            style={{ width: 200 }}
+          />
         </Space>
         <Space direction="vertical">
           <label>{t("voucher.publicDate")}</label>
-          <DatePicker onChange={() => {}} style={{ width: 200 }} />
+          <DatePicker
+            onChange={(e) => {
+              setDateTo(e.format("DD/MM/YYYY"));
+            }}
+            style={{ width: 200 }}
+          />
         </Space>
       </Space>
       <TextInputComponent
@@ -68,6 +82,8 @@ const AddNewVoucherForm = ({ openAddVoucher, setOpenAddVoucher }: Props) => {
         labelColor="#9A9A9A"
         width={"100%"}
         style={{ marginBlock: 12 }}
+        value={discountAmount}
+        setValue={setDiscountAmount}
       />
       {/* <TextInputComponent
         label={t("voucher.note")}
