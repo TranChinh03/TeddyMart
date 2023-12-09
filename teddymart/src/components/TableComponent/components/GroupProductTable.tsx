@@ -1,6 +1,9 @@
-import { Button } from "antd";
+import { Button, message } from "antd";
+import AlertModal from "components/AlertModal";
+import { updateData } from "controller/addData";
+import { deleteData } from "controller/deleteData";
 import { t } from "i18next";
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import {
@@ -9,8 +12,11 @@ import {
   HiOutlineChevronRight,
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
+import { deleteGroupProduct } from "state_management/slices/groupProductSlice";
+import { updateProduct } from "state_management/slices/productSlice";
+import AddNewGroupProduct from "views/GroupProduct/components/AddNewGroupProduct";
 
 type TContent = {
   groupId: string;
@@ -50,9 +56,13 @@ type TOptions = {
 const GroupProductTable = ({
   filterOption,
   search,
+  selectedRows,
+  setSelectedRows,
 }: {
   filterOption?: TOptions;
   search?: string;
+  selectedRows: string[];
+  setSelectedRows: (selectedRows: string[]) => void;
 }) => {
   const { t } = useTranslation();
   const GROUP_PRODUCT = useSelector((state: RootState) => state.groupProduct);
@@ -83,7 +93,21 @@ const GroupProductTable = ({
       ].filter((value) => Boolean(value) !== false),
     [t]
   );
-  const [selectedRows, setSelectedRows] = useState([]);
+
+  const PRODUCT = useSelector((state: RootState) => state.product);
+  const GROUP = useSelector((state: RootState) => state.groupProduct);
+  const dispatch = useDispatch();
+  const idSelected = useRef<string>("");
+  const [openModalUpdate, setOpenModalUpdate] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [dataInput, setDataInput] = useState<TGroupProduct>({
+    groupId: "",
+    groupName: "",
+    shelfID: "",
+    shelfName: "",
+    note: "",
+  });
+  // const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const maxPages = useMemo(
     () => Math.round(data.length / rowsPerPage),
@@ -105,9 +129,9 @@ const GroupProductTable = ({
   };
   const handleCheckBoxChange = (rowId: string) => {
     if (rowId === null) {
-      console.log("ok");
+      // console.log("ok");
       if (selectedRows.length === 0) {
-        setSelectedRows([...CONTENT.map((content) => content.groupId)]);
+        setSelectedRows([...data.map((content) => content.groupId)]);
         return;
       }
       setSelectedRows([]);
@@ -123,6 +147,47 @@ const GroupProductTable = ({
     console.log("okkkkk");
     setRowsPerPage(+e.target.value);
   };
+
+
+  const onUpdate = (group: TGroupProduct) => {
+    setOpenModalUpdate(true);
+    setDataInput({
+      groupId: group.groupId,
+      groupName: group.groupName,
+      shelfID: group.shelfID,
+      shelfName: group.shelfName,
+      note: group.note,
+    });
+  };
+
+  const onDelete = (id: string) => {
+    idSelected.current = id;
+    setOpen(true)
+  }
+
+
+  const onConfirm = async () => {
+    await deleteData({ id: idSelected.current, table: "Group_Product" });
+      dispatch(deleteGroupProduct(GROUP.find(x => x.groupId === idSelected.current)));
+      PRODUCT.forEach(async (product) => {
+        if (product.groupId === idSelected.current) {
+          await updateData({
+            data: { ...product, groupId: "", groupName: "" },
+            table: "Group_Product",
+            id: product.productId,
+          });
+          dispatch(
+            updateProduct({
+              currentProduct: product,
+              newProduct: { ...product, groupId: "", groupName: "" },
+            })
+          );
+        }
+      })
+      setOpen(false);
+      message.success(t("group.deletedGroup"));
+    }
+
   return (
     <div className="w-full">
       <div className="max-h-96 overflow-y-auto visible">
@@ -188,11 +253,13 @@ const GroupProductTable = ({
                     )}
 
                     <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                      <Button className="mr-2">
+                      <Button 
+                        className="mr-2"
+                        onClick={() => onUpdate(content)}>
                         <FiEdit />
                       </Button>
 
-                      <Button>
+                      <Button onClick={() => onDelete(content.groupId)}>
                         <FiTrash color="red" />
                       </Button>
                     </td>
@@ -218,7 +285,7 @@ const GroupProductTable = ({
 
         <div className="ml-4 flex items-center">
           <span className="text-sm text-gray-400  mr-4">
-            {currentPage} trên {maxPages}
+            {currentPage} {t("on")} {maxPages}
           </span>
           <Button onClick={onBackAll}>
             <HiOutlineChevronDoubleLeft />
@@ -239,6 +306,14 @@ const GroupProductTable = ({
           </Button>
         </div>
       </div>
+      <AlertModal open={open} setOpen={setOpen} onConfirm={onConfirm} />
+      <AddNewGroupProduct
+        openAddNewGroupProduct={openModalUpdate}
+        setOpenAddNewGroupProduct={setOpenModalUpdate}
+        isAdd={false}
+        data={dataInput}
+        setData={setDataInput}
+      />
     </div>
   );
 };

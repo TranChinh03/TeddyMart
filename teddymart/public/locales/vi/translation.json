@@ -167,7 +167,10 @@
     "groupId": "Mã nhóm",
     "groupName": "Tên nhóm",
     "shelfId": "Mã kệ",
-    "shelfName": "Tên kệ"
+    "shelfName": "Tên kệ",
+    "deletedGroup": "Đã xóa nhóm sản phẩm!",
+    "groupExist": "Nhóm sản phẩm đã tồn tại.",
+    "updateSuccess": "Nhóm sản phẩm đã được cập nhật!"
   },
   "manager": {
     "userId": "Mã người dùng",

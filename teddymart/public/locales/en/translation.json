@@ -99,7 +99,10 @@
     "groupId": "Group ID",
     "groupName": "Group Name",
     "shelfId": "Shelf ID",
-    "shelfName": "Shelf Name"
+    "shelfName": "Shelf Name",
+    "deletedGroup": "Group deleted successfully!",
+    "groupExist": "Group already exists.",
+    "updateSuccess": "Group updated successfully!"
   },
   "sale": {
     "importOrder": "Import Order",
