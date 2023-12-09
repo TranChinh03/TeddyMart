@@ -155,7 +155,8 @@
     "addNewSupplier": "Add New Supplier",
     "supplierName": "Supplier Name",
     "certificate": "Certificate",
-    "supplierID": "Supplier ID"
+    "supplierID": "Supplier ID",
+    "deletePartner":"Delete partner successfully"
   },
   "product": {
     "productGroup": "Product Group",
