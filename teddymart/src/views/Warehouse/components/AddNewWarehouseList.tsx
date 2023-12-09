@@ -66,7 +66,7 @@ export default function AddNewWarehouseList({
             : COLORS.lightGray,
         [data.warehouseName, data.address]
     );
-
+    const WAREHOUSE = useSelector((state: RootState) => state.warehouseSlice);
     const onAddNewWarehouse = async() => {
         const trimmedName = data.warehouseName.trim();
         const trimmedAddress = data.address.trim();
@@ -76,6 +76,13 @@ export default function AddNewWarehouseList({
         }
 
         if(isAdd){
+            if (
+                WAREHOUSE.findIndex(
+                    (warehouse) => warehouse.warehouseName === data.warehouseName && warehouse.address == data.address) !== -1
+              ) {
+                message.error(t("warehouse.existed"));
+                return;
+              }
             const warehouseId = createID({ prefix: "WH" });
             const newData: TWarehouse = {
                 warehouseId: warehouseId,
@@ -87,12 +94,10 @@ export default function AddNewWarehouseList({
             dispatch(addNewWarehouse(newData));
             addData({ data: newData, table: "Warehouse", id: warehouseId});
             message.success(t("warehouse.addSuccess"));
-            setOpenAddNewWarehouse(false)
         } else {
             dispatch(updateWarehouse({ warehouseId: data.warehouseId, updatedData: data }));
             await updateData({ data: data, table: "Partner", id: data.warehouseId });
             message.success(t("warehouse.updateSuccess"));
-            setOpenAddNewWarehouse(false);
         }
         
         setData({

@@ -208,8 +208,8 @@
     "defaultWarehouse": "Kho chính",
     "addSuccess": " Thêm kho mới thành công!",
     "updateSuccess": "Sửa thông tin kho thành công!",
-    "deleteSuccess": "Xóa kho thành công!"
-
+    "deleteSuccess": "Xóa kho thành công!",
+    "existed": "Kho này đã tồn tại!"
 
   },
   "activities": "Chức năng",

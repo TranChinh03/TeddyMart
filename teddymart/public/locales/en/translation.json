@@ -214,8 +214,8 @@
     "defaultWarehouse": "Default warehouse",
     "addSuccess": "Warehouse added successfully!",
     "updateSuccess": "Warehouse updated successfully!",
-    "deleteSuccess": "Warehouse deleted successully!"
-
+    "deleteSuccess": "Warehouse deleted successully!",
+    "existed": "This warehouse has already existed!"
   },
   "activities": "Activities",
   "note": "Note",
