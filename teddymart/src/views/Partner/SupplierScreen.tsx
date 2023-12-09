@@ -99,8 +99,8 @@ export default function CustomerScreen() {
   const onDeleteMultiShelf = () => {
     selectedRows.forEach(async (item) => {
       await deleteData({ id: item, table: "Partner" });
-      dispatch(deletePartner(item));
-      message.success(t("shelf.deleteShelf"));
+      dispatch(deletePartner({partnerId: item}));
+      message.success(t("partner.deletePartner"));
       setOpen(false);
     });
   };
