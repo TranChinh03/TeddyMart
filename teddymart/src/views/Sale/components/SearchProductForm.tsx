@@ -5,7 +5,7 @@ import {
   TextInputComponent,
 } from "components";
 import { ProductTable } from "components/TableComponent";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BiSearch } from "react-icons/bi";
 
@@ -17,7 +17,6 @@ const SearchProductForm = ({
   openSearchModal: boolean;
 }) => {
   const { t } = useTranslation();
-
   return (
     <Modal
       title={

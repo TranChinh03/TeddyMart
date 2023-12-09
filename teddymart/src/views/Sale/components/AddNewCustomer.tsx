@@ -1,4 +1,5 @@
 import { uuidv4 } from "@firebase/util";
+import { message } from "antd";
 import Modal from "antd/es/modal/Modal";
 import { ButtonComponent, TextInputComponent } from "components";
 import { COLORS } from "constants/colors";
@@ -65,6 +66,8 @@ const AddNewCustomerForm = ({
       table: "Partner",
     });
     dispatch(addNewPartner(data));
+    message.success("New Customer added successfully!");
+    setOpenAddNewCustomer(false);
   };
 
   const { t } = useTranslation();
@@ -216,7 +219,7 @@ const AddNewCustomerForm = ({
             label="Save"
             backgroundColor={COLORS.defaultWhite}
             color={COLORS.lightGray}
-            onClick={() => alert("Button Clicked")}
+            onClick={addNewCustomer}
           />
           <ButtonComponent
             label="Close"

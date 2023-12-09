@@ -38,68 +38,6 @@ type TContent = {
   totalPrice?: number;
   price?: number;
 };
-const CONTENT: TContent[] = [
-  {
-    productId: "P001",
-    productName: "Máy giặc",
-    groupId: "G001",
-    groupName: "Group A",
-    image:
-      "https://cdn.tgdd.vn/Products/Images/2402/226459/noi-nhom-chong-dinh-kangaroo-kg993mx-bo-3-cai-2-org.jpg",
-    sell_price: 1231,
-    cost_price: 12333,
-    VAT: 0.5,
-    note: "Do moi",
-  },
-  {
-    productId: "P001",
-    productName: "Máy giặc",
-    groupId: "G001",
-    groupName: "Group A",
-    image:
-      "https://cdn.tgdd.vn/Products/Images/2402/226459/noi-nhom-chong-dinh-kangaroo-kg993mx-bo-3-cai-2-org.jpg",
-    sell_price: 1231,
-    cost_price: 12333,
-    VAT: 0.5,
-    note: "Do moi",
-  },
-  {
-    productId: "P001",
-    productName: "Máy giặc",
-    groupId: "G001",
-    groupName: "Group A",
-    image:
-      "https://cdn.tgdd.vn/Products/Images/2402/226459/noi-nhom-chong-dinh-kangaroo-kg993mx-bo-3-cai-2-org.jpg",
-    sell_price: 1231,
-    cost_price: 12333,
-    VAT: 0.5,
-    note: "Do moi",
-  },
-  {
-    productId: "P001",
-    productName: "Máy giặc",
-    groupId: "G001",
-    groupName: "Group A",
-    image:
-      "https://cdn.tgdd.vn/Products/Images/2402/226459/noi-nhom-chong-dinh-kangaroo-kg993mx-bo-3-cai-2-org.jpg",
-    sell_price: 1231,
-    cost_price: 12333,
-    VAT: 0.5,
-    note: "Do moi",
-  },
-  {
-    productId: "P001",
-    productName: "Máy giặc",
-    groupId: "G001",
-    groupName: "Group A",
-    image:
-      "https://cdn.tgdd.vn/Products/Images/2402/226459/noi-nhom-chong-dinh-kangaroo-kg993mx-bo-3-cai-2-org.jpg",
-    sell_price: 1231,
-    cost_price: 12333,
-    VAT: 0.5,
-    note: "Do moi",
-  },
-];
 
 type TOptions = {
   productId?: boolean;
@@ -131,6 +69,9 @@ type Props = {
   sort?: TSort;
   filterListProduct?: TListProduct[];
   isEditQuantity?: boolean;
+  setProducts?: (products: TProduct[]) => void;
+  data?: TProduct[];
+  setData?: (data: TProduct[]) => void;
 };
 const ProductTable = forwardRef<HTMLTableElement, Props>(
   (
@@ -141,15 +82,20 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
       sort,
       filterListProduct,
       isEditQuantity = false,
+      setProducts,
+      data,
+      setData,
     }: Props,
     ref
   ) => {
+    console.log("data", data, typeof setData);
     const { t } = useTranslation();
     const products = useSelector((state: RootState) => state.product);
     const warehouses = useSelector((state: RootState) => state.warehouseSlice);
     const dispatch = useDispatch();
 
     const productsFilter = useMemo(() => {
+      if (data) return data;
       let listProducts: TProduct[] = [...products];
       if (warehouseName) {
         const listProductWarehouse =
@@ -224,7 +170,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
       }
 
       return listProducts ?? [];
-    }, [warehouseName, productName, sort, filterListProduct, products]);
+    }, [warehouseName, productName, sort, filterListProduct, products, data]);
     const options: TOptions = {
       productId: true,
       productName: true,
@@ -306,11 +252,51 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
       console.log(productId);
       dispatch(deleteProduct({ productId: productId }));
     };
-
+    const onGetProducts = () => {
+      let tmp = products.map((product) => {
+        if (selectedRows.includes(product.productId))
+          return {
+            ...product,
+            quantity: 0,
+          };
+      });
+      setProducts?.(tmp.filter((product) => product !== undefined));
+    };
+    useEffect(() => {
+      onGetProducts();
+    }, [selectedRows]);
+    const increaseQuantity = (productId: string) => {
+      let tmp = [...data];
+      let index_data = tmp.findIndex(
+        (product) => product.productId === productId
+      );
+      let index_product = products.findIndex(
+        (product) => product.productId === productId
+      );
+      if (index_data > -1) {
+        if (tmp[index_data].quantity < products[index_product].quantity)
+          tmp[index_data].quantity = tmp[index_data].quantity + 1;
+      }
+      setData?.(tmp);
+    };
+    const descreaseQuantity = (productId: string) => {
+      let tmp = [...data];
+      let index_data = tmp.findIndex(
+        (product) => product.productId === productId
+      );
+      let index_product = products.findIndex(
+        (product) => product.productId === productId
+      );
+      if (index_data > -1) {
+        if (tmp[index_data].quantity > 1)
+          tmp[index_data].quantity = tmp[index_data].quantity - 1;
+      }
+      setData?.(tmp);
+    };
     return (
       <div className="w-full">
         <div className="max-h-96 overflow-y-auto visible">
-          <table 
+          <table
             className="w-full border-collapse border border-gray-300 bg-gray-50"
             ref={ref}
           >
@@ -375,10 +361,22 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                             {content?.quantity ?? 0}
                             {isEditQuantity && (
                               <Space direction="vertical" size={2}>
-                                <Button size="small">
+                                <Button
+                                  size="small"
+                                  onClick={() => {
+                                    if (data)
+                                      increaseQuantity(content.productId);
+                                  }}
+                                >
                                   <TiArrowSortedUp size={10} />
                                 </Button>
-                                <Button size="small">
+                                <Button
+                                  size="small"
+                                  onClick={() => {
+                                    if (data)
+                                      descreaseQuantity(content.productId);
+                                  }}
+                                >
                                   <TiArrowSortedDown size={10} />
                                 </Button>
                               </Space>

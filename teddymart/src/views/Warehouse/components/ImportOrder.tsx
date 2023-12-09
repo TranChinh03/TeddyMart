@@ -53,6 +53,7 @@ import SearchProductForm from "views/Sale/components/SearchProductForm";
 import AlertDelete from "views/Sale/components/AlertDelete";
 import { BtnExport } from "components";
 import { deleteOrderFirebase } from "utils/appUtils";
+import AddProductToMenu from "./AddProductToMenu";
 const { RangePicker } = DatePicker;
 const CUS_INFO = {
   customerName: "NVA",
@@ -70,6 +71,7 @@ export default function ImportOrder() {
   const [openAddForm, setOpenAddForm] = useState(false);
   const [date, setDate] = useState<{ from: Date; to: Date }>();
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
+  const [products, setProducts] = useState<TProduct[]>([]);
   const { userId } = useSelector((state: RootState) => state.manager);
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -233,6 +235,7 @@ export default function ImportOrder() {
         setOpenSearchModal={setOpenSearchModal}
         openSearchModal={openSearchModal}
       />
+
       {/*Modal Alert Delete */}
       <AlertDelete
         openAlertModal={openAlertModal}
