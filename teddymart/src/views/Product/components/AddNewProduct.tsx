@@ -25,7 +25,7 @@ const AddNewProduct = ({
   const [productName, setProductName] = useState("");
   const [price, setPrice] = useState(null)
   const [retailPrice, setRetailPrice] = useState(null)
-  const [quantity, setQuantity] = useState()
+  const [quantity, setQuantity] = useState(null)
   const [VAT, setVAT] = useState(null)
   const [note, setNote] = useState("")
   const [selectedImage, setSelectedImage] = useState(null);
@@ -71,18 +71,18 @@ const AddNewProduct = ({
       // console.log(value)
 
       if(fieldName === "ignore" || selectedImage === null)
-         return
+        return
       else if (fieldName === "GroupProductID") {
          setIsFormValid(value !== "" && productName !== "" && price !== null && retailPrice !== null && quantity !== null)
       }
       else if (fieldName === "RetailPrice") {
-         setIsFormValid(value !== null && productName !== "" && price !== null && groupProductID !== "" && quantity !== null)
+         setIsFormValid(value !== "" && productName !== "" && price !== null && groupProductID !== "" && quantity !== null)
       }
       else if (fieldName === "Price") {
-         setIsFormValid(value !== null && productName !== "" && retailPrice !== null && groupProductID !== "" && quantity !== null)
+         setIsFormValid(value !== "" && productName !== "" && retailPrice !== null && groupProductID !== "" && quantity !== null)
       }
       else if (fieldName === "Quantity") {
-         setIsFormValid(value !== null && productName !== "" && price !== null && retailPrice !== null && groupProductID !== "")
+         setIsFormValid(value !== "" && productName !== "" && price !== null && retailPrice !== null && groupProductID !== "")
       }
       else if (fieldName === "ProductName") {
          setIsFormValid(value !== "" && quantity !== null && price !== null && retailPrice !== null && groupProductID !== "")

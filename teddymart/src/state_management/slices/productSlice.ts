@@ -26,7 +26,7 @@ const productSlice = createSlice({
       const index = state.findIndex(
         (p) => p.productId === action.payload.currentProduct.productId
       );
-      if (index > 0) {
+      if (index !== -1) {
         state[index] = { ...action.payload.newProduct };
       }
       return state;
