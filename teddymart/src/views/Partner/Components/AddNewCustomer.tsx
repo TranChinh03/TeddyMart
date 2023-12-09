@@ -107,7 +107,7 @@ export default function AddNewCustomerForm({
       open={openAddNewCustomer}
       onCancel={() => setOpenAddNewCustomer(false)}
       footer={false}
-      title={<h1 className="pr-8 text-3xl">{t("customer.addNewCustomer")}</h1>}
+      title={<h1 className="pr-8 text-3xl">{t("partner.addNewCustomer")}</h1>}
       width={"60%"}
     >
       <hr className="h-0.5 my-4 bg-black" />

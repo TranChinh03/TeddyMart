@@ -132,7 +132,8 @@
     "addNewSupplier": "Thêm nhà cung cấp",
     "supplierName": "Tên nhà cung cấp",
     "certificate": "Bằng kinh doanh",
-    "supplierID": "Mã nhà cung cấp"
+    "supplierID": "Mã nhà cung cấp",
+    "deletePartner":"Xóa đối tác thành công"
   },
   "product": {
     "productGroup": "Nhóm sản phẩm",
