@@ -212,7 +212,9 @@
     "addNewWarehouse": "Add New Warehouse",
     "defaultWarehouse": "Default warehouse",
     "addSuccess": "Warehouse added successfully!",
-    "updateSuccess": "Warehouse updated successfully!"
+    "updateSuccess": "Warehouse updated successfully!",
+    "deleteSuccess": "Warehouse deleted successully!"
+
   },
   "activities": "Activities",
   "note": "Note",

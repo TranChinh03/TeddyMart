@@ -50,8 +50,8 @@ export default function WarehouseList() {
   const warehouseName = useDeferredValue(search);
   const [isFormValid, setIsFormValid] = useState(false);
   const [openAlertModal, setOpenAlertModal] = useState(false);
-  const [selectedRows, setSelectedRows] = useState<string[]>([]);
-
+  //const [selectedRows, setSelectedRows] = useState<string[]>([]);
+  const [selectedRows, setSelectedRows] = useState([]);
   const wareListRef = useRef(null);
   const dispatch = useDispatch();
   
@@ -63,6 +63,16 @@ export default function WarehouseList() {
     count: 0
   })
 
+  const onDeleteMultiWarehouse = () => {
+    selectedRows.forEach(async (item) => {
+      const warehouseId = item
+      await deleteData({ id: warehouseId, table: "Warehouse" });
+      dispatch(deleteWarehouse({ warehouseId }));
+
+      message.success(t("warehouse.deleteSuccess"));
+      setOpen(false);
+    });
+  };
   return (
     <div className="w-full bg-extreme_lg_grey min-h-screen">
       {/* Header */}
@@ -84,8 +94,10 @@ export default function WarehouseList() {
           </div>
           <div className="flex">
             <ButtonComponent
-              onClick={() => alert("Button Clicked")}
               label={t("button.delete")}
+              onClick={() => {
+                if (selectedRows.length > 0) setOpen(true);
+              }}
               backgroundColor={COLORS.checkbox_bg}
               style={{ borderWidth: 0 }}
             />
@@ -127,6 +139,8 @@ export default function WarehouseList() {
             nameZA: sort === OPTIONS[3],
           }}
           ref={wareListRef}
+          selectedRows={selectedRows}
+          setSelectedRows={setSelectedRows}
           
         />
       </div>
@@ -138,7 +152,11 @@ export default function WarehouseList() {
         data={dataInput}
         setData={setDataInput}
       />
-
+      <AlertModal 
+          open={open} 
+          setOpen={setOpen} 
+          onConfirm={onDeleteMultiWarehouse}
+      />
       
     </div>
 
