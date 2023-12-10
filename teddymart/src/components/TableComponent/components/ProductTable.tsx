@@ -66,6 +66,7 @@ type Props = {
   filterOption?: TOptions;
   warehouseName?: string;
   productName?: string;
+  productGroup?: string;
   sort?: TSort;
   filterListProduct?: TListProduct[];
   isEditQuantity?: boolean;
@@ -79,6 +80,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
       filterOption,
       warehouseName,
       productName,
+      productGroup,
       sort,
       filterListProduct,
       isEditQuantity = false,
@@ -88,12 +90,10 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     }: Props,
     ref
   ) => {
-    console.log("data", data, typeof setData);
     const { t } = useTranslation();
     const products = useSelector((state: RootState) => state.product);
     const warehouses = useSelector((state: RootState) => state.warehouseSlice);
     const dispatch = useDispatch();
-
     const productsFilter = useMemo(() => {
       if (data) return data;
       let listProducts: TProduct[] = [...products];
@@ -105,7 +105,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
           let tmp = listProducts.findIndex(
             (warehouse) => warehouse.productId === value.productId
           );
-
+          console.log("quznty");
           if (tmp > -1)
             return {
               productId: value.productId,
@@ -118,29 +118,16 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
         });
         listProducts = productFilterProductTable;
       }
-
+      if (productGroup) {
+        let tmp = listProducts.filter(
+          (value) => value.groupName === productGroup
+        );
+        listProducts = tmp;
+      }
       if (productName) {
         let tmp = listProducts.filter((value) =>
           value.productName.toLowerCase().includes(productName.toLowerCase())
         );
-        listProducts = tmp;
-      }
-
-      if (filterListProduct) {
-        let tmp = listProducts.filter((value) => {
-          let index = filterListProduct.findIndex(
-            (filterProduct) => filterProduct.productId === value.productId
-          );
-          if (index > -1)
-            return {
-              productId: value.productId,
-              productName: value.productName,
-              quantity: filterListProduct[index]?.quantity,
-              costPrice: value.cost_price,
-              payment: value.totalPrice, //????
-              note: value.note,
-            };
-        });
         listProducts = tmp;
       }
 
@@ -169,8 +156,33 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
         listProducts = tmp;
       }
 
+      if (filterListProduct) {
+        let tmp = listProducts.map((value) => {
+          let index = filterListProduct.findIndex(
+            (filterProduct) => filterProduct.productId === value.productId
+          );
+          console.log(index);
+          if (index > -1)
+            return {
+              ...value,
+              quantity: filterListProduct[index]?.quantity,
+            };
+          return;
+        });
+        listProducts = tmp.filter((value) => value !== undefined);
+        console.log("filter list", tmp);
+      }
+
       return listProducts ?? [];
-    }, [warehouseName, productName, sort, filterListProduct, products, data]);
+    }, [
+      warehouseName,
+      productName,
+      sort,
+      filterListProduct,
+      products,
+      data,
+      productGroup,
+    ]);
     const options: TOptions = {
       productId: true,
       productName: true,
@@ -387,7 +399,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
 
                       {options.productGroup && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content.groupId}
+                          {content?.groupId}
                         </td>
                       )}
                       {options.productGroupName && (
