@@ -92,7 +92,7 @@ export default function AddNewWarehouseList({
                 count: 0,
             };
             dispatch(addNewWarehouse(newData));
-            addData({ data: newData, table: "Warehouse", id: warehouseId});
+            addData({ data: newData, table: "Ware_House", id: warehouseId});
             message.success(t("warehouse.addSuccess"));
         } else {
             dispatch(updateWarehouse({ warehouseId: data.warehouseId, updatedData: data }));
