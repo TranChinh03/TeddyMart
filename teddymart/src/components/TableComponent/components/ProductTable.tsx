@@ -1,6 +1,6 @@
 import { Button, Space, Tooltip, message } from "antd";
 import { t } from "i18next";
-import { ChangeEvent, forwardRef, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, forwardRef, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import {
@@ -83,8 +83,6 @@ type Props = {
   data?: TProduct[];
   setData?: (data: TProduct[]) => void;
   isExport?: boolean;
-  selectedRows?: string[];
-  setSelectedRows?: (selectedRows: string[]) => void;
 };
 const ProductTable = forwardRef<HTMLTableElement, Props>(
   (
@@ -95,8 +93,6 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
       setSelectedRows,
       productName,
       productGroup,
-      selectedRows,
-      setSelectedRows,
       sort,
       filterListProduct,
       isEditQuantity = false,
