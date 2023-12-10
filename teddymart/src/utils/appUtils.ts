@@ -1,4 +1,10 @@
-import { deleteDoc, doc, setDoc, updateDoc } from "firebase/firestore";
+import {
+  deleteDoc,
+  doc,
+  increment,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "firebaseConfig";
 import { store } from "state_management/stores/store";
 type params = {
@@ -17,8 +23,10 @@ const addOrderFirebase = async (
   await setDoc(doc(db, `/Manager/${userId}/Orders`, orderId), data);
 };
 const deleteOrderFirebase = async (orders: string[], userId: string) => {
-  for (const order in orders) {
-    await deleteDoc(doc(db, `/Manager/${userId}/Orders`, order));
+  for (let index = 0; index < orders.length; index++) {
+    const element = orders[index];
+    console.log(element);
+    await deleteDoc(doc(db, `/Manager/${userId}/Orders`, element));
   }
 };
 
@@ -62,7 +70,22 @@ const deletePartnerFirebase = async (partners: string[], userId: string) => {
     await deleteDoc(doc(db, `/Manager/${userId}/Partner`, partner));
   }
 };
-
+const updateProductFirebase = async (
+  userId: string,
+  warehouseId: string,
+  listProduct: {
+    productId: string;
+    productName: string;
+    quantity?: number;
+  }[],
+  count: number
+) => {
+  const ref = doc(db, `/Manager/${userId}/Ware_House/${warehouseId}`);
+  await updateDoc(ref, {
+    listProduct: listProduct,
+    count: increment(count),
+  });
+};
 export {
   createID,
   addOrderFirebase,
@@ -72,4 +95,5 @@ export {
   deleteVoucherFirebase,
   updatePartnerFirebase,
   deletePartnerFirebase,
+  updateProductFirebase,
 };

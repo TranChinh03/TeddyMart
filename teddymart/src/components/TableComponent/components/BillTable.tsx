@@ -210,7 +210,7 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
       }
 
       if (type) {
-        let tmp_1 = bills.filter((order) => order.type === type);
+        let tmp_1 = tmp.filter((order) => order.type === type);
         tmp = tmp_1;
       }
       setTmpData([...tmp]);
@@ -218,7 +218,6 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
     useEffect(() => {
       filterData();
     }, [bills, startDate, endDate, search, sort]);
-    const dispatch = useDispatch();
     const HEADER = useMemo(
       () =>
         [
@@ -246,7 +245,11 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
     const handleCheckBoxChange = (rowId: string) => {
       if (rowId === null) {
         if (selectedRows.length < bills.length) {
-          setSelectedRows([...bills.map((content) => content.orderId)]);
+          setSelectedRows(
+            bills
+              .filter((bill) => bill.type === type)
+              .map((value) => value.orderId)
+          );
           return;
         }
         if (selectedRows.length === bills.length) {
@@ -362,7 +365,7 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
                       )}
                       {options.receiver && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content.type === "Import" ? content.receiver : null}
+                          {content.receiver}
                         </td>
                       )}
                       {options.listProduct && (
@@ -492,6 +495,8 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
           <ProductTable
             filterOption={{ activities: false, quantity: true }}
             filterListProduct={listProduct}
+            selectedRows={[]}
+            setSelectedRows={() => {}}
           />
         </Modal>
       </div>

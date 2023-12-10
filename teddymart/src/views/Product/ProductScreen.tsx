@@ -26,6 +26,8 @@ export default function ProductScreen() {
   const [productGroup, setProductGroup] = useState();
   const [status, setStatus] = useState();
   const [storeManagement, setStoreManagement] = useState();
+  const [selectedRows, setSelectedRows] = useState([]);
+
   const OPTIONS = [
     t("product.productNameAZ"),
     t("product.productNameZA"),
@@ -38,7 +40,7 @@ export default function ProductScreen() {
     {
       id: 0,
       displayName: t("product.quantity"),
-      value: true,
+      value: false,
     },
     {
       id: 1,
@@ -107,16 +109,13 @@ export default function ProductScreen() {
 
           <div style={{ width: 36 }} />
           <ListCheckBox listFilter={listFilter} setListFilter={setListFilter} />
-
           <ButtonComponent
             label={t("button.delete")}
             onClick={() => alert("Button Clicked")}
             backgroundColor={COLORS.checkbox_bg}
             style={{ marginInline: 12 }}
           />
-
           <BtnExport fileName="Sheet1" sheet="sheet1" tableRef={productRef} />
-
           <ButtonComponent
             label={t("product.addNewProduct")}
             onClick={() => setOpenAddForm(true)}
@@ -142,6 +141,8 @@ export default function ProductScreen() {
               quantityDescending: sort === OPTIONS[3],
             }}
             ref={productRef}
+            selectedRows={selectedRows}
+            setSelectedRows={setSelectedRows}
           />
         </div>
       </div>

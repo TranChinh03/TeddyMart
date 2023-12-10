@@ -134,9 +134,6 @@ export default function ImportOrder() {
   const onChange = (key: string) => {
     console.log(key);
   };
-  const onDeleteAll = () => {
-    setOpenAlertModal(true);
-  };
 
   const onDelete = () => {
     // if (orderId) {
@@ -150,6 +147,7 @@ export default function ImportOrder() {
     dispatch(deleteMultiOrder(selectedRows));
     deleteOrderFirebase(selectedRows, userId);
     setOpenAlertModal(false);
+    setSelectedRows([]);
   };
   const orderRef = useRef(null);
 
@@ -185,7 +183,7 @@ export default function ImportOrder() {
 
             <ButtonComponent
               label={t("button.delete")}
-              onClick={onDeleteAll}
+              onClick={() => setOpenAlertModal(true)}
               style={{ backgroundColor: "#EA5A47", marginInline: 12 }}
               iconLeft={<BiTrash size={20} color="white" />}
             />
