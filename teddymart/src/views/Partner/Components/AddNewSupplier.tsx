@@ -73,7 +73,7 @@ export default function AddNewSupplierForm({
         if (selectedImage) {
           const storageRef = ref(
             storage,
-            `/Manager/Supplier/Certificate/${partnerId}`
+            `/Manager/Supplier/${partnerId}`
           );
           const selectedImageFile = await getImageFileFromUrl(selectedImage);
           await uploadBytes(storageRef, selectedImageFile);
@@ -98,6 +98,16 @@ export default function AddNewSupplierForm({
         message.success("Supplier added successfully");
         setOpernAddNewSupplier(false);
       } else {
+        if (selectedImage) {
+          const storageRef = ref(
+            storage,
+            `/Manager/Supplier/${data.partnerId}`
+          );
+          const selectedImageFile = await getImageFileFromUrl(selectedImage);
+          await uploadBytes(storageRef, selectedImageFile);
+          const newCertificateImageUrl = await getDownloadURL(storageRef);
+          data.certificate = newCertificateImageUrl;
+        }
         dispatch(updatePartner({ partnerId: data.partnerId, newData: data }));
         await updateData({ data: data, table: "Partner", id: data.partnerId });
         message.success(t("supplier.updateSuccess"));
