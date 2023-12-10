@@ -65,6 +65,8 @@ type TSort = {
 type Props = {
   filterOption?: TOptions;
   warehouseName?: string;
+  selectedRows?: string[];
+  setSelectedRows?: (selectedRow: string[]) => void;
   productName?: string;
   productGroup?: string;
   sort?: TSort;
@@ -79,6 +81,8 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     {
       filterOption,
       warehouseName,
+      selectedRows,
+      setSelectedRows,
       productName,
       productGroup,
       sort,
@@ -94,9 +98,17 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     const products = useSelector((state: RootState) => state.product);
     const warehouses = useSelector((state: RootState) => state.warehouseSlice);
     const dispatch = useDispatch();
+
     const productsFilter = useMemo(() => {
-      if (data) return data;
+      // if (data.length > 0) return data;
       let listProducts: TProduct[] = [...products];
+
+      if (productGroup) {
+        let tmp = listProducts.filter(
+          (value) => value.groupName === productGroup
+        );
+        listProducts = tmp;
+      }
       if (warehouseName) {
         const listProductWarehouse =
           warehouses.filter((value) => value.warehouseName === warehouseName)[0]
@@ -105,24 +117,16 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
           let tmp = listProducts.findIndex(
             (warehouse) => warehouse.productId === value.productId
           );
-          console.log("quznty");
+          console.log(value);
           if (tmp > -1)
             return {
-              productId: value.productId,
-              productName: value.productName,
-              quantity: value.quantity,
-              costPrice: listProducts[tmp].cost_price,
-              payment: value.quantity * listProducts[tmp].cost_price, //????
+              ...value,
+              cost_price: listProducts[tmp].cost_price,
+              totalPrice: value.quantity * listProducts[tmp].cost_price, //????
               note: listProducts[tmp].note,
             };
         });
-        listProducts = productFilterProductTable;
-      }
-      if (productGroup) {
-        let tmp = listProducts.filter(
-          (value) => value.groupName === productGroup
-        );
-        listProducts = tmp;
+        listProducts = [...productFilterProductTable];
       }
       if (productName) {
         let tmp = listProducts.filter((value) =>
@@ -161,16 +165,16 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
           let index = filterListProduct.findIndex(
             (filterProduct) => filterProduct.productId === value.productId
           );
-          console.log(index);
           if (index > -1)
             return {
               ...value,
               quantity: filterListProduct[index]?.quantity,
             };
+
           return;
         });
+        console.log("list Product", tmp);
         listProducts = tmp.filter((value) => value !== undefined);
-        console.log("filter list", tmp);
       }
 
       return listProducts ?? [];
@@ -218,7 +222,6 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
         ].filter((value) => Boolean(value) !== false),
       [t, options]
     );
-    const [selectedRows, setSelectedRows] = useState([]);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const maxPages = useMemo(
@@ -238,24 +241,33 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
       setCurrentPage(maxPages);
     };
 
-    const handleCheckBoxChange = (rowId: string) => {
+    const handleCheckBoxChange = (product?: TProduct) => {
+      const rowId = product.productId;
       if (rowId === null) {
         if (selectedRows.length < productsFilter.length) {
           setSelectedRows([
             ...productsFilter.map((content) => content?.productId),
           ]);
+          if (data)
+            setData([
+              ...productsFilter.map((product) => ({ ...product, quantity: 0 })),
+            ]);
           return;
         }
         if (selectedRows.length === productsFilter.length) {
           setSelectedRows([]);
+          if (data) setData([]);
           return;
         }
       }
       if (selectedRows.includes(rowId)) {
         setSelectedRows([...selectedRows.filter((id) => id !== rowId)]);
+        if (data) setData([...data.filter((item) => item.productId !== rowId)]);
+
         return;
       }
       setSelectedRows([...selectedRows, rowId]);
+      if (data) setData([...data, { ...product, quantity: 0 }]);
     };
     const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
       setRowsPerPage(+e.target.value);
@@ -277,33 +289,35 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     useEffect(() => {
       onGetProducts();
     }, [selectedRows]);
-    const increaseQuantity = (productId: string) => {
-      let tmp = [...data];
-      let index_data = tmp.findIndex(
-        (product) => product.productId === productId
-      );
-      let index_product = products.findIndex(
-        (product) => product.productId === productId
-      );
-      if (index_data > -1) {
-        if (tmp[index_data].quantity < products[index_product].quantity)
-          tmp[index_data].quantity = tmp[index_data].quantity + 1;
+
+    const changeQuantity = (productId: string, value: number) => {
+      if (data) {
+        let tmp = [...data];
+        let index_data = tmp.findIndex(
+          (product) => product.productId === productId
+        );
+
+        if (index_data > -1) {
+          tmp[index_data] = {
+            ...tmp[index_data],
+            quantity: value,
+          };
+        }
+
+        setData?.(tmp);
       }
-      setData?.(tmp);
     };
-    const descreaseQuantity = (productId: string) => {
-      let tmp = [...data];
-      let index_data = tmp.findIndex(
-        (product) => product.productId === productId
-      );
-      let index_product = products.findIndex(
-        (product) => product.productId === productId
-      );
-      if (index_data > -1) {
-        if (tmp[index_data].quantity > 1)
-          tmp[index_data].quantity = tmp[index_data].quantity - 1;
+    const getQuantity = (productId: string) => {
+      if (data) {
+        let tmp = [...data];
+        let index_data = tmp.findIndex(
+          (product) => product.productId === productId
+        );
+
+        if (index_data > -1) {
+          return tmp[index_data].quantity;
+        }
       }
-      setData?.(tmp);
     };
     return (
       <div className="w-full">
@@ -346,9 +360,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                         <input
                           className="w-15 h-15 bg-hover"
                           type="checkbox"
-                          onChange={() =>
-                            handleCheckBoxChange(content?.productId)
-                          }
+                          onChange={() => handleCheckBoxChange(content)}
                           checked={
                             selectedRows.includes(content?.productId ?? "")
                               ? true
@@ -369,31 +381,29 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                       )}
                       {options.quantity && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          <Space>
-                            {content?.quantity ?? 0}
-                            {isEditQuantity && (
-                              <Space direction="vertical" size={2}>
-                                <Button
-                                  size="small"
-                                  onClick={() => {
-                                    if (data)
-                                      increaseQuantity(content.productId);
-                                  }}
-                                >
-                                  <TiArrowSortedUp size={10} />
-                                </Button>
-                                <Button
-                                  size="small"
-                                  onClick={() => {
-                                    if (data)
-                                      descreaseQuantity(content.productId);
-                                  }}
-                                >
-                                  <TiArrowSortedDown size={10} />
-                                </Button>
-                              </Space>
-                            )}
-                          </Space>
+                          {selectedRows.includes(content.productId) &&
+                          isEditQuantity ? (
+                            <input
+                              type="number"
+                              inputMode="numeric"
+                              max={content?.quantity}
+                              style={{ textAlign: "center", maxWidth: 100 }}
+                              placeholder="0"
+                              value={
+                                getQuantity(content?.productId)?.toString() ??
+                                "0"
+                              }
+                              onChange={(e) => {
+                                if (+e.target.value < content?.quantity)
+                                  changeQuantity(
+                                    content.productId,
+                                    +e.target.value
+                                  );
+                              }}
+                            />
+                          ) : (
+                            content.quantity
+                          )}
                         </td>
                       )}
 
@@ -426,13 +436,13 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
 
                       {options.costPrice && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content?.cost_price}
+                          {content.cost_price ?? 0}
                         </td>
                       )}
 
                       {options.price && (
                         <Tooltip title="Price = Sell price * (1+VAT)">
-                          <td className="border border-gray-300 p-2 text-sm">
+                          <td className="border border-gray-300 p-2 text-sm ">
                             {content?.price}
                           </td>
                         </Tooltip>
@@ -440,7 +450,10 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                       {options.totalPrice && (
                         <Tooltip title="Total Price = Price * Quantity">
                           <td className="border border-gray-300 p-2 text-sm">
-                            {content?.totalPrice ?? 0}
+                            {selectedRows.includes(content.productId)
+                              ? getQuantity(content.productId) *
+                                content.cost_price
+                              : content?.totalPrice ?? 0}
                           </td>
                         </Tooltip>
                       )}
