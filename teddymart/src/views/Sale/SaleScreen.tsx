@@ -53,6 +53,7 @@ import SearchProductForm from "./components/SearchProductForm";
 import AlertDelete from "./components/AlertDelete";
 import { BtnExport } from "components";
 import { deleteOrderFirebase } from "utils/appUtils";
+import addNotification from "react-push-notification";
 const { RangePicker } = DatePicker;
 const CUS_INFO = {
   customerName: "NVA",
@@ -180,6 +181,13 @@ export default function SaleScreen() {
             <ButtonComponent
               label={t("button.addNew")}
               onClick={() => {
+                // addNotification({
+                //   title: "Warning",
+                //   subtitle: "HELLO",
+                //   message: "HGOWDq",
+                //   theme: "light",
+                //   native: true,
+                // });
                 setOpenAddForm(true);
               }}
               iconLeft={<BiPlus size={20} color="white" />}
