@@ -15,6 +15,10 @@ import {
 } from "react-icons/hi2";
 import warehouseSlice from "state_management/slices/warehouseSlice";
 import {deleteWarehouse} from "state_management/slices/warehouseSlice";
+import AddNewWarehouseList from "views/Warehouse/components/AddNewWarehouseList";
+import { deleteData } from "controller/deleteData";
+import AlertModal from "components/AlertModal";
+import { message } from "antd";
 /**
  * Chưa thanh toán (Unpaid): Hóa đơn vẫn chưa được thanh toán hoặc chưa đến hạn thanh toán.
 
@@ -117,6 +121,8 @@ type Props = {
   warehouseName?: string;
   sort?: TSort;
   setOpenAlertModal?: (openAlertModal: boolean) => void;
+  selectedRows?: string[];
+  setSelectedRows?: (selectedRows: string[]) => void;
 };
 
 const WareHouseTable = forwardRef<HTMLTableElement, Props>(
@@ -125,6 +131,8 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
       warehouseName,
       sort,  
       setOpenAlertModal,
+      selectedRows,
+      setSelectedRows,
     }: Props,
     ref
   ) => {
@@ -170,14 +178,8 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
       return warehouselist;
     }, [warehouseName, sort]);
 
-    const [selectedRows, setSelectedRows] = useState([]);
+    //const [selectedRows, setSelectedRows] = useState([]);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-
-    const onDeleteRow = (warehouseId: string) => {
-      setOpenAlertModal(true);
-      dispatch(deleteWarehouse({ warehouseId: warehouseId }));
-      //deleteOrderFirebase([orderId], userId);
-    };
 
     const handleCheckBoxChange = (rowId: string) => {
       if (rowId === null) {
@@ -220,6 +222,40 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
     const onForwardAll = () => {
       setCurrentPage(maxPages);
     };
+
+    const [openModalUpdate, setOpenModalUpdate] = useState(false);
+    const [dataInput, setDataInput] = useState<TWarehouse>({
+      warehouseId: "",
+      warehouseName: "",
+      address: "",
+      listProduct: [],
+      count: 0
+    })
+
+    const onUpdate = (warehouse: TWarehouse) => {
+      setOpenModalUpdate(true);
+      setDataInput({
+        warehouseId: warehouse.warehouseId,
+        warehouseName: warehouse.warehouseName,
+        address: warehouse.address,
+        listProduct: warehouse.listProduct,
+        count: warehouse.count
+      });
+    };
+
+    const [open, setOpen] = useState(false);
+    const idSelected = useRef<string>("");
+    const onDelete = (warehouseId: string) => {
+      idSelected.current = warehouseId;
+      setOpen(true);
+    };
+
+    const onConfirm = async () => {
+      await deleteData({ id: idSelected.current, table: "Warehouse" });
+      dispatch(deleteWarehouse({warehouseId: idSelected.current}));
+      setOpen(false);
+      message.success(t("warehouse.deleteSuccess"));
+    }
     return (
       <div className="w-full">
         <div className="max-h-96 overflow-y-auto visible">
@@ -283,11 +319,16 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
                       )}
                       {/* NÚT XÓA VÀ SỬA */}
                       <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                        <Button className="mr-2">
-                          <FiEdit />
+                        <Button 
+                          className="mr-2"
+                          onClick={() => onUpdate(content)}
+                        >
+                          <FiEdit/>
                         </Button>
 
-                        <Button>
+                        <Button 
+                          onClick={() => onDelete(content.warehouseId)}
+                        >
                           <FiTrash color="red" />
                         </Button>
                       </td>
@@ -334,6 +375,19 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
             </Button>
           </div>
         </div>
+        <AlertModal 
+          open={open} 
+          setOpen={setOpen} 
+          onConfirm={onConfirm}
+        />
+        <AddNewWarehouseList
+          openAddNewWarehouse={openModalUpdate}
+          setOpenAddNewWarehouse={setOpenModalUpdate}
+          isAdd={false}
+          data={dataInput}
+          setData={setDataInput}
+
+        />
       </div>
     );
   }

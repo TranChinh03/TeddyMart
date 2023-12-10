@@ -148,7 +148,7 @@ export const addDbVoucherTable = () => {
     await setDoc(
       doc(
         db,
-        "/Manager/0viI4onPd8eJkSC8QZxNUM9mPyX2/Voucher",
+        "/Manager/vNl8JhH0SjPUCJ7ZzlRbJPkXIx02/Voucher",
         voucher.voucherId
       ),
       voucher

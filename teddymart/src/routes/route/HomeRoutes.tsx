@@ -66,7 +66,7 @@ export default function HomeRoutes() {
     {
       path: "shelf",
       element: <ShelfScreen />,
-      name: t("header.shelf")
+      name: t("header.shelf"),
     },
     {
       path: "groupproduct",

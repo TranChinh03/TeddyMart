@@ -1,5 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { ADD_ORDER, RESET_ALL_STORES } from "state_management/actions/actions";
+import {
+  ADD_ORDER,
+  DELETE_ORDER,
+  RESET_ALL_STORES,
+} from "state_management/actions/actions";
 const reportProduct = createSlice({
   name: "reportProduct",
   initialState: [],
@@ -58,6 +62,35 @@ const reportProduct = createSlice({
               }
             }
           });
+        }
+        return state;
+      }
+    );
+    builder.addCase(
+      DELETE_ORDER,
+      (state: TReportProduct[], action: PayloadAction<TOrder[]>) => {
+        for (const order of action.payload) {
+          let i = state.findIndex(
+            (s) =>
+              new Date(s.date).getTime() === new Date(order.createdAt).getTime()
+          );
+          const isExport = order.type === "Export" ? true : false;
+          if (i !== -1) {
+            order.listProduct.forEach((item) => {
+              let index = state[i].products.findIndex(
+                (t) => t.productId === item.productId
+              );
+              if (index !== -1) {
+                if (isExport) {
+                  state[i].products[index].export -= item.quantity;
+                  state[i].products[index].stock += item.quantity;
+                } else {
+                  state[i].products[index].import -= item.quantity;
+                  state[i].products[index].stock -= item.quantity;
+                }
+              }
+            });
+          }
         }
         return state;
       }

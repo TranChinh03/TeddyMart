@@ -29,9 +29,16 @@ export default function AddNewCustomerForm({
   isAdd = true,
 }: Props) {
   const [selectedGender, setSelectedGender] = useState<string>("Female");
-  const handleGenderChange = (value: string) => {
-    setSelectedGender(value);
-  };
+ 
+  useEffect(() => {
+    if (data && data.gender) {
+      const lowercaseGender = data.gender.toLowerCase();
+      if (lowercaseGender === "male" || lowercaseGender === "female") {
+        setSelectedGender(lowercaseGender);
+      }
+    }
+  }, [data]);
+
 
   const { t } = useTranslation();
   const { userId } = useSelector((state: RootState) => state.manager);
@@ -50,30 +57,31 @@ export default function AddNewCustomerForm({
       message.warning("Please fill in full name and phone");
       return;
     }
+    const newData: TPartner = {
+      partnerId: isAdd ? createID({ prefix: "P" }) : data.partnerId,
+      partnerName: data.partnerName,
+      email: data.email,
+      phoneNumber: data.phoneNumber,
+      address: data.address,
+      note: data.note,
+      gender: selectedGender as "female" | "male",
+      type: "Customer",
+      totalBuyAmount: data.totalBuyAmount,
+      debt: data.debt,
+    };
+
     if (isAdd) {
-      const partnerId = createID({ prefix: "P" });
-      const newData: TPartner = {
-        partnerId: partnerId,
-        partnerName: data.partnerName,
-        email: data.email,
-        phoneNumber: data.phoneNumber,
-        address: data.address,
-        note: data.note,
-        gender: selectedGender as "female" | "male",
-        type: "Customer",
-        totalBuyAmount: data.totalBuyAmount,
-        debt: data.debt,
-      };
       dispatch(addNewPartner(newData));
-      addData({ data:newData, table: "Partner", id: partnerId });
+      addData({ data: newData, table: "Partner", id: newData.partnerId });
       message.success("Customer added successfully");
-      setOpenAddNewCustomer(false);
     } else {
-      dispatch(updatePartner({ partnerId: data.partnerId, newData: data }));
-      await updateData({ data: data, table: "Partner", id: data.partnerId });
+      dispatch(updatePartner({ partnerId: data.partnerId, newData: newData }));
+      await updateData({ data: newData, table: "Partner", id: newData.partnerId });
       message.success(t("customer.updateSuccess"));
-      setOpenAddNewCustomer(false);
     }
+
+    setOpenAddNewCustomer(false);
+
     setData({
       partnerId: "",
       partnerName: "",
@@ -88,6 +96,7 @@ export default function AddNewCustomerForm({
       type: "Customer",
     });
   };
+
   const backgroundColor = useMemo(
     () =>
       data.partnerName !== "" && data.phoneNumber !== ""
@@ -107,7 +116,7 @@ export default function AddNewCustomerForm({
       open={openAddNewCustomer}
       onCancel={() => setOpenAddNewCustomer(false)}
       footer={false}
-      title={<h1 className="pr-8 text-3xl">{t("customer.addNewCustomer")}</h1>}
+      title={<h1 className="pr-8 text-3xl">{t("partner.addNewCustomer")}</h1>}
       width={"60%"}
     >
       <hr className="h-0.5 my-4 bg-black" />
@@ -158,16 +167,18 @@ export default function AddNewCustomerForm({
                   type="radio"
                   name="radio-gender"
                   className="w-4 h-4 mr-4"
-                  checked={selectedGender === "Male"}
-                  onChange={() => handleGenderChange("Male")}
+                  checked={selectedGender === "male"}
+                  value={data.gender}
+                  onChange={() => setSelectedGender("male")}
                 />
                 <label className="mr-16">{t("customer.male")}</label>
                 <input
                   type="radio"
                   name="radio-gender"
                   className=" w-4 h-4 mr-4"
-                  checked={selectedGender === "Female"}
-                  onChange={() => handleGenderChange("Female")}
+                  checked={selectedGender === "female"}
+                  value={data.gender}
+                  onChange={() => setSelectedGender("female")}
                 />
                 <label className="mr-16">{t("customer.female")}</label>
               </td>

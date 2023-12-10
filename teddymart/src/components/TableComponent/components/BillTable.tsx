@@ -72,6 +72,7 @@ type Props = {
   endDate?: number;
   search?: string;
   sort?: number;
+  type: "Import" | "Export";
   setOpenAlertModal?: (openAlertModal: boolean) => void;
 };
 const BillTable = forwardRef<HTMLTableElement, Props>(
@@ -85,6 +86,8 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
       search,
       sort,
       setOpenAlertModal,
+
+      type = "Export",
     }: Props,
     ref
   ) => {
@@ -205,6 +208,11 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
           }
         }
       }
+
+      if (type) {
+        let tmp_1 = bills.filter((order) => order.type === type);
+        tmp = tmp_1;
+      }
       setTmpData([...tmp]);
     };
     useEffect(() => {
@@ -235,11 +243,6 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
     // const [selectedRows, setSelectedRows] = useState([]);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
-    const onDeleteRow = (orderId: string) => {
-      setOpenAlertModal(true);
-      dispatch(deleteOrder({ orderId: orderId }));
-      deleteOrderFirebase([orderId], userId);
-    };
     const handleCheckBoxChange = (rowId: string) => {
       if (rowId === null) {
         if (selectedRows.length < bills.length) {
@@ -425,7 +428,10 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
                           </Button> */}
 
                             <Button
-                              onClick={() => onDeleteRow(content.orderId)}
+                              onClick={() => {
+                                setSelectedRows([content.orderId]);
+                                setOpenAlertModal(true);
+                              }}
                             >
                               <FiTrash color="red" />
                             </Button>

@@ -46,13 +46,17 @@ import { IoMdAlert } from "react-icons/io";
 import { LiaFileExcel } from "react-icons/lia";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
-import { deleteMultiOrder } from "state_management/slices/orderSlice";
+import {
+  deleteMultiOrder,
+  deleteOrder,
+} from "state_management/slices/orderSlice";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import AddForm from "./components/AddForm";
 import SearchProductForm from "./components/SearchProductForm";
 import AlertDelete from "./components/AlertDelete";
 import { BtnExport } from "components";
 import { deleteOrderFirebase } from "utils/appUtils";
+import addNotification from "react-push-notification";
 const { RangePicker } = DatePicker;
 const CUS_INFO = {
   customerName: "NVA",
@@ -134,7 +138,17 @@ export default function SaleScreen() {
     dispatch(deleteMultiOrder(selectedRows));
     deleteOrderFirebase(selectedRows, userId);
   };
-
+  const onDelete = (orderId?: string) => {
+    if (orderId) {
+      setOpenAlertModal(true);
+      dispatch(deleteOrder({ orderId: orderId }));
+      deleteOrderFirebase([orderId], userId);
+      setOpenAlertModal(false);
+      return;
+    }
+    dispatch(deleteMultiOrder(selectedRows));
+    setOpenAlertModal(false);
+  };
   const orderRef = useRef(null);
 
   return (
@@ -180,6 +194,13 @@ export default function SaleScreen() {
             <ButtonComponent
               label={t("button.addNew")}
               onClick={() => {
+                // addNotification({
+                //   title: "Warning",
+                //   subtitle: "HELLO",
+                //   message: "HGOWDq",
+                //   theme: "light",
+                //   native: true,
+                // });
                 setOpenAddForm(true);
               }}
               iconLeft={<BiPlus size={20} color="white" />}
@@ -213,11 +234,16 @@ export default function SaleScreen() {
             filterOption={objectFilter}
             setOpenAlertModal={setOpenAlertModal}
             ref={orderRef}
+            type="Export"
           />
         </Space>
       </body>
       {/*Modal add form */}
-      <AddForm setOpenAddForm={setOpenAddForm} openAddForm={openAddForm} />
+      <AddForm
+        setOpenAddForm={setOpenAddForm}
+        openAddForm={openAddForm}
+        typeAdd="Export"
+      />
       {/*Modal search product */}
       <SearchProductForm
         setOpenSearchModal={setOpenSearchModal}
@@ -227,7 +253,7 @@ export default function SaleScreen() {
       <AlertDelete
         openAlertModal={openAlertModal}
         setOpenAlertModal={setOpenAlertModal}
-        selectedRows={selectedRows}
+        onDelete={onDelete}
       />
     </div>
   );
