@@ -451,7 +451,7 @@ export const addDBProduct = () => {
     await setDoc(
       doc(
         db,
-        "/Manager/0viI4onPd8eJkSC8QZxNUM9mPyX2/Product",
+        "/Manager/vNl8JhH0SjPUCJ7ZzlRbJPkXIx02/Product",
         product.productId
       ),
       product

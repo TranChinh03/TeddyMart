@@ -251,7 +251,7 @@ export const addDBPartnerTable = () => {
     await setDoc(
       doc(
         db,
-        "/Manager/0viI4onPd8eJkSC8QZxNUM9mPyX2/Partner",
+        "/Manager/vNl8JhH0SjPUCJ7ZzlRbJPkXIx02/Partner",
         partner.partnerId
       ),
       partner
