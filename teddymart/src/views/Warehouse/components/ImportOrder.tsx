@@ -46,7 +46,10 @@ import { IoMdAlert } from "react-icons/io";
 import { LiaFileExcel } from "react-icons/lia";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
-import { deleteMultiOrder } from "state_management/slices/orderSlice";
+import {
+  deleteMultiOrder,
+  deleteOrder,
+} from "state_management/slices/orderSlice";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import AddForm from "views/Sale/components/AddForm";
 import SearchProductForm from "views/Sale/components/SearchProductForm";
@@ -133,10 +136,21 @@ export default function ImportOrder() {
   };
   const onDeleteAll = () => {
     setOpenAlertModal(true);
-    dispatch(deleteMultiOrder(selectedRows));
-    deleteOrderFirebase(selectedRows, userId);
   };
 
+  const onDelete = () => {
+    // if (orderId) {
+    //   setOpenAlertModal(true);
+    //   dispatch(deleteOrder({ orderId: orderId }));
+    //   deleteOrderFirebase([orderId], userId);
+    //   setOpenAlertModal(false);
+    //   return;
+    // }
+    console.log("delete");
+    dispatch(deleteMultiOrder(selectedRows));
+    deleteOrderFirebase(selectedRows, userId);
+    setOpenAlertModal(false);
+  };
   const orderRef = useRef(null);
 
   return (
@@ -225,11 +239,16 @@ export default function ImportOrder() {
             filterOption={objectFilter}
             setOpenAlertModal={setOpenAlertModal}
             ref={orderRef}
+            type="Import"
           />
         </Space>
       </body>
       {/*Modal add form */}
-      <AddForm setOpenAddForm={setOpenAddForm} openAddForm={openAddForm} />
+      <AddForm
+        setOpenAddForm={setOpenAddForm}
+        openAddForm={openAddForm}
+        typeAdd="Import"
+      />
       {/*Modal search product */}
       <SearchProductForm
         setOpenSearchModal={setOpenSearchModal}
@@ -240,7 +259,7 @@ export default function ImportOrder() {
       <AlertDelete
         openAlertModal={openAlertModal}
         setOpenAlertModal={setOpenAlertModal}
-        selectedRows={selectedRows}
+        onDelete={onDelete}
       />
     </div>
   );

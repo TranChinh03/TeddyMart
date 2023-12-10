@@ -8,12 +8,12 @@ import { deleteMultiOrder } from "state_management/slices/orderSlice";
 type Props = {
   openAlertModal: boolean;
   setOpenAlertModal: (openAlertModal: boolean) => void;
-  selectedRows: string[];
+  onDelete: () => void;
 };
 const AlertDelete = ({
   openAlertModal,
   setOpenAlertModal,
-  selectedRows,
+  onDelete,
 }: Props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -34,10 +34,7 @@ const AlertDelete = ({
         <Space className="my-4">
           <ButtonComponent
             label={t("button.confirm")}
-            onClick={() => {
-              dispatch(deleteMultiOrder(selectedRows));
-              setOpenAlertModal(false);
-            }}
+            onClick={onDelete}
             style={{
               backgroundColor: "#E29930",
               borderWidth: 1,

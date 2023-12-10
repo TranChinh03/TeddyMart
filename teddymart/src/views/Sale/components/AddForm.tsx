@@ -35,9 +35,11 @@ type ListProduct = {
 const AddForm = ({
   openAddForm,
   setOpenAddForm,
+  typeAdd,
 }: {
   openAddForm: boolean;
   setOpenAddForm: (openAddForm: boolean) => void;
+  typeAdd: "Import" | "Export";
 }) => {
   const { t } = useTranslation();
   const [warehouseName, setWarehouseName] = useState("Central Warehouse");
@@ -92,7 +94,7 @@ const AddForm = ({
       discount: discount,
       listProduct: [
         ...productMenu.map((product) => ({
-          productId: product.productId,  
+          productId: product.productId,
           productName: product.productName,
           quantity: product.quantity,
         })),
@@ -105,7 +107,7 @@ const AddForm = ({
       seller: "TeddyMart",
       status: +payment > 0 ? "paid" : "unpaid",
       totalPayment: sum,
-      type: "Export",
+      type: typeAdd,
       voucherId: voucherId,
       receiver: "TeddyMart",
     };

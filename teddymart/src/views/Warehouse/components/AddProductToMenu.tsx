@@ -8,6 +8,8 @@ import { ProductTable } from "components/TableComponent";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BiSearch } from "react-icons/bi";
+import { useSelector } from "react-redux";
+import { RootState } from "state_management/reducers/rootReducer";
 type Props = {
   openMenu: boolean;
   setOpenMenu: (openMenu: boolean) => void;
@@ -15,8 +17,10 @@ type Props = {
 };
 const AddProductToMenu = ({ openMenu, setOpenMenu, setProducts }: Props) => {
   const { t } = useTranslation();
+  const groups = useSelector((state: RootState) => state.groupProduct);
   const [searchName, setSearchName] = useState("");
   const [menu, setMenu] = useState<TProduct[]>([]);
+  const [productGroup, setProductGroup] = useState("");
   return (
     <Modal
       open={openMenu}
@@ -32,7 +36,9 @@ const AddProductToMenu = ({ openMenu, setOpenMenu, setProducts }: Props) => {
       <Divider style={{ backgroundColor: "black" }} />
       <div className="flex row-auto justify-between">
         <DropdownComponent
-          options={["All"]}
+          options={[...groups.map((value) => value.groupName)]}
+          value={productGroup}
+          setValue={setProductGroup}
           label={t("product.productGroup")}
         />
         <TextInputComponent
@@ -51,7 +57,11 @@ const AddProductToMenu = ({ openMenu, setOpenMenu, setProducts }: Props) => {
           style={{ backgroundColor: "#217CA3", marginBlock: 10 }}
         />
       </div>
-      <ProductTable productName={searchName} setProducts={setMenu} />
+      <ProductTable
+        productName={searchName}
+        setProducts={setMenu}
+        productGroup={productGroup}
+      />
       <div className="flex row-auto">
         <div className="flex-1" />
         <Space>
