@@ -5,6 +5,7 @@ import FieldCustomer from "./Components/FieldCustomer";
 import AdvancedSearch from "./Components/AdvancedSearch";
 import React, { useState, useEffect, useRef } from "react";
 import {
+  AlertModal,
   BtnExport,
   ButtonComponent,
   ListCheckBox,
@@ -21,8 +22,11 @@ import { uuidv4 } from "@firebase/util";
 import { addData } from "controller/addData";
 import { useDispatch } from "react-redux";
 import { addNewPartner } from "state_management/slices/partnerSlice";
-import { Button } from "antd";
+import { Button,message } from "antd";
 import AddNewCustomerForm from "./Components/AddNewCustomer";
+import { deletePartner } from "state_management/slices/partnerSlice";
+import { deleteData } from "controller/deleteData";
+
 
 export default function CustomerScreen() {
   const [search, setSearch] = useState("");
@@ -80,7 +84,19 @@ export default function CustomerScreen() {
 
   const [filterValues, setFilterValues] = useState({});
   const [isTableReset, setIsTableReset] = useState(false);
-
+  const [dataInput, setDataInput] = useState<TPartner>({
+    partnerId: "",
+    partnerName: "",
+    gender: "male",
+    phoneNumber: "",
+    email: "",
+    address: "",
+    debt: 0,
+    totalBuyAmount: 0,
+    certificate: "",
+    note: "",
+    type: "Customer",
+  });
   const handleSearch = (filterValues: Record<string, any>) => {
     setFilterValues(filterValues);
   };
@@ -93,6 +109,16 @@ export default function CustomerScreen() {
       setIsTableReset(false);
     }
   }, [isTableReset]);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [open, setOpen] = useState(false);
+  const onDeleteMultiPartner = () => {
+    selectedRows.forEach(async (item) => {
+      await deleteData({ id: item, table: "Partner" });
+      dispatch(deletePartner({partnerId: item}));
+      message.success(t("partner.deletePartner"));
+      setOpen(false);
+    });
+  };
   return (
     <div className="w-full">
       {/* <Header width={"100%"} title={"Customer"} /> */}
@@ -126,9 +152,10 @@ export default function CustomerScreen() {
               <ButtonComponent
                 label={t("button.delete")}
                 onClick={() => {
-                  console.log(search);
+                  if (selectedRows.length > 0) setOpen(true);
                 }}
-                style={{ backgroundColor: "#EA5A47", marginInline: 12 }}
+                backgroundColor={COLORS.checkbox_bg}
+                style={{ marginRight: 12 }}
               />
               <BtnExport fileName="Sheet1" sheet="Sheet1" tableRef={excelRef} />
               <ButtonComponent
@@ -144,8 +171,15 @@ export default function CustomerScreen() {
           </div>
         </div>
         <AddNewCustomerForm
-          opernAddNewCustomer={opernAddNewCustomer}
-          setOpernAddNewCustomer={setOpernAddNewCustomer}
+          openAddNewCustomer={opernAddNewCustomer}
+          setOpenAddNewCustomer={setOpernAddNewCustomer}
+          data={dataInput}
+          setData={setDataInput}
+        />
+        <AlertModal
+          open={open}
+          setOpen={setOpen}
+          onConfirm={onDeleteMultiPartner}
         />
         <AdvancedSearch onSearch={handleSearch} onReset={handleResetTable} />
         <PartnerTable
@@ -155,6 +189,8 @@ export default function CustomerScreen() {
           additionalFilters={filterValues}
           resetTable={isTableReset}
           ref={excelRef}
+          selectedRows={selectedRows}
+          setSelectedRows={setSelectedRows}
         />
         {/* <Button onClick={addNewCustomer}>Add Data To Firebase</Button> */}
       </div>

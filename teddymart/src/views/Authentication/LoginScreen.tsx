@@ -78,15 +78,29 @@ export default function LoginScreen() {
             });
             return;
           }
-          await updateDoc(doc(db, "Manager", userCredential.user.uid), {
-            emailVerified: true,
-          });
-          await getDoc(doc(db, "Manager", userCredential.user.uid)).then(
-            (d) => {
-              let { emailVerified, ...rest } = d.data();
-              dispatch(uploadManager(rest as TManager));
-            }
-          );
+          if (user.data().password !== data.password) {
+            updateDoc(doc(db, "Manager", userCredential.user.uid), {
+              password: data.password,
+              emailVerified: true,
+            }).then(async () => {
+              await getDoc(doc(db, "Manager", userCredential.user.uid)).then(
+                (d) => {
+                  let { emailVerified, ...rest } = d.data();
+                  dispatch(uploadManager(rest as TManager));
+                }
+              );
+            });
+          } else {
+            await updateDoc(doc(db, "Manager", userCredential.user.uid), {
+              emailVerified: true,
+            });
+            await getDoc(doc(db, "Manager", userCredential.user.uid)).then(
+              (d) => {
+                let { emailVerified, ...rest } = d.data();
+                dispatch(uploadManager(rest as TManager));
+              }
+            );
+          }
           await onFetchData(userCredential.user.uid);
           window.localStorage.setItem("USER_ID", userCredential.user.uid);
           //console.log("login success");
@@ -108,15 +122,29 @@ export default function LoginScreen() {
             });
             return;
           }
-          await updateDoc(doc(db, "Manager", userCredential.user.uid), {
-            emailVerified: true,
-          });
-          await getDoc(doc(db, "Manager", userCredential.user.uid)).then(
-            (d) => {
-              let { emailVerified, ...rest } = d.data();
-              dispatch(uploadManager(rest as TManager));
-            }
-          );
+          if (user.data().password !== data.password) {
+            updateDoc(doc(db, "Manager", userCredential.user.uid), {
+              password: data.password,
+              emailVerified: true,
+            }).then(async () => {
+              await getDoc(doc(db, "Manager", userCredential.user.uid)).then(
+                (d) => {
+                  let { emailVerified, ...rest } = d.data();
+                  dispatch(uploadManager(rest as TManager));
+                }
+              );
+            });
+          } else {
+            await updateDoc(doc(db, "Manager", userCredential.user.uid), {
+              emailVerified: true,
+            });
+            await getDoc(doc(db, "Manager", userCredential.user.uid)).then(
+              (d) => {
+                let { emailVerified, ...rest } = d.data();
+                dispatch(uploadManager(rest as TManager));
+              }
+            );
+          }
           await onFetchData(userCredential.user.uid);
           window.localStorage.setItem("USER_ID", userCredential.user.uid);
         })

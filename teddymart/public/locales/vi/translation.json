@@ -132,7 +132,8 @@
     "addNewSupplier": "Thêm nhà cung cấp",
     "supplierName": "Tên nhà cung cấp",
     "certificate": "Bằng kinh doanh",
-    "supplierID": "Mã nhà cung cấp"
+    "supplierID": "Mã nhà cung cấp",
+    "deletePartner":"Xóa đối tác thành công"
   },
   "product": {
     "productGroup": "Nhóm sản phẩm",
@@ -167,7 +168,10 @@
     "groupId": "Mã nhóm",
     "groupName": "Tên nhóm",
     "shelfId": "Mã kệ",
-    "shelfName": "Tên kệ"
+    "shelfName": "Tên kệ",
+    "deletedGroup": "Đã xóa nhóm sản phẩm!",
+    "groupExist": "Nhóm sản phẩm đã tồn tại.",
+    "updateSuccess": "Nhóm sản phẩm đã được cập nhật!"
   },
   "manager": {
     "userId": "Mã người dùng",
@@ -201,7 +205,12 @@
     "warehouseNameAZ": "Tên kho: A → Z",
     "warehouseNameZA": "Tên kho: Z → A",
     "addNewWarehouse": "Thêm Kho Mới",
-    "defaultWarehouse": "Kho chính"
+    "defaultWarehouse": "Kho chính",
+    "addSuccess": " Thêm kho mới thành công!",
+    "updateSuccess": "Sửa thông tin kho thành công!",
+    "deleteSuccess": "Xóa kho thành công!",
+    "existed": "Kho này đã tồn tại!"
+
   },
   "activities": "Chức năng",
 

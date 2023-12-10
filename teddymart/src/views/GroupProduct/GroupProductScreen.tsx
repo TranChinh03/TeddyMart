@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Header from "components/Header";
 import DropdownComponent from "components/DropdownComponent";
 import ButtonSelect from "components/ButtonSelect";
+import { AlertModal } from "components";
 import { IoMdArrowDropdown } from "react-icons/io";
 import SearchComponent from "components/SearchComponent";
 import ButtonComponent from "components/ButtonComponent";
@@ -16,12 +17,23 @@ import { TiPlus } from "react-icons/ti";
 import { BiFilter } from "react-icons/bi";
 import { ResponsiveContainer } from "recharts";
 import { GroupProductTable } from "components/TableComponent";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { t } from "i18next";
-import { Divider, Modal, Space } from "antd";
-import { addData } from "controller/addData";
+import { Divider, Modal, Space, message } from "antd";
+import { addData, updateData } from "controller/addData";
 import AddNewGroupProduct from "./components/AddNewGroupProduct";
+import { deleteData } from "controller/deleteData";
+import { deleteShelf } from "state_management/slices/shelfSlice";
+import { updateProduct } from "state_management/slices/productSlice";
+import { deleteGroupProduct } from "state_management/slices/groupProductSlice";
+export type Input = {
+  groupId: string;
+  groupName: string;
+  shelfID: string;
+  shelfName: string;
+  note: string;
+};
 
 export default function ProductScreen() {
   const GROUP = useSelector((state: RootState) => state.groupProduct);
@@ -33,6 +45,42 @@ export default function ProductScreen() {
   const [sort, setSort] = useState();
   const [search, setSearch] = useState("");
   const [openAddForm, setOpenAddForm] = useState(false);
+  const [dataInput, setDataInput] = useState<TGroupProduct>({
+    groupId: "",
+    groupName: "",
+    shelfID: "",
+    shelfName: "",
+    note: "",
+  })
+  const [open, setOpen] = useState(false);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const PRODUCT = useSelector((state: RootState) => state.product);
+  const dispatch = useDispatch();
+
+
+  const onDeleteMultiGroup = () => {
+    selectedRows.forEach(async (item) => {
+      await deleteData({ id: item, table: "Group_Product" });
+      dispatch(deleteGroupProduct(GROUP.find(x => x.groupId === item)));
+      PRODUCT.forEach(async (product) => {
+        if (product.groupId === item) {
+          await updateData({
+            data: { ...product, groupId: "", groupName: "" },
+            table: "Group_Product",
+            id: product.productId,
+          });
+          dispatch(
+            updateProduct({
+              currentProduct: product,
+              newProduct: { ...product, groupId: "", groupName: "" },
+            })
+          );
+        }
+      });
+      message.success(t("group.deletedGroup"));
+      setOpen(false);
+    });
+  };
 
   return (
     <div className="w-full">
@@ -54,7 +102,9 @@ export default function ProductScreen() {
           <div className="flex items-center">
             <ButtonComponent
               label={t("button.delete")}
-              onClick={() => alert("Button Clicked")}
+              onClick={() => {
+                if (selectedRows.length > 0) setOpen(true);
+              }}
               backgroundColor={COLORS.checkbox_bg}
               style={{ marginRight: 12 }}
             />
@@ -67,14 +117,26 @@ export default function ProductScreen() {
         </div>
 
         <div style={{ width: "100%", margin: "20px auto auto auto" }}>
-          <GroupProductTable search={search} />
+          <GroupProductTable 
+            search={search} 
+            selectedRows={selectedRows}
+            setSelectedRows={setSelectedRows}
+            />
         </div>
       </div>
 
       {/* ------------------------------------------------------------------------------------------------------------------- */}
       <AddNewGroupProduct
         openAddNewGroupProduct={openAddForm}
-        setOpenAddNewSupplier={setOpenAddForm}
+        setOpenAddNewGroupProduct={setOpenAddForm}
+        data={dataInput}
+        setData={setDataInput}
+      />
+
+      <AlertModal
+        open={open}
+        setOpen={setOpen}
+        onConfirm={onDeleteMultiGroup}
       />
     </div>
   );

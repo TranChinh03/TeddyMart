@@ -99,7 +99,10 @@
     "groupId": "Group ID",
     "groupName": "Group Name",
     "shelfId": "Shelf ID",
-    "shelfName": "Shelf Name"
+    "shelfName": "Shelf Name",
+    "deletedGroup": "Group deleted successfully!",
+    "groupExist": "Group already exists.",
+    "updateSuccess": "Group updated successfully!"
   },
   "sale": {
     "importOrder": "Import Order",
@@ -152,7 +155,8 @@
     "addNewSupplier": "Add New Supplier",
     "supplierName": "Supplier Name",
     "certificate": "Certificate",
-    "supplierID": "Supplier ID"
+    "supplierID": "Supplier ID",
+    "deletePartner":"Delete partner successfully"
   },
   "product": {
     "productGroup": "Product Group",
@@ -207,7 +211,11 @@
     "warehouseNameAZ": "Warehouse Name: A → Z",
     "warehouseNameZA": "Warehouse Name: Z → A",
     "addNewWarehouse": "Add New Warehouse",
-    "defaultWarehouse": "Default warehouse"
+    "defaultWarehouse": "Default warehouse",
+    "addSuccess": "Warehouse added successfully!",
+    "updateSuccess": "Warehouse updated successfully!",
+    "deleteSuccess": "Warehouse deleted successully!",
+    "existed": "This warehouse has already existed!"
   },
   "activities": "Activities",
   "note": "Note",

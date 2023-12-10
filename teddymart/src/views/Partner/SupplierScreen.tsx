@@ -3,6 +3,7 @@ import { PartnerTable } from "components/TableComponent";
 import FieldSupplier from "./Components/FieldSupplier";
 import React, { useState, useRef } from "react";
 import {
+  AlertModal,
   BtnExport,
   ButtonComponent,
   ListCheckBox,
@@ -17,9 +18,12 @@ import { useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { uuidv4 } from "@firebase/util";
 import { addData } from "controller/addData";
+import { Button, message } from "antd";
 import { useDispatch } from "react-redux";
 import { addNewPartner } from "state_management/slices/partnerSlice";
 import AddNewSupplierForm from "./Components/AddNewSupplier";
+import { deletePartner } from "state_management/slices/partnerSlice";
+import { deleteData } from "controller/deleteData";
 
 export default function CustomerScreen() {
   const excelRef = useRef(null);
@@ -75,6 +79,32 @@ export default function CustomerScreen() {
     note: listFilter[5].value,
   };
 
+  const [dataInput, setDataInput] = useState<TPartner>({
+    partnerId: "",
+    partnerName: "",
+    gender: "male",
+    phoneNumber: "",
+    email: "",
+    address: "",
+    debt: 0,
+    totalBuyAmount: 0,
+    certificate: "",
+    note: "",
+    type: "Customer",
+  });
+
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [open, setOpen] = useState(false);
+ 
+  const onDeleteMultiShelf = () => {
+    selectedRows.forEach(async (item) => {
+      await deleteData({ id: item, table: "Partner" });
+      dispatch(deletePartner({partnerId: item}));
+      message.success(t("partner.deletePartner"));
+      setOpen(false);
+    });
+  };
+
   return (
     <div className="flex flex-col w-full">
       {/* <Header width={"100%"} title={"Supplier"} /> */}
@@ -103,8 +133,11 @@ export default function CustomerScreen() {
             <div className="w-100% bg-white flex items-center justify-between gap-x-2 flex-wrap">
               <ButtonComponent
                 label={t("button.delete")}
-                onClick={() => {}}
-                style={{ backgroundColor: "#EA5A47", marginInline: 12 }}
+                onClick={() => {
+                  if (selectedRows.length > 0) setOpen(true);
+                }}
+                backgroundColor={COLORS.checkbox_bg}
+                style={{ marginRight: 12 }}
               />
               <BtnExport fileName="Sheet1" sheet="Sheet1" tableRef={excelRef} />
               <ButtonComponent
@@ -122,12 +155,21 @@ export default function CustomerScreen() {
         <AddNewSupplierForm
           opernAddNewSupplier={opernAddNewSupplier}
           setOpernAddNewSupplier={setOpernAddNewSupplier}
+          data={dataInput}
+          setData={setDataInput}
+        />
+        <AlertModal
+          open={open}
+          setOpen={setOpen}
+          onConfirm={onDeleteMultiShelf}
         />
         <PartnerTable
           isCustomer={false}
           filterOption={filterOptions}
           search={search}
           ref={excelRef}
+          selectedRows={selectedRows}
+          setSelectedRows={setSelectedRows}
         />
       </div>
     </div>

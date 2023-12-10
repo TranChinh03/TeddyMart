@@ -1,30 +1,35 @@
 import { Divider, Modal, Space, message } from "antd";
 import { ButtonComponent, ButtonSelect, TextInputComponent } from "components";
 import { COLORS } from "constants/colors";
-import { addData } from "controller/addData";
+import { addData, updateData } from "controller/addData";
+import { PRODUCT } from "firebase-tools/addDbProduct";
 import { t } from "i18next";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
-import { addNewGroupProduct } from "state_management/slices/groupProductSlice";
+import { addNewGroupProduct, updateGroupProduct } from "state_management/slices/groupProductSlice";
+import { updateProduct } from "state_management/slices/productSlice";
 import { createID } from "utils/appUtils";
 
 type Props = {
     openAddNewGroupProduct: boolean;
-    setOpenAddNewSupplier: (openAddNewGroupProduct: boolean) => void;
+    setOpenAddNewGroupProduct: (openAddNewGroupProduct: boolean) => void;
+    data?: TGroupProduct;
+    setData?: (data: TGroupProduct) => void;
+    isAdd?: boolean
   };
 
 export default function AddNewGroupProduct ({
     openAddNewGroupProduct,
-    setOpenAddNewSupplier,
+    setOpenAddNewGroupProduct,
+    data,
+    setData,
+    isAdd = true,
 }: Props) {
-    const [groupProductName, setGroupProductName] = useState("");
-    const [shelfID, setShelfID] = useState("");
-    const [shelfName, setShelfName] = useState("");
-    const [note, setNote] = useState("");
     const SHELF = useSelector((state: RootState) => state.shelf);
+    const GROUP = useSelector((state: RootState) => state.groupProduct);
     const ShelfOptions = SHELF.map((item) => ({
       ID: item.shelfId,
       shelfname: item.shelfName
@@ -34,44 +39,98 @@ export default function AddNewGroupProduct ({
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const handleInputChange = (
-      value: string,
-      setValue: React.Dispatch<React.SetStateAction<string>>,
-      fieldName: string
-    ) => {
-      setValue(value);
-      validateForm(fieldName, value);
-    };
-    const [isFormValid, setIsFormValid] = useState(false);
-    const validateForm = (fieldName: string, value: string) => {
-      if (fieldName === "groupProductName")
-        setIsFormValid(value !== "" && shelfID !== "" && shelfName !== "");
-      else if (fieldName === "shelfID")
-      setIsFormValid(value !== "" && groupProductName !== "");
-    };
 
-
-    const onAddNewGroupProduct = () => {
-        const GroupID = createID({ prefix: "GP" });
-        const data: TGroupProduct = {
-            groupId: GroupID,
-            groupName: groupProductName,
-            shelfID: shelfID,
-            shelfName: shelfName,
-            note: note
-        };
-        dispatch(addNewGroupProduct(data));
-        addData({ data, table: "Group_Product", id: GroupID });
-        message.success("Group Product added successfully!")
-        setOpenAddNewSupplier(false);
+    const onChange = (value: string, fieldName: string) => {
+      setData({
+        ...data,
+        [fieldName]: value,
+      })
     }
+
+
+    const onAddNewGroupProduct = async () => {
+      if (data.groupName === "" || data.shelfName === "" || data.shelfID ==="") {
+        console.log(data)
+        message.error(t("fillData"))
+        return
+      }
+
+      if (isAdd) {
+        if (
+          GROUP.findIndex((group) => group.groupName === data.groupName) !== -1
+        ) {
+          message.error(t("group.groupExist"))
+          return;
+        }
+        //Add new group
+        const GroupID = createID({ prefix: "GP" });
+        const newdata: TGroupProduct = {
+            groupId: GroupID,
+            groupName: data.groupName,
+            shelfID: data.shelfID,
+            shelfName: data.shelfName,
+            note: data.note
+        };
+        dispatch(addNewGroupProduct(newdata));
+        addData({ data: newdata, table: "Group_Product", id: GroupID });
+        message.success("Group Product added successfully!")
+      }
+      else
+      {
+        //Update group
+        dispatch(updateGroupProduct({ currentGroupProduct: data, newGroupProduct: data }));
+        await updateData({ data: data, table: "Group_Product", id: data.groupId });
+        PRODUCT.forEach(async (p) => {
+          if (p.groupId === data.groupId) {
+            if (p.groupName !== data.groupName) {
+              await updateData({
+                data: { ...p, groupName: data.groupName },
+                table: "Product",
+                id: p.productId,
+              });
+              dispatch(
+                updateProduct({
+                  currentProduct: p,
+                  newProduct: { ...p, groupName: data.groupName },
+                })
+              );
+            }
+          }
+        });
+        message.success(t("group.updateSuccess"));
+      }
+      setOpenAddNewGroupProduct(false)
+      setData({
+        groupId: "",
+        groupName: "",
+        shelfID: "",
+        shelfName: "",
+        note: "",
+      });
+    }
+
+
+    const backgroundColor = useMemo(
+      () =>
+        (data.groupName !== "" && data.shelfName !== "" && data.shelfID !=="")
+          ? COLORS.darkYellow
+          : COLORS.defaultWhite,
+      [data.groupName, data.shelfName, data.shelfID]
+    );
+    const color = useMemo(
+      () =>
+      (data.groupName !== "" && data.shelfName !== "" && data.shelfID !=="")
+          ? COLORS.defaultWhite
+          : COLORS.lightGray,
+          [data.groupName, data.shelfName, data.shelfID]
+    );
 
     return (
         <Modal
             title={<h1 className="text-2xl">{t("product.addNewProduct")}</h1>}
             width={"60%"}
             open={openAddNewGroupProduct}
-            onCancel={() => setOpenAddNewSupplier(false)}
+            onCancel={() => setOpenAddNewGroupProduct(false)}
             footer={false}
       >
         <Divider style={{ backgroundColor: "black" }} />
@@ -82,8 +141,11 @@ export default function AddNewGroupProduct ({
           </label>
           <div className="px-2 col-span-3 inline-block">
             <TextInputComponent
-              value={groupProductName}
-              setValue={(value) => handleInputChange(value, setGroupProductName, "groupProductName")}
+              value={data.groupName}
+              setValue={(value) => {
+                onChange(value, "groupName")
+              }
+              }
               width="100%"
             />
           </div>
@@ -101,10 +163,13 @@ export default function AddNewGroupProduct ({
                   width="100%"
                   title="All"
                   label={t("shelf.shelfName")}
-                  value={shelfName}
+                  value={data.shelfName}
                   setValue={(value) => {
-                    setShelfName(ShelfOptions[value].shelfname)
-                    handleInputChange(ShelfOptions[value].ID, setShelfID, "shelfID")
+                    setData({
+                      ...data,
+                      shelfID: ShelfOptions[value].ID,
+                      shelfName: ShelfOptions[value].shelfname
+                    })
                   }}
                   options={ShelfOptions.map((item) => (item.shelfname))}
                 />
@@ -115,8 +180,11 @@ export default function AddNewGroupProduct ({
           </label>
           <div className="px-2 mt-5 col-span-3 inline-block">
             <TextInputComponent
-                value={note}
-                setValue={setNote}
+                value={data.note}
+                setValue={(value) => {
+                  onChange(value, "note")
+                }
+                }
                 width="100%"
             />
           </div>
@@ -125,16 +193,14 @@ export default function AddNewGroupProduct ({
           <Space>
             <ButtonComponent
               label={t("button.save")}
-              backgroundColor={
-                isFormValid ? COLORS.darkYellow : COLORS.defaultWhite
-              }
-              color={isFormValid ? COLORS.defaultWhite : COLORS.lightGray}
-              onClick={() => {isFormValid?onAddNewGroupProduct() : message.error(t("fillData"))}}
+              backgroundColor={backgroundColor}
+              color={color}
+              onClick={() => {onAddNewGroupProduct() }}
             />
             <ButtonComponent
               label={t("button.cancel")}
               onClick={() => {
-                setOpenAddNewSupplier(false);
+                setOpenAddNewGroupProduct(false);
               }}
               style={{
                 backgroundColor: "white",

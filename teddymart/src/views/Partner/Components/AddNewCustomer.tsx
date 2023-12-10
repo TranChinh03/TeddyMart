@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import ButtonComponent from "components/ButtonComponent";
 import TextInputComponent from "components/TextInputComponent";
 import { COLORS } from "constants/colors";
@@ -7,25 +7,27 @@ import { RootState } from "state_management/reducers/rootReducer";
 import { useTranslation } from "react-i18next";
 import { Modal, message } from "antd";
 import { createID } from "utils/appUtils";
-import { addNewPartner } from "state_management/slices/partnerSlice";
-import { addData } from "controller/addData";
+import {
+  addNewPartner,
+  updatePartner,
+} from "state_management/slices/partnerSlice";
+import { addData, updateData } from "controller/addData";
 
 type Props = {
-  opernAddNewCustomer: boolean;
-  setOpernAddNewCustomer: (opernAddNewCustomer: boolean) => void;
+  openAddNewCustomer: boolean;
+  setOpenAddNewCustomer: (openAddNewCustomer: boolean) => void;
+  data?: TPartner;
+  setData?: (data: TPartner) => void;
+  isAdd?: boolean;
 };
 
 export default function AddNewCustomerForm({
-  opernAddNewCustomer,
-  setOpernAddNewCustomer,
+  openAddNewCustomer,
+  setOpenAddNewCustomer,
+  data,
+  setData,
+  isAdd = true,
 }: Props) {
-  const [customerName, setCustomerName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
-  const [totalBuyAmount, setTotalBuyAmount] = useState("");
-  const [debt, setDebt] = useState("");
-  const [note, setNote] = useState("");
   const [selectedGender, setSelectedGender] = useState<string>("Female");
   const handleGenderChange = (value: string) => {
     setSelectedGender(value);
@@ -34,55 +36,79 @@ export default function AddNewCustomerForm({
   const { t } = useTranslation();
   const { userId } = useSelector((state: RootState) => state.manager);
   const dispatch = useDispatch();
+  const onChange = (value: string, fieldName: string) => {
+    setData({
+      ...data,
+      [fieldName]: value,
+    });
+  };
 
-  const handleInputChange = (
-    value: string,
-    setValue: React.Dispatch<React.SetStateAction<string>>,
-    fieldName: string
-  ) => {
-    setValue(value);
-    validateForm(fieldName, value);
-  };
-  const [isFormValid, setIsFormValid] = useState(false);
-  const validateForm = (fieldName: string, value: string) => {
-    if (fieldName === "customerName") {
-      setIsFormValid(value !== "" && phoneNumber !== "");
-    } else if (fieldName === "phoneNumber") {
-      setIsFormValid(value !== "" && customerName !== "");
-    }
-  };
-  const onAddNewCustomer = () => {
-    const trimmedName = customerName.trim();
-    const trimmedPhone = phoneNumber.trim();
-    if (!trimmedName || !trimmedPhone || !isFormValid) {
+  const onAddNewCustomer = async () => {
+    const trimmedName = data.partnerName.trim();
+    const trimmedPhone = data.phoneNumber.trim();
+    if (!trimmedName || !trimmedPhone) {
       message.warning("Please fill in full name and phone");
       return;
     }
-    const partnerId = createID({ prefix: "P" });
-    const data: TPartner = {
-      partnerId: partnerId,
-      partnerName: customerName,
-      email: email,
-      phoneNumber: phoneNumber,
-      address: address,
-      note: note,
-      gender: selectedGender as "female" | "male",
+    if (isAdd) {
+      const partnerId = createID({ prefix: "P" });
+      const newData: TPartner = {
+        partnerId: partnerId,
+        partnerName: data.partnerName,
+        email: data.email,
+        phoneNumber: data.phoneNumber,
+        address: data.address,
+        note: data.note,
+        gender: selectedGender as "female" | "male",
+        type: "Customer",
+        totalBuyAmount: data.totalBuyAmount,
+        debt: data.debt,
+      };
+      dispatch(addNewPartner(newData));
+      addData({ data:newData, table: "Partner", id: partnerId });
+      message.success("Customer added successfully");
+      setOpenAddNewCustomer(false);
+    } else {
+      dispatch(updatePartner({ partnerId: data.partnerId, newData: data }));
+      await updateData({ data: data, table: "Partner", id: data.partnerId });
+      message.success(t("customer.updateSuccess"));
+      setOpenAddNewCustomer(false);
+    }
+    setData({
+      partnerId: "",
+      partnerName: "",
+      gender: "male",
+      phoneNumber: "",
+      email: "",
+      address: "",
+      debt: 0,
+      totalBuyAmount: 0,
+      certificate: "",
+      note: "",
       type: "Customer",
-      totalBuyAmount: parseInt(totalBuyAmount),
-      debt: parseInt(debt),
-    };
-    dispatch(addNewPartner(data));
-    addData({ data, table: "Partner", id: partnerId });
-    message.success("Supplier added successfully");
-    setOpernAddNewCustomer(false);
+    });
   };
+  const backgroundColor = useMemo(
+    () =>
+      data.partnerName !== "" && data.phoneNumber !== ""
+        ? COLORS.darkYellow
+        : COLORS.defaultWhite,
+    [data.partnerName, data.phoneNumber]
+  );
+  const color = useMemo(
+    () =>
+      data.partnerName !== "" && data.phoneNumber !== ""
+        ? COLORS.defaultWhite
+        : COLORS.lightGray,
+    [data.partnerName, data.phoneNumber]
+  );
   return (
     <Modal
-      open={opernAddNewCustomer}
-      onCancel={() => setOpernAddNewCustomer(false)}
+      open={openAddNewCustomer}
+      onCancel={() => setOpenAddNewCustomer(false)}
       footer={false}
-      title={<h1 className="pr-8 text-3xl">{t("customer.addNewCustomer")}</h1>}
-      width={720}
+      title={<h1 className="pr-8 text-3xl">{t("partner.addNewCustomer")}</h1>}
+      width={"60%"}
     >
       <hr className="h-0.5 my-4 bg-black" />
       <div className="overflow-y-auto h-96">
@@ -99,11 +125,9 @@ export default function AddNewCustomerForm({
               <td>
                 <TextInputComponent
                   placeHolder=""
-                  width={492}
-                  value={customerName}
-                  setValue={(value) =>
-                    handleInputChange(value, setCustomerName, "customerName")
-                  }
+                  width={"100%"}
+                  value={data.partnerName}
+                  setValue={(value) => onChange(value, "partnerName")}
                 />
               </td>
             </tr>
@@ -117,10 +141,9 @@ export default function AddNewCustomerForm({
               <td>
                 <TextInputComponent
                   placeHolder=""
-                  width={492}
-                  value={phoneNumber}
-                  setValue={(value) =>
-                    handleInputChange(value, setPhoneNumber, "phoneNumber")
+                  width={"100%"}
+                  value={data.phoneNumber}
+                  setValue={(value) => onChange(value, "phoneNumber")
                   }
                 />
               </td>
@@ -156,9 +179,9 @@ export default function AddNewCustomerForm({
               <td>
                 <TextInputComponent
                   placeHolder=""
-                  width={492}
-                  value={email}
-                  setValue={setEmail}
+                  width={"100%"}
+                  value={data.email}
+                  setValue={(value) => onChange(value, "email")}
                 />
               </td>
             </tr>
@@ -170,9 +193,9 @@ export default function AddNewCustomerForm({
               <td>
                 <TextInputComponent
                   placeHolder=""
-                  width={492}
-                  value={address}
-                  setValue={setAddress}
+                  width={"100%"}
+                  value={data.address}
+                  setValue={(value) => onChange(value, "address")}
                 />
               </td>
             </tr>
@@ -183,9 +206,9 @@ export default function AddNewCustomerForm({
               <td>
                 <TextInputComponent
                   placeHolder=""
-                  width={492}
-                  value={totalBuyAmount}
-                  setValue={setTotalBuyAmount}
+                  width={"100%"}
+                  value={data.totalBuyAmount.toString()}
+                  setValue={(value) => onChange(value, "totalBuyAmount")}
                 />
               </td>
             </tr>
@@ -196,9 +219,9 @@ export default function AddNewCustomerForm({
               <td>
                 <TextInputComponent
                   placeHolder=""
-                  width={492}
-                  value={debt}
-                  setValue={setDebt}
+                  width={"100%"}
+                  value={data.debt.toString()}
+                  setValue={(value) => onChange(value, "debt")}
                 />
               </td>
             </tr>
@@ -209,9 +232,9 @@ export default function AddNewCustomerForm({
               <td>
                 <TextInputComponent
                   placeHolder=""
-                  width={492}
-                  value={note}
-                  setValue={setNote}
+                  width={"100%"}
+                  value={data.note}
+                  setValue={(value) => onChange(value, "note")}
                 />
               </td>
             </tr>
@@ -222,17 +245,17 @@ export default function AddNewCustomerForm({
       <div className="flex justify-end gap-x-4 mt-4">
         <ButtonComponent
           label={t("button.save")}
-          backgroundColor={
-            isFormValid ? COLORS.darkYellow : COLORS.defaultWhite
-          }
-          color={isFormValid ? COLORS.defaultWhite : COLORS.lightGray}
-          onClick={onAddNewCustomer}
+          backgroundColor={backgroundColor}
+          color={color}
+          onClick={() => {
+            onAddNewCustomer();
+          }}
         />
         <ButtonComponent
           label={t("button.close")}
           backgroundColor={COLORS.defaultWhite}
           color={COLORS.extra_gray}
-          onClick={() => setOpernAddNewCustomer(false)}
+          onClick={() => setOpenAddNewCustomer(false)}
         />
       </div>
     </Modal>

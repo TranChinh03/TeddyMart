@@ -17,7 +17,13 @@ import { FiEdit, FiTrash } from "react-icons/fi";
 import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 import { RootState } from "state_management/reducers/rootReducer";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import AddNewCustomerForm from "views/Partner/Components/AddNewCustomer";
+import AddNewSupplierForm from "views/Partner/Components/AddNewSupplier";
+import { deleteData } from "controller/deleteData";
+import { deletePartner } from "state_management/slices/partnerSlice";
+import { message } from "antd";
+import AlertModal from "components/AlertModal";
 
 type TContentCustomer = {
   address: string;
@@ -173,6 +179,8 @@ type Props = {
   debtTo?: number;
   totalPaymentFrom?: number;
   totalPaymentTo?: number;
+  selectedRows: string[];
+  setSelectedRows: (selectedRows: string[]) => void;
 };
 const PartnerTable = forwardRef<HTMLTableElement, Props>(
   (
@@ -187,6 +195,8 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
       debtTo,
       totalPaymentFrom,
       totalPaymentTo,
+      selectedRows,
+      setSelectedRows,
     }: Props,
     ref
   ) => {
@@ -270,24 +280,26 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
       [t, filterOption]
     );
 
-    const [selectedRows, setSelectedRows] = useState([]);
+    // const [selectedRows, setSelectedRows] = useState([]);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
-    const handleCheckBoxChange = (rowId: string) => {
+    const handleCheckBoxChange = (rowId: string | null) => {
       if (rowId === null) {
-        if (selectedRows.length === 0) {
-          setSelectedRows([...CONTENT.map((content) => content.partnerId)]);
-          return;
+        if (selectedRows.length === 0 || selectedRows.length < DATA.length) {
+          setSelectedRows([...DATA.map((content) => content.partnerId)]);
+        } else {
+          setSelectedRows([]);
         }
-        setSelectedRows([]);
         return;
       }
+
       if (selectedRows.includes(rowId)) {
         setSelectedRows([...selectedRows.filter((id) => id !== rowId)]);
-        return;
+      } else {
+        setSelectedRows([...selectedRows, rowId]);
       }
-      setSelectedRows([...selectedRows, rowId]);
     };
+
     const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
       setRowsPerPage(+e.target.value);
     };
@@ -308,6 +320,43 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
     const onForwardAll = () => {
       setCurrentPage(maxPages);
     };
+
+    const [updateModalVisible, setUpdateModalVisible] = useState(false);
+    const [updateDataInput, setUpdateDataInput] = useState<TPartner>({
+      partnerId: "",
+      partnerName: "",
+      gender: "male",
+      phoneNumber: "",
+      email: "",
+      address: "",
+      debt: 0,
+      totalBuyAmount: 0,
+      certificate: "",
+      note: "",
+      type: "Customer",
+    });
+
+    const onUpdate = (partner: TPartner) => {
+      setUpdateModalVisible(true);
+      console.log("Update clicked", partner);
+      setUpdateDataInput(partner);
+    };
+
+    const idSelected = useRef<string>("");
+    const [open, setOpen] = useState(false);
+    const dispatch = useDispatch();
+
+    const onDelete = (id: string) => {
+      idSelected.current = id;
+      setOpen(true);
+    };
+    const onConfirm = async () => {
+      await deleteData({ id: idSelected.current, table: "Partner" });
+      dispatch(deletePartner({ partnerId: idSelected.current }));
+      setOpen(false);
+      message.success(t("partner.deletePartner"));
+    };
+
     return (
       <div className="w-full">
         <div className="max-h-96 overflow-y-auto visible">
@@ -424,10 +473,10 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
                       <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
                         <div className="flex items-center gap-1 justify-center">
                           <Button>
-                            <FiEdit />
+                            <FiEdit onClick={() => onUpdate(content)} />
                           </Button>
 
-                          <Button>
+                          <Button onClick={() => onDelete(content.partnerId)}>
                             <FiTrash color="red" />
                           </Button>
                         </div>
@@ -475,6 +524,24 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
             </Button>
           </div>
         </div>
+        <AlertModal open={open} setOpen={setOpen} onConfirm={onConfirm} />
+        {updateDataInput.type === "Customer" ? (
+          <AddNewCustomerForm
+            openAddNewCustomer={updateModalVisible}
+            setOpenAddNewCustomer={setUpdateModalVisible}
+            isAdd={false}
+            data={updateDataInput}
+            setData={setUpdateDataInput}
+          />
+        ) : (
+          <AddNewSupplierForm
+            opernAddNewSupplier={updateModalVisible}
+            setOpernAddNewSupplier={setUpdateModalVisible}
+            isAdd={false}
+            data={updateDataInput}
+            setData={setUpdateDataInput}
+          />
+        )}
       </div>
     );
   }
