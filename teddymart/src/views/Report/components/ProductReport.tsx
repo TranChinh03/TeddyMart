@@ -8,9 +8,12 @@ import { ReportProductTable } from "components/TableComponent";
 
 export default function ProductReport() {
   const { t } = useTranslation();
+  const y = new Date().getFullYear();
+  const m = new Date().getMonth();
+  const d = new Date().getDate();
   const [date, setDate] = useState<D>({
-    from: new Date(),
-    to: new Date(),
+    from: new Date(y, m, d, 0, 0, 0, 0),
+    to: new Date(y, m, d, 0, 0, 0, 0),
   });
   const [search, setSearch] = useState("");
   // const PRODUCTS = useSelector((state: RootState) => state.reportProduct);

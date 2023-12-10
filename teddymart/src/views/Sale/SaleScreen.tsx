@@ -133,21 +133,13 @@ export default function SaleScreen() {
   const onChange = (key: string) => {
     console.log(key);
   };
-  const onDeleteAll = () => {
-    setOpenAlertModal(true);
+
+  const onDelete = () => {
+    console.log("delete");
     dispatch(deleteMultiOrder(selectedRows));
     deleteOrderFirebase(selectedRows, userId);
-  };
-  const onDelete = (orderId?: string) => {
-    if (orderId) {
-      setOpenAlertModal(true);
-      dispatch(deleteOrder({ orderId: orderId }));
-      deleteOrderFirebase([orderId], userId);
-      setOpenAlertModal(false);
-      return;
-    }
-    dispatch(deleteMultiOrder(selectedRows));
     setOpenAlertModal(false);
+    setSelectedRows([]);
   };
   const orderRef = useRef(null);
 
@@ -181,7 +173,7 @@ export default function SaleScreen() {
 
             <ButtonComponent
               label={t("button.delete")}
-              onClick={onDeleteAll}
+              onClick={() => setOpenAlertModal(true)}
               style={{ backgroundColor: "#EA5A47", marginInline: 12 }}
               iconLeft={<BiTrash size={20} color="white" />}
             />

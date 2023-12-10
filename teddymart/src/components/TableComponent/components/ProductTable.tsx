@@ -1,14 +1,6 @@
 import { Button, Space, Tooltip, message } from "antd";
 import { t } from "i18next";
-import {
-  ChangeEvent,
-  forwardRef,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, forwardRef, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import {
@@ -20,8 +12,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { TListProduct } from "./BillTable";
-import ButtonComponent from "components/ButtonComponent";
-import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 import { deleteProduct } from "state_management/slices/productSlice";
 import AlertModal from "components/AlertModal";
 import { deleteData } from "controller/deleteData";
@@ -82,6 +72,8 @@ type TSort = {
 type Props = {
   filterOption?: TOptions;
   warehouseName?: string;
+  selectedRows?: string[];
+  setSelectedRows?: (selectedRow: string[]) => void;
   productName?: string;
   productGroup?: string;
   sort?: TSort;
@@ -90,6 +82,7 @@ type Props = {
   setProducts?: (products: TProduct[]) => void;
   data?: TProduct[];
   setData?: (data: TProduct[]) => void;
+  isExport?: boolean;
   selectedRows?: string[];
   setSelectedRows?: (selectedRows: string[]) => void;
 };
@@ -98,6 +91,8 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     {
       filterOption,
       warehouseName,
+      selectedRows,
+      setSelectedRows,
       productName,
       productGroup,
       selectedRows,
@@ -108,6 +103,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
       setProducts,
       data,
       setData,
+      isExport = true,
     }: Props,
     reference
   ) => {
@@ -130,9 +126,17 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     const [open, setOpen] = useState(false);
     const [openModalUpdate, setOpenModalUpdate] = useState(false);
 
+
     const productsFilter = useMemo(() => {
-      if (data) return data;
+      // if (data.length > 0) return data;
       let listProducts: TProduct[] = [...products];
+
+      if (productGroup) {
+        let tmp = listProducts.filter(
+          (value) => value.groupName === productGroup
+        );
+        listProducts = tmp;
+      }
       if (warehouseName) {
         const listProductWarehouse =
           warehouses.filter((value) => value.warehouseName === warehouseName)[0]
@@ -141,24 +145,24 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
           let tmp = listProducts.findIndex(
             (warehouse) => warehouse.productId === value.productId
           );
-          console.log("quznty");
+          //console.log(value);
           if (tmp > -1)
-            return {
-              productId: value.productId,
-              productName: value.productName,
-              quantity: value.quantity,
-              costPrice: listProducts[tmp].cost_price,
-              payment: value.quantity * listProducts[tmp].cost_price, //????
-              note: listProducts[tmp].note,
-            };
+            if (isExport) {
+              return {
+                ...value,
+                sell_price: listProducts[tmp].sell_price,
+                totalPrice: value.quantity * listProducts[tmp].sell_price, //????
+                note: listProducts[tmp].note,
+              };
+            }
+          return {
+            ...value,
+            cost_price: listProducts[tmp].cost_price,
+            totalPrice: value.quantity * listProducts[tmp].cost_price, //????
+            note: listProducts[tmp].note,
+          };
         });
-        listProducts = productFilterProductTable;
-      }
-      if (productGroup) {
-        let tmp = listProducts.filter(
-          (value) => value.groupName === productGroup
-        );
-        listProducts = tmp;
+        listProducts = [...productFilterProductTable];
       }
       if (productName) {
         let tmp = listProducts.filter((value) =>
@@ -197,16 +201,16 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
           let index = filterListProduct.findIndex(
             (filterProduct) => filterProduct.productId === value.productId
           );
-          console.log(index);
           if (index > -1)
             return {
               ...value,
               quantity: filterListProduct[index]?.quantity,
             };
+
           return;
         });
+        //console.log("list Product", tmp);
         listProducts = tmp.filter((value) => value !== undefined);
-        console.log("filter list", tmp);
       }
 
       return listProducts ?? [];
@@ -246,7 +250,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
           options.productImage && t("product.productImage"),
           options.sell_price && t("product.sell_price"),
           options.costPrice && t("product.costPrice"),
-          options.totalPrice && t("sale.totalPayment"),
+          options.totalPrice && t("sale.totalPrice"),
           options.VAT && t("product.VAT"),
           options.note && t("note"),
           options.activities && t("activities"),
@@ -274,24 +278,33 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
       setCurrentPage(maxPages);
     };
 
-    const handleCheckBoxChange = (rowId: string) => {
+    const handleCheckBoxChange = (product?: TProduct) => {
+      const rowId = product.productId;
       if (rowId === null) {
         if (selectedRows.length < productsFilter.length) {
           setSelectedRows([
             ...productsFilter.map((content) => content?.productId),
           ]);
+          if (data)
+            setData([
+              ...productsFilter.map((product) => ({ ...product, quantity: 1 })),
+            ]);
           return;
         }
         if (selectedRows.length === productsFilter.length) {
           setSelectedRows([]);
+          if (data) setData([]);
           return;
         }
       }
-      if (selectedRows.includes(rowId)) {
+      if (selectedRows?.includes(rowId)) {
         setSelectedRows([...selectedRows.filter((id) => id !== rowId)]);
+        if (data) setData([...data.filter((item) => item.productId !== rowId)]);
+
         return;
       }
       setSelectedRows([...selectedRows, rowId]);
+      if (data) setData([...data, { ...product, quantity: 1 }]);
     };
     const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
       setRowsPerPage(+e.target.value);
@@ -335,10 +348,10 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
 
     const onGetProducts = () => {
       let tmp = products.map((product) => {
-        if (selectedRows.includes(product.productId))
+        if (selectedRows?.includes(product.productId))
           return {
             ...product,
-            quantity: 0,
+            quantity: 1,
           };
       });
       setProducts?.(tmp.filter((product) => product !== undefined));
@@ -346,33 +359,35 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     useEffect(() => {
       onGetProducts();
     }, [selectedRows]);
-    const increaseQuantity = (productId: string) => {
-      let tmp = [...data];
-      let index_data = tmp.findIndex(
-        (product) => product.productId === productId
-      );
-      let index_product = products.findIndex(
-        (product) => product.productId === productId
-      );
-      if (index_data > -1) {
-        if (tmp[index_data].quantity < products[index_product].quantity)
-          tmp[index_data].quantity = tmp[index_data].quantity + 1;
+
+    const changeQuantity = (productId: string, value: number) => {
+      if (data) {
+        let tmp = [...data];
+        let index_data = tmp.findIndex(
+          (product) => product.productId === productId
+        );
+
+        if (index_data > -1) {
+          tmp[index_data] = {
+            ...tmp[index_data],
+            quantity: value,
+          };
+        }
+
+        setData?.(tmp);
       }
-      setData?.(tmp);
     };
-    const descreaseQuantity = (productId: string) => {
-      let tmp = [...data];
-      let index_data = tmp.findIndex(
-        (product) => product.productId === productId
-      );
-      let index_product = products.findIndex(
-        (product) => product.productId === productId
-      );
-      if (index_data > -1) {
-        if (tmp[index_data].quantity > 1)
-          tmp[index_data].quantity = tmp[index_data].quantity - 1;
+    const getQuantity = (productId: string) => {
+      if (data) {
+        let tmp = [...data];
+        let index_data = tmp.findIndex(
+          (product) => product.productId === productId
+        );
+
+        if (index_data > -1) {
+          return tmp[index_data].quantity;
+        }
       }
-      setData?.(tmp);
     };
     return (
       <div className="w-full">
@@ -386,13 +401,16 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
               style={{ top: -1 }}
             >
               <tr>
-                <th className="border border-gray-300 p-2 text-xs">
-                  <input
-                    className="w-15 h-15 bg-hover"
-                    type="checkbox"
-                    onChange={() => handleCheckBoxChange(null)}
-                  />
-                </th>
+                {selectedRows !== undefined && (
+                  <th className="border border-gray-300 p-2 text-xs">
+                    <input
+                      className="w-15 h-15 bg-hover"
+                      type="checkbox"
+                      onChange={() => handleCheckBoxChange(null)}
+                    />
+                  </th>
+                )}
+
                 {HEADER.map((header, index) => (
                   <th
                     key={index}
@@ -405,27 +423,29 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
             </thead>
             <tbody className="text-center">
               {productsFilter.map((content, index) => {
+                const displayPrice = isExport
+                  ? content.sell_price
+                  : content.cost_price;
                 if (
                   index < currentPage * rowsPerPage &&
                   index >= (currentPage - 1) * rowsPerPage
                 )
                   return (
                     <tr key={index}>
-                      <td className="border border-gray-300 p-2">
-                        <input
-                          className="w-15 h-15 bg-hover"
-                          type="checkbox"
-                          onChange={() =>
-                            handleCheckBoxChange(content?.productId)
-                          }
-                          checked={
-                            selectedRows.includes(content?.productId ?? "")
-                              ? true
-                              : false
-                          }
-                        />
-                      </td>
-
+                      {selectedRows !== undefined && (
+                        <td className="border border-gray-300 p-2">
+                          <input
+                            className="w-15 h-15 bg-hover"
+                            type="checkbox"
+                            onChange={() => handleCheckBoxChange(content)}
+                            checked={
+                              selectedRows?.includes(content?.productId ?? "")
+                                ? true
+                                : false
+                            }
+                          />
+                        </td>
+                      )}
                       {options.productId && (
                         <td className="border border-gray-300 p-2 text-sm">
                           {content?.productId}
@@ -438,31 +458,30 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                       )}
                       {options.quantity && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          <Space>
-                            {content?.quantity ?? 0}
-                            {isEditQuantity && (
-                              <Space direction="vertical" size={2}>
-                                <Button
-                                  size="small"
-                                  onClick={() => {
-                                    if (data)
-                                      increaseQuantity(content.productId);
-                                  }}
-                                >
-                                  <TiArrowSortedUp size={10} />
-                                </Button>
-                                <Button
-                                  size="small"
-                                  onClick={() => {
-                                    if (data)
-                                      descreaseQuantity(content.productId);
-                                  }}
-                                >
-                                  <TiArrowSortedDown size={10} />
-                                </Button>
-                              </Space>
-                            )}
-                          </Space>
+                          {selectedRows?.includes(content.productId) &&
+                          isEditQuantity ? (
+                            <input
+                              type="number"
+                              inputMode="numeric"
+                              min="1"
+                              max={content?.quantity}
+                              style={{ textAlign: "center", maxWidth: 100 }}
+                              placeholder="0"
+                              value={
+                                getQuantity(content?.productId)?.toString() ??
+                                "0"
+                              }
+                              onChange={(e) => {
+                                if (+e.target.value < content?.quantity)
+                                  changeQuantity(
+                                    content.productId,
+                                    +e.target.value
+                                  );
+                              }}
+                            />
+                          ) : (
+                            content.quantity
+                          )}
                         </td>
                       )}
 
@@ -495,21 +514,23 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
 
                       {options.costPrice && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content?.cost_price}
+                          {displayPrice}
                         </td>
                       )}
 
                       {options.price && (
-                        <Tooltip title="Price = Sell price * (1+VAT)">
-                          <td className="border border-gray-300 p-2 text-sm">
+                        <Tooltip title={t("sale.tooltipPrice")}>
+                          <td className="border border-gray-300 p-2 text-sm ">
                             {content?.price}
                           </td>
                         </Tooltip>
                       )}
                       {options.totalPrice && (
-                        <Tooltip title="Total Price = Price * Quantity">
+                        <Tooltip title={t("sale.tooltipTotalPrice")}>
                           <td className="border border-gray-300 p-2 text-sm">
-                            {content?.totalPrice ?? 0}
+                            {selectedRows?.includes(content.productId)
+                              ? getQuantity(content.productId) * displayPrice
+                              : content?.totalPrice ?? 0}
                           </td>
                         </Tooltip>
                       )}

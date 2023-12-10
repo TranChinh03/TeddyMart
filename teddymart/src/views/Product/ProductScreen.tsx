@@ -150,7 +150,6 @@ export default function ProductScreen() {
 
           <div style={{ width: 36 }} />
           <ListCheckBox listFilter={listFilter} setListFilter={setListFilter} />
-
           <ButtonComponent
             label={t("button.delete")}
             onClick={() => {
@@ -160,9 +159,7 @@ export default function ProductScreen() {
             backgroundColor={COLORS.checkbox_bg}
             style={{ marginInline: 12 }}
           />
-
           <BtnExport fileName="Sheet1" sheet="sheet1" tableRef={productRef} />
-
           <ButtonComponent
             label={t("product.addNewProduct")}
             onClick={() => setOpenAddForm(true)}

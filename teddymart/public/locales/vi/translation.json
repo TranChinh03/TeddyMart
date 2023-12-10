@@ -102,7 +102,11 @@
     "searchCusPhoneNumber": "Tìm thông tin khách hàng theo số điện thoại",
     "import": "Hàng nhập",
     "export": "Hàng xuất",
-    "stock": "Tồn kho"
+    "stock": "Tồn kho",
+    "totalPrice": "Tổng giá tiền",
+    "tooltipPayment": "Thanh toán = Tổng tiền * ( 1- Giảm giá)",
+    "tooltipPrice": "Giá tiền = Giá bán * (1 + VAT)",
+    "tooltipTotalPrice": "Tổng giá tiền = Giá tiền * Số lượng"
   },
   "voucher": {
     "searchVoucher": "Tìm kiếm theo tên voucher",
@@ -133,7 +137,7 @@
     "supplierName": "Tên nhà cung cấp",
     "certificate": "Bằng kinh doanh",
     "supplierID": "Mã nhà cung cấp",
-    "deletePartner":"Xóa đối tác thành công"
+    "deletePartner": "Xóa đối tác thành công"
   },
   "product": {
     "productGroup": "Nhóm sản phẩm",
@@ -214,7 +218,6 @@
     "updateSuccess": "Sửa thông tin kho thành công!",
     "deleteSuccess": "Xóa kho thành công!",
     "existed": "Kho này đã tồn tại!"
-
   },
   "activities": "Chức năng",
 

@@ -14,11 +14,16 @@ import { BiSearch } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { addNewOrder } from "state_management/slices/orderSlice";
-import { addOrderFirebase, createID } from "utils/appUtils";
+import {
+  addOrderFirebase,
+  createID,
+  updateProductFirebase,
+} from "utils/appUtils";
 import AddNewCustomerForm from "./AddNewCustomer";
 import AddNewProduct from "views/Product/components/AddNewProduct";
 import { ADD_ORDER } from "state_management/actions/actions";
 import AddProductToMenu from "views/Warehouse/components/AddProductToMenu";
+import { updateProductWarehouse } from "state_management/slices/warehouseSlice";
 const CUS_INFO = {
   customerName: "NVA",
   gender: "Male",
@@ -42,7 +47,15 @@ const AddForm = ({
   typeAdd: "Import" | "Export";
 }) => {
   const { t } = useTranslation();
-  const [warehouseName, setWarehouseName] = useState("Central Warehouse");
+  const listWarehouseName = useSelector(
+    (state: RootState) => state.warehouseSlice
+  ).map((value) => value.warehouseName);
+  const vouchers = useSelector((state: RootState) => state.voucherSlice);
+  const { userId } = useSelector((state: RootState) => state.manager);
+  const warehouses = useSelector((state: RootState) => state.warehouseSlice);
+  // const [sum, setSum] = useState(1000);
+  const [productMenu, setProductMenu] = useState<TProduct[]>([]);
+  const [warehouseName, setWarehouseName] = useState(listWarehouseName[0]);
   const [openSearchModal, setOpenSearchModal] = useState(false);
   const [search, setSearch] = useState("");
   const [searchCustomer, setSearchCustomer] = useState("");
@@ -50,15 +63,8 @@ const AddForm = ({
   const [payment, setPayment] = useState("");
   const [note, setNote] = useState("");
   const [openAddCustomerForm, setOpenAddCustomerForm] = useState(false);
-  const [openAddProductForm, setOpenAddProductForm] = useState(false);
-  const listWarehouseName = useSelector(
-    (state: RootState) => state.warehouseSlice
-  ).map((value) => value.warehouseName);
-  const vouchers = useSelector((state: RootState) => state.voucherSlice);
-  const { userId } = useSelector((state: RootState) => state.manager);
-  // const [sum, setSum] = useState(1000);
-  const [listProduct, setListProduct] = useState<ListProduct[]>([]);
-  const [productMenu, setProductMenu] = useState<TProduct[]>([]);
+  const [selectedRows, setSelectedRows] = useState([]);
+
   const getVoucherInfo = (voucherName: string) => {
     let item = vouchers.find((value) => value.voucherName === voucherName);
     return {
@@ -77,12 +83,25 @@ const AddForm = ({
     return customer;
   }, [searchCustomer]);
   const sum = useMemo(() => {
+    if (typeAdd === "Export") {
+      return productMenu.reduce(
+        (pre, cur) => pre + cur.sell_price * cur.quantity,
+        0
+      );
+    }
     return productMenu.reduce(
       (pre, cur) => pre + cur.cost_price * cur.quantity,
       0
     );
   }, [productMenu]);
   const onAddOrder = async () => {
+    const listProduct = [
+      ...productMenu.map((product) => ({
+        productId: product.productId,
+        productName: product.productName,
+        quantity: product.quantity,
+      })),
+    ];
     const y = new Date().getFullYear();
     const m = new Date().getMonth();
     const d = new Date().getDate();
@@ -92,13 +111,7 @@ const AddForm = ({
       createdAt: createdAt.toISOString(),
       debt: sum - discount - +payment,
       discount: discount,
-      listProduct: [
-        ...productMenu.map((product) => ({
-          productId: product.productId,
-          productName: product.productName,
-          quantity: product.quantity,
-        })),
-      ],
+      listProduct: listProduct,
       note: note,
       orderId: orderId,
       partnerId: customerInfo.partnerId,
@@ -113,10 +126,21 @@ const AddForm = ({
     };
     addOrderFirebase(data, userId, orderId);
     dispatch(addNewOrder(data));
+    dispatch(
+      updateProductWarehouse({
+        userId: userId,
+        warehouseName: warehouseName,
+        listProduct: listProduct,
+        type: typeAdd,
+      })
+    );
+    setProductMenu([]);
+    setSelectedRows([]);
     message.success("Add Order Success");
     setOpenAddForm(false);
     dispatch({ type: ADD_ORDER, payload: data });
   };
+  //console.log(productMenu);
   return (
     <Modal
       title={<h1 className="text-2xl">{t("sale.addNewOrder")}</h1>}
@@ -196,14 +220,15 @@ const AddForm = ({
             iconLeft={<BiSearch size={28} />}
             placeHolder={t("product.searchProduct")}
             setValue={setSearch}
+            value={search}
             enterAction={() => {
               setOpenSearchModal(!openSearchModal);
             }}
           />
-          <ButtonComponent
+          {/* <ButtonComponent
             label={t("product.addNewProduct")}
             onClick={() => setOpenAddProductForm(true)}
-          />
+          /> */}
         </div>
         <div className="my-5">
           <ProductTable
@@ -215,31 +240,37 @@ const AddForm = ({
               productImage: false,
               VAT: false,
               sell_price: false,
+              activities: false,
             }}
             productName={search}
             warehouseName={warehouseName}
             data={productMenu}
             setData={setProductMenu}
             isEditQuantity={true}
+            selectedRows={selectedRows}
+            setSelectedRows={setSelectedRows}
+            isExport={typeAdd === "Export"}
           />
         </div>
       </Card>
-      <Card
-        title={<h1 className=" text-2xl">{t("voucher.voucherInfo")}</h1>}
-        bordered={true}
-        style={{
-          width: "100%",
-          borderWidth: 1,
-          borderColor: "#9A9A9A",
-          marginBlock: 12,
-        }}
-      >
-        <DropdownComponent
-          value={voucher}
-          setValue={setVoucher}
-          options={[...vouchers.map((voucher) => voucher.voucherName)]}
-        />
-      </Card>
+      {typeAdd === "Export" && (
+        <Card
+          title={<h1 className=" text-2xl">{t("voucher.voucherInfo")}</h1>}
+          bordered={true}
+          style={{
+            width: "100%",
+            borderWidth: 1,
+            borderColor: "#9A9A9A",
+            marginBlock: 12,
+          }}
+        >
+          <DropdownComponent
+            value={voucher}
+            setValue={setVoucher}
+            options={[...vouchers.map((voucher) => voucher.voucherName)]}
+          />
+        </Card>
+      )}
       <Card
         title={<h1 className=" text-2xl">{t("voucher.note")}</h1>}
         bordered={true}
@@ -269,10 +300,8 @@ const AddForm = ({
           <h1 className=" text-base font-medium">{t("sale.discount")}:</h1>
           <h1 className=" text-base italic">{discount}</h1>
 
-          <Tooltip title="Total Payment = Payment * ( 1- Discount )">
-            <h1 className=" text-base font-medium">
-              {t("sale.totalPayment")}:
-            </h1>
+          <Tooltip title={t("sale.tooltipPayment")}>
+            <h1 className=" text-base font-medium">{t("sale.totalPrice")}:</h1>
           </Tooltip>
           <input
             className=" text-base italic"
@@ -302,11 +331,11 @@ const AddForm = ({
         openAddForm={openAddProductForm}
         setOpenAddForm={setOpenAddProductForm}
       /> */}
-      <AddProductToMenu
+      {/* <AddProductToMenu
         openMenu={openAddProductForm}
         setOpenMenu={setOpenAddProductForm}
         setProducts={setProductMenu}
-      />
+      /> */}
     </Modal>
   );
 };
