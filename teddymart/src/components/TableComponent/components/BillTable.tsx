@@ -245,7 +245,11 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
     const handleCheckBoxChange = (rowId: string) => {
       if (rowId === null) {
         if (selectedRows.length < bills.length) {
-          setSelectedRows([...bills.map((content) => content.orderId)]);
+          setSelectedRows(
+            bills
+              .filter((bill) => bill.type === type)
+              .map((value) => value.orderId)
+          );
           return;
         }
         if (selectedRows.length === bills.length) {
