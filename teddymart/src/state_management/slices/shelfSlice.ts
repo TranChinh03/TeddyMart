@@ -23,7 +23,7 @@ const shelfSlice = createSlice({
       const index = state.findIndex(
         (p) => p.shelfId === action.payload.currentShelfId
       );
-      if (index > 0) {
+      if (index !== -1) {
         state[index] = { ...action.payload.newShelf };
       }
     },

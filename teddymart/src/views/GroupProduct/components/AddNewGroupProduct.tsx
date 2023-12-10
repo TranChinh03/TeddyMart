@@ -2,7 +2,6 @@ import { Divider, Modal, Space, message } from "antd";
 import { ButtonComponent, ButtonSelect, TextInputComponent } from "components";
 import { COLORS } from "constants/colors";
 import { addData, updateData } from "controller/addData";
-import { PRODUCT } from "firebase-tools/addDbProduct";
 import { t } from "i18next";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -29,6 +28,7 @@ export default function AddNewGroupProduct ({
     isAdd = true,
 }: Props) {
     const SHELF = useSelector((state: RootState) => state.shelf);
+    const PRODUCT = useSelector((state: RootState) => state.product);
     const GROUP = useSelector((state: RootState) => state.groupProduct);
     const ShelfOptions = SHELF.map((item) => ({
       ID: item.shelfId,
@@ -81,6 +81,7 @@ export default function AddNewGroupProduct ({
         dispatch(updateGroupProduct({ currentGroupProduct: data, newGroupProduct: data }));
         await updateData({ data: data, table: "Group_Product", id: data.groupId });
         PRODUCT.forEach(async (p) => {
+          console.log("ok", p)
           if (p.groupId === data.groupId) {
             if (p.groupName !== data.groupName) {
               await updateData({
