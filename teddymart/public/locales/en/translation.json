@@ -185,7 +185,11 @@
     "productNameAZ": "Product Name: A → Z",
     "productNameZA": "Product Name: Z → A",
     "lastUpdateOldest": "Last Update: Lastest",
-    "lastUpdateNewest": "Last Update: Newest"
+    "lastUpdateNewest": "Last Update: Newest",
+    "deleteProduct": "Product Deleted Successfully!",
+    "addProduct": "Product Added Successfully!",
+    "editProduct": "Product Edited Successfully!",
+    "existedProduct": "Product Existed!"
   },
   "warehouse": {
     "warehouse": "Warehouse",

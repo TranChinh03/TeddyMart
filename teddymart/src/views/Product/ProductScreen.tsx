@@ -2,7 +2,7 @@ import React, { useDeferredValue, useEffect, useRef, useState } from "react";
 
 import DropdownComponent from "components/DropdownComponent";
 
-import { BtnExport, SearchComponent } from "components";
+import { AlertModal, BtnExport, SearchComponent } from "components";
 import ButtonComponent from "components/ButtonComponent";
 import { COLORS } from "constants/colors";
 
@@ -12,20 +12,32 @@ import { ProductTable } from "components/TableComponent";
 import { RootState } from "state_management/reducers/rootReducer";
 import { ListCheckBox } from "components";
 import { t } from "i18next";
-import { Divider, Modal, Space } from "antd";
+import { Divider, Modal, Space, message } from "antd";
 import AddNewProduct from "./components/AddNewProduct";
+import { deleteData } from "controller/deleteData";
+import { deleteProduct } from "state_management/slices/productSlice";
+import { deleteObject, ref } from "firebase/storage";
+import { storage } from "firebaseConfig";
+export type Input = {
+  productId: string,
+  productName: string,
+  groupId: string,
+  groupName: string,
+  image: string,
+  cost_price: number,
+  sell_price: number,
+  VAT: number,
+  note: string,
+}
+
 
 export default function ProductScreen() {
   const productRef = useRef(null);
   const [search, setSearch] = useState("");
   const productName = useDeferredValue(search);
-  const [PRODUCT, setPRODUCT] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
   const GROUP = useSelector((state: RootState) => state.groupProduct);
-  const [screens, setScreens] = useState();
-  const [type, setType] = useState();
-  const [productGroup, setProductGroup] = useState();
-  const [status, setStatus] = useState();
-  const [storeManagement, setStoreManagement] = useState();
+  const PRODUCT = useSelector((state: RootState) => state.product);
   const OPTIONS = [
     t("product.productNameAZ"),
     t("product.productNameZA"),
@@ -38,7 +50,7 @@ export default function ProductScreen() {
     {
       id: 0,
       displayName: t("product.quantity"),
-      value: true,
+      value: false,
     },
     {
       id: 1,
@@ -83,6 +95,37 @@ export default function ProductScreen() {
     quantity: listFilter[0].value,
   };
 
+  const [dataInput, setDataInput] = useState<TProduct>({
+    productId: "",
+    productName: "",
+    groupId: "",
+    groupName: "",
+    image: "",
+    cost_price: null,
+    sell_price: null,
+    VAT: null,
+    note: "",
+  });
+
+  const [open, setOpen] = useState(false);
+
+  const dispatch = useDispatch();
+  const onDeleteMultiProduct = () => {
+    selectedRows.forEach(async (item) => {
+        await deleteData({ id: item, table: "Product" });
+        dispatch(deleteProduct({ productId: item }));
+        const URL = PRODUCT.find(x => x.productId === item).image
+        const refimg = ref(
+          storage,
+          URL
+        )
+        // Delete the file
+        deleteObject(refimg)
+      });
+      setOpen(false);
+      message.success(t("product.deleteProduct"));
+    };
+
   return (
     <div className="w-full">
       <div
@@ -110,7 +153,10 @@ export default function ProductScreen() {
 
           <ButtonComponent
             label={t("button.delete")}
-            onClick={() => alert("Button Clicked")}
+            onClick={() => {
+              console.log(selectedRows)
+              if (selectedRows.length > 0) setOpen(true);
+            }}
             backgroundColor={COLORS.checkbox_bg}
             style={{ marginInline: 12 }}
           />
@@ -141,6 +187,8 @@ export default function ProductScreen() {
               quantityAscending: sort === OPTIONS[2],
               quantityDescending: sort === OPTIONS[3],
             }}
+            selectedRows={selectedRows}
+            setSelectedRows={setSelectedRows}
             ref={productRef}
           />
         </div>
@@ -148,6 +196,14 @@ export default function ProductScreen() {
       <AddNewProduct
         openAddForm={openAddForm}
         setOpenAddForm={setOpenAddForm}
+        data={dataInput}
+        setData={setDataInput}
+      />
+
+      <AlertModal
+        open={open}
+        setOpen={setOpen}
+        onConfirm={onDeleteMultiProduct}
       />
     </div>
   );

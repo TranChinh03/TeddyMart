@@ -1,4 +1,4 @@
-import { Button, Space, Tooltip } from "antd";
+import { Button, Space, Tooltip, message } from "antd";
 import { t } from "i18next";
 import {
   ChangeEvent,
@@ -23,6 +23,23 @@ import { TListProduct } from "./BillTable";
 import ButtonComponent from "components/ButtonComponent";
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 import { deleteProduct } from "state_management/slices/productSlice";
+import AlertModal from "components/AlertModal";
+import { deleteData } from "controller/deleteData";
+import { storage } from "firebaseConfig";
+import { deleteObject, ref } from "firebase/storage";
+import AddNewProduct from "views/Product/components/AddNewProduct";
+export type Input = {
+  productId: string,
+  productName: string,
+  groupId: string,
+  groupName: string,
+  image: string,
+  cost_price: number,
+  sell_price: number,
+  VAT: number,
+  note: string,
+}
+
 
 type TContent = {
   productId: string;
@@ -73,6 +90,8 @@ type Props = {
   setProducts?: (products: TProduct[]) => void;
   data?: TProduct[];
   setData?: (data: TProduct[]) => void;
+  selectedRows?: string[];
+  setSelectedRows?: (selectedRows: string[]) => void;
 };
 const ProductTable = forwardRef<HTMLTableElement, Props>(
   (
@@ -81,6 +100,8 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
       warehouseName,
       productName,
       productGroup,
+      selectedRows,
+      setSelectedRows,
       sort,
       filterListProduct,
       isEditQuantity = false,
@@ -88,12 +109,27 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
       data,
       setData,
     }: Props,
-    ref
+    reference
   ) => {
     const { t } = useTranslation();
     const products = useSelector((state: RootState) => state.product);
     const warehouses = useSelector((state: RootState) => state.warehouseSlice);
     const dispatch = useDispatch();
+    const idSelected = useRef<string>("");
+    const [dataInput, setDataInput] = useState<TProduct>({
+      productId: "",
+      productName: "",
+      groupId: "",
+      groupName: "",
+      image: "",
+      cost_price: null,
+      sell_price: null,
+      VAT: null,
+      note: "",
+    });
+    const [open, setOpen] = useState(false);
+    const [openModalUpdate, setOpenModalUpdate] = useState(false);
+
     const productsFilter = useMemo(() => {
       if (data) return data;
       let listProducts: TProduct[] = [...products];
@@ -218,7 +254,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
         ].filter((value) => Boolean(value) !== false),
       [t, options]
     );
-    const [selectedRows, setSelectedRows] = useState([]);
+    // const [selectedRows, setSelectedRows] = useState([]);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const maxPages = useMemo(
@@ -261,9 +297,42 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
       setRowsPerPage(+e.target.value);
     };
     const onDeleteProduct = (productId: string) => {
-      console.log(productId);
-      dispatch(deleteProduct({ productId: productId }));
+      idSelected.current = productId;
+      setOpen(true);  
     };
+
+    const onUpdate = (product: TProduct) => {
+      setOpenModalUpdate(true);
+      setDataInput({
+        productId: product.productId,
+        productName: product.productName,
+        groupId: product.groupId,
+        groupName: product.groupName,
+        image: product.image,
+        cost_price: product.cost_price,
+        sell_price: product.sell_price,
+        VAT: product.VAT,
+        note: product.note,
+      })
+    }
+
+    const onConfirm = async () => {
+      await deleteData({ id: idSelected.current, table: "Product" });
+      dispatch(deleteProduct({ productId: idSelected.current }));
+
+      // // Create a reference to the file to delete
+      const URL = products.find(x => x.productId === idSelected.current).image
+
+      const refimg = ref(
+        storage,
+        URL
+      )
+      // Delete the file
+      deleteObject(refimg)
+      setOpen(false);
+      message.success(t("product.deleteProduct"));
+      };
+
     const onGetProducts = () => {
       let tmp = products.map((product) => {
         if (selectedRows.includes(product.productId))
@@ -310,7 +379,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
         <div className="max-h-96 overflow-y-auto visible">
           <table
             className="w-full border-collapse border border-gray-300 bg-gray-50"
-            ref={ref}
+            ref={reference}
           >
             <thead
               className="bg-gray-200 sticky left-0 z-50"
@@ -458,7 +527,9 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                       {options.activities && (
                         <td className="border border-gray-300 p-2 text-sm">
                           <div className="flex items-center gap-1 justify-center">
-                            <Button>
+                            <Button
+                              onClick={() => onUpdate(content)}
+                            >
                               <FiEdit />
                             </Button>
 
@@ -515,6 +586,14 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
             </Button>
           </div>
         </div>
+        <AlertModal open={open} setOpen={setOpen} onConfirm={onConfirm} />
+        <AddNewProduct
+            openAddForm={openModalUpdate}
+            setOpenAddForm={setOpenModalUpdate}
+            isAdd={false}
+            data={dataInput}
+            setData={setDataInput}
+        />
       </div>
     );
   }

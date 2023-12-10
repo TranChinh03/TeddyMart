@@ -162,7 +162,11 @@
     "productNameAZ": "Tên sản phẩm: A → Z",
     "productNameZA": "Tên sản phẩm: Z → A",
     "lastUpdateOldest": "Cập nhật lần cuối: Cũ nhất",
-    "lastUpdateNewest": "Cập nhật lần cuối: Mới nhất"
+    "lastUpdateNewest": "Cập nhật lần cuối: Mới nhất",
+    "deleteProduct": "Đã xóa sản phẩm!",
+    "addProduct": "Thêm sản phẩm thành công!",
+    "editProduct": "Sửa sản phẩm thành công!",
+    "existedProduct": "Sản phẩm đã tồn tại!"
   },
   "group": {
     "groupId": "Mã nhóm",
