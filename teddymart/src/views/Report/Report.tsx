@@ -11,6 +11,13 @@ import { useState, useEffect } from "react";
 import { COLORS } from "constants/colors";
 import { useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
+import { Button } from "antd";
+import { addDBPartnerTable } from "firebase-tools/addDbPartnerTable";
+import { addDbVoucherTable } from "firebase-tools/addDbVoucherTable";
+import { addDbGroupProduct } from "firebase-tools/addDbGroupProduct";
+import { addDBProduct } from "firebase-tools/addDbProduct";
+import { addDbWarehouse } from "firebase-tools/addDbWarehouse";
+import { addDbOrder } from "firebase-tools/addDbOrder";
 
 export default function ReportScreen() {
   const initialValue = {
@@ -140,6 +147,24 @@ export default function ReportScreen() {
       />
       <GeneralReport />
       <ProductReport />
+      <Button onClick={addDBPartnerTable}>
+        <h1>Add Partner Into Database</h1>
+      </Button>
+      <Button onClick={addDbVoucherTable}>
+        <h1>Add Voucher Into Database</h1>
+      </Button>
+      <Button onClick={addDbGroupProduct}>
+        <h1>Add Group Product Into Database</h1>
+      </Button>
+      <Button onClick={addDBProduct}>
+        <h1>Add Product Into Database</h1>
+      </Button>
+      <Button onClick={addDbWarehouse}>
+        <h1>Add warehouse Into Database</h1>
+      </Button>
+      <Button onClick={addDbOrder}>
+        <h1>Add Order Into Database</h1>
+      </Button>
     </div>
   );
 }

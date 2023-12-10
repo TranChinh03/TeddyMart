@@ -207,13 +207,13 @@ export const addDbOrder = () => {
       }
       console.log("data", data);
       await setDoc(
-        doc(db, "/Manager/0viI4onPd8eJkSC8QZxNUM9mPyX2/Orders", data.orderId),
+        doc(db, "/Manager/rzw0l4yjP7PiH2RQQL3aJJkFgSG2/Orders", data.orderId),
         data
       );
       await updateDoc(
         doc(
           db,
-          "/Manager/0viI4onPd8eJkSC8QZxNUM9mPyX2/Partner",
+          "/Manager/rzw0l4yjP7PiH2RQQL3aJJkFgSG2/Partner",
           partner.partnerId
         ),
         {

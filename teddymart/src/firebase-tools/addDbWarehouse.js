@@ -292,7 +292,7 @@ export const addDbWarehouse = () => {
     await setDoc(
       doc(
         db,
-        "/Manager/0viI4onPd8eJkSC8QZxNUM9mPyX2/Ware_House",
+        "/Manager/vNl8JhH0SjPUCJ7ZzlRbJPkXIx02/Ware_House",
         warehouse.warehouseId
       ),
       warehouse

@@ -57,7 +57,7 @@ export const addDbGroupProduct = async () => {
     await setDoc(
       doc(
         db,
-        "/Manager/0viI4onPd8eJkSC8QZxNUM9mPyX2/Group_Product",
+        "/Manager/vNl8JhH0SjPUCJ7ZzlRbJPkXIx02/Group_Product",
         gp.groupId
       ),
       gp
