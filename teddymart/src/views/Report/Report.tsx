@@ -7,7 +7,7 @@ import {
   ProductReport,
 } from "./components";
 import { useTranslation } from "react-i18next";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { COLORS } from "constants/colors";
 import { useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
@@ -85,8 +85,9 @@ export default function ReportScreen() {
       color: COLORS.seaBlue,
     },
   ]);
-  useEffect(() => {
-    let tmp = initialValue;
+
+  const DATA: TReport = useMemo(() => {
+    let tmp: TReport = initialValue;
     REPORTS?.byDate?.forEach((r, i) => {
       if (
         new Date(r.date).getTime() >= new Date(time.from).getTime() &&
@@ -100,7 +101,7 @@ export default function ReportScreen() {
         tmp.exportOrder += r.exportOrder;
       }
     });
-    setGeneral(tmp);
+    return tmp;
   }, [REPORTS, time.from, time.to]);
 
   const onClickCard = (name: string) => {
@@ -128,7 +129,7 @@ export default function ReportScreen() {
               onClick={() => onClickCard(card.name)}
               selected={card.selected}
               color={card.color}
-              amount={Number(general[card.name])}
+              amount={Number(DATA[card.name])}
             />
           );
         })}
