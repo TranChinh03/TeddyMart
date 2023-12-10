@@ -110,7 +110,7 @@ function Chart({ time, options }: Props) {
       });
     }
     return tmp.reverse();
-  }, [time, REPORTS, gap]);
+  }, [time.from, time.to, REPORTS, gap]);
 
   const tickFormat = useCallback(
     (tick: Date) => {

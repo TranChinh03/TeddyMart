@@ -135,8 +135,8 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
       let tmp: TRProduct[] = [];
       PRODUCTS.forEach((p) => {
         if (
-          new Date(p.date).getTime() > date.from.getTime() &&
-          new Date(p.date).getTime() < date.to.getTime()
+          new Date(p.date).getTime() >= date.from.getTime() &&
+          new Date(p.date).getTime() <= date.to.getTime()
         ) {
           if (tmp.length === 0) {
             tmp = [...p.products];
@@ -161,7 +161,7 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
       //   return tmp.filter((t) => t.productName.includes(search));
       // }
       return tmp;
-    }, [PRODUCTS, date, search]);
+    }, [PRODUCTS, date.from, date.to, search]);
     //const data: TRProduct[] = [];
     // console.log("DATA", data);
     // console.log("PRODUCT", PRODUCTS);

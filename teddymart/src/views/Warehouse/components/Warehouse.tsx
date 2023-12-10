@@ -48,10 +48,7 @@ export default function Warehouse() {
             />
           </div>
           <div className="flex">
-            <BtnExport 
-              fileName="Sheet1" 
-              sheet="sheet1" 
-              tableRef={excelRef} />
+            <BtnExport fileName="Sheet1" sheet="sheet1" tableRef={excelRef} />
           </div>
         </div>
         <div className="flex flex-wrap mt-5 w-full justify-between items-end">
@@ -82,7 +79,7 @@ export default function Warehouse() {
             quantityAscending: sort === OPTIONS[2],
             quantityDescending: sort === OPTIONS[3],
           }}
-          productName={productName}
+          //productName={productName}
           ref={excelRef}
         />
       </div>

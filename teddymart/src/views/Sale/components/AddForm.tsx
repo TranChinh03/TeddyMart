@@ -131,11 +131,10 @@ const AddForm = ({
     setProductMenu([]);
     setSelectedRows([]);
     message.success("Add Order Success");
-
     setOpenAddForm(false);
     dispatch({ type: ADD_ORDER, payload: data });
   };
-  console.log(productMenu);
+  //console.log(productMenu);
   return (
     <Modal
       title={<h1 className="text-2xl">{t("sale.addNewOrder")}</h1>}
@@ -294,10 +293,8 @@ const AddForm = ({
           <h1 className=" text-base font-medium">{t("sale.discount")}:</h1>
           <h1 className=" text-base italic">{discount}</h1>
 
-          <Tooltip title="Total Payment = Payment * ( 1- Discount )">
-            <h1 className=" text-base font-medium">
-              {t("sale.totalPayment")}:
-            </h1>
+          <Tooltip title={t("sale.tooltipPayment")}>
+            <h1 className=" text-base font-medium">{t("sale.totalPrice")}:</h1>
           </Tooltip>
           <input
             className=" text-base italic"

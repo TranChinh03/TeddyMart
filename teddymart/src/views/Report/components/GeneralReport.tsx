@@ -8,9 +8,12 @@ import { useTranslation } from "react-i18next";
 import { LiaFileExcel } from "react-icons/lia";
 export default function GeneralReport() {
   const { t } = useTranslation();
+  const y = new Date().getFullYear();
+  const m = new Date().getMonth();
+  const d = new Date().getDate();
   const [date, setDate] = useState<D>({
-    from: new Date(),
-    to: new Date(),
+    from: new Date(y, m, d, 0, 0, 0, 0),
+    to: new Date(y, m, d, 0, 0, 0, 0),
   });
   const reportRef = useRef(null);
   return (
@@ -28,14 +31,6 @@ export default function GeneralReport() {
         </div>
         <div className="w-full py-2 px-3 flex items-center justify-between flex-wrap">
           <ModalSelectDate setResult={setDate} width={"90%"} />
-
-          {/* <ButtonComponent
-            onClick={() => {}}
-            label={t("button.exportReport")}
-            backgroundColor={COLORS.mediumBlack}
-            color={COLORS.defaultWhite}
-            iconLeft={<LiaFileExcel size={20} color="white" />}
-          /> */}
           <BtnExport
             fileName={t("drawer.report")}
             sheet="sheet1"

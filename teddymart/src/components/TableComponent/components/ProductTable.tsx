@@ -1,14 +1,6 @@
 import { Button, Space, Tooltip } from "antd";
 import { t } from "i18next";
-import {
-  ChangeEvent,
-  forwardRef,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, forwardRef, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import {
@@ -20,8 +12,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { TListProduct } from "./BillTable";
-import ButtonComponent from "components/ButtonComponent";
-import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 import { deleteProduct } from "state_management/slices/productSlice";
 
 type TContent = {
@@ -173,7 +163,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
 
           return;
         });
-        console.log("list Product", tmp);
+        //console.log("list Product", tmp);
         listProducts = tmp.filter((value) => value !== undefined);
       }
 
@@ -214,7 +204,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
           options.productImage && t("product.productImage"),
           options.sell_price && t("product.sell_price"),
           options.costPrice && t("product.costPrice"),
-          options.totalPrice && t("sale.totalPayment"),
+          options.totalPrice && t("sale.totalPrice"),
           options.VAT && t("product.VAT"),
           options.note && t("note"),
           options.activities && t("activities"),
@@ -260,7 +250,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
           return;
         }
       }
-      if (selectedRows.includes(rowId)) {
+      if (selectedRows?.includes(rowId)) {
         setSelectedRows([...selectedRows.filter((id) => id !== rowId)]);
         if (data) setData([...data.filter((item) => item.productId !== rowId)]);
 
@@ -278,7 +268,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     };
     const onGetProducts = () => {
       let tmp = products.map((product) => {
-        if (selectedRows.includes(product.productId))
+        if (selectedRows?.includes(product.productId))
           return {
             ...product,
             quantity: 0,
@@ -362,7 +352,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                           type="checkbox"
                           onChange={() => handleCheckBoxChange(content)}
                           checked={
-                            selectedRows.includes(content?.productId ?? "")
+                            selectedRows?.includes(content?.productId ?? "")
                               ? true
                               : false
                           }
@@ -381,11 +371,12 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                       )}
                       {options.quantity && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {selectedRows.includes(content.productId) &&
+                          {selectedRows?.includes(content.productId) &&
                           isEditQuantity ? (
                             <input
                               type="number"
                               inputMode="numeric"
+                              min="1"
                               max={content?.quantity}
                               style={{ textAlign: "center", maxWidth: 100 }}
                               placeholder="0"
@@ -441,16 +432,16 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                       )}
 
                       {options.price && (
-                        <Tooltip title="Price = Sell price * (1+VAT)">
+                        <Tooltip title={t("sale.tooltipPrice")}>
                           <td className="border border-gray-300 p-2 text-sm ">
                             {content?.price}
                           </td>
                         </Tooltip>
                       )}
                       {options.totalPrice && (
-                        <Tooltip title="Total Price = Price * Quantity">
+                        <Tooltip title={t("sale.tooltipTotalPrice")}>
                           <td className="border border-gray-300 p-2 text-sm">
-                            {selectedRows.includes(content.productId)
+                            {selectedRows?.includes(content.productId)
                               ? getQuantity(content.productId) *
                                 content.cost_price
                               : content?.totalPrice ?? 0}

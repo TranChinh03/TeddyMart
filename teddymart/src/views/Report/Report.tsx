@@ -148,7 +148,7 @@ export default function ReportScreen() {
       />
       <GeneralReport />
       <ProductReport />
-      <Button onClick={addDBPartnerTable}>
+      {/* <Button onClick={addDBPartnerTable}>
         <h1>Add Partner Into Database</h1>
       </Button>
       <Button onClick={addDbVoucherTable}>
@@ -165,7 +165,7 @@ export default function ReportScreen() {
       </Button>
       <Button onClick={addDbOrder}>
         <h1>Add Order Into Database</h1>
-      </Button>
+      </Button> */}
     </div>
   );
 }
