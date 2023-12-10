@@ -5,7 +5,7 @@ const orderSlice = createSlice({
   initialState: [],
   reducers: {
     addNewOrder: (state: TOrder[], action: PayloadAction<TOrder>) => {
-      state.push(action.payload);
+      state.unshift(action.payload);
     },
     uploadOrder: (state: TOrder[], action: PayloadAction<TOrder[]>) => {
       return [...action.payload];

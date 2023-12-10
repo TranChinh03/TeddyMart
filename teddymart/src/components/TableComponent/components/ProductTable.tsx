@@ -65,6 +65,7 @@ type Props = {
   setProducts?: (products: TProduct[]) => void;
   data?: TProduct[];
   setData?: (data: TProduct[]) => void;
+  isExport?: boolean;
 };
 const ProductTable = forwardRef<HTMLTableElement, Props>(
   (
@@ -81,6 +82,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
       setProducts,
       data,
       setData,
+      isExport = true,
     }: Props,
     ref
   ) => {
@@ -107,14 +109,22 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
           let tmp = listProducts.findIndex(
             (warehouse) => warehouse.productId === value.productId
           );
-          console.log(value);
+          //console.log(value);
           if (tmp > -1)
-            return {
-              ...value,
-              cost_price: listProducts[tmp].cost_price,
-              totalPrice: value.quantity * listProducts[tmp].cost_price, //????
-              note: listProducts[tmp].note,
-            };
+            if (isExport) {
+              return {
+                ...value,
+                sell_price: listProducts[tmp].sell_price,
+                totalPrice: value.quantity * listProducts[tmp].sell_price, //????
+                note: listProducts[tmp].note,
+              };
+            }
+          return {
+            ...value,
+            cost_price: listProducts[tmp].cost_price,
+            totalPrice: value.quantity * listProducts[tmp].cost_price, //????
+            note: listProducts[tmp].note,
+          };
         });
         listProducts = [...productFilterProductTable];
       }
@@ -240,7 +250,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
           ]);
           if (data)
             setData([
-              ...productsFilter.map((product) => ({ ...product, quantity: 0 })),
+              ...productsFilter.map((product) => ({ ...product, quantity: 1 })),
             ]);
           return;
         }
@@ -257,7 +267,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
         return;
       }
       setSelectedRows([...selectedRows, rowId]);
-      if (data) setData([...data, { ...product, quantity: 0 }]);
+      if (data) setData([...data, { ...product, quantity: 1 }]);
     };
     const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
       setRowsPerPage(+e.target.value);
@@ -271,7 +281,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
         if (selectedRows?.includes(product.productId))
           return {
             ...product,
-            quantity: 0,
+            quantity: 1,
           };
       });
       setProducts?.(tmp.filter((product) => product !== undefined));
@@ -321,13 +331,16 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
               style={{ top: -1 }}
             >
               <tr>
-                <th className="border border-gray-300 p-2 text-xs">
-                  <input
-                    className="w-15 h-15 bg-hover"
-                    type="checkbox"
-                    onChange={() => handleCheckBoxChange(null)}
-                  />
-                </th>
+                {selectedRows !== undefined && (
+                  <th className="border border-gray-300 p-2 text-xs">
+                    <input
+                      className="w-15 h-15 bg-hover"
+                      type="checkbox"
+                      onChange={() => handleCheckBoxChange(null)}
+                    />
+                  </th>
+                )}
+
                 {HEADER.map((header, index) => (
                   <th
                     key={index}
@@ -340,25 +353,29 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
             </thead>
             <tbody className="text-center">
               {productsFilter.map((content, index) => {
+                const displayPrice = isExport
+                  ? content.sell_price
+                  : content.cost_price;
                 if (
                   index < currentPage * rowsPerPage &&
                   index >= (currentPage - 1) * rowsPerPage
                 )
                   return (
                     <tr key={index}>
-                      <td className="border border-gray-300 p-2">
-                        <input
-                          className="w-15 h-15 bg-hover"
-                          type="checkbox"
-                          onChange={() => handleCheckBoxChange(content)}
-                          checked={
-                            selectedRows?.includes(content?.productId ?? "")
-                              ? true
-                              : false
-                          }
-                        />
-                      </td>
-
+                      {selectedRows !== undefined && (
+                        <td className="border border-gray-300 p-2">
+                          <input
+                            className="w-15 h-15 bg-hover"
+                            type="checkbox"
+                            onChange={() => handleCheckBoxChange(content)}
+                            checked={
+                              selectedRows?.includes(content?.productId ?? "")
+                                ? true
+                                : false
+                            }
+                          />
+                        </td>
+                      )}
                       {options.productId && (
                         <td className="border border-gray-300 p-2 text-sm">
                           {content?.productId}
@@ -427,7 +444,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
 
                       {options.costPrice && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content.cost_price ?? 0}
+                          {displayPrice}
                         </td>
                       )}
 
@@ -442,8 +459,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                         <Tooltip title={t("sale.tooltipTotalPrice")}>
                           <td className="border border-gray-300 p-2 text-sm">
                             {selectedRows?.includes(content.productId)
-                              ? getQuantity(content.productId) *
-                                content.cost_price
+                              ? getQuantity(content.productId) * displayPrice
                               : content?.totalPrice ?? 0}
                           </td>
                         </Tooltip>

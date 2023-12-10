@@ -83,6 +83,12 @@ const AddForm = ({
     return customer;
   }, [searchCustomer]);
   const sum = useMemo(() => {
+    if (typeAdd === "Export") {
+      return productMenu.reduce(
+        (pre, cur) => pre + cur.sell_price * cur.quantity,
+        0
+      );
+    }
     return productMenu.reduce(
       (pre, cur) => pre + cur.cost_price * cur.quantity,
       0
@@ -243,6 +249,7 @@ const AddForm = ({
             isEditQuantity={true}
             selectedRows={selectedRows}
             setSelectedRows={setSelectedRows}
+            isExport={typeAdd === "Export"}
           />
         </div>
       </Card>

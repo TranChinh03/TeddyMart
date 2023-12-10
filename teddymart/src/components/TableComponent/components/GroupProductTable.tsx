@@ -148,7 +148,6 @@ const GroupProductTable = ({
     setRowsPerPage(+e.target.value);
   };
 
-
   const onUpdate = (group: TGroupProduct) => {
     setOpenModalUpdate(true);
     setDataInput({
@@ -162,31 +161,32 @@ const GroupProductTable = ({
 
   const onDelete = (id: string) => {
     idSelected.current = id;
-    setOpen(true)
-  }
-
+    setOpen(true);
+  };
 
   const onConfirm = async () => {
     await deleteData({ id: idSelected.current, table: "Group_Product" });
-      dispatch(deleteGroupProduct(GROUP.find(x => x.groupId === idSelected.current)));
-      PRODUCT.forEach(async (product) => {
-        if (product.groupId === idSelected.current) {
-          await updateData({
-            data: { ...product, groupId: "", groupName: "" },
-            table: "Group_Product",
-            id: product.productId,
-          });
-          dispatch(
-            updateProduct({
-              currentProduct: product,
-              newProduct: { ...product, groupId: "", groupName: "" },
-            })
-          );
-        }
-      })
-      setOpen(false);
-      message.success(t("group.deletedGroup"));
-    }
+    dispatch(
+      deleteGroupProduct(GROUP.find((x) => x.groupId === idSelected.current))
+    );
+    PRODUCT.forEach(async (product) => {
+      if (product.groupId === idSelected.current) {
+        await updateData({
+          data: { ...product, groupId: "", groupName: "" },
+          table: "Group_Product",
+          id: product.productId,
+        });
+        dispatch(
+          updateProduct({
+            currentProduct: product,
+            newProduct: { ...product, groupId: "", groupName: "" },
+          })
+        );
+      }
+    });
+    setOpen(false);
+    message.success(t("group.deletedGroup"));
+  };
 
   return (
     <div className="w-full">
@@ -252,16 +252,19 @@ const GroupProductTable = ({
                       </td>
                     )}
 
-                    <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                      <Button 
-                        className="mr-2"
-                        onClick={() => onUpdate(content)}>
-                        <FiEdit />
-                      </Button>
+                    <td className="border border-gray-300 p-2 text-sm">
+                      <div className="flex items-center gap-1 justify-center">
+                        <Button
+                          className="mr-2"
+                          onClick={() => onUpdate(content)}
+                        >
+                          <FiEdit />
+                        </Button>
 
-                      <Button onClick={() => onDelete(content.groupId)}>
-                        <FiTrash color="red" />
-                      </Button>
+                        <Button onClick={() => onDelete(content.groupId)}>
+                          <FiTrash color="red" />
+                        </Button>
+                      </div>
                     </td>
                   </tr>
                 );
@@ -270,16 +273,14 @@ const GroupProductTable = ({
         </table>
       </div>
       <div className="w-full text-left my-5 flex row justify-end pr-10 items-center ">
-        <span className="text-sm mr-4 text-gray-400 ">Số mục mỗi trang:</span>
+        <span className="text-sm mr-4 text-gray-400 ">{t("rowsPerPage")}</span>
         <select
           value={rowsPerPage}
           onChange={handleRowsPerPageChange}
           className=" bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:bg-white "
         >
           <option value="10">10</option>
-          <option value="20" selected>
-            20
-          </option>
+          <option value="20">20</option>
           <option value="50">50</option>
         </select>
 
