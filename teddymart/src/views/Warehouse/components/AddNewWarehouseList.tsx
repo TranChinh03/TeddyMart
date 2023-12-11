@@ -93,12 +93,14 @@ export default function AddNewWarehouseList({
       dispatch(addNewWarehouse(newData));
       addData({ data: newData, table: "Ware_House", id: warehouseId });
       message.success(t("warehouse.addSuccess"));
+      setOpenAddNewWarehouse(false);
     } else {
       dispatch(
         updateWarehouse({ warehouseId: data.warehouseId, updatedData: data })
       );
       await updateData({ data: data, table: "Partner", id: data.warehouseId });
       message.success(t("warehouse.updateSuccess"));
+      setOpenAddNewWarehouse(false);
     }
 
     setData({
@@ -114,7 +116,7 @@ export default function AddNewWarehouseList({
       open={openAddNewWarehouse}
       onCancel={() => setOpenAddNewWarehouse(false)}
       footer={false}
-      title={<h1 className="text-2xl">{t("warehouse.addNewWarehouse")}</h1>}
+      title={<h1 className="text-2xl">{isAdd ? t("warehouse.addNewWarehouse") : "Update Warehouse"}</h1>}
       width={"60%"}
     >
       <div className="border hidden md:flex border-gray-100"></div>
