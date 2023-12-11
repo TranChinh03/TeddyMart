@@ -23,6 +23,9 @@ import { deleteOrder } from "state_management/slices/orderSlice";
 import ProductTable from "./ProductTable";
 import { forwardRef } from "react";
 import { deleteOrderFirebase } from "utils/appUtils";
+import DropdownComponent from "components/DropdownComponent";
+import TextComponent from "components/TextComponent";
+import { Popover } from "antd";
 type TStatus = "unpaid" | "paid";
 const COLOR_STATUS = new Map([
   ["unpaid", "#FF0000"],
@@ -74,6 +77,7 @@ type Props = {
   sort?: number;
   type: "Import" | "Export";
   setOpenAlertModal?: (openAlertModal: boolean) => void;
+  setOpenEdit?: (openEdit: boolean) => void;
 };
 const BillTable = forwardRef<HTMLTableElement, Props>(
   (
@@ -86,8 +90,8 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
       search,
       sort,
       setOpenAlertModal,
-
       type = "Export",
+      setOpenEdit,
     }: Props,
     ref
   ) => {
@@ -415,7 +419,37 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
                           className="border border-gray-300 p-2 font-[500] text-sm"
                           style={{ color: COLOR_STATUS.get(content.status) }}
                         >
-                          {content.status}
+                          {selectedRows?.includes(content.orderId) &&
+                          content.status === "unpaid" ? (
+                            <Popover
+                              placement="bottom"
+                              content={
+                                <Button
+                                  onClick={() => {
+                                    setOpenEdit(true);
+                                    setSelectedRows([content.orderId]);
+                                  }}
+                                >
+                                  <div style={{ color: "#008000" }}>paid</div>
+                                </Button>
+                              }
+                            >
+                              <Button style={{ color: "#FF0000" }}>
+                                {content.status}
+                              </Button>
+                            </Popover>
+                          ) : (
+                            // <DropdownComponent
+                            //   value={content.status}
+                            //   options={["paid", "unpaid"]}
+                            //   setValue={() => {
+                            //     setOpenEdit(true);
+                            //     setSelectedRows([content.orderId]);
+                            //   }}
+                            //   width="10%"
+                            // />
+                            content.status
+                          )}
                         </td>
                       )}
                       {options.note && (

@@ -32,6 +32,7 @@ const addData = async ({ data, table, id }: params) => {
 
 const updateData = async ({ data, table, id }: params) => {
   let userId = window.localStorage.getItem("USER_ID");
+  console.log("OKKK");
   await updateDoc(doc(db, `/Manager/${userId}/${table}`, id), data)
     .then(() => {
       console.log(">>>>>>>>>> Update Data >>>>>>>>>>");

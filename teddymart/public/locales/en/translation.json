@@ -328,6 +328,7 @@
   "rowsPerPage": "Number of rows per page: ",
   "alertTitle": "Are you sure?",
   "alertContent": "Confirm you will delete this section from the system!",
+  "warningSave": "Do you want to save status of order?",
   "header": {
     "sale": "Sale",
     "product": "Product",

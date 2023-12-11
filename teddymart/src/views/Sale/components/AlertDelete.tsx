@@ -9,11 +9,13 @@ type Props = {
   openAlertModal: boolean;
   setOpenAlertModal: (openAlertModal: boolean) => void;
   onDelete: () => void;
+  title?: string;
 };
 const AlertDelete = ({
   openAlertModal,
   setOpenAlertModal,
   onDelete,
+  title,
 }: Props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -25,12 +27,22 @@ const AlertDelete = ({
     >
       <div className="flex justify-center items-center flex-col">
         <IoAlertCircleOutline size={128} color="#F5BC89" />
-        <h1 className=" font-medium" style={{ color: "#9A9A9A", fontSize: 36 }}>
-          {t("alertTitle")}
-        </h1>
-        <h1 style={{ color: "#3E3C3C", fontSize: 24, textAlign: "center" }}>
-          {t("alertContent")}
-        </h1>
+        {!title ? (
+          <>
+            <h1
+              className=" font-medium"
+              style={{ color: "#9A9A9A", fontSize: 36 }}
+            >
+              {t("alertTitle")}
+            </h1>
+            <h1 style={{ color: "#3E3C3C", fontSize: 24, textAlign: "center" }}>
+              {t("alertContent")}
+            </h1>
+          </>
+        ) : (
+          <div>{title}</div>
+        )}
+
         <Space className="my-4">
           <ButtonComponent
             label={t("button.confirm")}

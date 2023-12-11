@@ -15,6 +15,7 @@ import {
 } from "antd";
 import Search, { SearchProps } from "antd/es/input/Search";
 import {
+  AlertModal,
   ButtonComponent,
   ListCheckBox,
   ModalSelectDate,
@@ -49,6 +50,7 @@ import { RootState } from "state_management/reducers/rootReducer";
 import {
   deleteMultiOrder,
   deleteOrder,
+  updateOrder,
 } from "state_management/slices/orderSlice";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import AddForm from "./components/AddForm";
@@ -57,8 +59,9 @@ import AlertDelete from "./components/AlertDelete";
 import { BtnExport } from "components";
 import { deleteOrderFirebase } from "utils/appUtils";
 import addNotification from "react-push-notification";
-import { DELETE_ORDER } from "state_management/actions/actions";
+import { DELETE_ORDER, UPDATE_ORDER } from "state_management/actions/actions";
 import { updateProductWarehouse } from "state_management/slices/warehouseSlice";
+import { updateData } from "controller/addData";
 const { RangePicker } = DatePicker;
 const CUS_INFO = {
   customerName: "NVA",
@@ -79,6 +82,7 @@ export default function SaleScreen() {
   const { userId } = useSelector((state: RootState) => state.manager);
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const [openEdit, setOpenEdit] = useState(false);
   const initialFilter = useMemo(
     () => [
       {
@@ -163,7 +167,29 @@ export default function SaleScreen() {
     setSelectedRows([]);
   };
   const orderRef = useRef(null);
-
+  const onConfirm = async () => {
+    if (selectedRows.length !== 0) {
+      const tmp = ORDERS.find((o) => o.orderId === selectedRows[0]);
+      if (tmp.status === "unpaid") {
+        const newData: TOrder = {
+          ...tmp,
+          status: "paid",
+          totalPayment: tmp.payment,
+          debt: 0,
+        };
+        await updateData({ data: newData, table: "Orders", id: tmp.orderId });
+        dispatch(
+          updateOrder({
+            currentOrder: tmp,
+            newOrder: newData,
+          })
+        );
+        setSelectedRows([]);
+        setOpenEdit(false);
+        dispatch({ type: UPDATE_ORDER, payload: tmp });
+      }
+    }
+  };
   return (
     <div className="w-full">
       {/*Body */}
@@ -248,6 +274,7 @@ export default function SaleScreen() {
             setOpenAlertModal={setOpenAlertModal}
             ref={orderRef}
             type="Export"
+            setOpenEdit={setOpenEdit}
           />
         </Space>
       </body>
@@ -267,6 +294,12 @@ export default function SaleScreen() {
         openAlertModal={openAlertModal}
         setOpenAlertModal={setOpenAlertModal}
         onDelete={onDelete}
+      />
+      <AlertModal
+        open={openEdit}
+        setOpen={setOpenEdit}
+        onConfirm={onConfirm}
+        title={t("warningSave")}
       />
     </div>
   );

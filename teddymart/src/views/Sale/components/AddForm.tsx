@@ -116,10 +116,10 @@ const AddForm = ({
       orderId: orderId,
       partnerId: customerInfo.partnerId,
       partnerName: customerInfo.partnerName,
-      payment: +payment,
+      payment: sum, ///
       seller: "TeddyMart",
-      status: +payment > 0 ? "paid" : "unpaid",
-      totalPayment: sum,
+      status: +payment === sum ? "paid" : "unpaid",
+      totalPayment: +payment, ///
       type: typeAdd,
       voucherId: voucherId,
       receiver: "TeddyMart",
@@ -142,6 +142,8 @@ const AddForm = ({
     message.success("Add Order Success");
     setOpenAddForm(false);
     dispatch({ type: ADD_ORDER, payload: data });
+    setPayment("");
+    setVoucher("");
   };
 
   return (

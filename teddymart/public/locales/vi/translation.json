@@ -320,6 +320,7 @@
   "fillData": "Bạn vui lòng điền đầy đủ các trường thông tin bắt buộc!",
   "alertTitle": "Bạn có chắc chắn?",
   "alertContent": "Xác nhận rằng bạn sẽ xóa mục này ra khỏi hệ thống",
+  "warningSave": "Bạn có muốn lưu lại trạng thái của đơn hàng",
   "header": {
     "sale": "Đơn hàng",
     "product": "Sản phẩm",

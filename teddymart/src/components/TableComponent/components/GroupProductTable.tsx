@@ -107,7 +107,7 @@ const GroupProductTable = ({
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const maxPages = useMemo(
     () => Math.round(data.length / rowsPerPage),
-    [rowsPerPage]
+    [rowsPerPage, data.length]
   );
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -140,7 +140,6 @@ const GroupProductTable = ({
     setSelectedRows([...selectedRows, rowId]);
   };
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    console.log("okkkkk");
     setRowsPerPage(+e.target.value);
   };
 

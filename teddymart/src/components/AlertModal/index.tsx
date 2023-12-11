@@ -7,15 +7,27 @@ type Props = {
   open: boolean;
   setOpen: (value: boolean) => void;
   onConfirm?: () => void;
+  title?: string;
 };
-export default function AlertModal({ open, setOpen, onConfirm }: Props) {
+export default function AlertModal({ open, setOpen, onConfirm, title }: Props) {
   const { t } = useTranslation();
   return (
     <Modal open={open} onCancel={() => setOpen(false)} footer={false}>
       <div className="flex items-center justify-center flex-col">
         <AiOutlineExclamationCircle size={100} color={COLORS.darkYellow} />
-        <div className="text-2xl text-extra_gray my-2">{t("alertTitle")}</div>
-        <div className="text-sm text-extra_gray my-2">{t("alertContent")}</div>
+        {!title ? (
+          <>
+            <div className="text-2xl text-extra_gray my-2">
+              {t("alertTitle")}
+            </div>
+            <div className="text-sm text-extra_gray my-2">
+              {t("alertContent")}
+            </div>
+          </>
+        ) : (
+          <div className="text-sm text-extra_gray my-2">{title}</div>
+        )}
+
         <div className="flex items-center justify-center my-2">
           <ButtonComponent
             onClick={onConfirm}

@@ -43,6 +43,7 @@ export default function ProductScreen() {
     t("product.productPriceDown"),
     t("product.productPriceUp"),
   ];
+
   const [sort, setSort] = useState(OPTIONS[0]);
   const [openAddForm, setOpenAddForm] = useState(false);
   const [listFilter, setListFilter] = useState([

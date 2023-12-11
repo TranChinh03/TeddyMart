@@ -20,10 +20,8 @@ const generateReport = (data: TOrder[]) => {
     if (!report.has(new Date(d.createdAt).toDateString())) {
       report.set(new Date(d.createdAt).toDateString(), {
         date: new Date(d.createdAt),
-        outcome:
-          d.type === "Import" && d.status === "paid" ? d.totalPayment : 0,
-        revenue:
-          d.type === "Export" && d.status === "paid" ? d.totalPayment : 0,
+        outcome: d.type === "Import" && d.totalPayment > 0 ? d.totalPayment : 0,
+        revenue: d.type === "Export" && d.totalPayment > 0 ? d.totalPayment : 0,
         numberOfOrder: 1,
         importOrder: d.type === "Import" ? 1 : 0,
       });
@@ -32,11 +30,11 @@ const generateReport = (data: TOrder[]) => {
       report.set(new Date(d.createdAt).toDateString(), {
         date: new Date(d.createdAt),
         outcome:
-          d.type === "Import" && d.status === "paid"
+          d.type === "Import" && d.totalPayment > 0
             ? tmp.outcome + d.totalPayment
             : tmp.outcome,
         revenue:
-          d.type === "Export" && d.status === "paid"
+          d.type === "Export" && d.totalPayment > 0
             ? tmp.revenue + d.totalPayment
             : tmp.revenue,
         numberOfOrder: tmp.numberOfOrder + 1,
@@ -63,9 +61,9 @@ const generateReport = (data: TOrder[]) => {
             d.createdAt
           ).getFullYear()}`,
           outcome:
-            d.type === "Import" && d.status === "paid" ? d.totalPayment : 0,
+            d.type === "Import" && d.totalPayment > 0 ? d.totalPayment : 0,
           revenue:
-            d.type === "Export" && d.status === "paid" ? d.totalPayment : 0,
+            d.type === "Export" && d.totalPayment > 0 ? d.totalPayment : 0,
           numberOfOrder: 1,
           importOrder: d.type === "Import" ? 1 : 0,
         }
@@ -85,11 +83,11 @@ const generateReport = (data: TOrder[]) => {
             d.createdAt
           ).getFullYear()}`,
           outcome:
-            d.type === "Import" && d.status === "paid"
+            d.type === "Import" && d.totalPayment > 0
               ? tmp.outcome + d.totalPayment
               : tmp.outcome,
           revenue:
-            d.type === "Export" && d.status === "paid"
+            d.type === "Export" && d.totalPayment > 0
               ? tmp.revenue + d.totalPayment
               : tmp.revenue,
           numberOfOrder: tmp.numberOfOrder + 1,
@@ -103,10 +101,8 @@ const generateReport = (data: TOrder[]) => {
     if (!reportByYear.has(`${new Date(d.createdAt).getFullYear()}`)) {
       reportByYear.set(`${new Date(d.createdAt).getFullYear()}`, {
         date: `${new Date(d.createdAt).getFullYear()}`,
-        outcome:
-          d.type === "Import" && d.status === "paid" ? d.totalPayment : 0,
-        revenue:
-          d.type === "Export" && d.status === "paid" ? d.totalPayment : 0,
+        outcome: d.type === "Import" && d.totalPayment > 0 ? d.totalPayment : 0,
+        revenue: d.type === "Export" && d.totalPayment > 0 ? d.totalPayment : 0,
         numberOfOrder: 1,
         importOrder: d.type === "Import" ? 1 : 0,
       });
@@ -115,11 +111,11 @@ const generateReport = (data: TOrder[]) => {
       reportByYear.set(`${new Date(d.createdAt).getFullYear()}`, {
         date: `${new Date(d.createdAt).getFullYear()}`,
         outcome:
-          d.type === "Import" && d.status === "paid"
+          d.type === "Import" && d.totalPayment > 0
             ? tmp.outcome + d.totalPayment
             : tmp.outcome,
         revenue:
-          d.type === "Export" && d.status === "paid"
+          d.type === "Export" && d.totalPayment > 0
             ? tmp.revenue + d.totalPayment
             : tmp.revenue,
         numberOfOrder: tmp.numberOfOrder + 1,
