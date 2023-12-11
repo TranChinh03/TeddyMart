@@ -1,5 +1,11 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { RESET_ALL_STORES } from "state_management/actions/actions";
+import { updateData } from "controller/addData";
+import {
+  ADD_ORDER,
+  DELETE_ORDER,
+  RESET_ALL_STORES,
+  UPDATE_ORDER,
+} from "state_management/actions/actions";
 const partnerSlice = createSlice({
   name: "partnerSlice",
   initialState: [],
@@ -35,6 +41,66 @@ const partnerSlice = createSlice({
     builder.addCase(RESET_ALL_STORES, (state: TPartner[]) => {
       return [];
     });
+    builder.addCase(
+      ADD_ORDER,
+      (state: TPartner[], action: PayloadAction<TOrder>) => {
+        const order = action.payload;
+        const index = state.findIndex((s) => s.partnerId === order.partnerId);
+        if (index !== -1) {
+          state[index].totalBuyAmount += order.totalPayment;
+          state[index].debt += order.debt;
+          updateData({
+            data: {
+              ...state[index],
+              totalBuyAmount: state[index].totalBuyAmount + order.totalPayment,
+              debt: state[index].debt + order.debt,
+            },
+            table: "Partner",
+            id: state[index].partnerId,
+          });
+        }
+      }
+    );
+    builder.addCase(
+      DELETE_ORDER,
+      (state: TPartner[], action: PayloadAction<TOrder>) => {
+        const order = action.payload;
+        const index = state.findIndex((s) => s.partnerId === order.partnerId);
+        if (index !== -1) {
+          state[index].debt -= order.debt;
+          state[index].totalBuyAmount -= order.totalPayment;
+          updateData({
+            data: {
+              ...state[index],
+              totalBuyAmount: state[index].totalBuyAmount - order.totalPayment,
+              debt: state[index].debt - order.debt,
+            },
+            table: "Partner",
+            id: state[index].partnerId,
+          });
+        }
+      }
+    );
+    builder.addCase(
+      UPDATE_ORDER,
+      (state: TPartner[], action: PayloadAction<TOrder>) => {
+        const order = action.payload;
+        const index = state.findIndex((s) => s.partnerId === order.partnerId);
+        if (index !== -1) {
+          state[index].debt = 0;
+          state[index].totalBuyAmount += order.totalPayment;
+          updateData({
+            data: {
+              ...state[index],
+              totalBuyAmount: state[index].totalBuyAmount + order.totalPayment,
+              debt: 0,
+            },
+            table: "Partner",
+            id: state[index].partnerId,
+          });
+        }
+      }
+    );
   },
 });
 
