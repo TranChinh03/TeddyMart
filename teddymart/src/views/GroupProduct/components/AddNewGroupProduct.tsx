@@ -128,7 +128,7 @@ export default function AddNewGroupProduct ({
 
     return (
         <Modal
-            title={<h1 className="text-2xl">{t("product.addNewProduct")}</h1>}
+            title={isAdd?<h1 className="text-2xl">{t("group.addNewProductGroup")}</h1>:<h1 className="text-2xl">{t("group.editProductGroupInfo")}</h1>}
             width={"60%"}
             open={openAddNewGroupProduct}
             onCancel={() => setOpenAddNewGroupProduct(false)}

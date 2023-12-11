@@ -150,7 +150,7 @@ const AddNewProduct = ({
 
   return (
     <Modal
-      title={<h1 className="text-2xl">{t("product.addNewProduct")}</h1>}
+    title={isAdd?<h1 className="text-2xl">{t("product.addNewProduct")}</h1>:<h1 className="text-2xl">{t("product.editProductInfo")}</h1>}
       width={"60%"}
       open={openAddForm}
       onCancel={() => setOpenAddForm(false)}

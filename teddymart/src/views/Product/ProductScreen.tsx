@@ -40,58 +40,54 @@ export default function ProductScreen() {
   const OPTIONS = [
     t("product.productNameAZ"),
     t("product.productNameZA"),
-    t("product.productPriceDown"),
-    t("product.productPriceUp"),
+    t("product.productCostUp"),
+    t("product.productCostDown"),
+    t("product.productRetailUp"),
+    t("product.productRetailDown"),
   ];
   const [sort, setSort] = useState(OPTIONS[0]);
   const [openAddForm, setOpenAddForm] = useState(false);
   const [listFilter, setListFilter] = useState([
     {
       id: 0,
-      displayName: t("product.quantity"),
-      value: false,
-    },
-    {
-      id: 1,
       displayName: t("product.productGroup"),
       value: true,
     },
     {
-      id: 2,
+      id: 1,
       displayName: t("product.productGroupName"),
       value: true,
     },
     {
-      id: 3,
+      id: 2,
       displayName: t("product.sell_price"),
       value: true,
     },
     {
-      id: 4,
+      id: 3,
       displayName: t("product.costPrice"),
       value: true,
     },
 
     {
-      id: 5,
+      id: 4,
       displayName: t("note"),
       value: true,
     },
     {
-      id: 6,
+      id: 5,
       displayName: t("product.image"),
       value: true,
     },
   ]);
 
   const filterOptions = {
-    productGroup: listFilter[1].value,
-    productGroupName: listFilter[2].value,
-    productImage: listFilter[6].value,
-    sell_price: listFilter[3].value,
-    costPrice: listFilter[4].value,
-    note: listFilter[5].value,
-    quantity: listFilter[0].value,
+    productGroup: listFilter[0].value,
+    productGroupName: listFilter[1].value,
+    productImage: listFilter[5].value,
+    sell_price: listFilter[2].value,
+    costPrice: listFilter[3].value,
+    note: listFilter[4].value,
   };
 
   const [dataInput, setDataInput] = useState<TProduct>({
@@ -181,8 +177,10 @@ export default function ProductScreen() {
             sort={{
               nameAscending: sort === OPTIONS[0],
               nameDescending: sort === OPTIONS[1],
-              quantityAscending: sort === OPTIONS[2],
-              quantityDescending: sort === OPTIONS[3],
+              costAscending: sort === OPTIONS[2],
+              costDescending: sort === OPTIONS[3],
+              retailAscending: sort === OPTIONS[4],
+              retailDescending: sort === OPTIONS[5],
             }}
             selectedRows={selectedRows}
             setSelectedRows={setSelectedRows}

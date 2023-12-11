@@ -149,7 +149,8 @@
     "productGroupName": "Tên nhóm sản phẩm",
     "note": "Ghi chú",
     "addNewProductGroup": "Thêm nhóm sản phẩm",
-    "addNewProduct": "Thêm mới",
+    "addNewProduct": "Thêm sản phẩm mới",
+    "editProductInfo": "Sửa thông tin sản phẩm",
     "productImage": "Hình ảnh",
     "productName": "Tên sản phẩm",
     "sell_price": "Giá bán lẻ",
@@ -161,8 +162,10 @@
     "image": "Hình ảnh",
     "price": "Giá tiền ",
     "quantity": "Số lượng",
-    "productPriceUp": "Giá sản phẩm: Thấp → Cao",
-    "productPriceDown": "Giá sản phẩm: Cao → Thấp",
+    "productCostUp": "Giá sản phẩm: Thấp → Cao",
+    "productCostDown": "Giá sản phẩm: Cao → Thấp",
+    "productRetailUp": "Giá bán: Thấp -> Cao",
+    "productRetailDown": "Giá bán: Cao -> Thấp",
     "productNameAZ": "Tên sản phẩm: A → Z",
     "productNameZA": "Tên sản phẩm: Z → A",
     "lastUpdateOldest": "Cập nhật lần cuối: Cũ nhất",
@@ -179,7 +182,9 @@
     "shelfName": "Tên kệ",
     "deletedGroup": "Đã xóa nhóm sản phẩm!",
     "groupExist": "Nhóm sản phẩm đã tồn tại.",
-    "updateSuccess": "Nhóm sản phẩm đã được cập nhật!"
+    "updateSuccess": "Nhóm sản phẩm đã được cập nhật!",
+    "addNewProductGroup": "Thêm nhóm sản phẩm",
+    "editProductGroupInfo": "Sửa thông tin nhóm sản phẩm"
   },
   "manager": {
     "userId": "Mã người dùng",

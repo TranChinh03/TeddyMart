@@ -8,7 +8,7 @@ const groupProductSlice = createSlice({
       state: TGroupProduct[],
       action: PayloadAction<TGroupProduct>
     ) => {
-      state.push(action.payload);
+      state.unshift(action.payload);
     },
     uploadGroupProduct: (
       state: TGroupProduct[],

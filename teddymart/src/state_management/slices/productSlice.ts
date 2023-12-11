@@ -5,7 +5,7 @@ const productSlice = createSlice({
   initialState: [],
   reducers: {
     addNewProduct: (state: TProduct[], action: PayloadAction<TProduct>) => {
-      state.push(action.payload);
+      state.unshift(action.payload);
     },
     uploadProduct: (state: TProduct[], action: PayloadAction<TProduct[]>) => {
       return [...action.payload];

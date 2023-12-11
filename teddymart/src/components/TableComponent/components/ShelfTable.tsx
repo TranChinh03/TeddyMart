@@ -2,7 +2,7 @@ import { Button } from "antd";
 import AlertModal from "components/AlertModal";
 import { deleteData } from "controller/deleteData";
 import { t } from "i18next";
-import { ChangeEvent, useMemo, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import {
@@ -111,6 +111,12 @@ const ShelfTable = ({
     capacity: "",
     note: "",
   });
+
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [rowsPerPage])
+
 
   const onBackAll = () => {
     setCurrentPage(1);

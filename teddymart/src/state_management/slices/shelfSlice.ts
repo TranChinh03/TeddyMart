@@ -5,7 +5,7 @@ const shelfSlice = createSlice({
   initialState: [],
   reducers: {
     addNewShelf: (state: TShelf[], action: PayloadAction<TShelf>) => {
-      state.push(action.payload);
+      state.unshift(action.payload);
     },
     uploadShelf: (state: TShelf[], action: PayloadAction<TShelf[]>) => {
       return [...action.payload];

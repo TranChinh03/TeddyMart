@@ -102,7 +102,9 @@
     "shelfName": "Shelf Name",
     "deletedGroup": "Group deleted successfully!",
     "groupExist": "Group already exists.",
-    "updateSuccess": "Group updated successfully!"
+    "updateSuccess": "Group updated successfully!",
+    "addNewProductGroup": "Add New Product Group",
+    "editProductGroupInfo": "Edit Product Group Info"
   },
   "sale": {
     "importOrder": "Import Order",
@@ -172,7 +174,8 @@
     "productGroupName": "Product Group Name",
     "note": "Note",
     "addNewProductGroup": "Add New Product Group",
-    "addNewProduct": "Add New",
+    "addNewProduct": "Add New Product",
+    "editProductInfo": "Edit Product Info",
     "productImage": "Product Image",
     "productName": "Product Name",
     "sell_price": "Retail Price",
@@ -184,8 +187,10 @@
     "price": "Price",
     "quantity": "Quantity",
     "image": "Image",
-    "productPriceUp": "Product Price: Low → High",
-    "productPriceDown": "Product Price: High → Low",
+    "productCostUp": "Product Cost: Low → High",
+    "productCostDown": "Product Cost: High → Low",
+    "productRetailUp": "Product Retail: Low → High",
+    "productRetailDown": "Product Retail: High → Low",
     "productNameAZ": "Product Name: A → Z",
     "productNameZA": "Product Name: Z → A",
     "lastUpdateOldest": "Last Update: Lastest",

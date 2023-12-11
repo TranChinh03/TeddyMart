@@ -73,6 +73,10 @@ type TSort = {
   nameDescending?: boolean;
   quantityAscending?: boolean;
   quantityDescending?: boolean;
+  costAscending?: boolean;
+  costDescending?: boolean;
+  retailAscending?: boolean;
+  retailDescending?: boolean;
 };
 
 type Props = {
@@ -195,6 +199,31 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
         );
         listProducts = tmp;
       }
+      if (sort?.costAscending) {
+        let tmp = listProducts.sort((a, b) =>
+          a.cost_price < b.cost_price ? -1 : 1
+        );
+        listProducts = tmp;
+      }
+      if (sort?.costDescending) {
+        let tmp = listProducts.sort((a, b) =>
+          a.cost_price > b.cost_price ? -1 : 1
+        );
+        listProducts = tmp;
+      }
+      if (sort?.retailAscending) {
+        let tmp = listProducts.sort((a, b) =>
+          a.sell_price < b.sell_price ? -1 : 1
+        );
+        listProducts = tmp;
+      }
+      if (sort?.retailDescending) {
+        let tmp = listProducts.sort((a, b) =>
+          a.sell_price > b.sell_price ? -1 : 1
+        );
+        listProducts = tmp;
+      }
+      
 
       if (filterListProduct) {
         let tmp = listProducts.map((value) => {
@@ -277,6 +306,10 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     const onForwardAll = () => {
       setCurrentPage(maxPages);
     };
+
+    useEffect(() => {
+      setCurrentPage(1)
+    }, [rowsPerPage])
 
     const handleCheckBoxChange = (product?: TProduct) => {
       const rowId = product.productId;

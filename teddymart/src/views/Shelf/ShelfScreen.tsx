@@ -41,7 +41,7 @@ export default function ShelfScreen() {
         GROUP_PRODUCT.forEach(async (group) => {
           if (group.shelfID === item) {
             await updateData({
-              data: { ...group, shelfId: "", shelfName: "" },
+              data: { ...group, shelfID: "", shelfName: "" },
               table: "Group_Product",
               id: group.groupId,
             });

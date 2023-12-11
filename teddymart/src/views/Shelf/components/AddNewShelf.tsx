@@ -108,7 +108,7 @@ export default function AddNewShelf({
   );
   return (
     <Modal
-      title={<h1 className="text-2xl">{t("shelf.shelfInfo")}</h1>}
+      title={isAdd?<h1 className="text-2xl">{t("shelf.addNewShelf")}</h1>:<h1 className="text-2xl">{t("shelf.shelfInfo")}</h1>}
       width={"60%"}
       open={openAddNewShelf}
       onCancel={() => setOpenAddShelf(false)}
