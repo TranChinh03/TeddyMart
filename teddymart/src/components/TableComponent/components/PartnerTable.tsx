@@ -219,7 +219,7 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
       }
       if (additionalFilters?.gender) {
         let tmp = listPartners.filter(
-          (p) => p.gender === additionalFilters.gender
+          (p) => p?.gender === additionalFilters?.gender
         );
         listPartners = tmp;
       }
@@ -373,6 +373,7 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
                   <input
                     className="w-15 h-15 bg-hover"
                     type="checkbox"
+                    checked={selectedRows.length === DATA.length}
                     onChange={() => handleCheckBoxChange(null)}
                   />
                 </th>
@@ -472,8 +473,8 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
                       )}
                       <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
                         <div className="flex items-center gap-1 justify-center">
-                          <Button  onClick={() => onUpdate(content)} >
-                            <FiEdit/>
+                          <Button onClick={() => onUpdate(content)}>
+                            <FiEdit />
                           </Button>
 
                           <Button

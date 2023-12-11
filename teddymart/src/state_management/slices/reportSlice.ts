@@ -25,22 +25,7 @@ const reportSlice = createSlice({
     builder.addCase(
       ADD_ORDER,
       (state: TReportSlice, action: PayloadAction<TOrder>) => {
-        let order = action.payload;
-        // let i = state.byDate.findIndex(
-        //   (d) =>
-        //     new Date(d.date).getTime() === new Date(order.createdAt).getTime()
-        // );
-
-        // let iM = state.byMonth.findIndex(
-        //   (d) =>
-        //     new Date(d.date).getTime() === new Date(order.createdAt).getTime()
-        // );
-
-        // let iY = state.byYear.findIndex(
-        //   (d) =>
-        //     new Date(d.date).getTime() === new Date(order.createdAt).getTime()
-        // );
-
+        const order = action.payload;
         const data = {
           date: new Date(order.createdAt),
           outcome:

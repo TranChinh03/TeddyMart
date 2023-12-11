@@ -77,9 +77,18 @@ const AddForm = ({
   const voucherId = getVoucherInfo(voucher).voucherId;
   const dispatch = useDispatch();
   const customerInfo = useMemo(() => {
-    let customer = partners.find((partner) =>
-      partner.phoneNumber.includes(searchCustomer)
-    );
+    let customer = partners.find((partner) => {
+      if (typeAdd === "Export") {
+        return (
+          partner.phoneNumber.includes(searchCustomer) &&
+          partner.type === "Customer"
+        );
+      }
+      return (
+        partner.phoneNumber.includes(searchCustomer) &&
+        partner.type === "Supplier"
+      );
+    });
     return customer;
   }, [searchCustomer]);
   const sum = useMemo(() => {

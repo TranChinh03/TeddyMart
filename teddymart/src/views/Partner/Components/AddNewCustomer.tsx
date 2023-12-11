@@ -31,8 +31,8 @@ export default function AddNewCustomerForm({
   const [selectedGender, setSelectedGender] = useState<string>("Female");
 
   useEffect(() => {
-    if (data && data.gender) {
-      const lowercaseGender = data.gender.toLowerCase();
+    if (data && data?.gender) {
+      const lowercaseGender = data?.gender.toLowerCase();
       if (lowercaseGender === "male" || lowercaseGender === "female") {
         setSelectedGender(lowercaseGender);
       }
@@ -174,7 +174,7 @@ export default function AddNewCustomerForm({
                   name="radio-gender"
                   className="w-4 h-4 mr-4"
                   checked={selectedGender === "male"}
-                  value={data.gender}
+                  value={data?.gender}
                   onChange={() => setSelectedGender("male")}
                 />
                 <label className="mr-16">{t("customer.male")}</label>
