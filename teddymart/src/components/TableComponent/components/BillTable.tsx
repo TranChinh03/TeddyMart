@@ -243,14 +243,9 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
         ].filter((value) => Boolean(value) !== false),
       [t, options]
     );
-    // const [selectedRows, setSelectedRows] = useState([]);
+
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    // console.log("rowLength", selectedRows.length);
-    // console.log("row", selectedRows);
-    // console.log(
-    //   "arraylength",
-    //   bills.filter((bill) => bill.type === type).length
-    // );
+
     const handleCheckBoxChange = (rowId: string) => {
       if (rowId === null) {
         if (selectedRows.length < tmpData.length) {
