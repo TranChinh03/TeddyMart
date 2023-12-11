@@ -31,7 +31,6 @@ export default function AddNewSupplierForm({
   setData,
   isAdd = true,
 }: Props) {
-
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
 
@@ -57,13 +56,13 @@ export default function AddNewSupplierForm({
       [fieldName]: value,
     });
   };
-  
+
   const onAddNewSupplier = async () => {
     try {
       const trimmedName = data.partnerName.trim();
       const trimmedPhone = data.phoneNumber.trim();
       if (!trimmedName || !trimmedPhone) {
-        message.warning("Please fill in full name and phone");
+        message.warning(t("partner.fill"));
         return;
       }
 
@@ -71,10 +70,7 @@ export default function AddNewSupplierForm({
         const partnerId = createID({ prefix: "P" });
         let certificateImageUrl = null;
         if (selectedImage) {
-          const storageRef = ref(
-            storage,
-            `/Manager/Supplier/${partnerId}`
-          );
+          const storageRef = ref(storage, `/Manager/Supplier/${partnerId}`);
           const selectedImageFile = await getImageFileFromUrl(selectedImage);
           await uploadBytes(storageRef, selectedImageFile);
           certificateImageUrl = await getDownloadURL(storageRef);
@@ -95,7 +91,7 @@ export default function AddNewSupplierForm({
         dispatch(addNewPartner(newData));
         addData({ data: newData, table: "Partner", id: partnerId });
 
-        message.success("Supplier added successfully");
+        message.success(t("partner.addSuccess"));
         setOpernAddNewSupplier(false);
       } else {
         if (selectedImage) {
@@ -110,7 +106,7 @@ export default function AddNewSupplierForm({
         }
         dispatch(updatePartner({ partnerId: data.partnerId, newData: data }));
         await updateData({ data: data, table: "Partner", id: data.partnerId });
-        message.success(t("supplier.updateSuccess"));
+        message.success(t("partner.updateSuccess"));
         setOpernAddNewSupplier(false);
       }
     } catch (error) {
@@ -155,7 +151,11 @@ export default function AddNewSupplierForm({
       open={opernAddNewSupplier}
       onCancel={() => setOpernAddNewSupplier(false)}
       footer={false}
-      title={<h1 className="pr-8 text-3xl">{t("supplier.addNewSupplier")}</h1>}
+      title={
+        <h1 className="pr-8 text-3xl">
+          {isAdd ? t("partner.addNewSupplier") : t("partner.updateSupplier")}
+        </h1>
+      }
       width={"60%"}
     >
       <hr className="h-0.5 my-4 bg-black" />
@@ -227,12 +227,16 @@ export default function AddNewSupplierForm({
                 <p>{t("supplier.totalBuyAmount")}</p>
               </td>
               <td>
-                <TextInputComponent
-                  placeHolder=""
-                  width={492}
-                  value={data.totalBuyAmount.toString()}
-                  setValue={(value) => onChange(value, "totalBuyAmount")}
-                />
+                {isAdd ? (
+                  <TextInputComponent
+                    placeHolder=""
+                    width={"100%"}
+                    value={data.totalBuyAmount.toString()}
+                    setValue={(value) => onChange(value, "totalBuyAmount")}
+                  />
+                ) : (
+                  <span>{data.totalBuyAmount}</span>
+                )}
               </td>
             </tr>
             <tr>
@@ -240,12 +244,16 @@ export default function AddNewSupplierForm({
                 <p>{t("supplier.debt")}</p>
               </td>
               <td>
-                <TextInputComponent
-                  placeHolder=""
-                  width={492}
-                  value={data.debt.toString()}
-                  setValue={(value) => onChange(value, "debt")}
-                />
+                {isAdd ? (
+                  <TextInputComponent
+                    placeHolder=""
+                    width={"100%"}
+                    value={data.debt.toString()}
+                    setValue={(value) => onChange(value, "debt")}
+                  />
+                ) : (
+                  <span>{data.debt}</span>
+                )}
               </td>
             </tr>
             <tr>

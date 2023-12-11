@@ -188,6 +188,7 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
     {
       isCustomer = false,
       filterOption,
+      additionalFilters,
       search = "",
       minDate,
       maxDate,
@@ -216,20 +217,31 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
       }
       if (minDate && maxDate) {
       }
-      if (gender) {
-        let tmp = listPartners.filter((p) => p.gender === gender);
-        listPartners = tmp;
-      }
-      if (debtFrom && debtTo) {
+      if (additionalFilters.gender) {
         let tmp = listPartners.filter(
-          (p) => p.debt >= debtFrom && p.debt <= debtTo
+          (p) => p.gender === additionalFilters.gender
         );
         listPartners = tmp;
       }
-      if (totalPaymentFrom && totalPaymentTo) {
+      if (
+        additionalFilters.debtBalanceFrom &&
+        additionalFilters.debtBalanceTo
+      ) {
         let tmp = listPartners.filter(
           (p) =>
-            p.totalBuyAmount >= totalPaymentFrom && p.debt <= totalPaymentTo
+            p.debt >= additionalFilters.debtBalanceFrom &&
+            p.debt <= additionalFilters.debtBalanceTo
+        );
+        listPartners = tmp;
+      }
+      if (
+        additionalFilters.totalPaymentFrom &&
+        additionalFilters.totalPaymentTo
+      ) {
+        let tmp = listPartners.filter(
+          (p) =>
+            p.debt >= additionalFilters.totalPaymentFrom &&
+            p.debt <= additionalFilters.totalPaymentTo
         );
         listPartners = tmp;
       }
@@ -246,6 +258,7 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
       debtTo,
       totalPaymentFrom,
       totalPaymentTo,
+      additionalFilters,
     ]);
     const options: TOptions = {
       partnerID: true,
@@ -459,8 +472,8 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
                       )}
                       <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
                         <div className="flex items-center gap-1 justify-center">
-                          <Button>
-                            <FiEdit onClick={() => onUpdate(content)} />
+                          <Button  onClick={() => onUpdate(content)} >
+                            <FiEdit/>
                           </Button>
 
                           <Button
