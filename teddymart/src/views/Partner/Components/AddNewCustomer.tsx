@@ -29,7 +29,7 @@ export default function AddNewCustomerForm({
   isAdd = true,
 }: Props) {
   const [selectedGender, setSelectedGender] = useState<string>("Female");
- 
+
   useEffect(() => {
     if (data && data.gender) {
       const lowercaseGender = data.gender.toLowerCase();
@@ -38,7 +38,6 @@ export default function AddNewCustomerForm({
       }
     }
   }, [data]);
-
 
   const { t } = useTranslation();
   const { userId } = useSelector((state: RootState) => state.manager);
@@ -54,7 +53,7 @@ export default function AddNewCustomerForm({
     const trimmedName = data.partnerName.trim();
     const trimmedPhone = data.phoneNumber.trim();
     if (!trimmedName || !trimmedPhone) {
-      message.warning("Please fill in full name and phone");
+      message.warning(t("partner.fill"));
       return;
     }
     const newData: TPartner = {
@@ -73,11 +72,15 @@ export default function AddNewCustomerForm({
     if (isAdd) {
       dispatch(addNewPartner(newData));
       addData({ data: newData, table: "Partner", id: newData.partnerId });
-      message.success("Customer added successfully");
+      message.success(t("partner.addSuccess"));
     } else {
       dispatch(updatePartner({ partnerId: data.partnerId, newData: newData }));
-      await updateData({ data: newData, table: "Partner", id: newData.partnerId });
-      message.success(t("customer.updateSuccess"));
+      await updateData({
+        data: newData,
+        table: "Partner",
+        id: newData.partnerId,
+      });
+      message.success(t("partner.updateSuccess"));
     }
 
     setOpenAddNewCustomer(false);
@@ -116,7 +119,11 @@ export default function AddNewCustomerForm({
       open={openAddNewCustomer}
       onCancel={() => setOpenAddNewCustomer(false)}
       footer={false}
-      title={<h1 className="pr-8 text-3xl">{t("partner.addNewCustomer")}</h1>}
+      title={
+        <h1 className="pr-8 text-3xl">
+          {isAdd ? t("partner.addNewSupplier") : t("partner.updateSupplier")}
+        </h1>
+      }
       width={"60%"}
     >
       <hr className="h-0.5 my-4 bg-black" />
@@ -152,8 +159,7 @@ export default function AddNewCustomerForm({
                   placeHolder=""
                   width={"100%"}
                   value={data.phoneNumber}
-                  setValue={(value) => onChange(value, "phoneNumber")
-                  }
+                  setValue={(value) => onChange(value, "phoneNumber")}
                 />
               </td>
             </tr>
@@ -215,12 +221,16 @@ export default function AddNewCustomerForm({
                 <p>{t("customer.totalBuyAmount")}</p>
               </td>
               <td>
-                <TextInputComponent
-                  placeHolder=""
-                  width={"100%"}
-                  value={data.totalBuyAmount.toString()}
-                  setValue={(value) => onChange(value, "totalBuyAmount")}
-                />
+                {isAdd ? (
+                  <TextInputComponent
+                    placeHolder=""
+                    width={"100%"}
+                    value={data.totalBuyAmount.toString()}
+                    setValue={(value) => onChange(value, "totalBuyAmount")}
+                  />
+                ) : (
+                  <span>{data.totalBuyAmount}</span>
+                )}
               </td>
             </tr>
             <tr>
@@ -228,12 +238,16 @@ export default function AddNewCustomerForm({
                 <p>{t("customer.debt")}</p>
               </td>
               <td>
-                <TextInputComponent
-                  placeHolder=""
-                  width={"100%"}
-                  value={data.debt.toString()}
-                  setValue={(value) => onChange(value, "debt")}
-                />
+                {isAdd ? (
+                  <TextInputComponent
+                    placeHolder=""
+                    width={"100%"}
+                    value={data.debt.toString()}
+                    setValue={(value) => onChange(value, "debt")}
+                  />
+                ) : (
+                  <span>{data.debt}</span>
+                )}
               </td>
             </tr>
             <tr>
