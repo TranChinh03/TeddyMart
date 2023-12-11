@@ -1,6 +1,13 @@
 import { Button, Space, Tooltip, message } from "antd";
 import { t } from "i18next";
-import { ChangeEvent, forwardRef, useEffect, useMemo, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  forwardRef,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import {
@@ -19,17 +26,16 @@ import { storage } from "firebaseConfig";
 import { deleteObject, ref } from "firebase/storage";
 import AddNewProduct from "views/Product/components/AddNewProduct";
 export type Input = {
-  productId: string,
-  productName: string,
-  groupId: string,
-  groupName: string,
-  image: string,
-  cost_price: number,
-  sell_price: number,
-  VAT: number,
-  note: string,
-}
-
+  productId: string;
+  productName: string;
+  groupId: string;
+  groupName: string;
+  image: string;
+  cost_price: number;
+  sell_price: number;
+  VAT: number;
+  note: string;
+};
 
 type TContent = {
   productId: string;
@@ -83,6 +89,7 @@ type Props = {
   data?: TProduct[];
   setData?: (data: TProduct[]) => void;
   isExport?: boolean;
+  setOpenAlert?(openAlert: boolean): void;
 };
 const ProductTable = forwardRef<HTMLTableElement, Props>(
   (
@@ -100,14 +107,13 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
       data,
       setData,
       isExport = true,
+      setOpenAlert,
     }: Props,
     reference
   ) => {
     const { t } = useTranslation();
     const products = useSelector((state: RootState) => state.product);
     const warehouses = useSelector((state: RootState) => state.warehouseSlice);
-    const dispatch = useDispatch();
-    const idSelected = useRef<string>("");
     const [dataInput, setDataInput] = useState<TProduct>({
       productId: "",
       productName: "",
@@ -119,9 +125,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
       VAT: null,
       note: "",
     });
-    const [open, setOpen] = useState(false);
     const [openModalUpdate, setOpenModalUpdate] = useState(false);
-
 
     const productsFilter = useMemo(() => {
       // if (data.length > 0) return data;
@@ -146,16 +150,16 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
             if (isExport) {
               return {
                 ...value,
-                sell_price: listProducts[tmp].sell_price,
-                totalPrice: value.quantity * listProducts[tmp].sell_price, //????
+                sell_price: listProducts[tmp]?.sell_price,
+                totalPrice: value.quantity * listProducts[tmp]?.sell_price, //????
                 note: listProducts[tmp].note,
               };
             }
           return {
             ...value,
-            cost_price: listProducts[tmp].cost_price,
-            totalPrice: value.quantity * listProducts[tmp].cost_price, //????
-            note: listProducts[tmp].note,
+            cost_price: listProducts[tmp]?.cost_price,
+            totalPrice: value.quantity * listProducts[tmp]?.cost_price, //????
+            note: listProducts[tmp]?.note,
           };
         });
         listProducts = [...productFilterProductTable];
@@ -305,10 +309,6 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
       setRowsPerPage(+e.target.value);
     };
-    const onDeleteProduct = (productId: string) => {
-      idSelected.current = productId;
-      setOpen(true);  
-    };
 
     const onUpdate = (product: TProduct) => {
       setOpenModalUpdate(true);
@@ -322,25 +322,8 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
         sell_price: product.sell_price,
         VAT: product.VAT,
         note: product.note,
-      })
-    }
-
-    const onConfirm = async () => {
-      await deleteData({ id: idSelected.current, table: "Product" });
-      dispatch(deleteProduct({ productId: idSelected.current }));
-
-      // // Create a reference to the file to delete
-      const URL = products.find(x => x.productId === idSelected.current).image
-
-      const refimg = ref(
-        storage,
-        URL
-      )
-      // Delete the file
-      deleteObject(refimg)
-      setOpen(false);
-      message.success(t("product.deleteProduct"));
-      };
+      });
+    };
 
     const onGetProducts = () => {
       let tmp = products.map((product) => {
@@ -510,7 +493,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
 
                       {options.costPrice && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {displayPrice}
+                          {content?.cost_price}
                         </td>
                       )}
 
@@ -544,16 +527,15 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                       {options.activities && (
                         <td className="border border-gray-300 p-2 text-sm">
                           <div className="flex items-center gap-1 justify-center">
-                            <Button
-                              onClick={() => onUpdate(content)}
-                            >
+                            <Button onClick={() => onUpdate(content)}>
                               <FiEdit />
                             </Button>
 
                             <Button
-                              onClick={() =>
-                                onDeleteProduct(content?.productId)
-                              }
+                              onClick={() => {
+                                setOpenAlert(true);
+                                setSelectedRows([content.productId]);
+                              }}
                             >
                               <FiTrash color="red" />
                             </Button>
@@ -603,13 +585,13 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
             </Button>
           </div>
         </div>
-        <AlertModal open={open} setOpen={setOpen} onConfirm={onConfirm} />
+
         <AddNewProduct
-            openAddForm={openModalUpdate}
-            setOpenAddForm={setOpenModalUpdate}
-            isAdd={false}
-            data={dataInput}
-            setData={setDataInput}
+          openAddForm={openModalUpdate}
+          setOpenAddForm={setOpenModalUpdate}
+          isAdd={false}
+          data={dataInput}
+          setData={setDataInput}
         />
       </div>
     );

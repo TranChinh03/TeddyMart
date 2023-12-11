@@ -19,17 +19,16 @@ import { deleteProduct } from "state_management/slices/productSlice";
 import { deleteObject, ref } from "firebase/storage";
 import { storage } from "firebaseConfig";
 export type Input = {
-  productId: string,
-  productName: string,
-  groupId: string,
-  groupName: string,
-  image: string,
-  cost_price: number,
-  sell_price: number,
-  VAT: number,
-  note: string,
-}
-
+  productId: string;
+  productName: string;
+  groupId: string;
+  groupName: string;
+  image: string;
+  cost_price: number;
+  sell_price: number;
+  VAT: number;
+  note: string;
+};
 
 export default function ProductScreen() {
   const productRef = useRef(null);
@@ -111,20 +110,21 @@ export default function ProductScreen() {
 
   const dispatch = useDispatch();
   const onDeleteMultiProduct = () => {
-    selectedRows.forEach(async (item) => {
+    if (selectedRows.length !== 0) {
+      selectedRows.forEach(async (item) => {
         await deleteData({ id: item, table: "Product" });
         dispatch(deleteProduct({ productId: item }));
-        const URL = PRODUCT.find(x => x.productId === item).image
-        const refimg = ref(
-          storage,
-          URL
-        )
-        // Delete the file
-        deleteObject(refimg)
+        const URL = PRODUCT.find((x) => x.productId === item)?.image;
+        if (URL) {
+          const refimg = ref(storage, URL);
+          // Delete the file
+          deleteObject(refimg);
+        }
       });
       setOpen(false);
       message.success(t("product.deleteProduct"));
-    };
+    }
+  };
 
   return (
     <div className="w-full">
@@ -153,7 +153,7 @@ export default function ProductScreen() {
           <ButtonComponent
             label={t("button.delete")}
             onClick={() => {
-              console.log(selectedRows)
+              console.log(selectedRows);
               if (selectedRows.length > 0) setOpen(true);
             }}
             backgroundColor={COLORS.checkbox_bg}
@@ -187,6 +187,7 @@ export default function ProductScreen() {
             selectedRows={selectedRows}
             setSelectedRows={setSelectedRows}
             ref={productRef}
+            setOpenAlert={setOpen}
           />
         </div>
       </div>

@@ -49,17 +49,19 @@ const generateReport = (data: TOrder[]) => {
 
     if (
       !reportByMonth.has(
-        `${new Date(d.createdAt).getMonth()}/${new Date(
+        `${new Date(d.createdAt).getMonth() + 1}/${new Date(
           d.createdAt
         ).getFullYear()}`
       )
     ) {
       reportByMonth.set(
-        `${new Date(d.createdAt).getMonth()}/${new Date(
+        `${new Date(d.createdAt).getMonth() + 1}/${new Date(
           d.createdAt
         ).getFullYear()}`,
         {
-          date: new Date(d.createdAt),
+          date: `${new Date(d.createdAt).getMonth() + 1}/${new Date(
+            d.createdAt
+          ).getFullYear()}`,
           outcome:
             d.type === "Import" && d.status === "paid" ? d.totalPayment : 0,
           revenue:
@@ -70,16 +72,18 @@ const generateReport = (data: TOrder[]) => {
       );
     } else {
       let tmp = reportByMonth.get(
-        `${new Date(d.createdAt).getMonth()}/${new Date(
+        `${new Date(d.createdAt).getMonth() + 1}/${new Date(
           d.createdAt
         ).getFullYear()}`
       );
       reportByMonth.set(
-        `${new Date(d.createdAt).getMonth()}/${new Date(
+        `${new Date(d.createdAt).getMonth() + 1}/${new Date(
           d.createdAt
         ).getFullYear()}`,
         {
-          date: new Date(d.createdAt),
+          date: `${new Date(d.createdAt).getMonth() + 1}/${new Date(
+            d.createdAt
+          ).getFullYear()}`,
           outcome:
             d.type === "Import" && d.status === "paid"
               ? tmp.outcome + d.totalPayment
@@ -98,7 +102,7 @@ const generateReport = (data: TOrder[]) => {
     // by Year
     if (!reportByYear.has(`${new Date(d.createdAt).getFullYear()}`)) {
       reportByYear.set(`${new Date(d.createdAt).getFullYear()}`, {
-        date: new Date(d.createdAt),
+        date: `${new Date(d.createdAt).getFullYear()}`,
         outcome:
           d.type === "Import" && d.status === "paid" ? d.totalPayment : 0,
         revenue:
@@ -109,7 +113,7 @@ const generateReport = (data: TOrder[]) => {
     } else {
       let tmp = reportByYear.get(`${new Date(d.createdAt).getFullYear()}`);
       reportByYear.set(`${new Date(d.createdAt).getFullYear()}`, {
-        date: new Date(d.createdAt),
+        date: `${new Date(d.createdAt).getFullYear()}`,
         outcome:
           d.type === "Import" && d.status === "paid"
             ? tmp.outcome + d.totalPayment
@@ -168,7 +172,7 @@ const generateReport = (data: TOrder[]) => {
 //   return Array.from(result, ([_, item]) => ({ ...item }));
 // };
 
-const generateProduct = (data: TOrder[]) => {
+const generateProduct = (data: TOrder[], warehouse: TWarehouse[]) => {
   let result = new Map<string, TReportProduct>();
   data.forEach((d: TOrder) => {
     const isExport = d.type === "Export" ? true : false;
@@ -212,11 +216,6 @@ const generateProduct = (data: TOrder[]) => {
     ...item,
     products: item.products.map((product) => ({
       ...product,
-      // stock:
-      //   product?.import > product?.export
-      //     ? product?.import - product?.export
-      //     : 0,
-      stock: product?.import - product?.export,
     })),
   }));
 };

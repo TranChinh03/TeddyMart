@@ -14,7 +14,7 @@ import {
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
 import warehouseSlice from "state_management/slices/warehouseSlice";
-import {deleteWarehouse} from "state_management/slices/warehouseSlice";
+import { deleteWarehouse } from "state_management/slices/warehouseSlice";
 import AddNewWarehouseList from "views/Warehouse/components/AddNewWarehouseList";
 import { deleteData } from "controller/deleteData";
 import AlertModal from "components/AlertModal";
@@ -120,25 +120,18 @@ const options: TOption = {
 type Props = {
   warehouseName?: string;
   sort?: TSort;
-  setOpenAlertModal?: (openAlertModal: boolean) => void;
   selectedRows?: string[];
   setSelectedRows?: (selectedRows: string[]) => void;
+  setOpenAlert?: (openAlert: boolean) => void;
 };
 
 const WareHouseTable = forwardRef<HTMLTableElement, Props>(
   (
-    {
-      warehouseName,
-      sort,  
-      setOpenAlertModal,
-      selectedRows,
-      setSelectedRows,
-    }: Props,
+    { warehouseName, sort, selectedRows, setSelectedRows, setOpenAlert }: Props,
     ref
   ) => {
     const { t } = useTranslation();
     const warehouses = useSelector((state: RootState) => state.warehouseSlice);
-    const dispatch = useDispatch();
 
     const HEADER = useMemo(
       () => [
@@ -154,10 +147,14 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
       let warehouselist = [...warehouses];
 
       if (sort?.idAscending) {
-        warehouselist.sort((a, b) => a.warehouseId.localeCompare(b.warehouseId));
+        warehouselist.sort((a, b) =>
+          a.warehouseId.localeCompare(b.warehouseId)
+        );
       }
       if (sort?.idDescending) {
-        warehouselist.sort((a, b) => b.warehouseId.localeCompare(a.warehouseId));
+        warehouselist.sort((a, b) =>
+          b.warehouseId.localeCompare(a.warehouseId)
+        );
       }
       if (sort?.nameAZ) {
         warehouselist.sort((a, b) =>
@@ -229,8 +226,8 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
       warehouseName: "",
       address: "",
       listProduct: [],
-      count: 0
-    })
+      count: 0,
+    });
 
     const onUpdate = (warehouse: TWarehouse) => {
       setOpenModalUpdate(true);
@@ -239,31 +236,21 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
         warehouseName: warehouse.warehouseName,
         address: warehouse.address,
         listProduct: warehouse.listProduct,
-        count: warehouse.count
+        count: warehouse.count,
       });
     };
 
-    const [open, setOpen] = useState(false);
-    const idSelected = useRef<string>("");
-    const onDelete = (warehouseId: string) => {
-      idSelected.current = warehouseId;
-      setOpen(true);
-    };
-
-    const onConfirm = async () => {
-      await deleteData({ id: idSelected.current, table: "Warehouse" });
-      dispatch(deleteWarehouse({warehouseId: idSelected.current}));
-      setOpen(false);
-      message.success(t("warehouse.deleteSuccess"));
-    }
     return (
       <div className="w-full">
         <div className="max-h-96 overflow-y-auto visible">
-          <table 
+          <table
             className="w-full border-collapse border border-gray-300 bg-gray-50"
             ref={ref}
           >
-            <thead className="bg-gray-200 sticky left-0 z-50" style={{ top: -1 }}>
+            <thead
+              className="bg-gray-200 sticky left-0 z-50"
+              style={{ top: -1 }}
+            >
               <tr>
                 <th className="border border-gray-300 p-2 text-xs">
                   <input
@@ -273,7 +260,10 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
                   />
                 </th>
                 {HEADER.map((header, index) => (
-                  <th key={index} className="border border-gray-300 p-2 text-xs">
+                  <th
+                    key={index}
+                    className="border border-gray-300 p-2 text-xs"
+                  >
                     {header}
                   </th>
                 ))}
@@ -319,15 +309,18 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
                       )}
                       {/* NÚT XÓA VÀ SỬA */}
                       <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                        <Button 
+                        <Button
                           className="mr-2"
                           onClick={() => onUpdate(content)}
                         >
-                          <FiEdit/>
+                          <FiEdit />
                         </Button>
 
-                        <Button 
-                          onClick={() => onDelete(content.warehouseId)}
+                        <Button
+                          onClick={() => {
+                            setOpenAlert(true);
+                            setSelectedRows([content.warehouseId]);
+                          }}
                         >
                           <FiTrash color="red" />
                         </Button>
@@ -339,7 +332,9 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
           </table>
         </div>
         <div className="w-full text-left my-5 flex row justify-end pr-10 items-center ">
-          <span className="text-sm mr-4 text-gray-400 ">{t("rowsPerPage")}:</span>
+          <span className="text-sm mr-4 text-gray-400 ">
+            {t("rowsPerPage")}:
+          </span>
           <select
             value={rowsPerPage}
             onChange={handleRowsPerPageChange}
@@ -375,18 +370,13 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
             </Button>
           </div>
         </div>
-        <AlertModal 
-          open={open} 
-          setOpen={setOpen} 
-          onConfirm={onConfirm}
-        />
+
         <AddNewWarehouseList
           openAddNewWarehouse={openModalUpdate}
           setOpenAddNewWarehouse={setOpenModalUpdate}
           isAdd={false}
           data={dataInput}
           setData={setDataInput}
-
         />
       </div>
     );

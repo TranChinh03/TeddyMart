@@ -81,6 +81,7 @@ export default function Warehouse() {
           }}
           //productName={productName}
           ref={excelRef}
+          //setOpenAlert={setOpen}
         />
       </div>
     </div>

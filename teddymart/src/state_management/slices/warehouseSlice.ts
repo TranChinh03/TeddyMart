@@ -2,6 +2,14 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { DELETE_PRODUCT } from "state_management/actions/actions";
 import { RESET_ALL_STORES } from "state_management/actions/actions";
 import { updateProductFirebase } from "utils/appUtils";
+type WarehouseUpdate = {
+  warehouseName: string;
+  listProduct: {
+    productId: string;
+    productName: string;
+    quantity: number;
+  }[];
+};
 const warehouseSlice = createSlice({
   name: "warehouseSlice",
   initialState: [],
@@ -45,51 +53,57 @@ const warehouseSlice = createSlice({
       state: TWarehouse[],
       action: PayloadAction<{
         userId: string;
-        warehouseName: string;
-        listProduct: {
-          productId: string;
-          productName: string;
-          quantity: number;
-        }[];
+        listUpdate: WarehouseUpdate[];
+        // warehouseName: string;
+        // listProduct: {
+        //   productId: string;
+        //   productName: string;
+        //   quantity: number;
+        // }[];
         type: "Import" | "Export";
+        isDelete: boolean;
       }>
     ) => {
-      const index = state.findIndex(
-        (w) => w.warehouseName === action.payload.warehouseName
-      );
-      const count =
-        action.payload.listProduct.reduce((pre, cur) => pre + cur.quantity, 0) *
-        (action.payload.type === "Import" ? 1 : -1);
-      console.log("update product warehouse", index);
-      if (index > -1) {
-        let listProduct = state[index].listProduct;
-        let products = action.payload.listProduct;
-        for (let index = 0; index < products.length; index++) {
-          const element = products[index];
-          let index_product = listProduct.findIndex(
-            (product) => product.productId === element.productId
-          );
-          if (index_product > -1)
-            if (action.payload.type === "Import")
-              listProduct[index_product] = {
-                ...state[index].listProduct[index_product],
-                quantity:
-                  listProduct[index_product].quantity + element.quantity,
-              };
-            else
-              listProduct[index_product] = {
-                ...listProduct[index_product],
-                quantity:
-                  listProduct[index_product].quantity - element.quantity,
-              };
-        }
-        state[index] = { ...state[index], listProduct: listProduct };
-        updateProductFirebase(
-          action.payload.userId,
-          state[index].warehouseId,
-          listProduct,
-          count
+      for (const item of action.payload.listUpdate) {
+        const index = state.findIndex(
+          (w) => w.warehouseName === item.warehouseName
         );
+        const count =
+          item.listProduct.reduce((pre, cur) => pre + cur.quantity, 0) *
+          (action.payload.type === "Import" ? 1 : -1);
+        //console.log("update product warehouse", index);
+        if (index > -1) {
+          let listProduct = state[index].listProduct;
+          let products = item.listProduct;
+          for (let index = 0; index < products.length; index++) {
+            const element = products[index];
+            let index_product = listProduct.findIndex(
+              (product) => product.productId === element.productId
+            );
+            if (index_product > -1)
+              if (action.payload.type === "Import")
+                listProduct[index_product] = {
+                  ...state[index].listProduct[index_product],
+                  quantity: !action.payload.isDelete
+                    ? listProduct[index_product].quantity + element.quantity
+                    : listProduct[index_product].quantity - element.quantity,
+                };
+              else
+                listProduct[index_product] = {
+                  ...listProduct[index_product],
+                  quantity: !action.payload.isDelete
+                    ? listProduct[index_product].quantity - element.quantity
+                    : listProduct[index_product].quantity + element.quantity,
+                };
+          }
+          state[index] = { ...state[index], listProduct: listProduct };
+          updateProductFirebase(
+            action.payload.userId,
+            state[index].warehouseId,
+            listProduct,
+            count
+          );
+        }
       }
     },
   },

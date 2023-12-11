@@ -51,35 +51,36 @@ export default function ProductScreen() {
     shelfID: "",
     shelfName: "",
     note: "",
-  })
+  });
   const [open, setOpen] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const PRODUCT = useSelector((state: RootState) => state.product);
   const dispatch = useDispatch();
 
-
   const onDeleteMultiGroup = () => {
-    selectedRows.forEach(async (item) => {
-      await deleteData({ id: item, table: "Group_Product" });
-      dispatch(deleteGroupProduct(GROUP.find(x => x.groupId === item)));
-      PRODUCT.forEach(async (product) => {
-        if (product.groupId === item) {
-          await updateData({
-            data: { ...product, groupId: "", groupName: "" },
-            table: "Group_Product",
-            id: product.productId,
-          });
-          dispatch(
-            updateProduct({
-              currentProduct: product,
-              newProduct: { ...product, groupId: "", groupName: "" },
-            })
-          );
-        }
+    if (selectedRows.length !== 0) {
+      selectedRows.forEach(async (item) => {
+        await deleteData({ id: item, table: "Group_Product" });
+        dispatch(deleteGroupProduct(GROUP.find((x) => x.groupId === item)));
+        PRODUCT.forEach(async (product) => {
+          if (product.groupId === item) {
+            await updateData({
+              data: { ...product, groupId: "", groupName: "" },
+              table: "Group_Product",
+              id: product.productId,
+            });
+            dispatch(
+              updateProduct({
+                currentProduct: product,
+                newProduct: { ...product, groupId: "", groupName: "" },
+              })
+            );
+          }
+        });
+        message.success(t("group.deletedGroup"));
+        setOpen(false);
       });
-      message.success(t("group.deletedGroup"));
-      setOpen(false);
-    });
+    }
   };
 
   return (
@@ -117,11 +118,12 @@ export default function ProductScreen() {
         </div>
 
         <div style={{ width: "100%", margin: "20px auto auto auto" }}>
-          <GroupProductTable 
-            search={search} 
+          <GroupProductTable
+            search={search}
             selectedRows={selectedRows}
             setSelectedRows={setSelectedRows}
-            />
+            setOpenAlert={setOpen}
+          />
         </div>
       </div>
 

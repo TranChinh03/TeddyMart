@@ -95,14 +95,16 @@ export default function CustomerScreen() {
 
   const [selectedRows, setSelectedRows] = useState([]);
   const [open, setOpen] = useState(false);
- 
+
   const onDeleteMultiShelf = () => {
-    selectedRows.forEach(async (item) => {
-      await deleteData({ id: item, table: "Partner" });
-      dispatch(deletePartner({partnerId: item}));
-      message.success(t("partner.deletePartner"));
-      setOpen(false);
-    });
+    if (selectedRows.length !== 0) {
+      selectedRows.forEach(async (item) => {
+        await deleteData({ id: item, table: "Partner" });
+        dispatch(deletePartner({ partnerId: item }));
+        message.success(t("partner.deletePartner"));
+        setOpen(false);
+      });
+    }
   };
 
   return (
@@ -170,6 +172,7 @@ export default function CustomerScreen() {
           ref={excelRef}
           selectedRows={selectedRows}
           setSelectedRows={setSelectedRows}
+          setOpenAlert={setOpen}
         />
       </div>
     </div>

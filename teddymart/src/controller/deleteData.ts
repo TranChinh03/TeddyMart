@@ -8,7 +8,7 @@ type params = {
     | "Group_Product"
     | "Product"
     | "Orders"
-    | "Warehouse"
+    | "Ware_House"
     | "Shelf";
 };
 const deleteData = async ({ id, table }: params) => {

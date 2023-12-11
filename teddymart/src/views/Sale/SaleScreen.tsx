@@ -57,6 +57,8 @@ import AlertDelete from "./components/AlertDelete";
 import { BtnExport } from "components";
 import { deleteOrderFirebase } from "utils/appUtils";
 import addNotification from "react-push-notification";
+import { DELETE_ORDER } from "state_management/actions/actions";
+import { updateProductWarehouse } from "state_management/slices/warehouseSlice";
 const { RangePicker } = DatePicker;
 const CUS_INFO = {
   customerName: "NVA",
@@ -127,6 +129,8 @@ export default function SaleScreen() {
     return resultObject;
   }, [listFilter]);
 
+  const ORDERS = useSelector((state: RootState) => state.order);
+
   const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
     console.log(info?.source, value);
 
@@ -135,9 +139,26 @@ export default function SaleScreen() {
   };
 
   const onDelete = () => {
-    console.log("delete");
+    //console.log("delete");
     dispatch(deleteMultiOrder(selectedRows));
+
+    const tmp = ORDERS.filter((o) => selectedRows.includes(o.orderId));
+    dispatch({ type: DELETE_ORDER, payload: tmp });
+
     deleteOrderFirebase(selectedRows, userId);
+
+    dispatch(
+      updateProductWarehouse({
+        userId: userId,
+        listUpdate: tmp.map((t) => ({
+          warehouseName: t.warehouseName,
+          listProduct: t.listProduct,
+        })),
+        type: "Export",
+        isDelete: true,
+      })
+    );
+
     setOpenAlertModal(false);
     setSelectedRows([]);
   };

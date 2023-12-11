@@ -11,13 +11,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { COLORS } from "constants/colors";
-import {
-  Button,
-  Checkbox,
-  Space,
-  Modal,
-  message
-} from "antd";
+import { Button, Checkbox, Space, Modal, message } from "antd";
 import { LiaFileExcel } from "react-icons/lia";
 import { BiPlus } from "react-icons/bi";
 import { WareHouseTable } from "components/TableComponent";
@@ -37,7 +31,7 @@ export default function WarehouseList() {
   const [defaultWarehouse, setDefaultWarehouse] = useState(false);
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
- 
+
   const OPTIONS = [
     t("warehouse.warehouseIDAscending"),
     t("warehouse.warehouseIDDescending"),
@@ -54,24 +48,25 @@ export default function WarehouseList() {
   const [selectedRows, setSelectedRows] = useState([]);
   const wareListRef = useRef(null);
   const dispatch = useDispatch();
-  
+
   const [dataInput, setDataInput] = useState<TWarehouse>({
     warehouseId: "",
     warehouseName: "",
     address: "",
     listProduct: [],
-    count: 0
-  })
+    count: 0,
+  });
 
   const onDeleteMultiWarehouse = () => {
-    selectedRows.forEach(async (item) => {
-      const warehouseId = item
-      await deleteData({ id: warehouseId, table: "Warehouse" });
-      dispatch(deleteWarehouse({ warehouseId }));
-
+    if (selectedRows.length !== 0) {
+      selectedRows.forEach(async (item) => {
+        const warehouseId = item;
+        await deleteData({ id: warehouseId, table: "Ware_House" });
+        dispatch(deleteWarehouse({ warehouseId }));
+        setOpen(false);
+      });
       message.success(t("warehouse.deleteSuccess"));
-      setOpen(false);
-    });
+    }
   };
   return (
     <div className="w-full bg-extreme_lg_grey min-h-screen">
@@ -90,7 +85,6 @@ export default function WarehouseList() {
               placeholder={t("warehouse.searchByName")}
               width={"35vw"}
             />
-
           </div>
           <div className="flex">
             <ButtonComponent
@@ -130,7 +124,7 @@ export default function WarehouseList() {
 
         {/* Table */}
         <div className="h-3" />
-        <WareHouseTable 
+        <WareHouseTable
           warehouseName={warehouseName}
           sort={{
             idAscending: sort === OPTIONS[0],
@@ -141,10 +135,10 @@ export default function WarehouseList() {
           ref={wareListRef}
           selectedRows={selectedRows}
           setSelectedRows={setSelectedRows}
-          
+          setOpenAlert={setOpen}
         />
       </div>
-      
+
       {/* ADD NEW WAREHOUSE */}
       <AddNewWarehouseList
         openAddNewWarehouse={openAddForm}
@@ -152,14 +146,11 @@ export default function WarehouseList() {
         data={dataInput}
         setData={setDataInput}
       />
-      <AlertModal 
-          open={open} 
-          setOpen={setOpen} 
-          onConfirm={onDeleteMultiWarehouse}
+      <AlertModal
+        open={open}
+        setOpen={setOpen}
+        onConfirm={onDeleteMultiWarehouse}
       />
-      
     </div>
-
-    
   );
 }

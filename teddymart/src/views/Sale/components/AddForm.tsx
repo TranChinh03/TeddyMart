@@ -123,15 +123,18 @@ const AddForm = ({
       type: typeAdd,
       voucherId: voucherId,
       receiver: "TeddyMart",
+      warehouseName: warehouseName,
     };
     addOrderFirebase(data, userId, orderId);
     dispatch(addNewOrder(data));
     dispatch(
       updateProductWarehouse({
         userId: userId,
-        warehouseName: warehouseName,
-        listProduct: listProduct,
+        listUpdate: [
+          { warehouseName: warehouseName, listProduct: listProduct },
+        ],
         type: typeAdd,
+        isDelete: false,
       })
     );
     setProductMenu([]);
@@ -140,7 +143,7 @@ const AddForm = ({
     setOpenAddForm(false);
     dispatch({ type: ADD_ORDER, payload: data });
   };
-  //console.log(productMenu);
+
   return (
     <Modal
       title={<h1 className="text-2xl">{t("sale.addNewOrder")}</h1>}
@@ -239,8 +242,9 @@ const AddForm = ({
               quantity: true,
               productImage: false,
               VAT: false,
-              sell_price: false,
+              sell_price: typeAdd === "Export" ? true : false,
               activities: false,
+              costPrice: typeAdd === "Import" ? true : false,
             }}
             productName={search}
             warehouseName={warehouseName}

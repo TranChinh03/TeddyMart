@@ -57,6 +57,8 @@ import AlertDelete from "views/Sale/components/AlertDelete";
 import { BtnExport } from "components";
 import { deleteOrderFirebase } from "utils/appUtils";
 import AddProductToMenu from "./AddProductToMenu";
+import { DELETE_ORDER } from "state_management/actions/actions";
+import { updateProductWarehouse } from "state_management/slices/warehouseSlice";
 const { RangePicker } = DatePicker;
 const CUS_INFO = {
   customerName: "NVA",
@@ -78,6 +80,7 @@ export default function ImportOrder() {
   const { userId } = useSelector((state: RootState) => state.manager);
   const dispatch = useDispatch();
   const { t } = useTranslation();
+
   const initialFilter = useMemo(
     () => [
       {
@@ -135,17 +138,26 @@ export default function ImportOrder() {
     console.log(key);
   };
 
+  const ORDERS = useSelector((state: RootState) => state.order);
+
   const onDelete = () => {
-    // if (orderId) {
-    //   setOpenAlertModal(true);
-    //   dispatch(deleteOrder({ orderId: orderId }));
-    //   deleteOrderFirebase([orderId], userId);
-    //   setOpenAlertModal(false);
-    //   return;
-    // }
-    console.log("delete");
     dispatch(deleteMultiOrder(selectedRows));
     deleteOrderFirebase(selectedRows, userId);
+
+    const tmp = ORDERS.filter((o) => selectedRows.includes(o.orderId));
+    dispatch({ type: DELETE_ORDER, payload: tmp });
+
+    dispatch(
+      updateProductWarehouse({
+        userId: userId,
+        listUpdate: tmp.map((t) => ({
+          warehouseName: t.warehouseName,
+          listProduct: t.listProduct,
+        })),
+        type: "Import",
+        isDelete: true,
+      })
+    );
     setOpenAlertModal(false);
     setSelectedRows([]);
   };
@@ -165,7 +177,6 @@ export default function ImportOrder() {
         <Space direction="vertical" size={10}>
           <ModalSelectDate setResult={setDate} />
 
-          <Button>{t("button.all")}</Button>
           <div className=" flex items-center">
             <TextInputComponent
               value={search}
@@ -187,12 +198,7 @@ export default function ImportOrder() {
               style={{ backgroundColor: "#EA5A47", marginInline: 12 }}
               iconLeft={<BiTrash size={20} color="white" />}
             />
-            {/* <ButtonComponent
-              label={t("button.exportExcel")}
-              onClick={() => {}}
-              style={{ backgroundColor: "#211F30", marginRight: 12 }}
-              iconLeft={<LiaFileExcel size={20} color="white" />}
-            /> */}
+
             <BtnExport
               fileName={t("drawer.sale")}
               sheet={t("drawer.sale")}
@@ -221,9 +227,6 @@ export default function ImportOrder() {
                 ]}
                 isValueIndex={true}
               />
-              <Button style={{ backgroundColor: "#e5a344", color: "white" }}>
-                {t("button.view")}
-              </Button>
             </Space>
           </div>
           {/* <Tabs defaultActiveKey="1" items={items} onChange={onChange} /> */}

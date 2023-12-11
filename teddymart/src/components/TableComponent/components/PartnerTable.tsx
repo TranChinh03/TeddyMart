@@ -181,6 +181,7 @@ type Props = {
   totalPaymentTo?: number;
   selectedRows: string[];
   setSelectedRows: (selectedRows: string[]) => void;
+  setOpenAlert?: (openAlert: boolean) => void;
 };
 const PartnerTable = forwardRef<HTMLTableElement, Props>(
   (
@@ -197,6 +198,7 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
       totalPaymentTo,
       selectedRows,
       setSelectedRows,
+      setOpenAlert,
     }: Props,
     ref
   ) => {
@@ -342,21 +344,6 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
       setUpdateDataInput(partner);
     };
 
-    const idSelected = useRef<string>("");
-    const [open, setOpen] = useState(false);
-    const dispatch = useDispatch();
-
-    const onDelete = (id: string) => {
-      idSelected.current = id;
-      setOpen(true);
-    };
-    const onConfirm = async () => {
-      await deleteData({ id: idSelected.current, table: "Partner" });
-      dispatch(deletePartner({ partnerId: idSelected.current }));
-      setOpen(false);
-      message.success(t("partner.deletePartner"));
-    };
-
     return (
       <div className="w-full">
         <div className="max-h-96 overflow-y-auto visible">
@@ -476,7 +463,12 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
                             <FiEdit onClick={() => onUpdate(content)} />
                           </Button>
 
-                          <Button onClick={() => onDelete(content.partnerId)}>
+                          <Button
+                            onClick={() => {
+                              setOpenAlert(true);
+                              setSelectedRows([content.partnerId]);
+                            }}
+                          >
                             <FiTrash color="red" />
                           </Button>
                         </div>
@@ -524,7 +516,7 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
             </Button>
           </div>
         </div>
-        <AlertModal open={open} setOpen={setOpen} onConfirm={onConfirm} />
+
         {updateDataInput.type === "Customer" ? (
           <AddNewCustomerForm
             openAddNewCustomer={updateModalVisible}

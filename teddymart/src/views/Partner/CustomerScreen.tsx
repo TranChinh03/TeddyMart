@@ -22,11 +22,10 @@ import { uuidv4 } from "@firebase/util";
 import { addData } from "controller/addData";
 import { useDispatch } from "react-redux";
 import { addNewPartner } from "state_management/slices/partnerSlice";
-import { Button,message } from "antd";
+import { Button, message } from "antd";
 import AddNewCustomerForm from "./Components/AddNewCustomer";
 import { deletePartner } from "state_management/slices/partnerSlice";
 import { deleteData } from "controller/deleteData";
-
 
 export default function CustomerScreen() {
   const [search, setSearch] = useState("");
@@ -112,12 +111,14 @@ export default function CustomerScreen() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [open, setOpen] = useState(false);
   const onDeleteMultiPartner = () => {
-    selectedRows.forEach(async (item) => {
-      await deleteData({ id: item, table: "Partner" });
-      dispatch(deletePartner({partnerId: item}));
+    if (selectedRows.length !== 0) {
+      selectedRows.forEach(async (item) => {
+        await deleteData({ id: item, table: "Partner" });
+        dispatch(deletePartner({ partnerId: item }));
+        setOpen(false);
+      });
       message.success(t("partner.deletePartner"));
-      setOpen(false);
-    });
+    }
   };
   return (
     <div className="w-full">
@@ -191,6 +192,7 @@ export default function CustomerScreen() {
           ref={excelRef}
           selectedRows={selectedRows}
           setSelectedRows={setSelectedRows}
+          setOpenAlert={setOpen}
         />
         {/* <Button onClick={addNewCustomer}>Add Data To Firebase</Button> */}
       </div>

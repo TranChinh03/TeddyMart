@@ -34,27 +34,29 @@ export default function ShelfScreen() {
   const GROUP_PRODUCT = useSelector((state: RootState) => state.groupProduct);
   const dispatch = useDispatch();
   const onDeleteMultiShelf = () => {
-    selectedRows.forEach(async (item) => {
-      await deleteData({ id: item, table: "Shelf" });
-      dispatch(deleteShelf(item));
-      GROUP_PRODUCT.forEach(async (group) => {
-        if (group.shelfID === item) {
-          await updateData({
-            data: { ...group, shelfId: "", shelfName: "" },
-            table: "Group_Product",
-            id: group.groupId,
-          });
-          dispatch(
-            updateGroupProduct({
-              currentGroupProduct: group,
-              newGroupProduct: { ...group, shelfID: "", shelfName: "" },
-            })
-          );
-        }
+    if (selectedRows.length !== 0) {
+      selectedRows.forEach(async (item) => {
+        await deleteData({ id: item, table: "Shelf" });
+        dispatch(deleteShelf(item));
+        GROUP_PRODUCT.forEach(async (group) => {
+          if (group.shelfID === item) {
+            await updateData({
+              data: { ...group, shelfId: "", shelfName: "" },
+              table: "Group_Product",
+              id: group.groupId,
+            });
+            dispatch(
+              updateGroupProduct({
+                currentGroupProduct: group,
+                newGroupProduct: { ...group, shelfID: "", shelfName: "" },
+              })
+            );
+          }
+        });
+        setOpen(false);
       });
       message.success(t("shelf.deleteShelf"));
-      setOpen(false);
-    });
+    }
   };
 
   return (
@@ -95,6 +97,7 @@ export default function ShelfScreen() {
             search={search}
             selectedRows={selectedRows}
             setSelectedRows={setSelectedRows}
+            setOpenAlert={setOpen}
           />
         </div>
       </div>

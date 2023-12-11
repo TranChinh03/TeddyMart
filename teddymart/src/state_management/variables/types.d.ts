@@ -89,17 +89,18 @@ declare type TOrder = {
   seller: string;
   receiver: string;
   type: "Import" | "Export";
+  warehouseName?: string;
 };
 
 declare type TReport = {
-  date?: Date;
+  date?: Date | string | number;
   revenue?: number;
   outcome?: number;
   profit?: number;
   numberOfOrder?: number;
   importOrder?: number;
   exportOrder?: number;
-  [key: string]: number | Date;
+  [key: string]: number | Date | string;
 };
 
 declare type TReportSlice = {
@@ -118,7 +119,6 @@ declare type TRProduct = {
   productName: string;
   import?: number;
   export?: number;
-  stock?: number;
 };
 declare type TReportProduct = {
   date: Date;

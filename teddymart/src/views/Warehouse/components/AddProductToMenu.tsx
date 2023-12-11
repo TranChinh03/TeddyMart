@@ -61,6 +61,11 @@ const AddProductToMenu = ({ openMenu, setOpenMenu, setProducts }: Props) => {
         productName={searchName}
         setProducts={setMenu}
         productGroup={productGroup}
+        filterOption={{
+          costPrice: true,
+          //sell_price: false,
+          note: false,
+        }}
       />
       <div className="flex row-auto">
         <div className="flex-1" />

@@ -99,7 +99,6 @@ type TOptions = {
   productName?: boolean;
   import?: boolean;
   export?: boolean;
-  stock?: boolean;
 };
 type Props = {
   filterOption?: TOptions;
@@ -114,7 +113,6 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
       productName: true,
       import: true,
       export: true,
-      stock: true,
       ...filterOption,
     };
     const HEADER = useMemo(
@@ -124,7 +122,6 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
           options.productName && t("product.productName"),
           options.import && t("report.import"),
           options.export && t("report.export"),
-          options.stock && t("report.stock"),
         ].filter((value) => Boolean(value) !== false),
       [t, options]
     );
@@ -150,7 +147,6 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
                   ...tmp[index], // Create a new object before modifying
                   export: tmp[index].export + item.export,
                   import: tmp[index].import + item.import,
-                  stock: tmp[index].stock + item.import - item.export,
                 };
               }
             });
@@ -174,9 +170,6 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
       [rowsPerPage, data]
     );
     const [currentPage, setCurrentPage] = useState(1);
-
-    // console.log("ROWS", rowsPerPage);
-    // console.log("CURRENT", currentPage);
 
     useEffect(() => {
       setCurrentPage(1);
@@ -242,11 +235,6 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
                       {options.export && (
                         <td className="border border-gray-300 p-2 text-sm">
                           {content.export}
-                        </td>
-                      )}
-                      {options.stock && (
-                        <td className="border border-gray-300 p-2 text-sm">
-                          {content.stock}
                         </td>
                       )}
                     </tr>

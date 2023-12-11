@@ -216,9 +216,13 @@ export default function LoginScreen() {
       getData(`/Manager/${userId}/Partner`).then((data: TPartner[]) => {
         dispatch(uploadPartner(data));
       }),
-      getData(`/Manager/${userId}/Ware_House`).then((data: TWarehouse[]) => {
-        dispatch(uploadWarehouse(data));
+      new Promise((resolve) => {
+        getData(`/Manager/${userId}/Ware_House`).then((data: TWarehouse[]) => {
+          dispatch(uploadWarehouse(data));
+          resolve(data);
+        });
       }),
+
       new Promise((resolve) => {
         getData(`/Manager/${userId}/Orders`, "createdAt").then(
           (data: TOrder[]) => {
@@ -229,8 +233,12 @@ export default function LoginScreen() {
           }
         );
       }),
-    ]).then((values) => {
-      dispatch(uploadReportProduct(generateProduct(values[6] as TOrder[])));
+    ]).then((values: any) => {
+      dispatch(
+        uploadReportProduct(
+          generateProduct(values[6] as TOrder[], values[5] as TWarehouse[])
+        )
+      );
       setLoading(false);
       navigate(NAV_LINK.SALE);
       reset();

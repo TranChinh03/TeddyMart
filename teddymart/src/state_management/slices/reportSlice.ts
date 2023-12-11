@@ -25,20 +25,20 @@ const reportSlice = createSlice({
       ADD_ORDER,
       (state: TReportSlice, action: PayloadAction<TOrder>) => {
         let order = action.payload;
-        let i = state.byDate.findIndex(
-          (d) =>
-            new Date(d.date).getTime() === new Date(order.createdAt).getTime()
-        );
+        // let i = state.byDate.findIndex(
+        //   (d) =>
+        //     new Date(d.date).getTime() === new Date(order.createdAt).getTime()
+        // );
 
-        let iM = state.byMonth.findIndex(
-          (d) =>
-            new Date(d.date).getTime() === new Date(order.createdAt).getTime()
-        );
+        // let iM = state.byMonth.findIndex(
+        //   (d) =>
+        //     new Date(d.date).getTime() === new Date(order.createdAt).getTime()
+        // );
 
-        let iY = state.byYear.findIndex(
-          (d) =>
-            new Date(d.date).getTime() === new Date(order.createdAt).getTime()
-        );
+        // let iY = state.byYear.findIndex(
+        //   (d) =>
+        //     new Date(d.date).getTime() === new Date(order.createdAt).getTime()
+        // );
 
         const data = {
           date: new Date(order.createdAt),
@@ -59,11 +59,34 @@ const reportSlice = createSlice({
               : order.totalPayment,
         };
 
-        if (iM === -1) {
-          state.byMonth.unshift(data);
-        }
+        const iY = state.byYear.findIndex(
+          (y) => y.date === `${new Date(order.createdAt).getFullYear()}`
+        );
+        const iM = state.byMonth.findIndex(
+          (m) =>
+            m.date ===
+            `${new Date(order.createdAt).getMonth() + 1}/${new Date(
+              order.createdAt
+            ).getFullYear()}`
+        );
+        const i = state.byDate.findIndex(
+          (d) =>
+            new Date(d.date).getTime() === new Date(order.createdAt).getTime()
+        );
+
         if (iY === -1) {
-          state.byYear.unshift(data);
+          state.byYear.unshift({
+            ...data,
+            date: `${new Date(order.createdAt).getFullYear()}`,
+          });
+        }
+        if (iM === -1) {
+          state.byMonth.unshift({
+            ...data,
+            date: `${new Date(order.createdAt).getMonth() + 1}/${new Date(
+              order.createdAt
+            ).getFullYear()}`,
+          });
         }
         if (i === -1) {
           state.byDate.unshift(data);
@@ -100,7 +123,6 @@ const reportSlice = createSlice({
           state.byMonth[iM].numberOfOrder += 1;
           state.byYear[iY].numberOfOrder += 1;
         }
-
         return state;
       }
     );
@@ -109,17 +131,19 @@ const reportSlice = createSlice({
       (state: TReportSlice, action: PayloadAction<TOrder[]>) => {
         for (const order of action.payload) {
           //let index = state.byDate.findIndex(())
-          let iD = state.byDate.findIndex(
+          const iD = state.byDate.findIndex(
             (d) =>
               new Date(d.date).getTime() === new Date(order.createdAt).getTime()
           );
-          let iM = state.byMonth.findIndex(
+          const iM = state.byMonth.findIndex(
             (m) =>
-              new Date(m.date).getTime() === new Date(order.createdAt).getTime()
+              m.date ===
+              `${new Date(order.createdAt).getMonth() + 1}/${new Date(
+                order.createdAt
+              ).getFullYear()}`
           );
-          let iY = state.byYear.findIndex(
-            (y) =>
-              new Date(y.date).getTime() === new Date(order.createdAt).getTime()
+          const iY = state.byYear.findIndex(
+            (y) => y.date === `${new Date(order.createdAt).getFullYear()}`
           );
 
           if (iD !== -1) {
@@ -143,9 +167,9 @@ const reportSlice = createSlice({
               state.byMonth[iM].importOrder -= 1;
               state.byYear[iY].importOrder -= 1;
               if (order.status === "paid") {
-                state.byDate[iD].outcome += order.totalPayment;
-                state.byMonth[iM].outcome += order.totalPayment;
-                state.byYear[iY].outcome += order.totalPayment;
+                state.byDate[iD].outcome -= order.totalPayment;
+                state.byMonth[iM].outcome -= order.totalPayment;
+                state.byYear[iY].outcome -= order.totalPayment;
 
                 state.byDate[iD].profit += order.totalPayment;
                 state.byMonth[iM].profit += order.totalPayment;
@@ -156,6 +180,12 @@ const reportSlice = createSlice({
             state.byDate[iD].numberOfOrder -= 1;
             state.byMonth[iM].numberOfOrder -= 1;
             state.byYear[iY].numberOfOrder -= 1;
+
+            if (state.byYear[iD].numberOfOrder === 0) {
+              state.byYear.splice(iY, 1);
+              state.byMonth.splice(iM, 1);
+              state.byDate.splice(iD, 1);
+            }
           }
         }
         return state;

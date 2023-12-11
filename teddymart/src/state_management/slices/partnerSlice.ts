@@ -16,6 +16,7 @@ const partnerSlice = createSlice({
     ) => {
       return state.filter((p) => p.partnerId !== action.payload.partnerId);
     },
+
     updatePartner: (
       state: TPartner[],
       action: PayloadAction<{ partnerId: string; newData: TPartner }>

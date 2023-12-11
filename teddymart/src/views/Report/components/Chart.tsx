@@ -91,19 +91,25 @@ function Chart({ time, options }: Props) {
     }
     if (gap === 1) {
       REPORTS?.byMonth?.forEach((r) => {
+        const y = String(r.date).split("/")[1];
+        const m = String(r.date).split("/")[0];
         if (
-          new Date(r.date).getTime() >= new Date(time.from).getTime() &&
-          new Date(r.date).getTime() <= new Date(time.to).getTime()
+          +y >= new Date(time.from).getFullYear() &&
+          +y <= new Date(time.from).getFullYear()
         ) {
-          tmp.push(r);
+          if (
+            +m >= new Date(time.from).getMonth() + 1 &&
+            +m <= new Date(time.from).getMonth() + 1
+          )
+            tmp.push(r);
         }
       });
     }
     if (gap === 2) {
       REPORTS?.byYear?.forEach((r) => {
         if (
-          new Date(r.date).getTime() >= new Date(time.from).getTime() &&
-          new Date(r.date).getTime() <= new Date(time.to).getTime()
+          Number(r.date) >= new Date(time.from).getFullYear() &&
+          Number(r.date) >= new Date(time.to).getFullYear()
         ) {
           tmp.push(r);
         }
@@ -113,17 +119,11 @@ function Chart({ time, options }: Props) {
   }, [time.from, time.to, REPORTS, gap]);
 
   const tickFormat = useCallback(
-    (tick: Date) => {
+    (tick: Date | string | number) => {
       if (gap === 0) {
         return new Date(tick).toLocaleDateString("vi");
-      }
-      if (gap === 1) {
-        return `${new Date(tick).getMonth() + 1}/${new Date(
-          tick
-        ).getFullYear()}`;
-      }
-      if (gap === 2) {
-        return `${new Date(tick).getFullYear()}`;
+      } else {
+        return String(tick);
       }
     },
     [gap]
@@ -207,7 +207,10 @@ function Chart({ time, options }: Props) {
               <YAxis />
               <Tooltip
                 labelFormatter={(tick) => {
-                  return new Date(tick).toLocaleDateString("vi");
+                  if (gap === 0) {
+                    return new Date(tick).toLocaleDateString("vi");
+                  }
+                  return String(tick);
                 }}
               />
               <Legend />

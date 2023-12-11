@@ -62,14 +62,15 @@ const ShelfTable = ({
   search,
   selectedRows,
   setSelectedRows,
+  setOpenAlert,
 }: {
   filterOption?: TOptions;
   search: string;
   selectedRows: string[];
   setSelectedRows: (selectedRows: string[]) => void;
+  setOpenAlert?: (openAlert: boolean) => void;
 }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const options: TOptions = {
     shelfId: true,
     shelfName: true,
@@ -89,8 +90,6 @@ const ShelfTable = ({
     [t]
   );
   const SHELF = useSelector((state: RootState) => state.shelf);
-  const GROUP_PRODUCT = useSelector((state: RootState) => state.groupProduct);
-  const idSelected = useRef<string>("");
   const data = useMemo(() => {
     if (search !== "") {
       return SHELF.filter((s) => s.shelfName.includes(search));
@@ -105,7 +104,6 @@ const ShelfTable = ({
     [rowsPerPage]
   );
   const [currentPage, setCurrentPage] = useState(1);
-  const [open, setOpen] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
   const [dataInput, setDataInput] = useState<TShelf>({
     shelfId: "",
@@ -155,31 +153,6 @@ const ShelfTable = ({
       capacity: shelf.capacity.toString(),
       note: shelf.note,
     });
-  };
-  const onDelete = (id: string) => {
-    idSelected.current = id;
-    setOpen(true);
-  };
-  const onConfirm = async () => {
-    await deleteData({ id: idSelected.current, table: "Shelf" });
-    dispatch(deleteShelf(idSelected.current));
-    GROUP_PRODUCT.forEach(async (item) => {
-      if (item.shelfID === idSelected.current) {
-        await updateData({
-          data: { ...item, shelfID: "", shelfName: "" },
-          table: "Group_Product",
-          id: item.groupId,
-        });
-        dispatch(
-          updateGroupProduct({
-            currentGroupProduct: item,
-            newGroupProduct: { ...item, shelfID: "", shelfName: "" },
-          })
-        );
-      }
-    });
-    setOpen(false);
-    message.success(t("shelf.deleteShelf"));
   };
 
   return (
@@ -249,7 +222,12 @@ const ShelfTable = ({
                         <FiEdit />
                       </Button>
 
-                      <Button onClick={() => onDelete(content.shelfId)}>
+                      <Button
+                        onClick={() => {
+                          setOpenAlert(true);
+                          setSelectedRows([content.shelfId]);
+                        }}
+                      >
                         <FiTrash color="red" />
                       </Button>
                     </td>
@@ -296,7 +274,7 @@ const ShelfTable = ({
           </Button>
         </div>
       </div>
-      <AlertModal open={open} setOpen={setOpen} onConfirm={onConfirm} />
+
       <AddNewShelf
         openAddNewShelf={openModalUpdate}
         setOpenAddShelf={setOpenModalUpdate}

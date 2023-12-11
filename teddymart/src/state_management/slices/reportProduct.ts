@@ -4,6 +4,7 @@ import {
   DELETE_ORDER,
   RESET_ALL_STORES,
 } from "state_management/actions/actions";
+
 const reportProduct = createSlice({
   name: "reportProduct",
   initialState: [],
@@ -36,7 +37,6 @@ const reportProduct = createSlice({
               productName: item.productName,
               import: isExport ? 0 : item.quantity,
               export: isExport ? item.quantity : 0,
-              stock: isExport ? -item.quantity : item.quantity,
             })),
           });
         } else {
@@ -50,15 +50,12 @@ const reportProduct = createSlice({
                 productName: item.productName,
                 import: isExport ? 0 : item.quantity,
                 export: isExport ? item.quantity : 0,
-                stock: isExport ? -item.quantity : item.quantity,
               });
             } else {
               if (isExport) {
                 state[i].products[index].export += item.quantity;
-                state[i].products[index].stock -= item.quantity;
               } else {
                 state[i].products[index].import += item.quantity;
-                state[i].products[index].stock += item.quantity;
               }
             }
           });
@@ -83,10 +80,14 @@ const reportProduct = createSlice({
               if (index !== -1) {
                 if (isExport) {
                   state[i].products[index].export -= item.quantity;
-                  state[i].products[index].stock += item.quantity;
                 } else {
                   state[i].products[index].import -= item.quantity;
-                  state[i].products[index].stock -= item.quantity;
+                }
+                if (
+                  state[i].products[index].export === 0 &&
+                  state[i].products[index].import === 0
+                ) {
+                  state[i].products.splice(index, 1);
                 }
               }
             });

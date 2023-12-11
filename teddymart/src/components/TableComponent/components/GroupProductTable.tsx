@@ -58,11 +58,13 @@ const GroupProductTable = ({
   search,
   selectedRows,
   setSelectedRows,
+  setOpenAlert,
 }: {
   filterOption?: TOptions;
   search?: string;
   selectedRows: string[];
   setSelectedRows: (selectedRows: string[]) => void;
+  setOpenAlert?: (openAlert: boolean) => void;
 }) => {
   const { t } = useTranslation();
   const GROUP_PRODUCT = useSelector((state: RootState) => state.groupProduct);
@@ -93,13 +95,7 @@ const GroupProductTable = ({
       ].filter((value) => Boolean(value) !== false),
     [t]
   );
-
-  const PRODUCT = useSelector((state: RootState) => state.product);
-  const GROUP = useSelector((state: RootState) => state.groupProduct);
-  const dispatch = useDispatch();
-  const idSelected = useRef<string>("");
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
-  const [open, setOpen] = useState(false);
   const [dataInput, setDataInput] = useState<TGroupProduct>({
     groupId: "",
     groupName: "",
@@ -157,35 +153,6 @@ const GroupProductTable = ({
       shelfName: group.shelfName,
       note: group.note,
     });
-  };
-
-  const onDelete = (id: string) => {
-    idSelected.current = id;
-    setOpen(true);
-  };
-
-  const onConfirm = async () => {
-    await deleteData({ id: idSelected.current, table: "Group_Product" });
-    dispatch(
-      deleteGroupProduct(GROUP.find((x) => x.groupId === idSelected.current))
-    );
-    PRODUCT.forEach(async (product) => {
-      if (product.groupId === idSelected.current) {
-        await updateData({
-          data: { ...product, groupId: "", groupName: "" },
-          table: "Group_Product",
-          id: product.productId,
-        });
-        dispatch(
-          updateProduct({
-            currentProduct: product,
-            newProduct: { ...product, groupId: "", groupName: "" },
-          })
-        );
-      }
-    });
-    setOpen(false);
-    message.success(t("group.deletedGroup"));
   };
 
   return (
@@ -261,7 +228,12 @@ const GroupProductTable = ({
                           <FiEdit />
                         </Button>
 
-                        <Button onClick={() => onDelete(content.groupId)}>
+                        <Button
+                          onClick={() => {
+                            setOpenAlert(true);
+                            setSelectedRows([content.groupId]);
+                          }}
+                        >
                           <FiTrash color="red" />
                         </Button>
                       </div>
@@ -307,7 +279,7 @@ const GroupProductTable = ({
           </Button>
         </div>
       </div>
-      <AlertModal open={open} setOpen={setOpen} onConfirm={onConfirm} />
+
       <AddNewGroupProduct
         openAddNewGroupProduct={openModalUpdate}
         setOpenAddNewGroupProduct={setOpenModalUpdate}
