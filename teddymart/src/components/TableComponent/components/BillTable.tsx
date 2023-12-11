@@ -245,22 +245,24 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
     );
     // const [selectedRows, setSelectedRows] = useState([]);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-
+    // console.log("rowLength", selectedRows.length);
+    // console.log("row", selectedRows);
+    // console.log(
+    //   "arraylength",
+    //   bills.filter((bill) => bill.type === type).length
+    // );
     const handleCheckBoxChange = (rowId: string) => {
       if (rowId === null) {
-        if (selectedRows.length < bills.length) {
-          setSelectedRows(
-            bills
-              .filter((bill) => bill.type === type)
-              .map((value) => value.orderId)
-          );
+        if (selectedRows.length < tmpData.length) {
+          setSelectedRows(tmpData.map((value) => value.orderId));
           return;
         }
-        if (selectedRows.length === bills.length) {
+        if (selectedRows.length === tmpData.length) {
           setSelectedRows([]);
           return;
         }
       }
+
       if (selectedRows.includes(rowId)) {
         setSelectedRows([...selectedRows.filter((id) => id !== rowId)]);
         return;
@@ -311,6 +313,7 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
                   <input
                     className="w-15 h-15 bg-hover"
                     type="checkbox"
+                    checked={selectedRows.length === tmpData.length}
                     onChange={() => handleCheckBoxChange(null)}
                   />
                 </th>
