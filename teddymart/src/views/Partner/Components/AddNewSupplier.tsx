@@ -43,6 +43,7 @@ export default function AddNewSupplierForm({
       setSelectedImage(imageUrl);
       setData({
         ...data,
+        certificate: imageUrl,
       });
     }
   };
@@ -119,8 +120,8 @@ export default function AddNewSupplierForm({
       phoneNumber: "",
       email: "",
       address: "",
-      debt: 0,
-      totalBuyAmount: 0,
+      debt: parseInt(""),
+      totalBuyAmount: parseInt(""),
       certificate: "",
       note: "",
       type: "Supplier",
@@ -229,7 +230,7 @@ export default function AddNewSupplierForm({
               <td>
                 {isAdd ? (
                   <TextInputComponent
-                    placeHolder=""
+                    placeHolder="0"
                     width={"100%"}
                     value={data.totalBuyAmount.toString()}
                     setValue={(value) => onChange(value, "totalBuyAmount")}
@@ -246,7 +247,7 @@ export default function AddNewSupplierForm({
               <td>
                 {isAdd ? (
                   <TextInputComponent
-                    placeHolder=""
+                    placeHolder="0"
                     width={"100%"}
                     value={data.debt.toString()}
                     setValue={(value) => onChange(value, "debt")}
@@ -278,9 +279,9 @@ export default function AddNewSupplierForm({
                   className="flex flex-col items-center border border-gray-300 rounded-lg w-fit h-fit px-10 py-4 cursor-pointer hover:bg-gray-300 active:bg-white"
                   onClick={() => fileInputRef.current.click()}
                 >
-                  {selectedImage ? (
+                  {selectedImage || data.certificate ? (
                     <img
-                      src={selectedImage}
+                      src={selectedImage || data.certificate}
                       alt="Selected"
                       style={{ width: "100%", maxHeight: "100px" }}
                     />
