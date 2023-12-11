@@ -151,7 +151,11 @@ export default function AddNewSupplierForm({
       open={opernAddNewSupplier}
       onCancel={() => setOpernAddNewSupplier(false)}
       footer={false}
-      title={<h1 className="pr-8 text-3xl">{t("supplier.addNewSupplier")}</h1>}
+      title={
+        <h1 className="pr-8 text-3xl">
+          {isAdd ? t("partner.addNewSupplier") : t("partner.updateSupplier")}
+        </h1>
+      }
       width={"60%"}
     >
       <hr className="h-0.5 my-4 bg-black" />

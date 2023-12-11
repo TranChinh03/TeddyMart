@@ -121,7 +121,7 @@ export default function AddNewCustomerForm({
       footer={false}
       title={
         <h1 className="pr-8 text-3xl">
-          {isAdd ? t("partner.addNewSupplier") : t("partner.updateSupplier")}
+          {isAdd ? t("partner.addNewCustomer") : t("partner.updateCustomer")}
         </h1>
       }
       width={"60%"}
