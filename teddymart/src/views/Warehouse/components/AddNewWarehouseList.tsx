@@ -70,6 +70,14 @@ export default function AddNewWarehouseList({
       message.warning(t("fillData"));
       return;
     }
+    const warehouseId = createID({ prefix: "WH" });
+    const newData: TWarehouse = {
+      warehouseId: warehouseId,
+      warehouseName: data.warehouseName,
+      address: data.address,
+      listProduct: [],
+      count: 0,
+    };
 
     if (isAdd) {
       if (
@@ -82,26 +90,17 @@ export default function AddNewWarehouseList({
         message.error(t("warehouse.existed"));
         return;
       }
-      const warehouseId = createID({ prefix: "WH" });
-      const newData: TWarehouse = {
-        warehouseId: warehouseId,
-        warehouseName: data.warehouseName,
-        address: data.address,
-        listProduct: [],
-        count: 0,
-      };
       dispatch(addNewWarehouse(newData));
       addData({ data: newData, table: "Ware_House", id: warehouseId });
       message.success(t("warehouse.addSuccess"));
-      setOpenAddNewWarehouse(false);
     } else {
       dispatch(
         updateWarehouse({ warehouseId: data.warehouseId, updatedData: data })
       );
-      await updateData({ data: data, table: "Partner", id: data.warehouseId });
+      await updateData({ data: data, table: "Ware_House", id: data.warehouseId });
       message.success(t("warehouse.updateSuccess"));
-      setOpenAddNewWarehouse(false);
     }
+    setOpenAddNewWarehouse(false);
 
     setData({
       warehouseId: "",
