@@ -10,6 +10,9 @@ import controlSlice, { TControl } from "state_management/slices/controlSlice";
 import reportSlice from "state_management/slices/reportSlice";
 import reportProduct from "state_management/slices/reportProduct";
 import shelfSlice from "state_management/slices/shelfSlice";
+import notificationSlice, {
+  TNotification,
+} from "state_management/slices/notificationSlice";
 export type RootState = {
   partnerSlice: TPartner[];
   voucherSlice: TVoucher[];
@@ -22,6 +25,7 @@ export type RootState = {
   controlSlice: TControl;
   reportProduct: TReportProduct[];
   shelf: TShelf[];
+  notificationSlice: TNotification[];
 };
 
 const rootReducer = combineReducers({
@@ -36,5 +40,6 @@ const rootReducer = combineReducers({
   controlSlice: controlSlice,
   reportSlice: reportSlice,
   reportProduct: reportProduct,
+  notificationSlice: notificationSlice,
 });
 export default rootReducer;

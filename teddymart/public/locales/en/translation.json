@@ -339,6 +339,7 @@
   "alertTitle": "Are you sure?",
   "alertContent": "Confirm you will delete this section from the system!",
   "warningSave": "Do you want to save status of order?",
+  "notification":"Notification",
   "header": {
     "sale": "Sale",
     "product": "Product",
