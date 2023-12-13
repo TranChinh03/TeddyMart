@@ -141,6 +141,7 @@ export default function Header({
         >
           {notifications.map((notification, index) => (
             <Card
+              key={index}
               style={{ width: "auto" }}
               className="mb-4"
               cover={
