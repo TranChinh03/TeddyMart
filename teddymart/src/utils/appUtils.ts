@@ -86,6 +86,12 @@ const updateProductFirebase = async (
     count: increment(count),
   });
 };
+const addNotificationFirebase = async (
+  data: { title: string; subTitle: string; img: string; notiId: string },
+  userId: string
+) => {
+  await setDoc(doc(db, `/Manager/${userId}/Notification/${data.notiId}`), data);
+};
 export {
   createID,
   addOrderFirebase,
@@ -96,4 +102,5 @@ export {
   updatePartnerFirebase,
   deletePartnerFirebase,
   updateProductFirebase,
+  addNotificationFirebase,
 };

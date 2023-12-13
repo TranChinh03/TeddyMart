@@ -326,6 +326,7 @@
   "alertTitle": "Bạn có chắc chắn?",
   "alertContent": "Xác nhận rằng bạn sẽ xóa mục này ra khỏi hệ thống",
   "warningSave": "Bạn có muốn lưu lại trạng thái của đơn hàng",
+  "notification":"Thông báo",
   "header": {
     "sale": "Đơn hàng",
     "product": "Sản phẩm",

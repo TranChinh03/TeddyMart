@@ -32,6 +32,10 @@ import {
 } from "firebase/auth";
 import { uploadManager } from "state_management/slices/managerSlice";
 import { uploadShelf } from "state_management/slices/shelfSlice";
+import {
+  TNotification,
+  updateNotifications,
+} from "state_management/slices/notificationSlice";
 
 type Inputs = {
   userName: string;
@@ -198,6 +202,9 @@ export default function LoginScreen() {
 
   const onFetchData = async (userId: string) => {
     await Promise.all([
+      getData(`/Manager/${userId}/Notification`).then((data: TNotification[]) =>
+        dispatch(updateNotifications(data))
+      ),
       getData(`/Manager/${userId}/Voucher`).then((data: TVoucher[]) =>
         dispatch(uploadVoucher(data))
       ),
