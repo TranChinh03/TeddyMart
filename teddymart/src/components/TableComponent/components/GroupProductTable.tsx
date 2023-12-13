@@ -108,7 +108,7 @@ const GroupProductTable = ({
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const maxPages = useMemo(
     () => Math.round(data.length / rowsPerPage),
-    [rowsPerPage]
+    [rowsPerPage, data.length]
   );
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -146,7 +146,6 @@ const GroupProductTable = ({
     setSelectedRows([...selectedRows, rowId]);
   };
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    console.log("okkkkk");
     setRowsPerPage(+e.target.value);
   };
 
@@ -171,6 +170,7 @@ const GroupProductTable = ({
                 <input
                   className="w-15 h-15 bg-hover"
                   type="checkbox"
+                  checked={selectedRows.length === data.length}
                   onChange={() => handleCheckBoxChange(null)}
                 />
               </th>

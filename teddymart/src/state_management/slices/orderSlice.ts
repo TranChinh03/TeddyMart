@@ -26,7 +26,7 @@ const orderSlice = createSlice({
       const index = state.findIndex(
         (p) => p.orderId === action.payload.currentOrder.orderId
       );
-      if (index > 0) {
+      if (index !== -1) {
         state[index] = { ...action.payload.newOrder };
       }
       return state;

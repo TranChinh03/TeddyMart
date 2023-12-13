@@ -18,7 +18,7 @@ const warehouseSlice = createSlice({
       state: TWarehouse[],
       action: PayloadAction<TWarehouse>
     ) => {
-      state.push(action.payload);
+      state.unshift(action.payload);
     },
     uploadWarehouse: (
       state: TWarehouse[],

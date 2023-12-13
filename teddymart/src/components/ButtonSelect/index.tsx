@@ -27,7 +27,7 @@ export default function ButtonSelect({
           <Select
             placeholder={title}
             value={value}
-            style={{minWidth: width, width: width, textAlign: "left" }}
+            style={{ minWidth: width, width: width, textAlign: "left" }}
             className="flex items-start"
             onChange={(value) => setValue(value)}
           >

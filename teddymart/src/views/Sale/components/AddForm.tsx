@@ -77,9 +77,18 @@ const AddForm = ({
   const voucherId = getVoucherInfo(voucher).voucherId;
   const dispatch = useDispatch();
   const customerInfo = useMemo(() => {
-    let customer = partners.find((partner) =>
-      partner.phoneNumber.includes(searchCustomer)
-    );
+    let customer = partners.find((partner) => {
+      if (typeAdd === "Export") {
+        return (
+          partner.phoneNumber.includes(searchCustomer) &&
+          partner.type === "Customer"
+        );
+      }
+      return (
+        partner.phoneNumber.includes(searchCustomer) &&
+        partner.type === "Supplier"
+      );
+    });
     return customer;
   }, [searchCustomer]);
   const sum = useMemo(() => {
@@ -116,10 +125,10 @@ const AddForm = ({
       orderId: orderId,
       partnerId: customerInfo.partnerId,
       partnerName: customerInfo.partnerName,
-      payment: +payment,
+      payment: sum, ///
       seller: "TeddyMart",
-      status: +payment > 0 ? "paid" : "unpaid",
-      totalPayment: sum,
+      status: +payment === sum ? "paid" : "unpaid",
+      totalPayment: +payment, ///
       type: typeAdd,
       voucherId: voucherId,
       receiver: "TeddyMart",
@@ -142,6 +151,8 @@ const AddForm = ({
     message.success("Add Order Success");
     setOpenAddForm(false);
     dispatch({ type: ADD_ORDER, payload: data });
+    setPayment("");
+    setVoucher("");
   };
 
   return (

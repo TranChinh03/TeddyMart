@@ -199,10 +199,10 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
     };
 
     const handleRowsPerPageChange = (e: any) => {
-      setRowsPerPage(e.target.value);
+      setRowsPerPage(+e.target.value);
     };
     const maxPages = useMemo(
-      () => Math.round(CONTENT.length / rowsPerPage),
+      () => Math.round(warehouseSort.length / rowsPerPage),
       [rowsPerPage]
     );
     const [currentPage, setCurrentPage] = useState(1);
@@ -256,6 +256,7 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
                   <input
                     className="w-15 h-15 bg-hover"
                     type="checkbox"
+                    checked={selectedRows.length === warehouseSort.length}
                     onChange={() => handleCheckBoxChange(null)}
                   />
                 </th>

@@ -102,7 +102,7 @@ const VoucherTable = ({
     setSelectedRows([...selectedRows, rowId]);
   };
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    console.log("okkkkk");
+    //console.log("okkkkk");
     setRowsPerPage(+e.target.value);
   };
   const onBackAll = () => {
@@ -143,6 +143,7 @@ const VoucherTable = ({
                 <input
                   className="w-15 h-15 bg-hover"
                   type="checkbox"
+                  checked={selectedRows.length === voucherFilter.length}
                   onChange={() => handleCheckBoxChange(null)}
                 />
               </th>
