@@ -99,29 +99,6 @@ const warehouseSlice = createSlice({
                     : listProduct[index_product].quantity + element.quantity,
                 };
               }
-            if (listProduct[index_product].quantity < 5) {
-              const data = {
-                notiId: "Noti" + Math.floor(Math.random() * 1000),
-                img: "https://i.pinimg.com/564x/02/f8/da/02f8da32d01361bd68a1718fcbe6a537.jpg",
-                title: "Warning",
-                subTitle: `The ${element.productName} is up to out of stock in ${item.warehouseName}`,
-              };
-              store.dispatch(
-                addNotifications({
-                  notiId: "Noti" + Math.floor(Math.random() * 1000),
-                  img: "https://i.pinimg.com/564x/02/f8/da/02f8da32d01361bd68a1718fcbe6a537.jpg",
-                  title: "Warning",
-                  subTitle: `The ${element.productName} is up to out of stock in ${item.warehouseName}`,
-                })
-              );
-              addNotificationFirebase(data, action.payload.userId);
-              addNotification({
-                title: "Warning",
-                subtitle: `The ${element.productName} is up to out of stock in ${item.warehouseName}`,
-                theme: "light",
-                native: true,
-              });
-            }
           }
           state[index] = { ...state[index], listProduct: listProduct };
           updateProductFirebase(

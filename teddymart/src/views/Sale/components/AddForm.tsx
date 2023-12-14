@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { addNewOrder } from "state_management/slices/orderSlice";
 import {
+  addNotificationFirebase,
   addOrderFirebase,
   createID,
   updateProductFirebase,
@@ -24,6 +25,8 @@ import AddNewProduct from "views/Product/components/AddNewProduct";
 import { ADD_ORDER } from "state_management/actions/actions";
 import AddProductToMenu from "views/Warehouse/components/AddProductToMenu";
 import { updateProductWarehouse } from "state_management/slices/warehouseSlice";
+import addNotification from "react-push-notification";
+import { addNotifications } from "state_management/slices/notificationSlice";
 const CUS_INFO = {
   customerName: "NVA",
   gender: "Male",
@@ -52,7 +55,7 @@ const AddForm = ({
   ).map((value) => value.warehouseName);
   const vouchers = useSelector((state: RootState) => state.voucherSlice);
   const { userId } = useSelector((state: RootState) => state.manager);
-  const warehouses = useSelector((state: RootState) => state.warehouseSlice);
+  const warehouse = useSelector((state: RootState) => state.warehouseSlice);
   // const [sum, setSum] = useState(1000);
   const [productMenu, setProductMenu] = useState<TProduct[]>([]);
   const [warehouseName, setWarehouseName] = useState(listWarehouseName[0]);
@@ -73,6 +76,7 @@ const AddForm = ({
     };
   };
   const partners = useSelector((state: RootState) => state.partnerSlice);
+  const warehouses = useSelector((state: RootState) => state.warehouseSlice);
   const discount = getVoucherInfo(voucher).discount;
   const voucherId = getVoucherInfo(voucher).voucherId;
   const dispatch = useDispatch();
@@ -153,6 +157,58 @@ const AddForm = ({
     dispatch({ type: ADD_ORDER, payload: data });
     setPayment("");
     setVoucher("");
+  };
+  const checkProductWarehouse = (warehouseName: string) => {
+    console.log(productMenu);
+    for (const item of productMenu) {
+      const index = warehouse.findIndex(
+        (w) => w.warehouseName === warehouseName
+      );
+      console.log("index", index);
+
+      if (index > -1) {
+        const index_product = warehouse[index].listProduct.findIndex(
+          (product) => product.productId === item.productId
+        );
+
+        if (index_product > -1) {
+          console.log(
+            "condition",
+            warehouse[index].listProduct[index_product].quantity -
+              item.quantity,
+            item.quantity,
+            item
+          );
+          if (
+            warehouse[index].listProduct[index_product].quantity +
+              item.quantity * (typeAdd === "Import" ? 1 : -1) <
+            5
+          ) {
+            const data = {
+              notiId: "Noti" + Math.floor(Math.random() * 1000),
+              img: "https://i.pinimg.com/564x/02/f8/da/02f8da32d01361bd68a1718fcbe6a537.jpg",
+              title: "Warning",
+              subTitle: `The ${item.productName} is up to out of stock in ${warehouse[index].warehouseName}`,
+            };
+            addNotification({
+              title: "Warning",
+              subtitle: `The ${item.productName} is up to out of stock in ${warehouse[index].warehouseName}`,
+              theme: "light",
+              native: true,
+            });
+            dispatch(
+              addNotifications({
+                notiId: "Noti" + Math.floor(Math.random() * 1000),
+                img: "https://i.pinimg.com/564x/02/f8/da/02f8da32d01361bd68a1718fcbe6a537.jpg",
+                title: "Warning",
+                subTitle: `The ${item.productName} is up to out of stock in ${warehouse[index].warehouseName}`,
+              })
+            );
+            addNotificationFirebase(data, userId);
+          }
+        }
+      }
+    }
   };
 
   return (
@@ -333,7 +389,10 @@ const AddForm = ({
       <div className=" flex justify-center items-center">
         <ButtonComponent
           label={t("button.addOrder")}
-          onClick={onAddOrder}
+          onClick={() => {
+            checkProductWarehouse(warehouseName);
+            onAddOrder();
+          }}
           paddingHorizontal={30}
           fontSize={26}
         />
