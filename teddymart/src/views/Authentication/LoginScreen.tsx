@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TextInputComponent from "components/TextInputComponent";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
@@ -236,6 +236,24 @@ export default function LoginScreen() {
       .finally(() => setLoading(false));
   };
 
+  const buttonRef = useRef(null)
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        // Enter key was pressed, handle the event here
+        event.preventDefault();
+        buttonRef.current.click();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   return (
     <Spin spinning={loading}>
       <div className="flex justify-center items-center min-h-screen bg-gradient-to-t from-sidebar to-white">
@@ -295,6 +313,7 @@ export default function LoginScreen() {
                 <button
                   className="w-5/12 py-2 bg-sidebar text-white text-xl rounded-md hover:bg-hover"
                   onClick={() => onLogin}
+                  ref={buttonRef}
                 >
                   {t("login.login")}
                 </button>

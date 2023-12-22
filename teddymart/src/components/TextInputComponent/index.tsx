@@ -1,7 +1,7 @@
 import { COLORS } from "constants/colors";
 import { Props } from "./props";
 import TextComponent from "components/TextComponent";
-import { ChangeEvent, useRef } from "react";
+import { ChangeEvent, useEffect, useRef } from "react";
 import { useForm, SubmitHandler, UseFormRegister } from "react-hook-form";
 /**
  * Props for a custom text input component.
