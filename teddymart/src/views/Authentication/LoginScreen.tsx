@@ -56,8 +56,6 @@ export default function LoginScreen() {
     formState: { errors },
   } = useForm<Inputs>();
   const onLogin: SubmitHandler<Inputs> = async (data) => {
-    //console.log("submit");
-    //console.log(data);
     setLoading(true);
     const snapshot = await getDocs(collection(db, "Manager"));
     const user = snapshot.docs.find(
@@ -114,6 +112,7 @@ export default function LoginScreen() {
             type: "custom",
             message: t("login.wrongPassword"),
           });
+          setLoading(false);
           console.log(e);
         });
     } else {
@@ -161,43 +160,6 @@ export default function LoginScreen() {
           console.log(e);
         });
     }
-    //setLoading(false);
-
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    // setLoading(true);
-    // await Promise.all([
-    //   getData("/Manager/M001/Voucher").then((data: TVoucher[]) =>
-    //     dispatch(uploadVoucher(data))
-    //   ),
-    //   getData("/Manager/M001/Group_Product").then((data: TGroupProduct[]) =>
-    //     dispatch(uploadGroupProduct(data))
-    //   ),
-    //   new Promise((resolve) => {
-    //     getData("/Manager/M001/Product").then((data: TProduct[]) => {
-    //       dispatch(uploadProduct(data));
-    //       resolve(data);
-    //     });
-    //   }),
-    //   getData("/Manager/M001/Partner").then((data: TPartner[]) => {
-    //     dispatch(uploadPartner(data));
-    //   }),
-    //   getData("/Manager/M001/Ware_House").then((data: TWarehouse[]) => {
-    //     dispatch(uploadWarehouse(data));
-    //   }),
-    //   new Promise((resolve) => {
-    //     getData("/Manager/M001/Orders", "createdAt").then((data: TOrder[]) => {
-    //       dispatch(uploadOrder(data));
-    //       dispatch(uploadReport(generateReport(data)));
-    //       resolve(data);
-    //       //console.log(generateProduct(data));
-    //     });
-    //   }),
-    // ]).then((values) => {
-    //   dispatch(uploadReportProduct(generateProduct(values[5] as TOrder[])));
-    //   //console.log("VALUES", values[2], values[5]);
-    //   setLoading(false);
-    //   navigate(NAV_LINK.SALE);
-    // });
   };
 
   const onFetchData = async (userId: string) => {
@@ -257,19 +219,6 @@ export default function LoginScreen() {
 
     signInWithPopup(auth, provider)
       .then(async (result) => {
-        console.log("RES", result.user);
-        //await getDoc(doc(db, ))
-        // const q = query(
-        //   collection(db, "Manager"),
-        //   where("userId", "==", result.user.uid)
-        // );
-        // const snapshot = await getDocs(q);
-        // if (snapshot.size === 0) {
-        //   navigate(`/signup/${result.user.uid}/${result.user.email}`);
-        // } else {
-
-        // }
-
         const user = await getDoc(doc(db, "Manager", result.user.uid));
         if (!user.data()) {
           navigate(`/signup/${result.user.uid}/${result.user.email}`);
@@ -307,82 +256,81 @@ export default function LoginScreen() {
             <p className="text-center">{t("login.signInToManageStore")}</p>
 
             <form onSubmit={handleSubmit(onLogin)}>
-              <div>
-                <div className="grid gap-y-1 mt-4">
-                  <TextInputComponent
-                    placeHolder=""
-                    label={t("login.userName")}
-                    width={"100%"}
-                    required={true}
-                    register={register}
-                    registerName="userName"
-                  />
-                  {errors.userName && (
-                    <p className="text-xs text-red-500">
-                      {errors.userName.message}
-                    </p>
-                  )}
-                </div>
-                <div className="grid gap-y-1 mt-5">
-                  <TextInputComponent
-                    placeHolder=""
-                    label={t("login.password")}
-                    width={"100%"}
-                    required={true}
-                    inputType={visible ? "text" : "password"}
-                    icon={visible ? <AiFillEyeInvisible /> : <AiFillEye />}
-                    onIconClick={() => setVisible(!visible)}
-                    register={register}
-                    registerName="password"
-                  />
-                  {errors.password && (
-                    <p className="text-xs text-red-500">
-                      {errors.password.message}
-                    </p>
-                  )}
+              <div className="gap-y-1 mt-4">
+                <TextInputComponent
+                  label={t("login.userName")}
+                  width={"100%"}
+                  required={true}
+                  register={register}
+                  registerName="userName"
+                />
+                {errors.userName && (
+                  <p className="text-xs text-red-500">
+                    {errors.userName.message}
+                  </p>
+                )}
+              </div>
+              <div className="gap-y-1 mt-5">
+                <TextInputComponent
+                  label={t("login.password")}
+                  width={"100%"}
+                  required={true}
+                  inputType={visible ? "text" : "password"}
+                  icon={visible ? <AiFillEyeInvisible /> : <AiFillEye />}
+                  onIconClick={() => {
+                    console.log("Eye icon clicked");
+                    setVisible(!visible);
+                  }}
+                  register={register}
+                  registerName="password"
+                />
+                {errors.password && (
+                  <p className="text-xs text-red-500">
+                    {errors.password.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex flex-col justify-center items-center gap-y-3 mt-4">
+                <button
+                  className="w-5/12 py-2 bg-sidebar text-white text-xl rounded-md hover:bg-hover"
+                  onClick={() => onLogin}
+                >
+                  {t("login.login")}
+                </button>
+                <button
+                  className="w-5/12 text-sidebar text-14"
+                  onClick={() => navigate(NAV_LINK.FORGOT_PASSWORD)}
+                >
+                  {t("login.forgotpassword")}
+                </button>
+
+                <div className="flex justify-center gap-2 text-16 pt-2 pb-2">
+                  <p>{t("login.newTeddyMart")}</p>
+                  <button
+                    className="text-sidebar font-medium"
+                    onClick={() => navigate(NAV_LINK.SIGN_UP)}
+                  >
+                    {t("login.signUp")}
+                  </button>
                 </div>
 
-                <div className="flex flex-col justify-center items-center gap-y-3 mt-4">
-                  <button
-                    className="w-5/12 py-2 bg-sidebar text-white text-xl rounded-md hover:bg-hover"
-                    onClick={() => onLogin}
-                  >
-                    {t("login.login")}
-                  </button>
-                  <button
-                    className="w-5/12 text-sidebar text-14"
-                    onClick={() => navigate(NAV_LINK.FORGOT_PASSWORD)}
-                  >
-                    {t("login.forgotpassword")}
-                  </button>
-
-                  <div className="flex justify-center gap-2 text-16 pt-2 pb-2">
-                    <p>{t("login.newTeddyMart")}</p>
-                    <button
-                      className="text-sidebar font-medium"
-                      onClick={() => navigate(NAV_LINK.SIGN_UP)}
-                    >
-                      {t("login.signUp")}
-                    </button>
+                <Button onClick={onLoginGoogle}>
+                  <div className="flex">
+                    <img
+                      src={
+                        "https://static-00.iconduck.com/assets.00/google-icon-2048x2048-czn3g8x8.png"
+                      }
+                      style={{
+                        width: 20,
+                        height: 20,
+                        marginRight: 10,
+                      }}
+                      alt="image"
+                    />
+                    <div>{t("login.loginWithGG")}</div>
                   </div>
-
-                  <Button onClick={onLoginGoogle}>
-                    <div className="flex">
-                      <img
-                        src={
-                          "https://static-00.iconduck.com/assets.00/google-icon-2048x2048-czn3g8x8.png"
-                        }
-                        style={{
-                          width: 20,
-                          height: 20,
-                          marginRight: 10,
-                        }}
-                        alt="image"
-                      />
-                      <div>{t("login.loginWithGG")}</div>
-                    </div>
-                  </Button>
-                </div>
+                </Button>
               </div>
             </form>
           </div>

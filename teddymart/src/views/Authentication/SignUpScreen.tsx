@@ -39,7 +39,7 @@ export default function SignUpScreen() {
   const params = useParams();
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -88,7 +88,6 @@ export default function SignUpScreen() {
           });
       }
     } else {
-      //console.log("USER_ID", params.userId);
       await setDoc(doc(db, "Manager", params.userId), {
         ...data,
         email: params.email,
@@ -144,7 +143,7 @@ export default function SignUpScreen() {
             <form onSubmit={handleSubmit(onSignUp)}>
               <div className="flex">
                 <div className="w-full grid grid-cols-2 gap-y-7 py-2 gap-2">
-                  {!params && (
+                  {!params.email && (
                     <div>
                       <TextInputComponent
                         label={t("signUp.userName")}
@@ -161,11 +160,10 @@ export default function SignUpScreen() {
                     </div>
                   )}
 
-                  {!params && (
+                  {!params.email && (
                     <div>
                       <TextInputComponent
                         label={t("signUp.password")}
-                        //labelFontSize={11}
                         width={"100%"}
                         required={true}
                         inputType={visible ? "text" : "password"}
@@ -189,7 +187,7 @@ export default function SignUpScreen() {
                   <div>
                     <TextInputComponent
                       label={t("signUp.email")}
-                      disabled={params ? true : false}
+                      disabled={params.email ? true : false}
                       width={"100%"}
                       required={true}
                       register={register}

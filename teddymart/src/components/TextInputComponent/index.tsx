@@ -120,7 +120,10 @@ export default function TextInputComponent({
 
         {icon && (
           <button
-            onClick={onIconClick}
+            onClick={(e) => {
+              onIconClick();
+              e.preventDefault();
+            }}
             className="p-2 hover:bg-extreme_lg_grey rounded-full"
           >
             {icon}
