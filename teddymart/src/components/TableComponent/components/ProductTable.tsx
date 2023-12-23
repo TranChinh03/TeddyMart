@@ -19,11 +19,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { TListProduct } from "./BillTable";
-import { deleteProduct } from "state_management/slices/productSlice";
-import AlertModal from "components/AlertModal";
-import { deleteData } from "controller/deleteData";
-import { storage } from "firebaseConfig";
-import { deleteObject, ref } from "firebase/storage";
+
 import AddNewProduct from "views/Product/components/AddNewProduct";
 export type Input = {
   productId: string;
@@ -132,7 +128,6 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     const [openModalUpdate, setOpenModalUpdate] = useState(false);
 
     const productsFilter = useMemo(() => {
-      // if (data.length > 0) return data;
       let listProducts: TProduct[] = [...products];
 
       if (productGroup) {
@@ -237,7 +232,6 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
 
           return;
         });
-        //console.log("list Product", tmp);
         listProducts = tmp.filter((value) => value !== undefined);
       }
 
@@ -311,8 +305,8 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     }, [rowsPerPage]);
 
     const handleCheckBoxChange = (product?: TProduct) => {
-      const rowId = product.productId;
-      if (rowId === null) {
+      const rowId = product?.productId;
+      if (rowId === null || rowId === undefined) {
         if (selectedRows.length < productsFilter.length) {
           setSelectedRows([
             ...productsFilter.map((content) => content?.productId),
