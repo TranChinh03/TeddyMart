@@ -166,7 +166,7 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
       setRowsPerPage(+e.target.value);
     };
     const maxPages = useMemo(
-      () => Math.round(data.length / rowsPerPage),
+      () => Math.ceil(data.length / rowsPerPage),
       [rowsPerPage, data]
     );
     const [currentPage, setCurrentPage] = useState(1);

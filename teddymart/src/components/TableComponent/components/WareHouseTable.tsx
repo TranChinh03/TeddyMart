@@ -199,12 +199,14 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
     };
 
     const handleRowsPerPageChange = (e: any) => {
+      console.log(e.target.value);
       setRowsPerPage(+e.target.value);
     };
     const maxPages = useMemo(
-      () => Math.round(warehouseSort.length / rowsPerPage),
+      () => Math.ceil(warehouseSort.length / rowsPerPage),
       [rowsPerPage]
     );
+
     const [currentPage, setCurrentPage] = useState(1);
 
     const onBackAll = () => {

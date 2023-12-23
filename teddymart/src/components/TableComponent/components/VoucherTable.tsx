@@ -79,7 +79,7 @@ const VoucherTable = ({
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const maxPages = useMemo(
-    () => Math.round(vouchers.length / rowsPerPage),
+    () => Math.ceil(vouchers.length / rowsPerPage),
     [rowsPerPage]
   );
   const [currentPage, setCurrentPage] = useState(1);
