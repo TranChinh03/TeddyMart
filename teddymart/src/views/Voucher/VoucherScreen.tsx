@@ -8,6 +8,10 @@ import { PiWarningCircle } from "react-icons/pi";
 import AddNewVoucherForm from "./components/AddNewVoucherForm";
 import UpdateVoucherForm from "./components/UpdateVoucherForm";
 import WarningAlert from "./components/WarningAlert";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteVoucher } from "state_management/slices/voucherSlice";
+import { deleteVoucherFirebase } from "utils/appUtils";
+import { RootState } from "state_management/reducers/rootReducer";
 function VoucherScreen() {
   const { t } = useTranslation();
   const [openAddVoucher, setOpenAddVoucher] = useState(false);
@@ -15,9 +19,16 @@ function VoucherScreen() {
   const [openUpdateVoucher, setOpenUpdateVoucher] = useState(false);
   const [openWarningDelete, setOpenWarningDelete] = useState(false);
   const [editContent, setEditContent] = useState<TVoucher>();
+  const { userId } = useSelector((state: RootState) => state.manager);
+  const [voucherId, setVoucherId] = useState("");
+  const dispatch = useDispatch();
   const openEditForm = (voucher: TVoucher) => {
     setOpenUpdateVoucher(true);
     setEditContent(voucher);
+  };
+  const onDeleteVoucher = () => {
+    dispatch(deleteVoucher(voucherId));
+    deleteVoucherFirebase([voucherId], userId);
   };
   return (
     <div className="w-full">
@@ -48,6 +59,10 @@ function VoucherScreen() {
             <VoucherTable
               searchVoucherName={searchVoucher}
               openEditForm={openEditForm}
+              onDelete={(open, voucherId) => {
+                setOpenWarningDelete(open);
+                setVoucherId(voucherId);
+              }}
             />
           </div>
         </Space>
@@ -64,6 +79,7 @@ function VoucherScreen() {
       <WarningAlert
         openWarningDelete={openWarningDelete}
         setOpenWarningDelete={setOpenWarningDelete}
+        onConfirm={onDeleteVoucher}
       />
     </div>
   );

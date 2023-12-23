@@ -47,10 +47,12 @@ const VoucherTable = ({
   filterOption,
   searchVoucherName,
   openEditForm,
+  onDelete,
 }: {
   filterOption?: TOptions;
   searchVoucherName?: string;
   openEditForm?: (voucher: TVoucher) => void;
+  onDelete?: (open: boolean, voucherId: string) => void;
 }) => {
   const { t } = useTranslation();
   const options: TOptions = {
@@ -62,7 +64,6 @@ const VoucherTable = ({
     ...filterOption,
   };
   const vouchers = useSelector((state: RootState) => state.voucherSlice);
-  const { userId } = useSelector((state: RootState) => state.manager);
   const HEADER = useMemo(
     () =>
       [
@@ -117,10 +118,7 @@ const VoucherTable = ({
   const onForwardAll = () => {
     setCurrentPage(maxPages);
   };
-  const onDeleteVoucher = (voucherId: string) => {
-    dispatch(deleteVoucher(voucherId));
-    deleteVoucherFirebase([voucherId], userId);
-  };
+  const onDeleteVoucher = (voucherId: string) => {};
   const voucherFilter = useMemo(() => {
     let listVouchers = [...vouchers];
     if (searchVoucherName) {
@@ -199,9 +197,7 @@ const VoucherTable = ({
                         <FiEdit />
                       </Button>
 
-                      <Button
-                        onClick={() => onDeleteVoucher(content.voucherId)}
-                      >
+                      <Button onClick={() => onDelete(true, content.voucherId)}>
                         <FiTrash color="red" />
                       </Button>
                     </td>
