@@ -76,7 +76,6 @@ const VoucherTable = ({
       ].filter((value) => Boolean(value) !== false),
     [t, options]
   );
-  const dispatch = useDispatch();
   const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const maxPages = useMemo(
@@ -137,14 +136,14 @@ const VoucherTable = ({
         <table className="w-full border-collapse border border-gray-300 bg-gray-50">
           <thead className="bg-gray-200 sticky left-0 z-50" style={{ top: -1 }}>
             <tr>
-              <th className="border border-gray-300 p-2 text-xs">
+              {/* <th className="border border-gray-300 p-2 text-xs">
                 <input
                   className="w-15 h-15 bg-hover"
                   type="checkbox"
                   checked={selectedRows.length === voucherFilter.length}
                   onChange={() => handleCheckBoxChange(null)}
                 />
-              </th>
+              </th> */}
               {HEADER.map((header, index) => (
                 <th key={index} className="border border-gray-300 p-2 text-xs">
                   {header}
@@ -160,7 +159,7 @@ const VoucherTable = ({
               ) {
                 return (
                   <tr key={index}>
-                    <td className="border border-gray-300 p-2">
+                    {/* <td className="border border-gray-300 p-2">
                       <input
                         className="w-15 h-15 bg-hover"
                         type="checkbox"
@@ -171,7 +170,7 @@ const VoucherTable = ({
                             : false
                         }
                       />
-                    </td>
+                    </td> */}
                     <td className="border border-gray-300 p-2 text-sm">
                       {content.voucherId}
                     </td>

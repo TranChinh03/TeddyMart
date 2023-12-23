@@ -56,6 +56,7 @@ export default function ShelfScreen() {
         setOpen(false);
       });
       message.success(t("shelf.deleteShelf"));
+      setSelectedRows([]);
     }
   };
 

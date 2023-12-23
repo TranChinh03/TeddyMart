@@ -120,6 +120,7 @@ export default function ProductScreen() {
       });
       setOpen(false);
       message.success(t("product.deleteProduct"));
+      setSelectedRows([]);
     }
   };
 

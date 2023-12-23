@@ -58,6 +58,7 @@ function VoucherScreen() {
           <div className="my-4">
             <VoucherTable
               searchVoucherName={searchVoucher}
+              filterOption={{}}
               openEditForm={openEditForm}
               onDelete={(open, voucherId) => {
                 setOpenWarningDelete(open);
