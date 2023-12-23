@@ -14,7 +14,12 @@ import {
 import { addData, updateData } from "controller/addData";
 import { db, storage } from "firebaseConfig";
 import { doc, updateDoc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import {
+  getDownloadURL,
+  ref,
+  uploadBytes,
+  deleteObject,
+} from "firebase/storage";
 
 type Props = {
   opernAddNewSupplier: boolean;
@@ -71,7 +76,7 @@ export default function AddNewSupplierForm({
         const partnerId = createID({ prefix: "P" });
         let certificateImageUrl = null;
         if (selectedImage) {
-          const storageRef = ref(storage, `/Manager/Supplier/${partnerId}`);
+          const storageRef = ref(storage, `/Supplier/${partnerId}`);
           const selectedImageFile = await getImageFileFromUrl(selectedImage);
           await uploadBytes(storageRef, selectedImageFile);
           certificateImageUrl = await getDownloadURL(storageRef);
@@ -95,17 +100,20 @@ export default function AddNewSupplierForm({
         message.success(t("partner.addSuccess"));
         setOpernAddNewSupplier(false);
       } else {
+        let newCertificateImageUrl = data.certificate;
         if (selectedImage) {
-          const storageRef = ref(
-            storage,
-            `/Manager/Supplier/${data.partnerId}`
-          );
+          const storageRef = ref(storage, `/Supplier/${data.partnerId}`);
           const selectedImageFile = await getImageFileFromUrl(selectedImage);
           await uploadBytes(storageRef, selectedImageFile);
-          const newCertificateImageUrl = await getDownloadURL(storageRef);
-          data.certificate = newCertificateImageUrl;
+          newCertificateImageUrl = await getDownloadURL(storageRef);
+          //data.certificate = newCertificateImageUrl;
         }
-        dispatch(updatePartner({ partnerId: data.partnerId, newData: data }));
+        dispatch(
+          updatePartner({
+            partnerId: data.partnerId,
+            newData: { ...data, certificate: newCertificateImageUrl },
+          })
+        );
         await updateData({ data: data, table: "Partner", id: data.partnerId });
         message.success(t("partner.updateSuccess"));
         setOpernAddNewSupplier(false);
