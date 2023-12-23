@@ -221,7 +221,13 @@ const AddForm = ({
     >
       <Divider style={{ borderWidth: 1, borderColor: "#9A9A9A" }} />
       <Card
-        title={<h1 className=" text-2xl">{t("sale.customerInfo")}</h1>}
+        title={
+          <h1 className=" text-2xl">
+            {typeAdd === "Export"
+              ? t("sale.customerInfo")
+              : t("sale.supplierInfo")}
+          </h1>
+        }
         bordered={true}
         style={{
           width: "100%",
