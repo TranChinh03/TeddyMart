@@ -110,7 +110,7 @@ const AddNewProduct = ({
 
             const storageRef = ref(
               storage,
-              `Product/Images/${createID({ prefix: "P" })}`
+              `Product/Images/${data.productId}`
             );
             const snapshot = await uploadBytes(storageRef, selectedImageFile);
             data.image = await getDownloadURL(snapshot.ref);
@@ -153,7 +153,10 @@ const AddNewProduct = ({
     title={isAdd?<h1 className="text-2xl">{t("product.addNewProduct")}</h1>:<h1 className="text-2xl">{t("product.editProductInfo")}</h1>}
       width={"60%"}
       open={openAddForm}
-      onCancel={() => setOpenAddForm(false)}
+      onCancel={() => {
+        setSelectedImage(null)
+        setOpenAddForm(false)}
+      }
       footer={false}
     >
       <Divider style={{ backgroundColor: "black" }} />
@@ -286,8 +289,8 @@ const AddNewProduct = ({
           <ButtonComponent
             label={t("button.cancel")}
             onClick={() => {
-              // setOpenAddForm(false);
-              console.log(selectedImage);
+              setSelectedImage(null);
+              setOpenAddForm(false);
             }}
             style={{
               backgroundColor: "white",
@@ -302,7 +305,3 @@ const AddNewProduct = ({
 };
 
 export default AddNewProduct;
-function setSelectedImage(imageUrl: string) {
-  throw new Error("Function not implemented.");
-}
-
