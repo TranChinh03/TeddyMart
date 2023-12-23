@@ -118,6 +118,7 @@ export default function CustomerScreen() {
         setOpen(false);
       });
       message.success(t("partner.deletePartner"));
+      setSelectedRows([]);
     }
   };
   return (

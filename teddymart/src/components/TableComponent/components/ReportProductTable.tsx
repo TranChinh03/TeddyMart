@@ -22,78 +22,7 @@ type TContent = {
   revenue: number;
   profit: number;
 };
-// const CONTENT: TContent[] = [
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-// ];
+
 type TOptions = {
   productId?: boolean;
   productName?: boolean;
@@ -166,7 +95,7 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
       setRowsPerPage(+e.target.value);
     };
     const maxPages = useMemo(
-      () => Math.round(data?.length / rowsPerPage),
+      () => Math.ceil(data?.length / rowsPerPage),
       [rowsPerPage, data]
     );
     const [currentPage, setCurrentPage] = useState(1);

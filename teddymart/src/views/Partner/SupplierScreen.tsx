@@ -103,6 +103,7 @@ export default function CustomerScreen() {
         dispatch(deletePartner({ partnerId: item }));
         message.success(t("partner.deletePartner"));
         setOpen(false);
+        setSelectedRows([]);
       });
     }
   };

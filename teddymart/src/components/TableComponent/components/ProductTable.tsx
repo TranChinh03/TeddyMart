@@ -290,7 +290,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const maxPages = useMemo(
-      () => Math.round(productsFilter?.length / rowsPerPage),
+      () => Math.ceil(productsFilter?.length / rowsPerPage),
       [productsFilter]
     );
     const onBackAll = () => {

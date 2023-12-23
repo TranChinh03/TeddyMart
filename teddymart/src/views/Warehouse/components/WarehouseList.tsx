@@ -66,6 +66,7 @@ export default function WarehouseList() {
         setOpen(false);
       });
       message.success(t("warehouse.deleteSuccess"));
+      setSelectedRows([]);
     }
   };
   return (

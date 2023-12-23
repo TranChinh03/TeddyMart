@@ -90,7 +90,7 @@ const ManagerTable = ({ filterOption }: { filterOption?: TOptions }) => {
     setRowsPerPage(+e.target.value);
   };
   const maxPages = useMemo(
-    () => Math.round(CONTENT.length / rowsPerPage),
+    () => Math.ceil(CONTENT.length / rowsPerPage),
     [rowsPerPage]
   );
   const [currentPage, setCurrentPage] = useState(1);

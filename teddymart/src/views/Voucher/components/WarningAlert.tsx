@@ -6,8 +6,13 @@ import { PiWarningCircle } from "react-icons/pi";
 type Props = {
   openWarningDelete: boolean;
   setOpenWarningDelete: (openWarningDelete: boolean) => void;
+  onConfirm?: () => void;
 };
-const WarningAlert = ({ openWarningDelete, setOpenWarningDelete }: Props) => {
+const WarningAlert = ({
+  openWarningDelete,
+  setOpenWarningDelete,
+  onConfirm,
+}: Props) => {
   const { t } = useTranslation();
   return (
     <Modal
@@ -35,10 +40,16 @@ const WarningAlert = ({ openWarningDelete, setOpenWarningDelete }: Props) => {
         <Space className="flex items-center justify-center" size={20}>
           <ButtonComponent
             label={t("button.cancel")}
-            onClick={() => {}}
+            onClick={() => setOpenWarningDelete(false)}
             backgroundColor="#D9D9D9"
           />
-          <ButtonComponent label={t("button.confirm")} onClick={() => {}} />
+          <ButtonComponent
+            label={t("button.confirm")}
+            onClick={() => {
+              setOpenWarningDelete(false);
+              onConfirm();
+            }}
+          />
         </Space>
       </Space>
     </Modal>

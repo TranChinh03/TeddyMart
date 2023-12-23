@@ -106,7 +106,7 @@ const GroupProductTable = ({
   // const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const maxPages = useMemo(
-    () => Math.round(data?.length / rowsPerPage),
+    () => Math.ceil(data?.length / rowsPerPage),
     [rowsPerPage, data?.length]
   );
   const [currentPage, setCurrentPage] = useState(1);

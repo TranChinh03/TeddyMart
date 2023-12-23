@@ -268,7 +268,7 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
       setRowsPerPage(e.target.value);
     };
     const maxPages = useMemo(
-      () => Math.round(bills.length / rowsPerPage),
+      () => Math.ceil(bills.length / rowsPerPage),
       [rowsPerPage]
     );
     const [currentPage, setCurrentPage] = useState(1);
