@@ -134,9 +134,9 @@ const AddForm = ({
       status: +payment === sum ? "paid" : "unpaid",
       totalPayment: +payment, ///
       type: typeAdd,
-      voucherId: voucherId,
+      voucherId: voucherId ?? "",
       receiver: "TeddyMart",
-      warehouseName: warehouseName,
+      warehouseName: warehouseName ?? "",
     };
     addOrderFirebase(data, userId, orderId);
     dispatch(addNewOrder(data));
@@ -221,7 +221,13 @@ const AddForm = ({
     >
       <Divider style={{ borderWidth: 1, borderColor: "#9A9A9A" }} />
       <Card
-        title={<h1 className=" text-2xl">{t("sale.customerInfo")}</h1>}
+        title={
+          <h1 className=" text-2xl">
+            {typeAdd === "Export"
+              ? t("sale.customerInfo")
+              : t("sale.supplierInfo")}
+          </h1>
+        }
         bordered={true}
         style={{
           width: "100%",
@@ -314,7 +320,7 @@ const AddForm = ({
               costPrice: typeAdd === "Import" ? true : false,
             }}
             productName={search}
-            warehouseName={warehouseName}
+            warehouseName={typeAdd === "Export" ? warehouseName : ""}
             data={productMenu}
             setData={setProductMenu}
             isEditQuantity={true}

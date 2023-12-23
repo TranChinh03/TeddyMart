@@ -100,7 +100,7 @@ const ShelfTable = ({
   // const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const maxPages = useMemo(
-    () => Math.round(data.length / rowsPerPage),
+    () => Math.ceil(data.length / rowsPerPage),
     [rowsPerPage]
   );
   const [currentPage, setCurrentPage] = useState(1);
@@ -112,11 +112,9 @@ const ShelfTable = ({
     note: "",
   });
 
-
   useEffect(() => {
-    setCurrentPage(1)
-  }, [rowsPerPage])
-
+    setCurrentPage(1);
+  }, [rowsPerPage]);
 
   const onBackAll = () => {
     setCurrentPage(1);
@@ -171,7 +169,10 @@ const ShelfTable = ({
                 <input
                   className="w-15 h-15 bg-hover"
                   type="checkbox"
-                  checked={selectedRows.length === data.length}
+                  checked={
+                    selectedRows.length === data.length &&
+                    selectedRows.length !== 0
+                  }
                   onChange={() => handleCheckBoxChange(null)}
                 />
               </th>

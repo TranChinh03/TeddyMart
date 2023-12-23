@@ -1,19 +1,5 @@
-import {
-  Button,
-  Checkbox,
-  Space,
-  DatePicker,
-  Dropdown,
-  MenuProps,
-  Tooltip,
-  TabsProps,
-  Tabs,
-  Popconfirm,
-  Modal,
-  Divider,
-  Card,
-} from "antd";
-import Search, { SearchProps } from "antd/es/input/Search";
+import { Space, DatePicker } from "antd";
+import { SearchProps } from "antd/es/input/Search";
 import {
   AlertModal,
   ButtonComponent,
@@ -21,24 +7,13 @@ import {
   ModalSelectDate,
   SearchComponent,
 } from "components";
-import DropdownImage from "components/DropDownImage";
 import DropdownComponent from "components/DropdownComponent";
-import Header from "components/Header";
-import { BillTable, ProductTable } from "components/TableComponent";
-import ReportProductTable from "components/TableComponent/components/ReportProductTable";
+import { BillTable } from "components/TableComponent";
 import TextInputComponent from "components/TextInputComponent";
-import { COLORS } from "constants/colors";
-import { title } from "process";
 import React, { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  BiDotsVerticalRounded,
-  BiBell,
-  BiStar,
-  BiFilter,
   BiSearch,
-  BiSave,
-  BiDownload,
   BiTrash,
   BiPlus,
 } from "react-icons/bi";
@@ -253,8 +228,9 @@ export default function SaleScreen() {
                 options={[
                   t("sort.orderAscending"),
                   t("sort.orderDescending"),
-                  t("sort.createdAtNewest"),
                   t("sort.createdAtOldest"),
+                  t("sort.createdAtNewest"),
+
                   t("sort.totalPaymentAscending"),
                   t("sort.totalPaymentDescending"),
                 ]}

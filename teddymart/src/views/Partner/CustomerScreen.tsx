@@ -102,7 +102,6 @@ export default function CustomerScreen() {
   const handleResetTable = () => {
     setIsTableReset(true);
   };
-
   useEffect(() => {
     if (isTableReset) {
       setIsTableReset(false);
@@ -118,6 +117,7 @@ export default function CustomerScreen() {
         setOpen(false);
       });
       message.success(t("partner.deletePartner"));
+      setSelectedRows([]);
     }
   };
   return (
@@ -194,7 +194,6 @@ export default function CustomerScreen() {
           setSelectedRows={setSelectedRows}
           setOpenAlert={setOpen}
         />
-        {/* <Button onClick={addNewCustomer}>Add Data To Firebase</Button> */}
       </div>
     </div>
   );

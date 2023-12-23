@@ -1,12 +1,5 @@
 import { Button } from "antd";
-import {
-  ChangeEvent,
-  forwardRef,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, forwardRef, useMemo, useState } from "react";
 import {
   HiOutlineChevronLeft,
   HiOutlineChevronDoubleLeft,
@@ -17,13 +10,9 @@ import { FiEdit, FiTrash } from "react-icons/fi";
 import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 import { RootState } from "state_management/reducers/rootReducer";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import AddNewCustomerForm from "views/Partner/Components/AddNewCustomer";
 import AddNewSupplierForm from "views/Partner/Components/AddNewSupplier";
-import { deleteData } from "controller/deleteData";
-import { deletePartner } from "state_management/slices/partnerSlice";
-import { message } from "antd";
-import AlertModal from "components/AlertModal";
 
 type TContentCustomer = {
   address: string;
@@ -206,12 +195,12 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
     const { t } = useTranslation();
     const PARTNERS = useSelector((state: RootState) => state.partnerSlice);
     const DATA = useMemo(() => {
-      let listPartners = [...PARTNERS];
+      let listPartners = PARTNERS.filter((p) =>
+        isCustomer ? p.type === "Customer" : p.type === "Supplier"
+      );
       if (search) {
-        let tmp = listPartners.filter(
-          (p) =>
-            (isCustomer ? p.type === "Customer" : "Supplier") &&
-            p.partnerName.toLowerCase().includes(search.toLowerCase())
+        let tmp = listPartners.filter((p) =>
+          p.partnerName.toLowerCase().includes(search.toLowerCase())
         );
         listPartners = tmp;
       }
@@ -260,6 +249,7 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
       totalPaymentTo,
       additionalFilters,
     ]);
+
     const options: TOptions = {
       partnerID: true,
       partnerName: true,
@@ -295,7 +285,6 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
       [t, filterOption]
     );
 
-    // const [selectedRows, setSelectedRows] = useState([]);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const handleCheckBoxChange = (rowId: string | null) => {
@@ -319,7 +308,7 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
       setRowsPerPage(+e.target.value);
     };
     const maxPages = useMemo(
-      () => Math.round(PARTNERS.length / rowsPerPage),
+      () => Math.ceil(PARTNERS?.length / rowsPerPage),
       [rowsPerPage]
     );
     const [currentPage, setCurrentPage] = useState(1);
@@ -353,7 +342,6 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
 
     const onUpdate = (partner: TPartner) => {
       setUpdateModalVisible(true);
-      console.log("Update clicked", partner);
       setUpdateDataInput(partner);
     };
 
@@ -373,7 +361,10 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
                   <input
                     className="w-15 h-15 bg-hover"
                     type="checkbox"
-                    checked={selectedRows.length === DATA.length}
+                    checked={
+                      selectedRows.length === DATA.length &&
+                      selectedRows.length !== 0
+                    }
                     onChange={() => handleCheckBoxChange(null)}
                   />
                 </th>
@@ -388,7 +379,7 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
               </tr>
             </thead>
             <tbody className="text-center">
-              {DATA.map((content, index) => {
+              {DATA?.map((content, index) => {
                 if (
                   index < currentPage * rowsPerPage &&
                   index >= (currentPage - 1) * rowsPerPage

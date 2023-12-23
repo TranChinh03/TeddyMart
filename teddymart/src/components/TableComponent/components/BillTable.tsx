@@ -268,7 +268,7 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
       setRowsPerPage(e.target.value);
     };
     const maxPages = useMemo(
-      () => Math.round(bills.length / rowsPerPage),
+      () => Math.ceil(bills.length / rowsPerPage),
       [rowsPerPage]
     );
     const [currentPage, setCurrentPage] = useState(1);
@@ -308,7 +308,10 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
                   <input
                     className="w-15 h-15 bg-hover"
                     type="checkbox"
-                    checked={selectedRows.length === tmpData.length}
+                    checked={
+                      selectedRows.length === tmpData.length &&
+                      selectedRows.length !== 0
+                    }
                     onChange={() => handleCheckBoxChange(null)}
                   />
                 </th>

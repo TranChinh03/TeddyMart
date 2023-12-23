@@ -79,6 +79,7 @@ export default function ProductScreen() {
         });
         message.success(t("group.deletedGroup"));
         setOpen(false);
+        setSelectedRows([]);
       });
     }
   };

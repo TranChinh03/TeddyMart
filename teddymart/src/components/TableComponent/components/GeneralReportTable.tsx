@@ -9,88 +9,7 @@ import {
 } from "react-icons/hi2";
 import { useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
-type TContent = {
-  revenue: number;
-  outcome: number;
-  profit: number;
-  numberOfOrder: number;
-  importOrder: number;
-  exportOrder: number;
-};
-// const CONTENT: TContent[] = [
-//   {
-//     revenue: 1232,
-//     outcome: 3134,
-//     profit: 1332,
-//     numberOfOrder: 12,
-//     importOrder: 23,
-//     exportOrder: 23,
-//   },
-//   {
-//     revenue: 1232,
-//     outcome: 3134,
-//     profit: 1332,
-//     numberOfOrder: 12,
-//     importOrder: 23,
-//     exportOrder: 23,
-//   },
-//   {
-//     revenue: 1232,
-//     outcome: 3134,
-//     profit: 1332,
-//     numberOfOrder: 12,
-//     importOrder: 23,
-//     exportOrder: 23,
-//   },
-//   {
-//     revenue: 1232,
-//     outcome: 3134,
-//     profit: 1332,
-//     numberOfOrder: 12,
-//     importOrder: 23,
-//     exportOrder: 23,
-//   },
-//   {
-//     revenue: 1232,
-//     outcome: 3134,
-//     profit: 1332,
-//     numberOfOrder: 12,
-//     importOrder: 23,
-//     exportOrder: 23,
-//   },
-//   {
-//     revenue: 1232,
-//     outcome: 3134,
-//     profit: 1332,
-//     numberOfOrder: 12,
-//     importOrder: 23,
-//     exportOrder: 23,
-//   },
-//   {
-//     revenue: 1232,
-//     outcome: 3134,
-//     profit: 1332,
-//     numberOfOrder: 12,
-//     importOrder: 23,
-//     exportOrder: 23,
-//   },
-//   {
-//     revenue: 1232,
-//     outcome: 3134,
-//     profit: 1332,
-//     numberOfOrder: 12,
-//     importOrder: 23,
-//     exportOrder: 23,
-//   },
-//   {
-//     revenue: 1232,
-//     outcome: 3134,
-//     profit: 1332,
-//     numberOfOrder: 12,
-//     importOrder: 23,
-//     exportOrder: 23,
-//   },
-// ];
+
 type TOptions = {
   date?: boolean;
   revenue?: boolean;
@@ -148,7 +67,7 @@ const GeneralReportTable = forwardRef<HTMLTableElement, Props>(
     }, [REPORTS, date]);
 
     const maxPages = useMemo(
-      () => Math.round(REPORTS.byDate.length / rowsPerPage),
+      () => Math.ceil(REPORTS?.byDate?.length / rowsPerPage),
       [rowsPerPage]
     );
     const [currentPage, setCurrentPage] = useState(1);

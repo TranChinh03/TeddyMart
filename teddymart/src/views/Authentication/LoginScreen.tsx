@@ -220,6 +220,7 @@ export default function LoginScreen() {
     signInWithPopup(auth, provider)
       .then(async (result) => {
         const user = await getDoc(doc(db, "Manager", result.user.uid));
+
         if (!user.data()) {
           navigate(`/signup/${result.user.uid}/${result.user.email}`);
         } else {
@@ -236,21 +237,21 @@ export default function LoginScreen() {
       .finally(() => setLoading(false));
   };
 
-  const buttonRef = useRef(null)
+  const buttonRef = useRef(null);
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Enter') {
+      if (event.key === "Enter") {
         // Enter key was pressed, handle the event here
         event.preventDefault();
         buttonRef.current.click();
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
 
     // Clean up the event listener on component unmount
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 

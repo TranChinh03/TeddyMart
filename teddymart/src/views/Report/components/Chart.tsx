@@ -173,7 +173,7 @@ function Chart({ time, options }: Props) {
         </div>
       </div>
       {/* Chart */}
-      {DATA.length === 0 ? (
+      {DATA?.length === 0 ? (
         <div className="flex w-full justify-center items-center flex-col">
           <img
             src={require("assets/images/nodata.jpg")}

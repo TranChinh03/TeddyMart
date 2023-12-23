@@ -19,11 +19,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { TListProduct } from "./BillTable";
-import { deleteProduct } from "state_management/slices/productSlice";
-import AlertModal from "components/AlertModal";
-import { deleteData } from "controller/deleteData";
-import { storage } from "firebaseConfig";
-import { deleteObject, ref } from "firebase/storage";
+
 import AddNewProduct from "views/Product/components/AddNewProduct";
 export type Input = {
   productId: string;
@@ -132,7 +128,6 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     const [openModalUpdate, setOpenModalUpdate] = useState(false);
 
     const productsFilter = useMemo(() => {
-      // if (data.length > 0) return data;
       let listProducts: TProduct[] = [...products];
 
       if (productGroup) {
@@ -223,7 +218,6 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
         );
         listProducts = tmp;
       }
-      
 
       if (filterListProduct) {
         let tmp = listProducts.map((value) => {
@@ -238,7 +232,6 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
 
           return;
         });
-        //console.log("list Product", tmp);
         listProducts = tmp.filter((value) => value !== undefined);
       }
 
@@ -291,7 +284,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const maxPages = useMemo(
-      () => Math.round(productsFilter.length / rowsPerPage),
+      () => Math.ceil(productsFilter?.length / rowsPerPage),
       [productsFilter]
     );
     const onBackAll = () => {
@@ -308,12 +301,12 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     };
 
     useEffect(() => {
-      setCurrentPage(1)
-    }, [rowsPerPage])
+      setCurrentPage(1);
+    }, [rowsPerPage]);
 
     const handleCheckBoxChange = (product?: TProduct) => {
-      const rowId = product.productId;
-      if (rowId === null) {
+      const rowId = product?.productId;
+      if (rowId === null || rowId === undefined) {
         if (selectedRows.length < productsFilter.length) {
           setSelectedRows([
             ...productsFilter.map((content) => content?.productId),
@@ -418,7 +411,10 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                     <input
                       className="w-15 h-15 bg-hover"
                       type="checkbox"
-                      checked={selectedRows.length === productsFilter.length}
+                      checked={
+                        selectedRows.length === productsFilter.length &&
+                        selectedRows.length !== 0
+                      }
                       onChange={() => handleCheckBoxChange(null)}
                     />
                   </th>
@@ -485,7 +481,11 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                                 "0"
                               }
                               onChange={(e) => {
-                                if (+e.target.value < content?.quantity)
+                                if (
+                                  (isExport &&
+                                    +e.target.value < content?.quantity) ||
+                                  !isExport
+                                )
                                   changeQuantity(
                                     content.productId,
                                     +e.target.value

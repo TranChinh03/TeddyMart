@@ -15,85 +15,7 @@ import {
 } from "react-icons/hi2";
 import { useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
-type TContent = {
-  productId: string;
-  productName: string;
-  quantity: number;
-  revenue: number;
-  profit: number;
-};
-// const CONTENT: TContent[] = [
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-//   {
-//     productId: "12312das",
-//     productName: "DO Nau Bep",
-//     revenue: 13123,
-//     profit: 12323,
-//     quantity: 123,
-//   },
-// ];
+
 type TOptions = {
   productId?: boolean;
   productName?: boolean;
@@ -135,7 +57,7 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
           new Date(p.date).getTime() >= date.from.getTime() &&
           new Date(p.date).getTime() <= date.to.getTime()
         ) {
-          if (tmp.length === 0) {
+          if (tmp?.length === 0) {
             tmp = [...p.products];
           } else {
             p.products.forEach((item) => {
@@ -153,20 +75,16 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
           }
         }
       });
-      // if (search !== "") {
-      //   return tmp.filter((t) => t.productName.includes(search));
-      // }
+      if (search !== "") {
+        return tmp.filter((t) => t.productName.includes(search));
+      }
       return tmp;
     }, [PRODUCTS, date.from, date.to, search]);
-    //const data: TRProduct[] = [];
-    // console.log("DATA", data);
-    // console.log("PRODUCT", PRODUCTS);
-
     const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
       setRowsPerPage(+e.target.value);
     };
     const maxPages = useMemo(
-      () => Math.round(data.length / rowsPerPage),
+      () => Math.ceil(data?.length / rowsPerPage),
       [rowsPerPage, data]
     );
     const [currentPage, setCurrentPage] = useState(1);

@@ -55,6 +55,7 @@ export default function SignUpScreen() {
       setValue("email", params.email);
     }
   }, []);
+
   const onSignUp: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
     if (!params) {
@@ -107,7 +108,7 @@ export default function SignUpScreen() {
               userName: "",
             })
           );
-          window.localStorage.setItem("USER_ID", params.uid);
+          window.localStorage.setItem("USER_ID", params.userId);
         })
         .catch((e) => {
           console.log(e);

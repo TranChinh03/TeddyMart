@@ -53,7 +53,6 @@ type TOptions = {
   shelfId?: boolean;
 };
 
-
 const GroupProductTable = ({
   filterOption,
   search,
@@ -107,15 +106,14 @@ const GroupProductTable = ({
   // const [selectedRows, setSelectedRows] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const maxPages = useMemo(
-    () => Math.round(data.length / rowsPerPage),
-    [rowsPerPage, data.length]
+    () => Math.ceil(data?.length / rowsPerPage),
+    [rowsPerPage, data?.length]
   );
   const [currentPage, setCurrentPage] = useState(1);
 
-
   useEffect(() => {
-    setCurrentPage(1)
-  }, [rowsPerPage])
+    setCurrentPage(1);
+  }, [rowsPerPage]);
 
   const onBackAll = () => {
     setCurrentPage(1);
@@ -170,7 +168,10 @@ const GroupProductTable = ({
                 <input
                   className="w-15 h-15 bg-hover"
                   type="checkbox"
-                  checked={selectedRows.length === data.length}
+                  checked={
+                    selectedRows.length === data.length &&
+                    selectedRows.length !== 0
+                  }
                   onChange={() => handleCheckBoxChange(null)}
                 />
               </th>

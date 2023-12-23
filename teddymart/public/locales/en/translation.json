@@ -122,6 +122,8 @@
     "debt": "Debt",
     "addNewOrder": "Add New Order",
     "customerInfo": "Customer Information",
+    "supplierInfo":"Supplier Information",
+
     "searchCusPhoneNumber": "Search customer by phone number",
     "note": "Note",
     "receiver": "Receiver",
