@@ -31,7 +31,7 @@ const partnerSlice = createSlice({
       const index = state.findIndex(
         (p) => p.partnerId === action.payload.partnerId
       );
-      if (index > 0) {
+      if (index !== -1) {
         state[index] = { ...action.payload.newData };
       }
       return state;

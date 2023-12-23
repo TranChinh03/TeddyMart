@@ -3,14 +3,22 @@ import Modal from "antd/es/modal/Modal";
 import { ButtonComponent, ButtonSelect, TextInputComponent } from "components";
 import { COLORS } from "constants/colors";
 import { addData, updateData } from "controller/addData";
-import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 import { storage } from "firebaseConfig";
 import React, { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoMdArrowDown } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
-import { addNewProduct, updateProduct } from "state_management/slices/productSlice";
+import {
+  addNewProduct,
+  updateProduct,
+} from "state_management/slices/productSlice";
 import { createID } from "utils/appUtils";
 
 const AddNewProduct = ({
@@ -33,8 +41,8 @@ const AddNewProduct = ({
   const PRODUCT = useSelector((state: RootState) => state.product);
   const GroupOptions = GROUP.map((item) => ({
     ID: item.groupId,
-    groupname: item.groupName
-  }))
+    groupname: item.groupName,
+  }));
 
   const onChange = (value: string, fieldName: string) => {
     setData({
@@ -47,26 +55,29 @@ const AddNewProduct = ({
   const dispatch = useDispatch();
   const [productGroup, setProductGroup] = useState();
 
-  const handleImageSelected = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleImageSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-        setSelectedImageFile(event.target.files[0])
-        setSelectedImage(URL.createObjectURL(event.target.files[0]));
+      setSelectedImageFile(event.target.files[0]);
+      setSelectedImage(URL.createObjectURL(event.target.files[0]));
     }
   };
 
   const onAddNewProduct = async () => {
-    if (data.productName === "" || data.groupId === "" || data.groupName === "" || selectedImage === "" || data.cost_price === null || data.sell_price === null) {
-      message.error(t("fillData"))
-      console.log(data)
-      return
+    if (
+      data.productName === "" ||
+      data.groupId === "" ||
+      data.groupName === "" ||
+      selectedImage === "" ||
+      data.cost_price === null ||
+      data.sell_price === null
+    ) {
+      message.error(t("fillData"));
+      console.log(data);
+      return;
     }
-    
+
     if (isAdd) {
-      if (
-        PRODUCT.findIndex((x) => x.productName === data.productName) !== -1
-      ) {
+      if (PRODUCT.findIndex((x) => x.productName === data.productName) !== -1) {
         message.error(t("product.existedProduct"));
         return;
       }
@@ -75,38 +86,33 @@ const AddNewProduct = ({
           storage,
           `Product/Images/${createID({ prefix: "P" })}`
         );
-          const snapshot = await uploadBytes(storageRef, selectedImageFile);
-          data.image = await getDownloadURL(snapshot.ref);
-          const ProductID = createID({ prefix: "P"});
-          const newProduct: TProduct = {
-            productId: ProductID,
-            productName: data.productName,
-            groupId: data.groupId,
-            groupName: data.groupName,
-            image: data.image,
-            cost_price: data.cost_price,
-            sell_price: data.sell_price,
-            VAT: data.VAT,
-            note: data.note,
-          }
-          dispatch(addNewProduct(newProduct));
-          addData({ data: newProduct, table: "Product", id: ProductID });
-          message.success(t("product.addProduct"))
-          setOpenAddForm(false)
-        }
-        catch (error) {
+        const snapshot = await uploadBytes(storageRef, selectedImageFile);
+        data.image = await getDownloadURL(snapshot.ref);
+        const ProductID = createID({ prefix: "P" });
+        const newProduct: TProduct = {
+          productId: ProductID,
+          productName: data.productName,
+          groupId: data.groupId,
+          groupName: data.groupName,
+          image: data.image,
+          cost_price: data.cost_price,
+          sell_price: data.sell_price,
+          VAT: data.VAT,
+          note: data.note,
+        };
+        dispatch(addNewProduct(newProduct));
+        addData({ data: newProduct, table: "Product", id: ProductID });
+        message.success(t("product.addProduct"));
+        setOpenAddForm(false);
+      } catch (error) {
         console.error("Error uploading image to Firebase Storage:", error);
       }
-    }
-    else {
+    } else {
       //Update
-        if (selectedImage) {
-            const refimg = ref(
-              storage,
-              data.image
-            )
-            // Delete the file
-            deleteObject(refimg)
+      if (selectedImage) {
+        const refimg = ref(storage, data.image);
+        // Delete the file
+        deleteObject(refimg);
 
             const storageRef = ref(
               storage,
@@ -137,21 +143,54 @@ const AddNewProduct = ({
 
   const backgroundColor = useMemo(
     () =>
-      data.productName !== "" && data.groupId !== "" && data.groupName !== "" && selectedImage !== "" && data.cost_price !== null && data.sell_price !== null
+      data.productName !== "" &&
+      data.groupId !== "" &&
+      data.groupName !== "" &&
+      selectedImage !== "" &&
+      data.cost_price !== null &&
+      data.sell_price !== null
         ? COLORS.darkYellow
         : COLORS.defaultWhite,
-    [data.productId, data.productName, data.groupId, data.groupName, selectedImage, data.cost_price, data.sell_price]);
+    [
+      data.productId,
+      data.productName,
+      data.groupId,
+      data.groupName,
+      selectedImage,
+      data.cost_price,
+      data.sell_price,
+    ]
+  );
   const color = useMemo(
     () =>
-      data.productName !== "" && data.groupId !== "" && data.groupName !== "" && selectedImage !== "" && data.cost_price !== null && data.sell_price !== null
-        ? COLORS.defaultWhite 
+      data.productName !== "" &&
+      data.groupId !== "" &&
+      data.groupName !== "" &&
+      selectedImage !== "" &&
+      data.cost_price !== null &&
+      data.sell_price !== null
+        ? COLORS.defaultWhite
         : COLORS.lightGray,
-    [data.productId, data.productName, data.groupId, data.groupName, selectedImage, data.cost_price, data.sell_price]);
-
+    [
+      data.productId,
+      data.productName,
+      data.groupId,
+      data.groupName,
+      selectedImage,
+      data.cost_price,
+      data.sell_price,
+    ]
+  );
 
   return (
     <Modal
-    title={isAdd?<h1 className="text-2xl">{t("product.addNewProduct")}</h1>:<h1 className="text-2xl">{t("product.editProductInfo")}</h1>}
+      title={
+        isAdd ? (
+          <h1 className="text-2xl">{t("product.addNewProduct")}</h1>
+        ) : (
+          <h1 className="text-2xl">{t("product.editProductInfo")}</h1>
+        )
+      }
       width={"60%"}
       open={openAddForm}
       onCancel={() => {
@@ -179,10 +218,9 @@ const AddNewProduct = ({
               setData({
                 ...data,
                 groupId: GroupOptions[value].ID,
-                groupName: GroupOptions[value].groupname
-              })
-            }
-            }
+                groupName: GroupOptions[value].groupname,
+              });
+            }}
             options={GroupOptions.map((item) => item.groupname)}
           />
         </div>
@@ -215,20 +253,22 @@ const AddNewProduct = ({
             }}
             className="cursor-pointer m-auto"
           >
-            {selectedImage || data.image!=="" ? (
-                <img
-                src={selectedImage?selectedImage:data.image}
+            {selectedImage || data.image !== "" ? (
+              <img
+                src={selectedImage ? selectedImage : data.image}
                 alt="Selected"
                 style={{ width: "100%", maxHeight: "100px" }}
               />
-            ) : <img src={require("../../../assets/images/Camera.png")} />}
-                <input
-                  type="file"
-                  accept="image/*"
-                  ref={fileInputRef}
-                  style={{ display: "none" }}
-                  onChange={handleImageSelected}
-                />
+            ) : (
+              <img src={require("../../../assets/images/Camera.png")} />
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              onChange={handleImageSelected}
+            />
           </div>
         </div>
 
@@ -237,11 +277,11 @@ const AddNewProduct = ({
         </label>
         <div className="px-2 mt-2 col-span-3 inline-block">
           <TextInputComponent
-              width="100%"
-              value={data.cost_price?data.cost_price.toString():""}
-              setValue={(value) => onChange(value, "cost_price")}
-              required
-            />
+            width="100%"
+            value={data.cost_price ? data.cost_price.toString() : ""}
+            setValue={(value) => onChange(value, "cost_price")}
+            required
+          />
         </div>
 
         <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
@@ -250,11 +290,11 @@ const AddNewProduct = ({
         </label>
         <div className="px-2 mt-2 col-span-3 inline-block">
           <TextInputComponent
-              width="100%"
-              value={data.sell_price?data.sell_price.toString():""}
-              setValue={(value) => onChange(value, "sell_price")}
-              required
-            />
+            width="100%"
+            value={data.sell_price ? data.sell_price.toString() : ""}
+            setValue={(value) => onChange(value, "sell_price")}
+            required
+          />
         </div>
 
         <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
@@ -262,10 +302,10 @@ const AddNewProduct = ({
         </label>
         <div className="px-2 mt-2 col-span-3 inline-block">
           <TextInputComponent
-              width="100%"
-              value={data.VAT?data.VAT.toString():""}
-              setValue={(value) => onChange(value, "VAT")}
-            />
+            width="100%"
+            value={data.VAT ? data.VAT.toString() : ""}
+            setValue={(value) => onChange(value, "VAT")}
+          />
         </div>
 
         <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
@@ -273,10 +313,10 @@ const AddNewProduct = ({
         </label>
         <div className="px-2 mt-2 col-span-3 inline-block">
           <TextInputComponent
-                width="100%"
-                value={data.note}
-                setValue={(value) => onChange(value, "note")}
-              />
+            width="100%"
+            value={data.note}
+            setValue={(value) => onChange(value, "note")}
+          />
         </div>
       </div>
       <div className="flex mt-10 items-center justify-center">
@@ -285,7 +325,9 @@ const AddNewProduct = ({
             label={t("button.save")}
             backgroundColor={backgroundColor}
             color={color}
-            onClick={() => {onAddNewProduct()}}
+            onClick={() => {
+              onAddNewProduct();
+            }}
           />
           <ButtonComponent
             label={t("button.cancel")}
