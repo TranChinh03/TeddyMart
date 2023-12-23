@@ -220,6 +220,7 @@ export default function LoginScreen() {
     signInWithPopup(auth, provider)
       .then(async (result) => {
         const user = await getDoc(doc(db, "Manager", result.user.uid));
+
         if (!user.data()) {
           navigate(`/signup/${result.user.uid}/${result.user.email}`);
         } else {

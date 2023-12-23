@@ -148,7 +148,7 @@ const GeneralReportTable = forwardRef<HTMLTableElement, Props>(
     }, [REPORTS, date]);
 
     const maxPages = useMemo(
-      () => Math.round(REPORTS.byDate.length / rowsPerPage),
+      () => Math.round(REPORTS?.byDate?.length / rowsPerPage),
       [rowsPerPage]
     );
     const [currentPage, setCurrentPage] = useState(1);

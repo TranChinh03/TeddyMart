@@ -135,7 +135,7 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
           new Date(p.date).getTime() >= date.from.getTime() &&
           new Date(p.date).getTime() <= date.to.getTime()
         ) {
-          if (tmp.length === 0) {
+          if (tmp?.length === 0) {
             tmp = [...p.products];
           } else {
             p.products.forEach((item) => {
@@ -166,7 +166,7 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
       setRowsPerPage(+e.target.value);
     };
     const maxPages = useMemo(
-      () => Math.round(data.length / rowsPerPage),
+      () => Math.round(data?.length / rowsPerPage),
       [rowsPerPage, data]
     );
     const [currentPage, setCurrentPage] = useState(1);

@@ -223,7 +223,6 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
         );
         listProducts = tmp;
       }
-      
 
       if (filterListProduct) {
         let tmp = listProducts.map((value) => {
@@ -291,7 +290,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const maxPages = useMemo(
-      () => Math.round(productsFilter.length / rowsPerPage),
+      () => Math.round(productsFilter?.length / rowsPerPage),
       [productsFilter]
     );
     const onBackAll = () => {
@@ -308,8 +307,8 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     };
 
     useEffect(() => {
-      setCurrentPage(1)
-    }, [rowsPerPage])
+      setCurrentPage(1);
+    }, [rowsPerPage]);
 
     const handleCheckBoxChange = (product?: TProduct) => {
       const rowId = product.productId;

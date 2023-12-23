@@ -319,7 +319,7 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
       setRowsPerPage(+e.target.value);
     };
     const maxPages = useMemo(
-      () => Math.round(PARTNERS.length / rowsPerPage),
+      () => Math.round(PARTNERS?.length / rowsPerPage),
       [rowsPerPage]
     );
     const [currentPage, setCurrentPage] = useState(1);
@@ -388,7 +388,7 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
               </tr>
             </thead>
             <tbody className="text-center">
-              {DATA.map((content, index) => {
+              {DATA?.map((content, index) => {
                 if (
                   index < currentPage * rowsPerPage &&
                   index >= (currentPage - 1) * rowsPerPage

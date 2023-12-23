@@ -308,7 +308,10 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
                   <input
                     className="w-15 h-15 bg-hover"
                     type="checkbox"
-                    checked={selectedRows.length === tmpData.length}
+                    checked={
+                      selectedRows.length === tmpData.length &&
+                      selectedRows.length !== 0
+                    }
                     onChange={() => handleCheckBoxChange(null)}
                   />
                 </th>
