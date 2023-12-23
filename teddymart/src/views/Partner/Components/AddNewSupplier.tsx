@@ -84,8 +84,8 @@ export default function AddNewSupplierForm({
           address: data.address,
           note: data.note,
           type: "Supplier",
-          totalBuyAmount: data.totalBuyAmount,
-          debt: data.debt,
+          totalBuyAmount: +data.totalBuyAmount,
+          debt: +data.debt,
           certificate: certificateImageUrl,
         };
 
@@ -120,12 +120,13 @@ export default function AddNewSupplierForm({
       phoneNumber: "",
       email: "",
       address: "",
-      debt: parseInt(""),
-      totalBuyAmount: parseInt(""),
+      debt: 0,
+      totalBuyAmount: 0,
       certificate: "",
       note: "",
       type: "Supplier",
     });
+    setSelectedImage("");
   };
 
   const getImageFileFromUrl = async (imageUrl: string): Promise<File> => {
@@ -232,7 +233,7 @@ export default function AddNewSupplierForm({
                   <TextInputComponent
                     placeHolder="0"
                     width={"100%"}
-                    value={data.totalBuyAmount.toString()}
+                    value={(+data.totalBuyAmount).toString()}
                     setValue={(value) => onChange(value, "totalBuyAmount")}
                   />
                 ) : (
@@ -249,7 +250,7 @@ export default function AddNewSupplierForm({
                   <TextInputComponent
                     placeHolder="0"
                     width={"100%"}
-                    value={data.debt.toString()}
+                    value={(+data.debt).toString()}
                     setValue={(value) => onChange(value, "debt")}
                   />
                 ) : (
