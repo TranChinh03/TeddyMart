@@ -320,7 +320,7 @@ const AddForm = ({
               costPrice: typeAdd === "Import" ? true : false,
             }}
             productName={search}
-            warehouseName={warehouseName}
+            warehouseName={typeAdd === "Export" ? warehouseName : ""}
             data={productMenu}
             setData={setProductMenu}
             isEditQuantity={true}
