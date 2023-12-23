@@ -253,8 +253,9 @@ export default function SaleScreen() {
                 options={[
                   t("sort.orderAscending"),
                   t("sort.orderDescending"),
-                  t("sort.createdAtNewest"),
                   t("sort.createdAtOldest"),
+                  t("sort.createdAtNewest"),
+
                   t("sort.totalPaymentAscending"),
                   t("sort.totalPaymentDescending"),
                 ]}
