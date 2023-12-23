@@ -131,7 +131,15 @@ const AddNewProduct = ({
             const snapshot = await uploadBytes(storageRef, selectedImageFile);
             data.image = await getDownloadURL(snapshot.ref);
           }
-        if (isImageDeleted) {
+        if (isImageDeleted && data.image !== "") {
+          const refimg = ref(storage, data.image);
+          console.log("day:", refimg.root)
+            // Delete the file
+            deleteObject(refimg).then(() => {
+              console.log("Image deleted")
+            }).catch((error) => {
+              console.log("No image existed")
+            })
           data.image=""
         }
         dispatch(updateProduct({ currentProduct: data, newProduct: data }));
@@ -295,6 +303,7 @@ const AddNewProduct = ({
               setIsImageDeleted(true);
             }}
             backgroundColor={COLORS.checkbox_bg}
+            iconLeft={<BiX size={20}/>}
             style={{ margin: "10px auto" }}
           />) : null
           }  
