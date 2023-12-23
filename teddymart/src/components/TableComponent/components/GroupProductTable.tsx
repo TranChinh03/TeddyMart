@@ -168,7 +168,10 @@ const GroupProductTable = ({
                 <input
                   className="w-15 h-15 bg-hover"
                   type="checkbox"
-                  checked={selectedRows.length === data.length}
+                  checked={
+                    selectedRows.length === data.length &&
+                    selectedRows.length !== 0
+                  }
                   onChange={() => handleCheckBoxChange(null)}
                 />
               </th>

@@ -373,7 +373,10 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
                   <input
                     className="w-15 h-15 bg-hover"
                     type="checkbox"
-                    checked={selectedRows.length === DATA.length}
+                    checked={
+                      selectedRows.length === DATA.length &&
+                      selectedRows.length !== 0
+                    }
                     onChange={() => handleCheckBoxChange(null)}
                   />
                 </th>

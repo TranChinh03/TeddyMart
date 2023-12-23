@@ -15,13 +15,6 @@ import {
 } from "react-icons/hi2";
 import { useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
-type TContent = {
-  productId: string;
-  productName: string;
-  quantity: number;
-  revenue: number;
-  profit: number;
-};
 
 type TOptions = {
   productId?: boolean;
@@ -82,15 +75,11 @@ const ReportProductTable = forwardRef<HTMLTableElement, Props>(
           }
         }
       });
-      // if (search !== "") {
-      //   return tmp.filter((t) => t.productName.includes(search));
-      // }
+      if (search !== "") {
+        return tmp.filter((t) => t.productName.includes(search));
+      }
       return tmp;
     }, [PRODUCTS, date.from, date.to, search]);
-    //const data: TRProduct[] = [];
-    // console.log("DATA", data);
-    // console.log("PRODUCT", PRODUCTS);
-
     const handleRowsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
       setRowsPerPage(+e.target.value);
     };

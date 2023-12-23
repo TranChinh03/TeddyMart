@@ -258,7 +258,10 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
                   <input
                     className="w-15 h-15 bg-hover"
                     type="checkbox"
-                    checked={selectedRows.length === warehouseSort.length}
+                    checked={
+                      selectedRows.length === warehouseSort.length &&
+                      selectedRows.length !== 0
+                    }
                     onChange={() => handleCheckBoxChange(null)}
                   />
                 </th>

@@ -417,7 +417,10 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                     <input
                       className="w-15 h-15 bg-hover"
                       type="checkbox"
-                      checked={selectedRows.length === productsFilter.length}
+                      checked={
+                        selectedRows.length === productsFilter.length &&
+                        selectedRows.length !== 0
+                      }
                       onChange={() => handleCheckBoxChange(null)}
                     />
                   </th>
