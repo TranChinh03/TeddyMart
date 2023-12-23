@@ -134,9 +134,9 @@ const AddForm = ({
       status: +payment === sum ? "paid" : "unpaid",
       totalPayment: +payment, ///
       type: typeAdd,
-      voucherId: voucherId,
+      voucherId: voucherId ?? "",
       receiver: "TeddyMart",
-      warehouseName: warehouseName,
+      warehouseName: warehouseName ?? "",
     };
     addOrderFirebase(data, userId, orderId);
     dispatch(addNewOrder(data));

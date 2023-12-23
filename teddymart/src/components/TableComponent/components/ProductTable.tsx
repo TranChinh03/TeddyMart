@@ -481,7 +481,11 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                                 "0"
                               }
                               onChange={(e) => {
-                                if (+e.target.value < content?.quantity)
+                                if (
+                                  (isExport &&
+                                    +e.target.value < content?.quantity) ||
+                                  !isExport
+                                )
                                   changeQuantity(
                                     content.productId,
                                     +e.target.value
