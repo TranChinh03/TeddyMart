@@ -132,6 +132,7 @@ const AddNewProduct = ({
       note: "",
     });
     setSelectedImage(null)
+    setSelectedImageFile(null)
   }  
 
   const backgroundColor = useMemo(

@@ -101,6 +101,7 @@ export default function CustomerScreen() {
   };
   const handleResetTable = () => {
     setIsTableReset(true);
+    setFilterValues({});
   };
   useEffect(() => {
     if (isTableReset) {
