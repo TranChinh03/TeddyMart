@@ -12,6 +12,7 @@ import {
 import { storage } from "firebaseConfig";
 import React, { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { BiX, BiXCircle } from "react-icons/bi";
 import { IoMdArrowDown } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
@@ -53,7 +54,7 @@ const AddNewProduct = ({
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [productGroup, setProductGroup] = useState();
+  const [isImageDeleted, setIsImageDeleted] = useState(false);
 
   const handleImageSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -86,8 +87,10 @@ const AddNewProduct = ({
           storage,
           `Product/Images/${createID({ prefix: "P" })}`
         );
-        const snapshot = await uploadBytes(storageRef, selectedImageFile);
-        data.image = await getDownloadURL(snapshot.ref);
+        if (selectedImageFile !== null) {
+            const snapshot = await uploadBytes(storageRef, selectedImageFile);
+            data.image = await getDownloadURL(snapshot.ref);
+        }
         const ProductID = createID({ prefix: "P" });
         const newProduct: TProduct = {
           productId: ProductID,
@@ -110,9 +113,16 @@ const AddNewProduct = ({
     } else {
       //Update
       if (selectedImage) {
-        const refimg = ref(storage, data.image);
-        // Delete the file
-        deleteObject(refimg);
+        if (data.image !== "") {
+          const refimg = ref(storage, data.image);
+          console.log("day:", refimg.root)
+            // Delete the file
+            deleteObject(refimg).then(() => {
+              console.log("Image deleted")
+            }).catch((error) => {
+              console.log("No image existed")
+            })
+        }
 
             const storageRef = ref(
               storage,
@@ -121,6 +131,9 @@ const AddNewProduct = ({
             const snapshot = await uploadBytes(storageRef, selectedImageFile);
             data.image = await getDownloadURL(snapshot.ref);
           }
+        if (isImageDeleted) {
+          data.image=""
+        }
         dispatch(updateProduct({ currentProduct: data, newProduct: data }));
         await updateData({ data: data, table: "Product", id: data.productId });
         message.success(t("product.editProduct"))
@@ -139,6 +152,7 @@ const AddNewProduct = ({
     });
     setSelectedImage(null)
     setSelectedImageFile(null)
+    setIsImageDeleted(false)
   }  
 
   const backgroundColor = useMemo(
@@ -194,7 +208,9 @@ const AddNewProduct = ({
       width={"60%"}
       open={openAddForm}
       onCancel={() => {
+        setIsImageDeleted(false)
         setSelectedImage(null)
+        setSelectedImageFile(null)
         setOpenAddForm(false)}
       }
       footer={false}
@@ -253,12 +269,12 @@ const AddNewProduct = ({
             }}
             className="cursor-pointer m-auto"
           >
-            {selectedImage || data.image !== "" ? (
-              <img
-                src={selectedImage ? selectedImage : data.image}
-                alt="Selected"
-                style={{ width: "100%", maxHeight: "100px" }}
-              />
+            {selectedImage || (data.image !== "" && !isImageDeleted) ? (
+                <img
+                  src={selectedImage ? selectedImage : data.image}
+                  alt="Selected"
+                  style={{ width: "100%", maxHeight: "100px" }}
+                />
             ) : (
               <img src={require("../../../assets/images/Camera.png")} />
             )}
@@ -270,6 +286,18 @@ const AddNewProduct = ({
               onChange={handleImageSelected}
             />
           </div>
+          {selectedImage || (data.image !== "" && !isImageDeleted) ? (
+            <ButtonComponent
+            label={t("button.deleteImg")}
+            onClick={() => {
+              setSelectedImage(null)
+              setSelectedImageFile(null)
+              setIsImageDeleted(true);
+            }}
+            backgroundColor={COLORS.checkbox_bg}
+            style={{ margin: "10px auto" }}
+          />) : null
+          }  
         </div>
 
         <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
@@ -332,7 +360,9 @@ const AddNewProduct = ({
           <ButtonComponent
             label={t("button.cancel")}
             onClick={() => {
+              setIsImageDeleted(false);
               setSelectedImage(null);
+              setSelectedImageFile(null)
               setOpenAddForm(false);
             }}
             style={{
