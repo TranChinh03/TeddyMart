@@ -83,7 +83,6 @@ const warehouseSlice = createSlice({
             let index_product = listProduct.findIndex(
               (product) => product.productId === element.productId
             );
-
             if (index_product > -1) {
               if (action.payload.type === "Import")
                 listProduct[index_product] = {
@@ -101,22 +100,21 @@ const warehouseSlice = createSlice({
                 };
               }
             } else {
-              if (action.payload.type === "Import") {
-                listProduct[0] = {
-                  productId: element.productId,
-                  productName: element.productName,
-                  quantity: element.quantity,
-                };
-              }
+              listProduct = [...state[index].listProduct, element];
             }
           }
+          state[index] = {
+            ...state[index],
+            listProduct: listProduct,
+            count:
+              state[index].count + count * (action.payload.isDelete ? -1 : 1),
+          };
 
-          state[index] = { ...state[index], listProduct: listProduct };
           updateProductFirebase(
             action.payload.userId,
             state[index].warehouseId,
             listProduct,
-            count
+            count * (action.payload.isDelete ? -1 : 1)
           );
         }
       }
