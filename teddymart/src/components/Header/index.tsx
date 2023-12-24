@@ -45,7 +45,7 @@ export default function Header({
   const language = useSelector(
     (state: RootState) => state.controlSlice
   ).language;
-  const numberOfNotifications = 2;
+  const numberOfNotifications = notifications?.length;
   useEffect(() => {
     i18n.changeLanguage(language);
   }, [language]);
@@ -117,13 +117,17 @@ export default function Header({
               marginRight: 20,
             }}
           >
-            <AiOutlineBell size={"22px"} color={COLORS.txt_mediumgrey} />
-            <div
-              className="absolute w-5 h-5 rounded-full bg-purple items-center flex justify-center text-10 text-white font-semibold hover:bg-light_purple"
-              style={{ top: -5, right: -6 }}
-            >
-              {numberOfNotifications}
-            </div>
+            {numberOfNotifications !== 0 && (
+              <>
+                <AiOutlineBell size={"22px"} color={COLORS.txt_mediumgrey} />
+                <div
+                  className="absolute w-5 h-5 rounded-full bg-purple items-center flex justify-center text-10 text-white font-semibold hover:bg-light_purple"
+                  style={{ top: -5, right: -6 }}
+                >
+                  {numberOfNotifications}
+                </div>
+              </>
+            )}
           </Button>
         </Dropdown>
         <Button
