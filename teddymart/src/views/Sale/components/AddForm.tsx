@@ -75,26 +75,22 @@ const AddForm = ({
       voucherId: item?.voucherId ?? "",
     };
   };
-  const partners = useSelector((state: RootState) => state.partnerSlice);
+  const partners = useSelector((state: RootState) =>
+    state.partnerSlice.filter((p) =>
+      typeAdd === "Export" ? p.type === "Customer" : "Supplier"
+    )
+  );
   const warehouses = useSelector((state: RootState) => state.warehouseSlice);
   const discount = getVoucherInfo(voucher).discount;
   const voucherId = getVoucherInfo(voucher).voucherId;
   const dispatch = useDispatch();
   const customerInfo = useMemo(() => {
-    let customer = partners.find((partner) => {
-      if (typeAdd === "Export") {
-        return (
-          partner.phoneNumber.includes(searchCustomer) &&
-          partner.type === "Customer"
-        );
-      }
-      return (
-        partner.phoneNumber.includes(searchCustomer) &&
-        partner.type === "Supplier"
-      );
-    });
+    let customer = partners.find((partner) =>
+      partner.phoneNumber.includes(searchCustomer)
+    );
     return customer;
   }, [searchCustomer]);
+
   const sum = useMemo(() => {
     if (typeAdd === "Export") {
       return productMenu.reduce(

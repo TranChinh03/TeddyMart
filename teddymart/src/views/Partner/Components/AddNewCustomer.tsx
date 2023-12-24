@@ -28,16 +28,9 @@ export default function AddNewCustomerForm({
   setData,
   isAdd = true,
 }: Props) {
-  const [selectedGender, setSelectedGender] = useState<string>("Female");
-
-  useEffect(() => {
-    if (data && data?.gender) {
-      const lowercaseGender = data?.gender.toLowerCase();
-      if (lowercaseGender === "male" || lowercaseGender === "female") {
-        setSelectedGender(lowercaseGender);
-      }
-    }
-  }, [data]);
+  const [selectedGender, setSelectedGender] = useState<string>(
+    isAdd ? "female" : data.gender.toLocaleLowerCase()
+  );
 
   const { t } = useTranslation();
   const { userId } = useSelector((state: RootState) => state.manager);
@@ -174,7 +167,7 @@ export default function AddNewCustomerForm({
                   name="radio-gender"
                   className="w-4 h-4 mr-4"
                   checked={selectedGender === "male"}
-                  value={data?.gender}
+                  value={selectedGender}
                   onChange={() => setSelectedGender("male")}
                 />
                 <label className="mr-16">{t("customer.male")}</label>
@@ -183,7 +176,7 @@ export default function AddNewCustomerForm({
                   name="radio-gender"
                   className=" w-4 h-4 mr-4"
                   checked={selectedGender === "female"}
-                  value={data.gender}
+                  value={selectedGender}
                   onChange={() => setSelectedGender("female")}
                 />
                 <label className="mr-16">{t("customer.female")}</label>
@@ -225,7 +218,11 @@ export default function AddNewCustomerForm({
                   <TextInputComponent
                     placeHolder="0"
                     width={"100%"}
-                    value={data.totalBuyAmount.toString()==='0'?"":data.totalBuyAmount.toString()}
+                    value={
+                      data.totalBuyAmount.toString() === "0"
+                        ? ""
+                        : data.totalBuyAmount.toString()
+                    }
                     setValue={(value) => onChange(value, "totalBuyAmount")}
                   />
                 ) : (
@@ -242,7 +239,9 @@ export default function AddNewCustomerForm({
                   <TextInputComponent
                     placeHolder="0"
                     width={"100%"}
-                    value={data.debt.toString()==='0'?"":data.debt.toString()}
+                    value={
+                      data.debt.toString() === "0" ? "" : data.debt.toString()
+                    }
                     setValue={(value) => onChange(value, "debt")}
                   />
                 ) : (
