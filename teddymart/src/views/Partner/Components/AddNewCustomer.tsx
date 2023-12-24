@@ -223,9 +223,9 @@ export default function AddNewCustomerForm({
               <td>
                 {isAdd ? (
                   <TextInputComponent
-                    placeHolder=""
+                    placeHolder="0"
                     width={"100%"}
-                    value={data.totalBuyAmount.toString()}
+                    value={data.totalBuyAmount.toString()==='0'?"":data.totalBuyAmount.toString()}
                     setValue={(value) => onChange(value, "totalBuyAmount")}
                   />
                 ) : (
@@ -240,9 +240,9 @@ export default function AddNewCustomerForm({
               <td>
                 {isAdd ? (
                   <TextInputComponent
-                    placeHolder=""
+                    placeHolder="0"
                     width={"100%"}
-                    value={data.debt.toString()}
+                    value={data.debt.toString()==='0'?"":data.debt.toString()}
                     setValue={(value) => onChange(value, "debt")}
                   />
                 ) : (
