@@ -74,7 +74,7 @@ const warehouseSlice = createSlice({
         const count =
           item.listProduct.reduce((pre, cur) => pre + cur.quantity, 0) *
           (action.payload.type === "Import" ? 1 : -1);
-        //console.log("update product warehouse", index);
+        console.log("update product warehouse", index);
         if (index > -1) {
           let listProduct = state[index].listProduct;
           let products = item.listProduct;
