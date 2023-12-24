@@ -10,16 +10,7 @@ import DropdownImage from "components/DropDownImage";
 import { useState, useEffect } from "react";
 import { AiOutlineBell } from "react-icons/ai";
 import { COLORS } from "constants/colors";
-import {
-  Avatar,
-  Button,
-  Card,
-  Drawer,
-  Dropdown,
-  MenuProps,
-  Space,
-  message,
-} from "antd";
+import { Avatar, Button, Card, Drawer, Dropdown, MenuProps } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import {
@@ -28,8 +19,6 @@ import {
 } from "state_management/slices/controlSlice";
 import { useTranslation } from "react-i18next";
 import Meta from "antd/es/card/Meta";
-import NotificationComponent from "components/NotificationComponent";
-import { addNotificationFirebase } from "utils/appUtils";
 export default function Header({
   width = "100%",
   title = "Title",
