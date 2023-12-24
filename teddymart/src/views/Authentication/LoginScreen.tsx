@@ -205,7 +205,7 @@ export default function LoginScreen() {
     ]).then((values: any) => {
       dispatch(
         uploadReportProduct(
-          generateProduct(values[6] as TOrder[], values[5] as TWarehouse[])
+          generateProduct(values[7] as TOrder[], values[6] as TWarehouse[])
         )
       );
       setLoading(false);

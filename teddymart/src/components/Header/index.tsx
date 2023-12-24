@@ -10,16 +10,7 @@ import DropdownImage from "components/DropDownImage";
 import { useState, useEffect } from "react";
 import { AiOutlineBell } from "react-icons/ai";
 import { COLORS } from "constants/colors";
-import {
-  Avatar,
-  Button,
-  Card,
-  Drawer,
-  Dropdown,
-  MenuProps,
-  Space,
-  message,
-} from "antd";
+import { Avatar, Button, Card, Drawer, Dropdown, MenuProps } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import {
@@ -28,8 +19,6 @@ import {
 } from "state_management/slices/controlSlice";
 import { useTranslation } from "react-i18next";
 import Meta from "antd/es/card/Meta";
-import NotificationComponent from "components/NotificationComponent";
-import { addNotificationFirebase } from "utils/appUtils";
 export default function Header({
   width = "100%",
   title = "Title",
@@ -45,7 +34,7 @@ export default function Header({
   const language = useSelector(
     (state: RootState) => state.controlSlice
   ).language;
-  const numberOfNotifications = 2;
+  const numberOfNotifications = notifications?.length;
   useEffect(() => {
     i18n.changeLanguage(language);
   }, [language]);
@@ -117,13 +106,17 @@ export default function Header({
               marginRight: 20,
             }}
           >
-            <AiOutlineBell size={"22px"} color={COLORS.txt_mediumgrey} />
-            <div
-              className="absolute w-5 h-5 rounded-full bg-purple items-center flex justify-center text-10 text-white font-semibold hover:bg-light_purple"
-              style={{ top: -5, right: -6 }}
-            >
-              {numberOfNotifications}
-            </div>
+            {numberOfNotifications !== 0 && (
+              <>
+                <AiOutlineBell size={"22px"} color={COLORS.txt_mediumgrey} />
+                <div
+                  className="absolute w-5 h-5 rounded-full bg-purple items-center flex justify-center text-10 text-white font-semibold hover:bg-light_purple"
+                  style={{ top: -5, right: -6 }}
+                >
+                  {numberOfNotifications}
+                </div>
+              </>
+            )}
           </Button>
         </Dropdown>
         <Button
