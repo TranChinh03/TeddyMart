@@ -12,11 +12,7 @@ import { BillTable } from "components/TableComponent";
 import TextInputComponent from "components/TextInputComponent";
 import React, { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  BiSearch,
-  BiTrash,
-  BiPlus,
-} from "react-icons/bi";
+import { BiSearch, BiTrash, BiPlus } from "react-icons/bi";
 import { BsFileExcel } from "react-icons/bs";
 import { IoMdAlert } from "react-icons/io";
 import { LiaFileExcel } from "react-icons/lia";
@@ -122,6 +118,7 @@ export default function SaleScreen() {
     dispatch(deleteMultiOrder(selectedRows));
 
     const tmp = ORDERS.filter((o) => selectedRows.includes(o.orderId));
+
     dispatch({ type: DELETE_ORDER, payload: tmp });
 
     deleteOrderFirebase(selectedRows, userId);
@@ -146,6 +143,7 @@ export default function SaleScreen() {
     if (selectedRows.length !== 0) {
       const tmp = ORDERS.find((o) => o.orderId === selectedRows[0]);
       if (tmp.status === "unpaid") {
+        console.log("KKKKK", tmp);
         const newData: TOrder = {
           ...tmp,
           status: "paid",
@@ -161,6 +159,7 @@ export default function SaleScreen() {
         );
         setSelectedRows([]);
         setOpenEdit(false);
+        console.log("ABC", tmp.totalPayment);
         dispatch({ type: UPDATE_ORDER, payload: tmp });
       }
     }
