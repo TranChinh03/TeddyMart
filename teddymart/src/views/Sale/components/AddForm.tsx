@@ -115,6 +115,7 @@ const AddForm = ({
         quantity: product.quantity,
       })),
     ];
+    console.log("LIST", listProduct);
     const y = new Date().getFullYear();
     const m = new Date().getMonth();
     const d = new Date().getDate();

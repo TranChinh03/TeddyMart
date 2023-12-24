@@ -74,7 +74,7 @@ const warehouseSlice = createSlice({
         const count =
           item.listProduct.reduce((pre, cur) => pre + cur.quantity, 0) *
           (action.payload.type === "Import" ? 1 : -1);
-        //console.log("update product warehouse", index);
+        console.log("update product warehouse", index);
         if (index > -1) {
           let listProduct = state[index].listProduct;
           let products = item.listProduct;
@@ -83,7 +83,8 @@ const warehouseSlice = createSlice({
             let index_product = listProduct.findIndex(
               (product) => product.productId === element.productId
             );
-            if (index_product > -1)
+
+            if (index_product > -1) {
               if (action.payload.type === "Import")
                 listProduct[index_product] = {
                   ...state[index].listProduct[index_product],
@@ -99,7 +100,17 @@ const warehouseSlice = createSlice({
                     : listProduct[index_product].quantity + element.quantity,
                 };
               }
+            } else {
+              if (action.payload.type === "Import") {
+                listProduct[0] = {
+                  productId: element.productId,
+                  productName: element.productName,
+                  quantity: element.quantity,
+                };
+              }
+            }
           }
+
           state[index] = { ...state[index], listProduct: listProduct };
           updateProductFirebase(
             action.payload.userId,
