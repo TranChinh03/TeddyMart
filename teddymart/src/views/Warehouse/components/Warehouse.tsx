@@ -31,7 +31,7 @@ export default function Warehouse() {
   //const WAREHOUSES = ["Kho 1", "Kho 2", "Kho 3", "Kho 4"];
   const [sort, setSort] = useState(OPTIONS[0]);
   const [warehouse, setWarehouse] = useState(WAREHOUSES[0]?.warehouseName);
-  const count = WAREHOUSES.find((w) => w.warehouseName === warehouse)?.count;
+  const count = WAREHOUSES.find((w) => w.warehouseName === warehouse).count;
   const productName = useDeferredValue(search);
   const excelRef = useRef(null);
   return (

@@ -14,7 +14,8 @@
     "errUserName": "Tên đăng nhập đã tồn tại",
     "confirmPassword": "Xác nhận mật khẩu mới",
     "newPass": "Mật khẩu mới",
-    "errConfirm": "Vui lòng xác nhận đúng mật khẩu mới"
+    "errConfirm": "Vui lòng xác nhận đúng mật khẩu mới",
+    "emailConfirm": "Tài khoản của bạn đã được tạo thành công! Vui lòng xác nhận email"
   },
   "welcome": "Xin chào",
   "login": {
@@ -100,7 +101,7 @@
     "placeholderSearch": "Tìm kiếm đơn hàng và thông tin khách hàng",
     "addNewOrder": "Thêm đơn hàng mới",
     "customerInfo": "Thông tin khách hàng",
-    "supplierInfo":"Thông tin nhà cung cấp",
+    "supplierInfo": "Thông tin nhà cung cấp",
     "searchCusPhoneNumber": "Tìm thông tin khách hàng theo số điện thoại",
     "import": "Hàng nhập",
     "export": "Hàng xuất",
@@ -142,9 +143,9 @@
     "deletePartner": "Xóa đối tác thành công",
     "updateCustomer": "Thêm khách hàng",
     "updateSupplier": "Thêm nhà cung cấp",
-    "updateSuccess":"Cập nhật thành công",
-    "addSuccess":"Thêm mới thành công!",
-    "fill":"Vui lòng điền đầy đủ thông tin!"
+    "updateSuccess": "Cập nhật thành công",
+    "addSuccess": "Thêm mới thành công!",
+    "fill": "Vui lòng điền đầy đủ thông tin!"
   },
   "product": {
     "productGroup": "Nhóm sản phẩm",
@@ -333,7 +334,7 @@
   "alertTitle": "Bạn có chắc chắn?",
   "alertContent": "Xác nhận rằng bạn sẽ xóa mục này ra khỏi hệ thống",
   "warningSave": "Bạn có muốn lưu lại trạng thái của đơn hàng",
-  "notification":"Thông báo",
+  "notification": "Thông báo",
   "header": {
     "sale": "Đơn hàng",
     "product": "Sản phẩm",
