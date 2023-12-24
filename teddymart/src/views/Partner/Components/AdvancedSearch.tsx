@@ -10,8 +10,8 @@ import { useTranslation } from "react-i18next";
 export default function AdvancedSearch({onSearch, onReset,}: { onSearch: (filters: Record<string, string>) => void;onReset: () => void; }) {
   const [debtBalanceFrom, setdebtBalanceFrom] = useState("");
     const [debtBalanceTo, setdebtBalanceTo] = useState("");
-    const [totalPurchasesFrom, settotalPurchasesFrom] = useState("");
-    const [totalPurchasesTo, settotalPurchasesTo] = useState("");
+    const [totalPaymentFrom, setTotalPaymentFrom] = useState("");
+    const [totalPaymentTo, setTotalPaymentTo] = useState("");
   const [isAdvancedSearchVisible, setAdvancedSearchVisible] = useState(false);
   const { t } = useTranslation();
   const OPTIONS = [
@@ -22,12 +22,14 @@ export default function AdvancedSearch({onSearch, onReset,}: { onSearch: (filter
 
     const handleSearchClick = () => {
       const filters = {
-        gender: gender || "",
+        gender: gender?.toLowerCase() || "",
         debtBalanceFrom,
         debtBalanceTo,
-        totalPurchasesFrom,
-        totalPurchasesTo,
+        totalPaymentFrom,
+        totalPaymentTo,
       };
+
+      console.log("filter:", filters)
 
       onSearch(filters);
     };
@@ -36,8 +38,8 @@ export default function AdvancedSearch({onSearch, onReset,}: { onSearch: (filter
       setGender(null);
       setdebtBalanceFrom("");
       setdebtBalanceTo("");
-      settotalPurchasesFrom("");
-      settotalPurchasesTo("");
+      setTotalPaymentFrom("");
+      setTotalPaymentTo("");
       onReset();
     };
 
@@ -85,14 +87,14 @@ export default function AdvancedSearch({onSearch, onReset,}: { onSearch: (filter
             <TextInputComponent
               label={t("customer.totalPurchasesFrom")}
               placeHolder={"10.000"}
-              value={totalPurchasesFrom}
-              setValue={settotalPurchasesFrom}
+              value={totalPaymentFrom}
+              setValue={setTotalPaymentFrom}
             />
             <TextInputComponent
               label={t("customer.totalPurchasesTo")}
               placeHolder={"100.000"}
-              value={totalPurchasesTo}
-              setValue={settotalPurchasesTo}
+              value={totalPaymentTo}
+              setValue={setTotalPaymentTo}
             />
           </div>
         </div>

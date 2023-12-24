@@ -206,7 +206,7 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
       }
       if (minDate && maxDate) {
       }
-      if (additionalFilters?.gender) {
+      if (additionalFilters?.gender && additionalFilters?.gender !== "") {
         let tmp = listPartners.filter(
           (p) => p?.gender === additionalFilters?.gender
         );
@@ -214,23 +214,27 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
       }
       if (
         additionalFilters?.debtBalanceFrom &&
-        additionalFilters?.debtBalanceTo
+        additionalFilters?.debtBalanceTo &&
+        additionalFilters?.debtBalanceFrom !== "" &&
+        additionalFilters?.debtBalanceTo !== ""
       ) {
         let tmp = listPartners.filter(
           (p) =>
-            p.debt >= additionalFilters.debtBalanceFrom &&
-            p.debt <= additionalFilters.debtBalanceTo
+            p.debt >= Number(additionalFilters.debtBalanceFrom) &&
+            p.debt <= Number(additionalFilters.debtBalanceTo)
         );
         listPartners = tmp;
       }
       if (
         additionalFilters?.totalPaymentFrom &&
-        additionalFilters?.totalPaymentTo
+        additionalFilters?.totalPaymentTo &&
+        additionalFilters?.totalPaymentFrom !== "" &&
+        additionalFilters?.totalPaymentTo !== ""
       ) {
         let tmp = listPartners.filter(
           (p) =>
-            p.debt >= additionalFilters.totalPaymentFrom &&
-            p.debt <= additionalFilters.totalPaymentTo
+            p.debt >= Number(additionalFilters.totalPaymentFrom) &&
+            p.debt <= Number(additionalFilters.totalPaymentTo)
         );
         listPartners = tmp;
       }
