@@ -14,7 +14,8 @@
     "errUserName": "User name has been used",
     "confirmPassword": "Confirm New Password",
     "newPass": "New password",
-    "errConfirm": "Please confirm your new password again!"
+    "errConfirm": "Please confirm your new password again!",
+    "emailConfirm": "Your account has been created successfully! Please verify your email"
   },
   "welcome": "Welcome",
   "login": {
@@ -123,7 +124,7 @@
     "debt": "Debt",
     "addNewOrder": "Add New Order",
     "customerInfo": "Customer Information",
-    "supplierInfo":"Supplier Information",
+    "supplierInfo": "Supplier Information",
 
     "searchCusPhoneNumber": "Search customer by phone number",
     "note": "Note",
@@ -168,9 +169,9 @@
     "deletePartner": "Delete partner successfully",
     "updateCustomer": "Update Customer",
     "updateSupplier": "Update Supplier",
-    "updateSuccess":"Update successfully!",
-    "addSuccess":"Add new successfully!",
-    "fill":"Please fill in full name and phone"
+    "updateSuccess": "Update successfully!",
+    "addSuccess": "Add new successfully!",
+    "fill": "Please fill in full name and phone"
   },
   "product": {
     "productGroup": "Product Group",
@@ -342,7 +343,7 @@
   "alertTitle": "Are you sure?",
   "alertContent": "Confirm you will delete this section from the system!",
   "warningSave": "Do you want to save status of order?",
-  "notification":"Notification",
+  "notification": "Notification",
   "header": {
     "sale": "Sale",
     "product": "Product",

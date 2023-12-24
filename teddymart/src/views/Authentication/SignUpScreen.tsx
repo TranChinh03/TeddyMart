@@ -26,6 +26,7 @@ import {
 } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { uploadManager } from "state_management/slices/managerSlice";
+import { AlertModal } from "components";
 type Inputs = {
   userName: string;
   email: string;
@@ -39,6 +40,7 @@ export default function SignUpScreen() {
   const params = useParams();
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const { t } = useTranslation();
   const {
     register,
@@ -58,7 +60,8 @@ export default function SignUpScreen() {
 
   const onSignUp: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
-    if (!params) {
+    if (!params.email) {
+      console.log("Sign up with no params");
       const snapshot = await getDocs(
         query(collection(db, "Manager"), where("userName", "==", data.userName))
       );
@@ -85,7 +88,9 @@ export default function SignUpScreen() {
           })
           .finally(() => {
             setLoading(false);
-            reset();
+            setOpen(true);
+            // navigate(NAV_LINK.LOGIN);
+            // reset();
           });
       }
     } else {
@@ -118,6 +123,12 @@ export default function SignUpScreen() {
           navigate(NAV_LINK.SALE);
         });
     }
+  };
+
+  const onConfirm = () => {
+    navigate(NAV_LINK.LOGIN);
+    reset();
+    setOpen(false);
   };
 
   return (
@@ -262,6 +273,12 @@ export default function SignUpScreen() {
           </div>
         </div>
       </div>
+      <AlertModal
+        open={open}
+        setOpen={setOpen}
+        onConfirm={onConfirm}
+        title={t("signUp.emailConfirm")}
+      />
     </Spin>
   );
 }
