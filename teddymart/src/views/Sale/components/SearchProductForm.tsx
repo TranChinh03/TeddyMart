@@ -39,7 +39,7 @@ const SearchProductForm = ({
       <div className="flex items-center my-3">
         <div className="flex w-full" />
         <ButtonComponent
-          label={t("button.displayAll")}
+          label={"displayAll"}
           onClick={() => {}}
           backgroundColor="#74ADC6"
         />
