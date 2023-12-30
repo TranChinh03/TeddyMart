@@ -62,7 +62,7 @@ const AddForm = ({
   const [openSearchModal, setOpenSearchModal] = useState(false);
   const [search, setSearch] = useState("");
   const [searchCustomer, setSearchCustomer] = useState("");
-  const [voucher, setVoucher] = useState("");
+  const [voucher, setVoucher] = useState(vouchers[0]?.voucherName ?? "");
   const [payment, setPayment] = useState("");
   const [note, setNote] = useState("");
   const [openAddCustomerForm, setOpenAddCustomerForm] = useState(false);
@@ -111,12 +111,13 @@ const AddForm = ({
         quantity: product.quantity,
       })),
     ];
-    console.log("LIST", listProduct);
+    //console.log("LIST", listProduct);
     const y = new Date().getFullYear();
     const m = new Date().getMonth();
     const d = new Date().getDate();
     const createdAt = new Date(y, m, d, 0, 0, 0, 0);
     const orderId = createID({ prefix: "ORD" });
+
     const data: TOrder = {
       createdAt: createdAt.toISOString(),
       debt: sum - discount - +payment,
@@ -156,7 +157,7 @@ const AddForm = ({
     setVoucher("");
   };
   const checkProductWarehouse = (warehouseName: string) => {
-    console.log(productMenu);
+    //console.log(productMenu);
     for (const item of productMenu) {
       const index = warehouse.findIndex(
         (w) => w.warehouseName === warehouseName
@@ -240,13 +241,19 @@ const AddForm = ({
             placeHolder={t("sale.searchCusPhoneNumber")}
           />
           <ButtonComponent
-            label={t("partner.addNewCustomer")}
+            label={
+              typeAdd === "Export"
+                ? t("partner.addNewCustomer")
+                : t("partner.addNewSupplier")
+            }
             onClick={() => setOpenAddCustomerForm(true)}
           />
         </div>
         <div className="grid grid-cols-4 gap-3 my-5">
           <h1 className=" text-base font-medium">
-            {t("partner.customerName")}
+            {typeAdd === "Export"
+              ? t("partner.customerName")
+              : t("partner.supplierName")}
           </h1>
           <h1 className="text-base italic">{customerInfo?.partnerName}</h1>
 
@@ -259,13 +266,17 @@ const AddForm = ({
           <h1 className=" text-base font-medium">
             {t("partner.totalBuyAmount")}
           </h1>
-          <h1 className="text-base italic">{customerInfo?.totalBuyAmount}</h1>
+          <h1 className="text-base italic">
+            {new Intl.NumberFormat().format(customerInfo?.totalBuyAmount)}
+          </h1>
 
           <h1 className=" text-base font-medium">{t("partner.email")}</h1>
           <h1 className="text-base italic">{customerInfo?.email}</h1>
 
           <h1 className=" text-base font-medium">{t("partner.debt")}</h1>
-          <h1 className="text-base italic">{customerInfo?.debt}</h1>
+          <h1 className="text-base italic">
+            {new Intl.NumberFormat().format(customerInfo?.debt)}
+          </h1>
         </div>
       </Card>
       <Card
@@ -341,7 +352,17 @@ const AddForm = ({
           <DropdownComponent
             value={voucher}
             setValue={setVoucher}
-            options={[...vouchers.map((voucher) => voucher.voucherName)]}
+            options={[
+              ...vouchers.map((voucher) => {
+                if (
+                  new Date().getTime() >=
+                    new Date(voucher.publicDate).getTime() &&
+                  new Date().getTime() <=
+                    new Date(voucher.expirationDate).getTime()
+                )
+                  return voucher.voucherName;
+              }),
+            ]}
           />
         </Card>
       )}
@@ -369,24 +390,30 @@ const AddForm = ({
           <Tooltip title="Payment = Sum(Total Price) ">
             <h1 className=" text-base font-medium">{t("sale.payment")}:</h1>
           </Tooltip>
-          <h1 className=" text-base italic">${sum}</h1>
+          <h1 className=" text-base italic">
+            {new Intl.NumberFormat().format(sum)}
+          </h1>
 
           <h1 className=" text-base font-medium">{t("sale.discount")}:</h1>
-          <h1 className=" text-base italic">{discount}</h1>
+          <h1 className=" text-base italic">
+            {new Intl.NumberFormat().format(discount)}
+          </h1>
 
           <Tooltip title={t("sale.tooltipPayment")}>
             <h1 className=" text-base font-medium">{t("sale.totalPrice")}:</h1>
           </Tooltip>
           <input
             className=" text-base italic"
-            defaultValue={payment}
+            defaultValue={new Intl.NumberFormat().format(+payment)}
             placeholder="0"
             onChange={(e) => {
               setPayment(e.target.value);
             }}
           ></input>
           <h1 className=" text-base font-medium">{t("sale.debt")}:</h1>
-          <h1 className=" text-base italic">{sum - discount - +payment}</h1>
+          <h1 className=" text-base italic">
+            {new Intl.NumberFormat().format(+(sum - discount - +payment))}
+          </h1>
         </div>
       </div>
       <div className=" flex justify-center items-center">

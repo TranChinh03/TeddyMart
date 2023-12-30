@@ -1,4 +1,5 @@
 import { Button } from "antd";
+import dayjs from "dayjs";
 import { t } from "i18next";
 import { ChangeEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -179,6 +180,7 @@ const VoucherTable = ({
                     </td>
                     <td className="border border-gray-300 p-2 text-sm">
                       {new Date(content.publicDate).toLocaleDateString("vi")}
+                      {new Date(content.publicDate).getTime()}
                     </td>
                     <td className="border border-gray-300 p-2 text-sm">
                       {new Date(content.expirationDate).toLocaleDateString(
@@ -189,12 +191,12 @@ const VoucherTable = ({
                       {content.discountAmount}
                     </td>
                     <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
-                      <Button
+                      {/* <Button
                         className="mr-2"
                         onClick={() => openEditForm(content)}
                       >
                         <FiEdit />
-                      </Button>
+                      </Button> */}
 
                       <Button onClick={() => onDelete(true, content.voucherId)}>
                         <FiTrash color="red" />
@@ -208,7 +210,7 @@ const VoucherTable = ({
         </table>
       </div>
       <div className="w-full text-left my-5 flex row justify-end pr-10 items-center ">
-        <span className="text-sm mr-4 text-gray-400 ">Số mục mỗi trang:</span>
+        <span className="text-sm mr-4 text-gray-400 ">{t("rowsPerPage")}</span>
         <select
           value={rowsPerPage}
           onChange={handleRowsPerPageChange}

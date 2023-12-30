@@ -27,6 +27,7 @@ function VoucherScreen() {
     setEditContent(voucher);
   };
   const onDeleteVoucher = () => {
+    console.log("123");
     dispatch(deleteVoucher(voucherId));
     deleteVoucherFirebase([voucherId], userId);
   };

@@ -122,18 +122,18 @@ const GeneralReportTable = forwardRef<HTMLTableElement, Props>(
                       )}
                       {options.outcome && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content.outcome}
+                          {new Intl.NumberFormat().format(content.outcome)}
                         </td>
                       )}
 
                       {options.revenue && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content.revenue}
+                          {new Intl.NumberFormat().format(content.revenue)}
                         </td>
                       )}
                       {options.profit && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content.profit}
+                          {new Intl.NumberFormat().format(content.profit)}
                         </td>
                       )}
                       {options.numberOfOrder && (
@@ -175,7 +175,7 @@ const GeneralReportTable = forwardRef<HTMLTableElement, Props>(
 
           <div className="ml-4 flex items-center">
             <span className="text-sm text-gray-400  mr-4">
-              {currentPage} trên {maxPages}
+              {currentPage} {t("on")} {maxPages}
             </span>
             <Button onClick={onBackAll}>
               <HiOutlineChevronDoubleLeft />

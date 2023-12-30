@@ -1,4 +1,9 @@
-import { BtnExport, DropdownComponent, SearchComponent } from "components";
+import {
+  BtnExport,
+  ButtonComponent,
+  DropdownComponent,
+  SearchComponent,
+} from "components";
 import { useTranslation } from "react-i18next";
 import { useDeferredValue, useRef, useState } from "react";
 import { ProductTable } from "components/TableComponent";
@@ -17,6 +22,7 @@ const filterOptions = {
   quantity: true,
   totalPrice: false,
   activities: false,
+  numberOnShelf: true,
 };
 export default function Warehouse() {
   const { t } = useTranslation();
@@ -49,6 +55,7 @@ export default function Warehouse() {
           </div>
           <div className="flex">
             <BtnExport fileName="Sheet1" sheet="sheet1" tableRef={excelRef} />
+            {/* <ButtonComponent label="" onClick={()=>{}}/> */}
           </div>
         </div>
         <div className="flex flex-wrap mt-5 w-full justify-between items-end">

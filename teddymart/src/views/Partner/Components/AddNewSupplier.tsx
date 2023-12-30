@@ -245,7 +245,7 @@ export default function AddNewSupplierForm({
                     setValue={(value) => onChange(value, "totalBuyAmount")}
                   />
                 ) : (
-                  <span>{data.totalBuyAmount}</span>
+                  <span>{new Intl.NumberFormat().format(data.totalBuyAmount)}</span>
                 )}
               </td>
             </tr>
@@ -262,7 +262,7 @@ export default function AddNewSupplierForm({
                     setValue={(value) => onChange(value, "debt")}
                   />
                 ) : (
-                  <span>{data.debt}</span>
+                  <span>{new Intl.NumberFormat().format(data.debt)}</span>
                 )}
               </td>
             </tr>

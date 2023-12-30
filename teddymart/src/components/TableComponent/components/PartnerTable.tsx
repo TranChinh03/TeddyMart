@@ -437,12 +437,12 @@ const PartnerTable = forwardRef<HTMLTableElement, Props>(
                       )}
                       {options.debt && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content.debt}
+                          {new Intl.NumberFormat().format(content.debt)}
                         </td>
                       )}
                       {options.totalBuyAmount && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content.totalBuyAmount}
+                          {new Intl.NumberFormat().format(content.totalBuyAmount)}
                         </td>
                       )}
                       {options.certificate && !isCustomer && (

@@ -21,6 +21,7 @@ import { RootState } from "state_management/reducers/rootReducer";
 import { TListProduct } from "./BillTable";
 
 import AddNewProduct from "views/Product/components/AddNewProduct";
+import PlaceOnShelf from "views/Warehouse/components/PlaceOnShelf";
 export type Input = {
   productId: string;
   productName: string;
@@ -62,6 +63,7 @@ type TOptions = {
   totalPrice?: boolean;
   activities?: boolean;
   price?: boolean;
+  numberOnShelf?: boolean;
 };
 
 type TSort = {
@@ -259,6 +261,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
       totalPrice: false,
       activities: true,
       price: false,
+      numberOnShelf: false,
       ...filterOption,
     };
     const HEADER = useMemo(
@@ -277,6 +280,9 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
           options.note && t("note"),
           options.activities && t("activities"),
           options.price && t("product.price"),
+          options.numberOnShelf && t("product.numberOnShelf"),
+          options.numberOnShelf && t("product.stock"),
+          options.numberOnShelf && t("activities"),
         ].filter((value) => Boolean(value) !== false),
       [t, options]
     );
@@ -521,20 +527,20 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                       )}
                       {options.sell_price && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content?.sell_price}
+                          {new Intl.NumberFormat().format(content?.sell_price)}
                         </td>
                       )}
 
                       {options.costPrice && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content?.cost_price}
+                          {new Intl.NumberFormat().format(content?.cost_price)}
                         </td>
                       )}
 
                       {options.price && (
                         <Tooltip title={t("sale.tooltipPrice")}>
                           <td className="border border-gray-300 p-2 text-sm ">
-                            {content?.price}
+                            {new Intl.NumberFormat().format(content?.price)}
                           </td>
                         </Tooltip>
                       )}
@@ -542,14 +548,28 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                         <Tooltip title={t("sale.tooltipTotalPrice")}>
                           <td className="border border-gray-300 p-2 text-sm">
                             {selectedRows?.includes(content.productId)
-                              ? getQuantity(content.productId) * displayPrice
-                              : content?.totalPrice ?? 0}
+                              ? new Intl.NumberFormat().format(
+                                  getQuantity(content.productId) * displayPrice
+                                )
+                              : new Intl.NumberFormat().format(
+                                  content?.totalPrice
+                                ) ?? 0}
                           </td>
                         </Tooltip>
                       )}
                       {options.VAT && (
                         <td className="border border-gray-300 p-2 text-sm">
                           {content?.VAT}
+                        </td>
+                      )}
+                      {options.numberOnShelf && (
+                        <td className="border border-gray-300 p-2 text-sm">
+                          {content?.numberOnShelf}
+                        </td>
+                      )}
+                      {options.numberOnShelf && (
+                        <td className="border border-gray-300 p-2 text-sm">
+                          {content?.quantity - content?.numberOnShelf}
                         </td>
                       )}
                       {options.note && (
@@ -572,6 +592,16 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                               }}
                             >
                               <FiTrash color="red" />
+                            </Button>
+                          </div>
+                        </td>
+                      )}
+
+                      {options.numberOnShelf && (
+                        <td className="border border-gray-300 p-2 text-sm">
+                          <div className="flex items-center gap-1 justify-center">
+                            <Button onClick={() => onUpdate(content)}>
+                              <FiEdit />
                             </Button>
                           </div>
                         </td>
@@ -627,6 +657,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
           data={dataInput}
           setData={setDataInput}
         />
+        {/* {options.numberOnShelf && <PlaceOnShelf open={true} />} */}
       </div>
     );
   }

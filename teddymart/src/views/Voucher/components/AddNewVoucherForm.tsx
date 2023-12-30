@@ -1,5 +1,7 @@
-import { DatePicker, Modal, Space, message } from "antd";
+import { DatePicker, DatePickerProps, Modal, Space, message } from "antd";
 import { ButtonComponent, TextInputComponent } from "components";
+import { timeFormat } from "constants/time";
+import dayjs from "dayjs";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,22 +13,35 @@ type Props = {
   setOpenAddVoucher: (openAddVoucher: boolean) => void;
 };
 const AddNewVoucherForm = ({ openAddVoucher, setOpenAddVoucher }: Props) => {
+  // const y = new Date().getFullYear();
+  // const m = new Date().getMonth();
+  // const d = new Date().getDate();
   const { t } = useTranslation();
   const [voucherName, setVoucherName] = useState("");
-  const [dateFrom, setDateFrom] = useState("");
-  const [dateTo, setDateTo] = useState("");
+  const [dateFrom, setDateFrom] = useState<Date>(new Date());
+  const [dateTo, setDateTo] = useState<Date>(new Date());
   const [discountAmount, setDiscountAmount] = useState("");
   const { userId } = useSelector((state: RootState) => state.manager);
   const dispatch = useDispatch();
+  const formatDate = (date: Date) => {
+    const y = date.getFullYear();
+    const m = date.getMonth();
+    const d = date.getDate();
+    return new Date(y, m, d, 0, 0, 0, 0).toISOString();
+  };
+  //console.log(dateTo);
+  // console.log(new Date().getTime());
+  // console.log(formatDate(dateTo));
   const onAddNewVoucher = () => {
     const voucherId = createID({ prefix: "VCH" });
     const data: TVoucher = {
       voucherId: voucherId,
       voucherName: voucherName,
       discountAmount: +discountAmount,
-      expirationDate: dateTo,
-      publicDate: dateFrom,
+      expirationDate: formatDate(dateTo),
+      publicDate: formatDate(dateFrom),
     };
+
     dispatch(addNewVoucher(data));
     addVoucherFirebase(data, userId, voucherId);
     setOpenAddVoucher(false);
@@ -59,21 +74,25 @@ const AddNewVoucherForm = ({ openAddVoucher, setOpenAddVoucher }: Props) => {
         }}
       >
         <Space direction="vertical">
-          <label>{t("voucher.expirationDate")}</label>
+          <label>{t("voucher.publicDate")}</label>
           <DatePicker
+            format={["DD/MM/YYYY"]}
             onChange={(e) => {
-              setDateFrom(e.format("DD/MM/YYYY"));
+              if (e) {
+                setDateFrom(e.toDate());
+              }
             }}
-            style={{ width: 200 }}
           />
         </Space>
         <Space direction="vertical">
-          <label>{t("voucher.publicDate")}</label>
+          <label>{t("voucher.expirationDate")}</label>
           <DatePicker
+            format={["DD/MM/YYYY"]}
             onChange={(e) => {
-              setDateTo(e.format("DD/MM/YYYY"));
+              if (e) {
+                setDateTo(e.toDate());
+              }
             }}
-            style={{ width: 200 }}
           />
         </Space>
       </Space>

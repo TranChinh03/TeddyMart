@@ -96,6 +96,7 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
     ref
   ) => {
     //console.log(search);
+    
     const { t } = useTranslation();
     const options = {
       orderId: true,
@@ -386,22 +387,23 @@ const BillTable = forwardRef<HTMLTableElement, Props>(
                       )}
                       {options.payment && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content.payment}
+                          {new Intl.NumberFormat().format(content.payment) }
+                         
                         </td>
                       )}
                       {options.debt && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content.debt}
+                          {new Intl.NumberFormat().format(content.debt)}
                         </td>
                       )}
                       {options.discount && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content.discount}
+                          {new Intl.NumberFormat().format(content.discount)}
                         </td>
                       )}
                       {options.totalPayment && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content.totalPayment}
+                           {new Intl.NumberFormat().format(content.totalPayment) }
                         </td>
                       )}
                       {options.voucherID && (

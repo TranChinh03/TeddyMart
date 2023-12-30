@@ -44,6 +44,7 @@ declare type TProduct = {
   quantity?: number;
   totalPrice?: number;
   price?: number;
+  numberOnShelf?: number;
 };
 
 declare type TGroupProduct = {
@@ -65,7 +66,10 @@ declare type TWarehouse = {
   warehouseId: string;
   warehouseName: string;
   address?: string;
-  listProduct: Pick<TProduct, "productId" | "productName" | "quantity">[];
+  listProduct: Pick<
+    TProduct,
+    "productId" | "productName" | "quantity" | "numberOnShelf"
+  >[];
   count: number;
 };
 

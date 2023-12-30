@@ -25,7 +25,7 @@ export default function CardButton({
         <div className="text-xs text-txt_mediumgrey mr-2">{title}</div>
       </div>
       <p className="px-3 font-bold text-3xl  pt-3 pb-5" style={{ color }}>
-        {amount}
+        {new Intl.NumberFormat().format(amount)}
       </p>
     </button>
   );

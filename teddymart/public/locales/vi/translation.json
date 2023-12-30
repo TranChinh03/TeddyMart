@@ -181,7 +181,9 @@
     "deleteProduct": "Đã xóa sản phẩm!",
     "addProduct": "Thêm sản phẩm thành công!",
     "editProduct": "Sửa sản phẩm thành công!",
-    "existedProduct": "Sản phẩm đã tồn tại!"
+    "existedProduct": "Sản phẩm đã tồn tại!",
+    "numberOnShelf": "Số lượng trên kệ",
+    "stock": "Tồn kho"
   },
   "group": {
     "groupId": "Mã nhóm",
@@ -230,7 +232,8 @@
     "addSuccess": " Thêm kho mới thành công!",
     "updateSuccess": "Sửa thông tin kho thành công!",
     "deleteSuccess": "Xóa kho thành công!",
-    "existed": "Kho này đã tồn tại!"
+    "existed": "Kho này đã tồn tại!",
+    "placeShelf": "Đặt hàng lên kệ"
   },
   "activities": "Chức năng",
 

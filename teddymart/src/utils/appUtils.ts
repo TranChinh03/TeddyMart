@@ -49,7 +49,7 @@ const updateVoucherFirebase = async (
   });
 };
 const deleteVoucherFirebase = async (vouchers: string[], userId: string) => {
-  for (const voucher in vouchers) {
+  for (const voucher of vouchers) {
     await deleteDoc(doc(db, `/Manager/${userId}/Voucher`, voucher));
   }
 };

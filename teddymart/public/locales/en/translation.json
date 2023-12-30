@@ -207,7 +207,9 @@
     "deleteProduct": "Product Deleted Successfully!",
     "addProduct": "Product Added Successfully!",
     "editProduct": "Product Edited Successfully!",
-    "existedProduct": "Product Existed!"
+    "existedProduct": "Product Existed!",
+    "numberOnShelf": "On Shelf",
+    "stock": "Stock"
   },
   "warehouse": {
     "warehouse": "Warehouse",
@@ -237,7 +239,8 @@
     "addSuccess": "Warehouse added successfully!",
     "updateSuccess": "Warehouse updated successfully!",
     "deleteSuccess": "Warehouse deleted successully!",
-    "existed": "This warehouse has already existed!"
+    "existed": "This warehouse has already existed!",
+    "placeShelf": "Place On Shelf"
   },
   "activities": "Activities",
   "note": "Note",
