@@ -54,7 +54,14 @@ export default function Warehouse() {
             />
           </div>
           <div className="flex">
-            <BtnExport fileName="Sheet1" sheet="sheet1" tableRef={excelRef} />
+            <BtnExport
+              fileName={
+                t("export.reportProductInWH") +
+                `_${new Date().toLocaleDateString("vi")}`
+              }
+              sheet={t("export.reportProductInWH")}
+              tableRef={excelRef}
+            />
             {/* <ButtonComponent label="" onClick={()=>{}}/> */}
           </div>
         </div>

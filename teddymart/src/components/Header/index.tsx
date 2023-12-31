@@ -119,12 +119,12 @@ export default function Header({
             )}
           </Button>
         </Dropdown>
-        <Button
+        {/* <Button
           onClick={() => {}}
           type="text"
           shape="circle"
           icon={<BiSolidStar size={"22px"} color={COLORS.checkbox_bg} />}
-        />
+        /> */}
         <Drawer
           title={t("notification")}
           placement={"right"}

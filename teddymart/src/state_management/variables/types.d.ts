@@ -60,6 +60,7 @@ declare type TShelf = {
   shelfName: string;
   capacity: number | string;
   note?: string;
+  currentQuantity?: number;
 };
 
 declare type TWarehouse = {

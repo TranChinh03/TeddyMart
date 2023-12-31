@@ -157,7 +157,14 @@ export default function ProductScreen() {
             backgroundColor={COLORS.checkbox_bg}
             style={{ marginInline: 12 }}
           />
-          <BtnExport fileName="Sheet1" sheet="sheet1" tableRef={productRef} />
+          <BtnExport
+            fileName={
+              t("export.reportProduct") +
+              `_${new Date().toLocaleDateString("vi")}`
+            }
+            sheet={t("export.reportProduct")}
+            tableRef={productRef}
+          />
           <ButtonComponent
             label={t("product.addNewProduct")}
             onClick={() => setOpenAddForm(true)}

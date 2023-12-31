@@ -142,7 +142,14 @@ export default function CustomerScreen() {
                 backgroundColor={COLORS.checkbox_bg}
                 style={{ marginRight: 12 }}
               />
-              <BtnExport fileName="Sheet1" sheet="Sheet1" tableRef={excelRef} />
+              <BtnExport
+                fileName={
+                  t("export.reportSupplier") +
+                  `_${new Date().toLocaleDateString("vi")}`
+                }
+                sheet={t("export.reportSupplier")}
+                tableRef={excelRef}
+              />
               <ButtonComponent
                 label={t("button.addNew")}
                 onClick={() => setOpernAddNewSupplier(true)}

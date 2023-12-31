@@ -11,6 +11,7 @@ type WarehouseUpdate = {
     productId: string;
     productName: string;
     quantity: number;
+    numberOnShelf?: number;
   }[];
 };
 const warehouseSlice = createSlice({
@@ -97,6 +98,7 @@ const warehouseSlice = createSlice({
                   quantity: !action.payload.isDelete
                     ? listProduct[index_product].quantity - element.quantity
                     : listProduct[index_product].quantity + element.quantity,
+                  numberOnShelf: element.numberOnShelf,
                 };
               }
             } else {
@@ -115,6 +117,36 @@ const warehouseSlice = createSlice({
             state[index].warehouseId,
             listProduct,
             count * (action.payload.isDelete ? -1 : 1)
+          );
+        }
+      }
+    },
+    updateShelfWarehouse: (
+      state: TWarehouse[],
+      action: PayloadAction<{
+        warehouseName: string;
+        product: TProduct;
+        numberOnShelf: number;
+        userId: string;
+      }>
+    ) => {
+      const warehouseIndex = state.findIndex(
+        (w) => w.warehouseName === action.payload.warehouseName
+      );
+      if (warehouseIndex > -1) {
+        const productIndex = state[warehouseIndex].listProduct.findIndex(
+          (p) => p.productId === action.payload.product?.productId
+        );
+        if (productIndex !== -1) {
+          state[warehouseIndex].listProduct[productIndex] = {
+            ...state[warehouseIndex].listProduct[productIndex],
+            numberOnShelf: action.payload.numberOnShelf,
+          };
+          updateProductFirebase(
+            action.payload.userId,
+            state[warehouseIndex].warehouseId,
+            state[warehouseIndex].listProduct,
+            0
           );
         }
       }
@@ -138,5 +170,6 @@ export const {
   deleteMultiOrder,
   updateWarehouse,
   updateProductWarehouse,
+  updateShelfWarehouse,
 } = warehouseSlice.actions;
 export default warehouseSlice.reducer;

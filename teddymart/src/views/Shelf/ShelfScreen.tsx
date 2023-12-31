@@ -8,12 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { t } from "i18next";
 import AddNewShelf from "./components/AddNewShelf";
 import { AlertModal } from "components";
-import { deleteShelf } from "state_management/slices/shelfSlice";
+import { deleteShelf, updateShelf } from "state_management/slices/shelfSlice";
 import { deleteData } from "controller/deleteData";
 import { message } from "antd";
 import { RootState } from "state_management/reducers/rootReducer";
 import { updateGroupProduct } from "state_management/slices/groupProductSlice";
 import { updateData } from "controller/addData";
+import { updateShelfWarehouse } from "state_management/slices/warehouseSlice";
 export type Input = {
   shelfId: string;
   shelfName: string;
@@ -31,7 +32,10 @@ export default function ShelfScreen() {
     capacity: "",
     note: "",
   });
+  const userId = window.localStorage.getItem("USER_ID");
   const GROUP_PRODUCT = useSelector((state: RootState) => state.groupProduct);
+  const WARE_HOUSE = useSelector((state: RootState) => state.warehouseSlice);
+  const PRODUCTS = useSelector((state: RootState) => state.product);
   const dispatch = useDispatch();
   const onDeleteMultiShelf = () => {
     if (selectedRows.length !== 0) {
@@ -51,6 +55,26 @@ export default function ShelfScreen() {
                 newGroupProduct: { ...group, shelfID: "", shelfName: "" },
               })
             );
+
+            WARE_HOUSE.forEach((w: TWarehouse) => {
+              w.listProduct.forEach((p) => {
+                const product = PRODUCTS.find(
+                  (temp) =>
+                    temp.productId === p.productId &&
+                    temp.groupId === group.groupId
+                );
+                if (product) {
+                  dispatch(
+                    updateShelfWarehouse({
+                      warehouseName: w.warehouseName,
+                      product: { ...p, groupId: product.groupId },
+                      numberOnShelf: 0,
+                      userId,
+                    })
+                  );
+                }
+              });
+            });
           }
         });
         setOpen(false);

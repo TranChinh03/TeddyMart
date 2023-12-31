@@ -24,9 +24,10 @@ import { Divider, Modal, Space, message } from "antd";
 import { addData, updateData } from "controller/addData";
 import AddNewGroupProduct from "./components/AddNewGroupProduct";
 import { deleteData } from "controller/deleteData";
-import { deleteShelf } from "state_management/slices/shelfSlice";
+import { deleteShelf, updateShelf } from "state_management/slices/shelfSlice";
 import { updateProduct } from "state_management/slices/productSlice";
 import { deleteGroupProduct } from "state_management/slices/groupProductSlice";
+import { updateShelfWarehouse } from "state_management/slices/warehouseSlice";
 export type Input = {
   groupId: string;
   groupName: string;
@@ -55,8 +56,11 @@ export default function ProductScreen() {
   const [open, setOpen] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const PRODUCT = useSelector((state: RootState) => state.product);
-  const dispatch = useDispatch();
+  const WARE_HOUSE = useSelector((state: RootState) => state.warehouseSlice);
 
+  const SHELF = useSelector((state: RootState) => state.shelf);
+  const dispatch = useDispatch();
+  const userId = window.localStorage.getItem("USER_ID");
   const onDeleteMultiGroup = () => {
     if (selectedRows.length !== 0) {
       selectedRows.forEach(async (item) => {
@@ -77,6 +81,39 @@ export default function ProductScreen() {
             );
           }
         });
+        WARE_HOUSE.forEach((w) => {
+          w.listProduct.forEach((p) => {
+            const product = PRODUCT.find(
+              (temp) => temp.productId === p.productId && temp.groupId === item
+            );
+            if (product) {
+              dispatch(
+                updateShelfWarehouse({
+                  warehouseName: w.warehouseName,
+                  product: { ...p, groupId: item },
+                  numberOnShelf: 0,
+                  userId: userId,
+                })
+              );
+            }
+          });
+        });
+        const shelfID = GROUP.find((g) => g.groupId === item).shelfID;
+        const shelf = SHELF.find((s) => s.shelfId === shelfID);
+        updateData({
+          data: { ...shelf, currentQuantity: 0 },
+          table: "Shelf",
+          id: shelfID,
+        });
+        dispatch(
+          updateShelf({
+            currentShelfId: shelfID,
+            newShelf: {
+              ...shelf,
+              currentQuantity: 0,
+            },
+          })
+        );
         message.success(t("group.deletedGroup"));
         setOpen(false);
         setSelectedRows([]);

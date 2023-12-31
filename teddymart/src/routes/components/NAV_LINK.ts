@@ -9,7 +9,7 @@ export const NAV_LINK = {
   SUPPLIER: "/home/supplier",
   WAREHOUSE: "/home/warehouse",
   VOUCHER: "/home/voucher",
-  GROUP_PRODUCT: "/home/groupproduct",
+  GROUP_PRODUCT: "/home/groupProduct",
   HOME: "/home/*",
   AUTH: "/*",
   WAREHOUSE_MANAGEMENT: "/home/warehouse/warehouseManagement",

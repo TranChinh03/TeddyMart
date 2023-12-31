@@ -44,8 +44,11 @@ export default function ProductReport() {
           </div>
 
           <BtnExport
-            fileName={t("drawer.product")}
-            sheet="Sheet1"
+            fileName={
+              t("export.reportImportExports") +
+              `_${new Date().toLocaleDateString("vi")}`
+            }
+            sheet={t("export.reportImportExports")}
             tableRef={productRef}
           />
         </div>

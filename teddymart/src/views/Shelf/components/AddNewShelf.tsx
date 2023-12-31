@@ -56,6 +56,7 @@ export default function AddNewShelf({
         shelfName: data.shelfName,
         capacity: +data.capacity,
         note: data.note,
+        currentQuantity: 0,
       };
       dispatch(addNewShelf(newdata));
       addData({ data: newdata, table: "Shelf", id: ShelfID });
@@ -108,7 +109,13 @@ export default function AddNewShelf({
   );
   return (
     <Modal
-      title={isAdd?<h1 className="text-2xl">{t("shelf.addNewShelf")}</h1>:<h1 className="text-2xl">{t("shelf.shelfInfo")}</h1>}
+      title={
+        isAdd ? (
+          <h1 className="text-2xl">{t("shelf.addNewShelf")}</h1>
+        ) : (
+          <h1 className="text-2xl">{t("shelf.shelfInfo")}</h1>
+        )
+      }
       width={"60%"}
       open={openAddNewShelf}
       onCancel={() => setOpenAddShelf(false)}

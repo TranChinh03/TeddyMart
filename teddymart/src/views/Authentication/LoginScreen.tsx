@@ -209,7 +209,7 @@ export default function LoginScreen() {
         )
       );
       setLoading(false);
-      navigate(NAV_LINK.SALE);
+      navigate(NAV_LINK.REPORT);
       reset();
     });
   };

@@ -204,7 +204,9 @@ function Chart({ time, options }: Props) {
                   tickFormat(tick)
                 }
               />
-              <YAxis tickFormatter={(tick)=>new Intl.NumberFormat().format(tick)}/>
+              <YAxis
+                tickFormatter={(tick) => new Intl.NumberFormat().format(tick)}
+              />
               {/* <Tooltip
                 labelFormatter={(tick) => {
                   if (gap === 0) {
@@ -213,21 +215,43 @@ function Chart({ time, options }: Props) {
                   return String(tick);
                 }}
               /> */}
-              <Tooltip content={({active, payload, label})=>{
-                if(active) {
-                  return (
-                    <div className="bg-white p-5 border-slate-200 border-2 flex-col gap-2 flex rounded-md">
-                      <div>{gap === 0 ? `${new Date(label).toLocaleDateString("vi")}`:label}</div>
-                      <div style={{color: COLORS.red}}>{t("report.outcome")}: {new Intl.NumberFormat().format(+payload[0].value)}</div>
-                      <div style={{color: COLORS.yellow}}>{t("report.revenue")}: {new Intl.NumberFormat().format(+payload[1].value)}</div>
-                      <div style={{color: COLORS.green}}>{t("report.profit")}: {new Intl.NumberFormat().format(+payload[2].value)}</div>
-                      <div style={{color: COLORS.blue}}>{t("report.numberOfOrder")}: {payload[3].value}</div>
-                      <div style={{color: COLORS.pink}}>{t("report.importOrder")}: {payload[4].value}</div>
-                      <div style={{color: COLORS.seaBlue}}>{t("report.exportOrder")}: {payload[5].value}</div>
-                    </div>
-                  )
-                } return null
-              }}/>
+              <Tooltip
+                content={({ active, payload, label }) => {
+                  if (active) {
+                    return (
+                      <div className="bg-white p-5 border-slate-200 border-2 flex-col gap-2 flex rounded-md">
+                        <div>
+                          {gap === 0
+                            ? `${new Date(label).toLocaleDateString("vi")}`
+                            : label}
+                        </div>
+                        <div style={{ color: COLORS.red }}>
+                          {t("report.outcome")}:{" "}
+                          {new Intl.NumberFormat().format(+payload[0]?.value)}
+                        </div>
+                        <div style={{ color: COLORS.yellow }}>
+                          {t("report.revenue")}:{" "}
+                          {new Intl.NumberFormat().format(+payload[1]?.value)}
+                        </div>
+                        <div style={{ color: COLORS.green }}>
+                          {t("report.profit")}:{" "}
+                          {new Intl.NumberFormat().format(+payload[2]?.value)}
+                        </div>
+                        <div style={{ color: COLORS.blue }}>
+                          {t("report.numberOfOrder")}: {payload[3]?.value}
+                        </div>
+                        <div style={{ color: COLORS.pink }}>
+                          {t("report.importOrder")}: {payload[4]?.value}
+                        </div>
+                        <div style={{ color: COLORS.seaBlue }}>
+                          {t("report.exportOrder")}: {payload[5]?.value}
+                        </div>
+                      </div>
+                    );
+                  }
+                  return null;
+                }}
+              />
               <Legend />
               {options.outcome && (
                 <Line
@@ -236,7 +260,6 @@ function Chart({ time, options }: Props) {
                   stroke={COLORS.red}
                   strokeWidth={2}
                   name={t("report.outcome")}
-                  
                 />
               )}
 

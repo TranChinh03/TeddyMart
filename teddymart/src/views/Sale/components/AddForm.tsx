@@ -27,6 +27,7 @@ import AddProductToMenu from "views/Warehouse/components/AddProductToMenu";
 import { updateProductWarehouse } from "state_management/slices/warehouseSlice";
 import addNotification from "react-push-notification";
 import { addNotifications } from "state_management/slices/notificationSlice";
+import { updateShelf } from "state_management/slices/shelfSlice";
 const CUS_INFO = {
   customerName: "NVA",
   gender: "Male",
@@ -54,6 +55,8 @@ const AddForm = ({
     (state: RootState) => state.warehouseSlice
   ).map((value) => value.warehouseName);
   const vouchers = useSelector((state: RootState) => state.voucherSlice);
+  const groupProduct = useSelector((state: RootState) => state.groupProduct);
+  const shelfs = useSelector((state: RootState) => state.shelf);
   const { userId } = useSelector((state: RootState) => state.manager);
   const warehouse = useSelector((state: RootState) => state.warehouseSlice);
   // const [sum, setSum] = useState(1000);
@@ -81,6 +84,7 @@ const AddForm = ({
     )
   );
   const warehouses = useSelector((state: RootState) => state.warehouseSlice);
+
   const discount = getVoucherInfo(voucher).discount;
   const voucherId = getVoucherInfo(voucher).voucherId;
   const dispatch = useDispatch();
@@ -103,15 +107,40 @@ const AddForm = ({
       0
     );
   }, [productMenu]);
+
   const onAddOrder = async () => {
     const listProduct = [
-      ...productMenu.map((product) => ({
-        productId: product.productId,
-        productName: product.productName,
-        quantity: product.quantity,
-      })),
+      ...productMenu.map((product) => {
+        console.log(product.groupId);
+        const shelfID = groupProduct.find(
+          (g) => g.groupId === product.groupId
+        ).shelfID;
+        //console.log("shelfID", shelfID);
+        const shelf = shelfs.find((s) => s.shelfId === shelfID);
+        dispatch(
+          updateShelf({
+            currentShelfId: shelfID,
+            newShelf: {
+              ...shelf,
+              currentQuantity: Math.max(
+                shelf.currentQuantity - product.quantity,
+                0
+              ),
+            },
+          })
+        );
+        return {
+          productId: product.productId,
+          productName: product.productName,
+          quantity: product.quantity,
+          numberOnShelf:
+            typeAdd === "Import"
+              ? 0
+              : Math.max(product.numberOnShelf - product.quantity, 0),
+        };
+      }),
     ];
-    //console.log("LIST", listProduct);
+
     const y = new Date().getFullYear();
     const m = new Date().getMonth();
     const d = new Date().getDate();
@@ -404,7 +433,7 @@ const AddForm = ({
           </Tooltip>
           <input
             className=" text-base italic"
-            defaultValue={new Intl.NumberFormat().format(+payment)}
+            defaultValue={payment}
             placeholder="0"
             onChange={(e) => {
               setPayment(e.target.value);

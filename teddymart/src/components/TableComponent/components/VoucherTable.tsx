@@ -180,7 +180,6 @@ const VoucherTable = ({
                     </td>
                     <td className="border border-gray-300 p-2 text-sm">
                       {new Date(content.publicDate).toLocaleDateString("vi")}
-                      {new Date(content.publicDate).getTime()}
                     </td>
                     <td className="border border-gray-300 p-2 text-sm">
                       {new Date(content.expirationDate).toLocaleDateString(
@@ -188,7 +187,7 @@ const VoucherTable = ({
                       )}
                     </td>
                     <td className="border border-gray-300 p-2 text-sm">
-                      {content.discountAmount}
+                      {content.discountAmount}%
                     </td>
                     <td className="border border-gray-300 p-2 font-[500] text-sm gap-1">
                       {/* <Button

@@ -69,7 +69,7 @@ export default function HomeRoutes() {
       name: t("header.shelf"),
     },
     {
-      path: "groupproduct",
+      path: "groupProduct",
       element: <GroupProductScreen />,
       name: t("header.groupProduct"),
     },
@@ -86,6 +86,7 @@ export default function HomeRoutes() {
     [location, t]
   );
 
+  console.log("title", location.pathname);
   return (
     <div className="flex max-h-screen">
       <div

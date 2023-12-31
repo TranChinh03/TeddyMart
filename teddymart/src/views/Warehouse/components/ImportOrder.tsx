@@ -227,8 +227,11 @@ export default function ImportOrder() {
             />
 
             <BtnExport
-              fileName={t("drawer.sale")}
-              sheet={t("drawer.sale")}
+              fileName={
+                t("export.reportImport") +
+                `_${new Date().toLocaleDateString("vi")}`
+              }
+              sheet={t("export.reportImport")}
               tableRef={orderRef}
             />
             <ButtonComponent

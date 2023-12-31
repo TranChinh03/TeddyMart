@@ -233,7 +233,8 @@
     "updateSuccess": "Sửa thông tin kho thành công!",
     "deleteSuccess": "Xóa kho thành công!",
     "existed": "Kho này đã tồn tại!",
-    "placeShelf": "Đặt hàng lên kệ"
+    "placeShelf": "Đặt hàng lên kệ",
+    "arrangeShelf": "Sắp xếp kệ"
   },
   "activities": "Chức năng",
 
@@ -371,5 +372,16 @@
     "shelfAddSuccess": "Thêm mới kệ thành công",
     "updateSuccess": "Sửa thông tin kệ thành công",
     "shelfInfo": "Thông tin kệ"
+  },
+  "export": {
+    "reportExport": "Đơn_xuất_hàng",
+    "reportProduct": "Tổng_sản_phẩm",
+    "reportCustomer": "Khách_hàng",
+    "reportGeneral": "Báo_tổng_quan",
+    "reportSupplier": "Nhà_cung_cấp",
+    "reportWarehouse": "Tổng_kho",
+    "reportProductInWH": "Tổng_sản_phẩm_trong_kho",
+    "reportImport": "Đơn_nhập_hàng",
+    "reportImportExports": "Tổng_số_lượng_nhập_xuất"
   }
 }

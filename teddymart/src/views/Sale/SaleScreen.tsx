@@ -143,7 +143,7 @@ export default function SaleScreen() {
     if (selectedRows.length !== 0) {
       const tmp = ORDERS.find((o) => o.orderId === selectedRows[0]);
       if (tmp.status === "unpaid") {
-        console.log("KKKKK", tmp);
+        //console.log("KKKKK", tmp);
         const newData: TOrder = {
           ...tmp,
           status: "paid",
@@ -200,8 +200,11 @@ export default function SaleScreen() {
             />
 
             <BtnExport
-              fileName={t("drawer.sale")}
-              sheet={t("drawer.sale")}
+              fileName={
+                t("export.reportExport") +
+                `_${new Date().toLocaleDateString("vi")}`
+              }
+              sheet={t("export.reportExport")}
               tableRef={orderRef}
             />
             <ButtonComponent

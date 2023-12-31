@@ -55,6 +55,7 @@ type TOptions = {
   shelfName?: boolean;
   shelfCapacity: number;
   note?: boolean;
+  currentQuantity?: boolean;
 };
 
 const ShelfTable = ({
@@ -76,6 +77,7 @@ const ShelfTable = ({
     shelfName: true,
     shelfCapacity: true,
     note: true,
+    currentQuantity: true,
     ...filterOption,
   };
   const HEADER = useMemo(
@@ -84,6 +86,7 @@ const ShelfTable = ({
         options.shelfId && t("shelf.shelfId"),
         options.shelfName && t("shelf.shelfName"),
         options.shelfCapacity && t("shelf.capacity"),
+        options.currentQuantity && t("product.numberOnShelf"),
         options.note && t("note"),
         t("activities"),
       ].filter((value) => Boolean(value) !== false),
@@ -214,6 +217,11 @@ const ShelfTable = ({
                     {options.shelfCapacity && (
                       <td className="border border-gray-300 p-2 text-sm">
                         {content.capacity}
+                      </td>
+                    )}
+                    {options?.currentQuantity && (
+                      <td className="border border-gray-300 p-2 text-sm">
+                        {content?.currentQuantity}
                       </td>
                     )}
                     {options.note && (

@@ -16,10 +16,12 @@ import {
   HiOutlineChevronRight,
   HiOutlineChevronDoubleRight,
 } from "react-icons/hi2";
+
+import { MdImportExport } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import { TListProduct } from "./BillTable";
-
+import { BiExport, BiImport } from "react-icons/bi";
 import AddNewProduct from "views/Product/components/AddNewProduct";
 import PlaceOnShelf from "views/Warehouse/components/PlaceOnShelf";
 export type Input = {
@@ -116,6 +118,8 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     const { t } = useTranslation();
     const products = useSelector((state: RootState) => state.product);
     const warehouses = useSelector((state: RootState) => state.warehouseSlice);
+    const groupProduct = useSelector((state: RootState) => state.groupProduct);
+    const shelfs = useSelector((state: RootState) => state.shelf);
     const [dataInput, setDataInput] = useState<TProduct>({
       productId: "",
       productName: "",
@@ -128,6 +132,10 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
       note: "",
     });
     const [openModalUpdate, setOpenModalUpdate] = useState(false);
+    const [openShelf, setOpenShelf] = useState(false);
+    const isAddOnShelf = useRef<boolean>(true);
+    const [shelf, setShelf] = useState<TShelf | undefined>();
+    const [productShelf, setProductShelf] = useState<TProduct>();
 
     const productsFilter = useMemo(() => {
       let listProducts: TProduct[] = [...products];
@@ -147,6 +155,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
             (warehouse) => warehouse.productId === value.productId
           );
           //console.log(value);
+          //console.log("listProduct", listProducts[tmp].groupId);
           if (tmp > -1)
             if (isExport) {
               return {
@@ -154,6 +163,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                 sell_price: listProducts[tmp]?.sell_price,
                 totalPrice: value.quantity * listProducts[tmp]?.sell_price, //????
                 note: listProducts[tmp].note,
+                groupId: listProducts[tmp]?.groupId,
               };
             }
           return {
@@ -161,6 +171,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
             cost_price: listProducts[tmp]?.cost_price,
             totalPrice: value.quantity * listProducts[tmp]?.cost_price, //????
             note: listProducts[tmp]?.note,
+            groupId: listProducts[tmp]?.groupId,
           };
         });
         listProducts = [...productFilterProductTable];
@@ -400,6 +411,26 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
         }
       }
     };
+    const placeOnShelf = (productId: string) => {
+      const groupId = products.find((p) => p.productId === productId).groupId;
+      if (groupId) {
+        const shelfID = groupProduct.find(
+          (g) => g.groupId === groupId
+        )?.shelfID;
+        if (shelfID) {
+          setShelf(shelfs.find((s) => s.shelfId === shelfID));
+          console.log("productId", productId);
+          setProductShelf(
+            productsFilter.find((p) => p.productId === productId)
+          );
+          setOpenShelf(true);
+        } else {
+          message.error("Please select shelf for this product");
+        }
+      } else {
+        message.error("Please select a group product for this product");
+      }
+    };
     return (
       <div className="w-full">
         <div className="max-h-96 overflow-y-auto visible">
@@ -478,7 +509,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                             <input
                               type="number"
                               inputMode="numeric"
-                              min="1"
+                              min="0"
                               max={content?.quantity}
                               style={{ textAlign: "center", maxWidth: 100 }}
                               placeholder="0"
@@ -551,9 +582,11 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                               ? new Intl.NumberFormat().format(
                                   getQuantity(content.productId) * displayPrice
                                 )
-                              : new Intl.NumberFormat().format(
+                              : content?.totalPrice
+                              ? new Intl.NumberFormat().format(
                                   content?.totalPrice
-                                ) ?? 0}
+                                )
+                              : 0}
                           </td>
                         </Tooltip>
                       )}
@@ -600,9 +633,22 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                       {options.numberOnShelf && (
                         <td className="border border-gray-300 p-2 text-sm">
                           <div className="flex items-center gap-1 justify-center">
-                            <Button onClick={() => onUpdate(content)}>
-                              <FiEdit />
+                            <Button
+                              onClick={() => {
+                                placeOnShelf(content.productId);
+                                //console.log("abc", content.productId);
+                              }}
+                            >
+                              <BiExport />
                             </Button>
+
+                            {/* <Button
+                              onClick={() => {
+                                setOpenShelf(true);
+                              }}
+                            >
+                              <BiImport />
+                            </Button> */}
                           </div>
                         </td>
                       )}
@@ -657,7 +703,15 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
           data={dataInput}
           setData={setDataInput}
         />
+
         {/* {options.numberOnShelf && <PlaceOnShelf open={true} />} */}
+        <PlaceOnShelf
+          open={openShelf}
+          setOpen={setOpenShelf}
+          shelf={shelf}
+          product={productShelf}
+          warehouseName={warehouseName}
+        />
       </div>
     );
   }

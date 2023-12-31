@@ -32,8 +32,11 @@ export default function GeneralReport() {
         <div className="w-full py-2 px-3 flex items-center justify-between flex-wrap">
           <ModalSelectDate setResult={setDate} width={"90%"} />
           <BtnExport
-            fileName={t("drawer.report")}
-            sheet="sheet1"
+            fileName={
+              t("export.reportGeneral") +
+              `_${new Date().toLocaleDateString("vi")}`
+            }
+            sheet={t("export.reportGeneral")}
             tableRef={reportRef}
           />
         </div>

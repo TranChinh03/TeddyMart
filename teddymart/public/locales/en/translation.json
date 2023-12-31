@@ -240,7 +240,8 @@
     "updateSuccess": "Warehouse updated successfully!",
     "deleteSuccess": "Warehouse deleted successully!",
     "existed": "This warehouse has already existed!",
-    "placeShelf": "Place On Shelf"
+    "placeShelf": "Place On Shelf",
+    "arrangeShelf": "Arrange On Shelf"
   },
   "activities": "Activities",
   "note": "Note",
@@ -380,5 +381,16 @@
     "shelfAddSuccess": "Shelf added successfully",
     "updateSuccess": "Shelf updated successfully",
     "shelfInfo": "Shelf Infomation"
+  },
+  "export": {
+    "reportExport": "Export_Order",
+    "reportProduct": "Product",
+    "reportCustomer": "Customer",
+    "reportGeneral": "General",
+    "reportSupplier": "Supplier",
+    "reportWarehouse": "Warehouse",
+    "reportProductInWH": "Product_In_Warehouse",
+    "reportImport": "Import_Order",
+    "reportImportExports": "Total_Import_Export_Product"
   }
 }
