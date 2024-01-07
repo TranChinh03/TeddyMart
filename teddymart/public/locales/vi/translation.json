@@ -79,7 +79,9 @@
     "view": "Xem",
     "time": "Thời gian",
     "addOrder": "Tạo đơn",
-    "addNewSupplier": "Thêm nhà cung cấp"
+    "addNewSupplier": "Thêm nhà cung cấp",
+    "createdAtNewest": "Ngày tạo: Mới nhất",
+    "createdAtOldest": "Ngày tạo: Cũ nhất"
   },
   "sale": {
     "importOrder": "Nhập hàng",

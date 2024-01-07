@@ -106,6 +106,8 @@ type TOption = {
   address?: boolean;
 };
 type TSort = {
+  createdAtNewest?: boolean;
+  createdAtOldest?: boolean;
   idAscending?: boolean;
   idDescending?: boolean;
   nameAZ?: boolean;
@@ -145,6 +147,10 @@ const WareHouseTable = forwardRef<HTMLTableElement, Props>(
 
     const warehouseSort = useMemo(() => {
       let warehouselist = [...warehouses];
+
+      if (sort?.createdAtNewest) return warehouselist;
+
+      if (sort?.createdAtOldest) return warehouselist.reverse();
 
       if (sort?.idAscending) {
         warehouselist.sort((a, b) =>

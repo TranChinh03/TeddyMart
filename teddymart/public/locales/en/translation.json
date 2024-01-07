@@ -95,7 +95,9 @@
     "nameZA": "Name: Z → A",
     "quantity1": "Quantity: Low → High",
     "quantity2": "Quantity: High → Low",
-    "addNewSupplier": "Add New Supplier"
+    "addNewSupplier": "Add New Supplier",
+    "createdAtNewest": "Created At: Newest",
+    "createdAtOldest": "Created At: Oldest"
   },
   "group": {
     "groupId": "Group ID",

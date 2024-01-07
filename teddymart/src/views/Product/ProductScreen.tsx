@@ -38,6 +38,8 @@ export default function ProductScreen() {
   const GROUP = useSelector((state: RootState) => state.groupProduct);
   const PRODUCT = useSelector((state: RootState) => state.product);
   const OPTIONS = [
+    t("button.createdAtNewest"),
+    t("button.createdAtOldest"),
     t("product.productNameAZ"),
     t("product.productNameZA"),
     t("product.productCostUp"),
@@ -184,12 +186,14 @@ export default function ProductScreen() {
             productName={productName}
             filterOption={filterOptions}
             sort={{
-              nameAscending: sort === OPTIONS[0],
-              nameDescending: sort === OPTIONS[1],
-              costAscending: sort === OPTIONS[2],
-              costDescending: sort === OPTIONS[3],
-              retailAscending: sort === OPTIONS[4],
-              retailDescending: sort === OPTIONS[5],
+              createdAtNewest: sort === OPTIONS[0],
+              createdAtOldest: sort === OPTIONS[1],
+              nameAscending: sort === OPTIONS[2],
+              nameDescending: sort === OPTIONS[3],
+              costAscending: sort === OPTIONS[4],
+              costDescending: sort === OPTIONS[5],
+              retailAscending: sort === OPTIONS[6],
+              retailDescending: sort === OPTIONS[7],
             }}
             selectedRows={selectedRows}
             setSelectedRows={setSelectedRows}

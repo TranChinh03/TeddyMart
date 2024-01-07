@@ -69,6 +69,8 @@ type TOptions = {
 };
 
 type TSort = {
+  createdAtNewest?: boolean;
+  createdAtOldest?: boolean;
   nameAscending?: boolean;
   nameDescending?: boolean;
   quantityAscending?: boolean;
@@ -181,6 +183,10 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
           value.productName.toLowerCase().includes(productName.toLowerCase())
         );
         listProducts = tmp;
+      }
+
+      if (sort?.createdAtOldest) {
+        listProducts = listProducts.reverse();
       }
 
       if (sort?.nameAscending) {

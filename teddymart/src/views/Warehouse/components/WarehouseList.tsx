@@ -33,6 +33,8 @@ export default function WarehouseList() {
   const [open, setOpen] = useState(false);
 
   const OPTIONS = [
+    t("button.createdAtNewest"),
+    t("button.createdAtOldest"),
     t("warehouse.warehouseIDAscending"),
     t("warehouse.warehouseIDDescending"),
     t("warehouse.warehouseNameAZ"),
@@ -128,10 +130,12 @@ export default function WarehouseList() {
         <WareHouseTable
           warehouseName={warehouseName}
           sort={{
-            idAscending: sort === OPTIONS[0],
-            idDescending: sort === OPTIONS[1],
-            nameAZ: sort === OPTIONS[2],
-            nameZA: sort === OPTIONS[3],
+            createdAtNewest: sort === OPTIONS[0],
+            createdAtOldest: sort === OPTIONS[1],
+            idAscending: sort === OPTIONS[2],
+            idDescending: sort === OPTIONS[3],
+            nameAZ: sort === OPTIONS[4],
+            nameZA: sort === OPTIONS[5],
           }}
           ref={wareListRef}
           selectedRows={selectedRows}
