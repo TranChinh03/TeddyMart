@@ -7,6 +7,8 @@ import { RootState } from "state_management/reducers/rootReducer";
 
 export default function RootRoutes() {
   const userId = useSelector((state: RootState) => state.manager.userId);
+
+  //const userId = window.localStorage.getItem("USER_ID");
   return (
     <BrowserRouter>
       <Routes>

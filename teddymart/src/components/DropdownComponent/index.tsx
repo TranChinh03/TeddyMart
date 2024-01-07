@@ -45,9 +45,7 @@ const DropdownComponent: React.FC<DropdownComponentProps> = ({
         onChange={(e) => setValue(e.target.value)}
         //style={width}
       >
-        <option selected disabled>
-          {placeholder}
-        </option>
+        <option selected>{placeholder}</option>
         {options.map((option, index) => (
           <option key={index} value={isValueIndex ? index : option}>
             {option}

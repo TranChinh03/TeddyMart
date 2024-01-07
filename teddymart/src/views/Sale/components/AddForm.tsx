@@ -28,6 +28,7 @@ import { updateProductWarehouse } from "state_management/slices/warehouseSlice";
 import addNotification from "react-push-notification";
 import { addNotifications } from "state_management/slices/notificationSlice";
 import { updateShelf } from "state_management/slices/shelfSlice";
+import { createSelector } from "@reduxjs/toolkit";
 const CUS_INFO = {
   customerName: "NVA",
   gender: "Male",
@@ -41,6 +42,7 @@ type ListProduct = {
   productName: string;
   quantity: number;
 };
+
 const AddForm = ({
   openAddForm,
   setOpenAddForm,
@@ -78,10 +80,14 @@ const AddForm = ({
       voucherId: item?.voucherId ?? "",
     };
   };
-  const partners = useSelector((state: RootState) =>
-    state.partnerSlice.filter((p) =>
-      typeAdd === "Export" ? p.type === "Customer" : "Supplier"
-    )
+  // const partners = useSelector((state: RootState) =>
+  //   state.partnerSlice.filter((p) =>
+  //     typeAdd === "Export" ? p.type === "Customer" : "Supplier"
+  //   )
+  // );
+  const partners = useSelector((state: RootState) => state.partnerSlice).filter(
+    (p) =>
+      typeAdd === "Import" ? p.type === "Supplier" : p.type === "Customer"
   );
   const warehouses = useSelector((state: RootState) => state.warehouseSlice);
 
@@ -149,7 +155,7 @@ const AddForm = ({
 
     const data: TOrder = {
       createdAt: createdAt.toISOString(),
-      debt: sum - discount - +payment,
+      debt: sum * (1 - discount / 100) - +payment,
       discount: discount,
       listProduct: listProduct,
       note: note,
@@ -158,7 +164,7 @@ const AddForm = ({
       partnerName: customerInfo.partnerName,
       payment: sum, ///
       seller: "TeddyMart",
-      status: +payment === sum ? "paid" : "unpaid",
+      status: +payment === sum * (1 - discount / 100) ? "paid" : "unpaid",
       totalPayment: +payment, ///
       type: typeAdd,
       voucherId: voucherId ?? "",
@@ -177,13 +183,13 @@ const AddForm = ({
         isDelete: false,
       })
     );
+    setPayment((pre) => "");
+    setVoucher("");
     setProductMenu([]);
     setSelectedRows([]);
     message.success("Add Order Success");
     setOpenAddForm(false);
     dispatch({ type: ADD_ORDER, payload: data });
-    setPayment("");
-    setVoucher("");
   };
   const checkProductWarehouse = (warehouseName: string) => {
     //console.log(productMenu);
@@ -243,7 +249,10 @@ const AddForm = ({
       title={<h1 className="text-2xl">{t("sale.addNewOrder")}</h1>}
       width={"70%"}
       open={openAddForm}
-      onCancel={() => setOpenAddForm(false)}
+      onCancel={() => {
+        setOpenAddForm(false);
+        setPayment("");
+      }}
       footer={false}
     >
       <Divider style={{ borderWidth: 1, borderColor: "#9A9A9A" }} />
@@ -434,14 +443,21 @@ const AddForm = ({
           <input
             className=" text-base italic"
             defaultValue={payment}
+            value={payment}
             placeholder="0"
             onChange={(e) => {
               setPayment(e.target.value);
             }}
+            style={{ borderWidth: 1, borderRadius: 5, borderColor: "#9498a4" }}
           ></input>
           <h1 className=" text-base font-medium">{t("sale.debt")}:</h1>
-          <h1 className=" text-base italic">
+          {/* <h1 className=" text-base italic">
             {new Intl.NumberFormat().format(+(sum - discount - +payment))}
+          </h1> */}
+          <h1 className=" text-base italic">
+            {new Intl.NumberFormat().format(
+              +(sum * (1 - discount / 100) - +payment)
+            )}
           </h1>
         </div>
       </div>

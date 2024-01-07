@@ -40,7 +40,7 @@ export default function TextInputComponent({
   borderColor = "gray",
   textInputSize = "16px",
   icon,
-  onIconClick,
+  onIconClick = () => {},
   required = false,
   value,
   setValue,
