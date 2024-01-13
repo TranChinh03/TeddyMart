@@ -103,7 +103,8 @@ const AddNewVoucherForm = ({ openAddVoucher, setOpenAddVoucher }: Props) => {
         style={{ marginBlock: 12 }}
         value={discountAmount}
         setValue={setDiscountAmount}
-        placeHolder="0%"
+        placeHolder="0"
+        rightContent={<div>%</div>}
       />
       {/* <TextInputComponent
         label={t("voucher.note")}

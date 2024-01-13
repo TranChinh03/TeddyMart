@@ -292,11 +292,11 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
           options.productImage && t("product.productImage"),
           options.sell_price && t("product.sell_price"),
           options.costPrice && t("product.costPrice"),
+          options.price && t("product.price"),
           options.totalPrice && t("sale.totalPrice"),
           options.VAT && t("product.VAT"),
           options.note && t("note"),
           options.activities && t("activities"),
-          options.price && t("product.price"),
           options.numberOnShelf && t("product.numberOnShelf"),
           options.numberOnShelf && t("product.stock"),
           options.numberOnShelf && t("activities"),
@@ -575,18 +575,29 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                       )}
 
                       {options.price && (
-                        <Tooltip title={t("sale.tooltipPrice")}>
-                          <td className="border border-gray-300 p-2 text-sm ">
-                            {new Intl.NumberFormat().format(content?.price)}
+                        <Tooltip
+                          title={
+                            isExport
+                              ? t("sale.tooltipPrice")
+                              : t("sale.tooltipCostPrice")
+                          }
+                        >
+                          <td className="border border-gray-300 p-2 text-sm">
+                            {new Intl.NumberFormat().format(
+                              +displayPrice * (1 + content?.VAT / 100 ?? 0)
+                            )}
                           </td>
                         </Tooltip>
                       )}
+
                       {options.totalPrice && (
                         <Tooltip title={t("sale.tooltipTotalPrice")}>
                           <td className="border border-gray-300 p-2 text-sm">
                             {selectedRows?.includes(content.productId)
                               ? new Intl.NumberFormat().format(
-                                  getQuantity(content.productId) * displayPrice
+                                  getQuantity(content.productId) *
+                                    displayPrice *
+                                    (1 + content?.VAT / 100 ?? 0)
                                 )
                               : content?.totalPrice
                               ? new Intl.NumberFormat().format(
@@ -598,7 +609,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                       )}
                       {options.VAT && (
                         <td className="border border-gray-300 p-2 text-sm">
-                          {content?.VAT}
+                          {!!content?.VAT ? content?.VAT + "%" : "0%"}
                         </td>
                       )}
                       {options.numberOnShelf && (

@@ -135,8 +135,10 @@
     "placeholderSearch": "Search orders or custumer/supplier information",
     "totalPrice": "Total Price",
     "tooltipPayment": "Total Payment = Payment * ( 1- Discount)",
-    "tooltipPrice": "Price = Sell price * (1+VAT)",
-    "tooltipTotalPrice": "Total Price = Price * Quantity"
+    "tooltipPrice": "Price = Sell price * (1 + VAT)",
+    "tooltipCostPrice": "Price = Cost price * (1 + VAT)",
+    "tooltipTotalPrice": "Total Price = Price * Quantity",
+    "tooltipAddformPayment": "Payment = Sum(Total Price)"
   },
 
   "voucher": {
@@ -195,7 +197,7 @@
     "productInfo": "Product Information",
     "searchProductFromOrder": "Search Product From Order",
     "searchProduct": "Search Product",
-    "price": "Cost Price",
+    "price": "Price",
     "quantity": "Quantity",
     "image": "Image",
     "productCostUp": "Product Cost: Low → High",

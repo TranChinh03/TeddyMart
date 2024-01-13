@@ -88,8 +88,8 @@ const AddNewProduct = ({
           `Product/Images/${createID({ prefix: "P" })}`
         );
         if (selectedImageFile !== null) {
-            const snapshot = await uploadBytes(storageRef, selectedImageFile);
-            data.image = await getDownloadURL(snapshot.ref);
+          const snapshot = await uploadBytes(storageRef, selectedImageFile);
+          data.image = await getDownloadURL(snapshot.ref);
         }
         const ProductID = createID({ prefix: "P" });
         const newProduct: TProduct = {
@@ -115,36 +115,37 @@ const AddNewProduct = ({
       if (selectedImage) {
         if (data.image !== "") {
           const refimg = ref(storage, data.image);
-          console.log("day:", refimg.root)
-            // Delete the file
-            deleteObject(refimg).then(() => {
-              console.log("Image deleted")
-            }).catch((error) => {
-              console.log("No image existed")
+          console.log("day:", refimg.root);
+          // Delete the file
+          deleteObject(refimg)
+            .then(() => {
+              console.log("Image deleted");
             })
+            .catch((error) => {
+              console.log("No image existed");
+            });
         }
 
-            const storageRef = ref(
-              storage,
-              `Product/Images/${data.productId}`
-            );
-            const snapshot = await uploadBytes(storageRef, selectedImageFile);
-            data.image = await getDownloadURL(snapshot.ref);
-          }
-        if (isImageDeleted && data.image !== "") {
-          const refimg = ref(storage, data.image);
-          console.log("day:", refimg.root)
-            // Delete the file
-            deleteObject(refimg).then(() => {
-              console.log("Image deleted")
-            }).catch((error) => {
-              console.log("No image existed")
-            })
-          data.image=""
-        }
-        dispatch(updateProduct({ currentProduct: data, newProduct: data }));
-        await updateData({ data: data, table: "Product", id: data.productId });
-        message.success(t("product.editProduct"))
+        const storageRef = ref(storage, `Product/Images/${data.productId}`);
+        const snapshot = await uploadBytes(storageRef, selectedImageFile);
+        data.image = await getDownloadURL(snapshot.ref);
+      }
+      if (isImageDeleted && data.image !== "") {
+        const refimg = ref(storage, data.image);
+        console.log("day:", refimg.root);
+        // Delete the file
+        deleteObject(refimg)
+          .then(() => {
+            console.log("Image deleted");
+          })
+          .catch((error) => {
+            console.log("No image existed");
+          });
+        data.image = "";
+      }
+      dispatch(updateProduct({ currentProduct: data, newProduct: data }));
+      await updateData({ data: data, table: "Product", id: data.productId });
+      message.success(t("product.editProduct"));
     }
     setOpenAddForm(false);
     setData({
@@ -158,10 +159,10 @@ const AddNewProduct = ({
       VAT: null,
       note: "",
     });
-    setSelectedImage(null)
-    setSelectedImageFile(null)
-    setIsImageDeleted(false)
-  }  
+    setSelectedImage(null);
+    setSelectedImageFile(null);
+    setIsImageDeleted(false);
+  };
 
   const backgroundColor = useMemo(
     () =>
@@ -216,11 +217,11 @@ const AddNewProduct = ({
       width={"60%"}
       open={openAddForm}
       onCancel={() => {
-        setIsImageDeleted(false)
-        setSelectedImage(null)
-        setSelectedImageFile(null)
-        setOpenAddForm(false)}
-      }
+        setIsImageDeleted(false);
+        setSelectedImage(null);
+        setSelectedImageFile(null);
+        setOpenAddForm(false);
+      }}
       footer={false}
     >
       <Divider style={{ backgroundColor: "black" }} />
@@ -278,11 +279,11 @@ const AddNewProduct = ({
             className="cursor-pointer m-auto"
           >
             {selectedImage || (data.image !== "" && !isImageDeleted) ? (
-                <img
-                  src={selectedImage ? selectedImage : data.image}
-                  alt="Selected"
-                  style={{ width: "100%", maxHeight: "100px" }}
-                />
+              <img
+                src={selectedImage ? selectedImage : data.image}
+                alt="Selected"
+                style={{ width: "100%", maxHeight: "100px" }}
+              />
             ) : (
               <img src={require("../../../assets/images/Camera.png")} />
             )}
@@ -296,17 +297,17 @@ const AddNewProduct = ({
           </div>
           {selectedImage || (data.image !== "" && !isImageDeleted) ? (
             <ButtonComponent
-            label={t("button.deleteImg")}
-            onClick={() => {
-              setSelectedImage(null)
-              setSelectedImageFile(null)
-              setIsImageDeleted(true);
-            }}
-            backgroundColor={COLORS.checkbox_bg}
-            iconLeft={<BiX size={20}/>}
-            style={{ margin: "10px auto" }}
-          />) : null
-          }  
+              label={t("button.deleteImg")}
+              onClick={() => {
+                setSelectedImage(null);
+                setSelectedImageFile(null);
+                setIsImageDeleted(true);
+              }}
+              backgroundColor={COLORS.checkbox_bg}
+              iconLeft={<BiX size={20} />}
+              style={{ margin: "10px auto" }}
+            />
+          ) : null}
         </div>
 
         <label className="self-center font-bold md:text-right mb-1 md:mb-0 pr-4">
@@ -342,6 +343,8 @@ const AddNewProduct = ({
             width="100%"
             value={data.VAT ? data.VAT.toString() : ""}
             setValue={(value) => onChange(value, "VAT")}
+            placeHolder="0"
+            rightContent={<div>%</div>}
           />
         </div>
 
@@ -371,7 +374,7 @@ const AddNewProduct = ({
             onClick={() => {
               setIsImageDeleted(false);
               setSelectedImage(null);
-              setSelectedImageFile(null)
+              setSelectedImageFile(null);
               setOpenAddForm(false);
             }}
             style={{

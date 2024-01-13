@@ -56,6 +56,7 @@ export default function TextInputComponent({
   minLength,
   disabled = false,
   min,
+  rightContent,
 }: Props) {
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -129,6 +130,7 @@ export default function TextInputComponent({
             {icon}
           </button>
         )}
+        {rightContent ?? rightContent}
       </div>
     </div>
   );

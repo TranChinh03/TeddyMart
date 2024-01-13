@@ -104,12 +104,14 @@ const AddForm = ({
   const sum = useMemo(() => {
     if (typeAdd === "Export") {
       return productMenu.reduce(
-        (pre, cur) => pre + cur.sell_price * cur.quantity,
+        (pre, cur) =>
+          pre + cur.sell_price * (1 + cur?.VAT / 100 ?? 0) * cur.quantity,
         0
       );
     }
     return productMenu.reduce(
-      (pre, cur) => pre + cur.cost_price * cur.quantity,
+      (pre, cur) =>
+        pre + cur.cost_price * (1 + cur?.VAT / 100 ?? 0) * cur.quantity,
       0
     );
   }, [productMenu]);
@@ -364,6 +366,7 @@ const AddForm = ({
               sell_price: typeAdd === "Export" ? true : false,
               activities: false,
               costPrice: typeAdd === "Import" ? true : false,
+              price: true,
             }}
             productName={search}
             warehouseName={typeAdd === "Export" ? warehouseName : ""}
@@ -425,7 +428,7 @@ const AddForm = ({
       <div className="flex items-centers">
         <div className="flex w-[100%]" />
         <div className=" grid grid-cols-2 gap-4 w-[30%] self-end">
-          <Tooltip title="Payment = Sum(Total Price) ">
+          <Tooltip title={t("sale.tooltipAddformPayment")}>
             <h1 className=" text-base font-medium">{t("sale.payment")}:</h1>
           </Tooltip>
           <h1 className=" text-base italic">
@@ -434,7 +437,7 @@ const AddForm = ({
 
           <h1 className=" text-base font-medium">{t("sale.discount")}:</h1>
           <h1 className=" text-base italic">
-            {new Intl.NumberFormat().format(discount)}
+            {new Intl.NumberFormat().format(discount)}%
           </h1>
 
           <Tooltip title={t("sale.tooltipPayment")}>
@@ -450,7 +453,7 @@ const AddForm = ({
             }}
             style={{ borderWidth: 1, borderRadius: 5, borderColor: "#9498a4" }}
           ></input>
-          <h1 className=" text-base font-medium">{t("sale.debt")}:</h1>
+          <h1 className="text-base font-medium">{t("sale.debt")}:</h1>
           {/* <h1 className=" text-base italic">
             {new Intl.NumberFormat().format(+(sum - discount - +payment))}
           </h1> */}
@@ -461,7 +464,7 @@ const AddForm = ({
           </h1>
         </div>
       </div>
-      <div className=" flex justify-center items-center">
+      <div className="flex justify-center items-center">
         <ButtonComponent
           label={t("button.addOrder")}
           onClick={() => {

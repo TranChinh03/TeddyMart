@@ -47,4 +47,5 @@ export type Props = {
   };
   disabled?: boolean;
   min?: string;
+  rightContent?: React.ReactNode;
 };

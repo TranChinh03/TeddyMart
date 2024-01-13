@@ -111,7 +111,9 @@
     "totalPrice": "Tổng giá tiền",
     "tooltipPayment": "Thanh toán = Tổng tiền * ( 1- Giảm giá)",
     "tooltipPrice": "Giá tiền = Giá bán * (1 + VAT)",
-    "tooltipTotalPrice": "Tổng giá tiền = Giá tiền * Số lượng"
+    "tooltipCostPrice": "Giá tiền = Giá vốn * (1 + VAT)",
+    "tooltipTotalPrice": "Tổng giá tiền = Giá tiền * Số lượng",
+    "tooltipAddformPayment": "Tổng tiền = Sum(Tổng giá tiền)"
   },
   "voucher": {
     "searchVoucher": "Tìm kiếm theo tên voucher",

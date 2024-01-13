@@ -155,7 +155,12 @@ export default function PlaceOnShelf({
                     type="number"
                     min="0"
                     max={limit}
-                    style={{ maxWidth: 100, alignSelf: "center" }}
+                    style={{
+                      maxWidth: 100,
+                      alignSelf: "center",
+                      borderWidth: 1,
+                      borderRadius: 5,
+                    }}
                     value={value}
                     onChange={(e) => {
                       // if (+value > 0) {
