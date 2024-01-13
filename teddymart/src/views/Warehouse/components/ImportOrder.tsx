@@ -1,18 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  Space,
-  DatePicker,
-  Dropdown,
-  MenuProps,
-  Tooltip,
-  TabsProps,
-  Tabs,
-  Popconfirm,
-  Modal,
-  Divider,
-  Card,
-} from "antd";
+import { Button, Checkbox, Space, DatePicker } from "antd";
 import Search, { SearchProps } from "antd/es/input/Search";
 import {
   AlertModal,
@@ -21,9 +7,7 @@ import {
   ModalSelectDate,
   SearchComponent,
 } from "components";
-import DropdownImage from "components/DropDownImage";
 import DropdownComponent from "components/DropdownComponent";
-import Header from "components/Header";
 import { BillTable, ProductTable } from "components/TableComponent";
 import ReportProductTable from "components/TableComponent/components/ReportProductTable";
 import TextInputComponent from "components/TextInputComponent";
@@ -31,25 +15,11 @@ import { COLORS } from "constants/colors";
 import { title } from "process";
 import React, { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  BiDotsVerticalRounded,
-  BiBell,
-  BiStar,
-  BiFilter,
-  BiSearch,
-  BiSave,
-  BiDownload,
-  BiTrash,
-  BiPlus,
-} from "react-icons/bi";
-import { BsFileExcel } from "react-icons/bs";
-import { IoMdAlert } from "react-icons/io";
-import { LiaFileExcel } from "react-icons/lia";
+import { BiSearch, BiTrash, BiPlus } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "state_management/reducers/rootReducer";
 import {
   deleteMultiOrder,
-  deleteOrder,
   updateOrder,
 } from "state_management/slices/orderSlice";
 import { IoAlertCircleOutline } from "react-icons/io5";

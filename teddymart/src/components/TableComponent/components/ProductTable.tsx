@@ -584,8 +584,9 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                         >
                           <td className="border border-gray-300 p-2 text-sm">
                             {new Intl.NumberFormat().format(
-                              +displayPrice * (1 + content?.VAT / 100 ?? 0)
+                              +displayPrice * (1 + (content?.VAT ?? 0) / 100)
                             )}
+                            {/* {content?.VAT  ?? 1 * 100} */}
                           </td>
                         </Tooltip>
                       )}
