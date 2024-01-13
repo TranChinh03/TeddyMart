@@ -597,8 +597,8 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                             {selectedRows?.includes(content.productId)
                               ? new Intl.NumberFormat().format(
                                   getQuantity(content.productId) *
-                                    displayPrice *
-                                    (1 + content?.VAT / 100 ?? 0)
+                                    (displayPrice *
+                                      (1 + (content?.VAT ?? 0) / 100))
                                 )
                               : content?.totalPrice
                               ? new Intl.NumberFormat().format(
