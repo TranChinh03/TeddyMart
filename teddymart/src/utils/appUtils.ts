@@ -92,6 +92,12 @@ const addNotificationFirebase = async (
 ) => {
   await setDoc(doc(db, `/Manager/${userId}/Notification/${data.notiId}`), data);
 };
+
+const deleteNotificationFirebase = async (notificationIds: string[], userId: string) => {
+  for (const notificationId of notificationIds) {
+    await deleteDoc(doc(db, `/Manager/${userId}/Notification`, notificationId));
+  }
+};
 export {
   createID,
   addOrderFirebase,
@@ -103,4 +109,5 @@ export {
   deletePartnerFirebase,
   updateProductFirebase,
   addNotificationFirebase,
+  deleteNotificationFirebase
 };
