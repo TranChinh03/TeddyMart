@@ -19,6 +19,9 @@ import {
 } from "state_management/slices/controlSlice";
 import { useTranslation } from "react-i18next";
 import Meta from "antd/es/card/Meta";
+import { deleteNotifications } from "../../state_management/slices/notificationSlice";
+import { deleteNotificationFirebase } from "../../utils/appUtils";
+
 export default function Header({
   width = "100%",
   title = "Title",
@@ -38,6 +41,29 @@ export default function Header({
   useEffect(() => {
     i18n.changeLanguage(language);
   }, [language]);
+
+  const deleteNotificationsAsync =
+    (notificationIds: string[], userId: string) => async (dispatch: any) => {
+      try {
+        console.log("Deleting notifications from Firebase...");
+        await deleteNotificationFirebase(notificationIds, userId);
+
+        console.log("Dispatching deleteNotifications action...");
+        dispatch(deleteNotifications(notificationIds));
+      } catch (error) {
+        console.error("Error deleting notifications:", error);
+      }
+    };
+
+  const handleClearAllNotifications = () => {
+    dispatch(
+      deleteNotificationsAsync(
+        notifications.map((notification) => notification.notiId),
+        userId
+      ) as any
+    );
+  };
+
   const items: MenuProps["items"] = [
     ...notifications?.slice(0, 2).map((notification, index) => ({
       key: index,
@@ -56,6 +82,20 @@ export default function Header({
         </h1>
       ),
       onClick: () => setOpen(!open),
+    },
+
+    {
+      key: "5",
+      label: (
+        <h1
+          className="text-base font-medium"
+          style={{ color: "red", textAlign: "center" }}
+         // onClick={handleClearAllNotifications}
+        >
+          Clear all
+        </h1>
+      ),
+      onClick: () => handleClearAllNotifications(),
     },
   ];
 
