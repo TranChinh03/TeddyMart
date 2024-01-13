@@ -90,7 +90,7 @@ export default function Profile() {
               />
             ) : (
               <div className="text-xl font-semibold">
-                {Info.shopName.charAt(0).toLocaleUpperCase()}
+                {Info.shopName?.charAt(0).toLocaleUpperCase()}
               </div>
             )}
 

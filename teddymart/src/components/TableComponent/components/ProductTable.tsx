@@ -191,13 +191,13 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
 
       if (sort?.nameAscending) {
         let tmp = listProducts.sort((a, b) =>
-          a.productName.charAt(0) < b.productName.charAt(0) ? -1 : 1
+          a.productName?.charAt(0) < b.productName?.charAt(0) ? -1 : 1
         );
         listProducts = tmp;
       }
       if (sort?.nameDescending) {
         let tmp = listProducts.sort((a, b) =>
-          a.productName.charAt(0) > b.productName.charAt(0) ? -1 : 1
+          a.productName?.charAt(0) > b.productName?.charAt(0) ? -1 : 1
         );
         listProducts = tmp;
       }

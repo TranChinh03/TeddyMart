@@ -4,7 +4,9 @@ import { Provider } from "react-redux";
 import { Notifications } from "react-push-notification";
 import Draft from "./views/Draft/Draft";
 import { PersistGate } from "redux-persist/lib/integration/react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { NAV_LINK } from "routes/components/NAV_LINK";
 const App = () => {
   return (
     <Provider store={store}>

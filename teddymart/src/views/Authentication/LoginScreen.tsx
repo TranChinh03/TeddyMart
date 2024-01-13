@@ -43,11 +43,19 @@ type Inputs = {
 };
 const provider = new GoogleAuthProvider();
 export default function LoginScreen() {
-  const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+
+  const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  useEffect(() => {
+    const userId = window.localStorage.getItem("USER_ID");
+    if (userId) {
+      navigate(NAV_LINK.REPORT);
+    }
+    setLoading(false);
+  }, []);
   const {
     register,
     handleSubmit,

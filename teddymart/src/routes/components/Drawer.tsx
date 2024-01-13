@@ -144,7 +144,7 @@ export default function Drawer() {
           />
         ) : (
           <div className="flex w-10 h-10 bg-hover rounded-full items-center justify-center ">
-            {Info.shopName.charAt(0).toUpperCase()}
+            {Info.shopName?.charAt(0).toUpperCase()}
           </div>
         )}
 
