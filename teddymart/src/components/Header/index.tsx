@@ -90,7 +90,7 @@ export default function Header({
         <h1
           className="text-base font-medium"
           style={{ color: "red", textAlign: "center" }}
-         // onClick={handleClearAllNotifications}
+          // onClick={handleClearAllNotifications}
         >
           Clear all
         </h1>
@@ -146,17 +146,13 @@ export default function Header({
               marginRight: 20,
             }}
           >
-            {numberOfNotifications !== 0 && (
-              <>
-                <AiOutlineBell size={"22px"} color={COLORS.txt_mediumgrey} />
-                <div
-                  className="absolute w-5 h-5 rounded-full bg-purple items-center flex justify-center text-10 text-white font-semibold hover:bg-light_purple"
-                  style={{ top: -5, right: -6 }}
-                >
-                  {numberOfNotifications}
-                </div>
-              </>
-            )}
+            <AiOutlineBell size={"22px"} color={COLORS.txt_mediumgrey} />
+            <div
+              className="absolute w-5 h-5 rounded-full bg-purple items-center flex justify-center text-10 text-white font-semibold hover:bg-light_purple"
+              style={{ top: -5, right: -6 }}
+            >
+              {numberOfNotifications}
+            </div>
           </Button>
         </Dropdown>
         {/* <Button
