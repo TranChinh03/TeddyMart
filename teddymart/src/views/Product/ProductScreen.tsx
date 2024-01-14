@@ -12,13 +12,15 @@ import { ProductTable } from "components/TableComponent";
 import { RootState } from "state_management/reducers/rootReducer";
 import { ListCheckBox } from "components";
 import { t } from "i18next";
-import { Divider, Modal, Space, message } from "antd";
+import { Divider, Modal, Space, message, Spin } from "antd";
 import AddNewProduct from "./components/AddNewProduct";
 import { deleteData } from "controller/deleteData";
 import { deleteProduct } from "state_management/slices/productSlice";
 import { deleteObject, ref } from "firebase/storage";
 import { storage } from "firebaseConfig";
 import { deleteProductWarehouse } from "state_management/slices/warehouseSlice";
+import { updateShelf } from "state_management/slices/shelfSlice";
+import { updateData } from "controller/addData";
 export type Input = {
   productId: string;
   productName: string;
@@ -38,6 +40,8 @@ export default function ProductScreen() {
   const [selectedRows, setSelectedRows] = useState([]);
   const GROUP = useSelector((state: RootState) => state.groupProduct);
   const PRODUCT = useSelector((state: RootState) => state.product);
+  const shelfs = useSelector((state: RootState) => state.shelf);
+  const WAREHOUSE = useSelector((state: RootState) => state.warehouseSlice);
   const OPTIONS = [
     t("button.createdAtNewest"),
     t("button.createdAtOldest"),
@@ -107,10 +111,12 @@ export default function ProductScreen() {
   });
 
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const onDeleteMultiProduct = () => {
     if (selectedRows.length !== 0) {
+      setLoading(true);
       selectedRows.forEach(async (item) => {
         await deleteData({ id: item, table: "Product" });
         dispatch(deleteProduct({ productId: item }));
@@ -122,6 +128,45 @@ export default function ProductScreen() {
         }
       });
       const tmp = PRODUCT.filter((p) => selectedRows.includes(p.productId));
+
+      tmp.forEach((t) => {
+        WAREHOUSE.forEach((w) => {
+          w.listProduct.forEach(async (p) => {
+            if (p.productName === t.productName) {
+              const shelfID = GROUP.find(
+                (g) => g.groupId === t.groupId
+              ).shelfID;
+              const shelf = shelfs.find((s) => s.shelfId === shelfID);
+              if (shelfID) {
+                dispatch(
+                  updateShelf({
+                    currentShelfId: shelfID,
+                    newShelf: {
+                      ...shelf,
+                      currentQuantity: Math.max(
+                        shelf?.currentQuantity - p.quantity,
+                        0
+                      ),
+                    },
+                  })
+                );
+                await updateData({
+                  data: {
+                    ...shelf,
+                    currentQuantity: Math.max(
+                      shelf?.currentQuantity - p.quantity,
+                      0
+                    ),
+                  },
+                  table: "Shelf",
+                  id: shelfID,
+                }).then(() => setLoading(false));
+              }
+            }
+          });
+        });
+      });
+
       dispatch(deleteProductWarehouse({ products: tmp }));
       setOpen(false);
       message.success(t("product.deleteProduct"));
@@ -130,93 +175,98 @@ export default function ProductScreen() {
   };
 
   return (
-    <div className="w-full">
-      <div
-        className="bg-white border-2 p-5 mx-1.5 my-1.5 rounded-md"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          flexDirection: "column",
-        }}
-      >
-        <div className=" flex items-center">
-          <SearchComponent
-            placeholder={t("product.searchByProduct")}
-            setSearch={setSearch}
-            search={search}
-            style={{
-              paddingTop: 9,
-              paddingBottom: 9,
-            }}
-            outStyle={{ width: "100%" }}
-          />
+    <Spin spinning={loading}>
+      <div className="w-full">
+        <div
+          className="bg-white border-2 p-5 mx-1.5 my-1.5 rounded-md"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+          }}
+        >
+          <div className=" flex items-center">
+            <SearchComponent
+              placeholder={t("product.searchByProduct")}
+              setSearch={setSearch}
+              search={search}
+              style={{
+                paddingTop: 9,
+                paddingBottom: 9,
+              }}
+              outStyle={{ width: "100%" }}
+            />
 
-          <div style={{ width: 36 }} />
-          <ListCheckBox listFilter={listFilter} setListFilter={setListFilter} />
-          <ButtonComponent
-            label={t("button.delete")}
-            onClick={() => {
-              console.log(selectedRows);
-              if (selectedRows.length > 0) setOpen(true);
-            }}
-            backgroundColor={COLORS.checkbox_bg}
-            style={{ marginInline: 12 }}
-          />
-          <BtnExport
-            fileName={
-              t("export.reportProduct") +
-              `_${new Date().toLocaleDateString("vi")}`
-            }
-            sheet={t("export.reportProduct")}
-            tableRef={productRef}
-          />
-          <ButtonComponent
-            label={t("product.addNewProduct")}
-            onClick={() => setOpenAddForm(true)}
-            iconLeft={<BiPlus size={20} color="white" />}
-          />
-        </div>
-        <div className="flex items-center my-2">
-          <DropdownComponent
-            value={sort}
-            setValue={setSort}
-            options={OPTIONS}
-          />
-        </div>
+            <div style={{ width: 36 }} />
+            <ListCheckBox
+              listFilter={listFilter}
+              setListFilter={setListFilter}
+            />
+            <ButtonComponent
+              label={t("button.delete")}
+              onClick={() => {
+                console.log(selectedRows);
+                if (selectedRows.length > 0) setOpen(true);
+              }}
+              backgroundColor={COLORS.checkbox_bg}
+              style={{ marginInline: 12 }}
+            />
+            <BtnExport
+              fileName={
+                t("export.reportProduct") +
+                `_${new Date().toLocaleDateString("vi")}`
+              }
+              sheet={t("export.reportProduct")}
+              tableRef={productRef}
+            />
+            <ButtonComponent
+              label={t("product.addNewProduct")}
+              onClick={() => setOpenAddForm(true)}
+              iconLeft={<BiPlus size={20} color="white" />}
+            />
+          </div>
+          <div className="flex items-center my-2">
+            <DropdownComponent
+              value={sort}
+              setValue={setSort}
+              options={OPTIONS}
+            />
+          </div>
 
-        <div style={{ width: "100%", margin: "20px auto auto auto" }}>
-          <ProductTable
-            productName={productName}
-            filterOption={filterOptions}
-            sort={{
-              createdAtNewest: sort === OPTIONS[0],
-              createdAtOldest: sort === OPTIONS[1],
-              nameAscending: sort === OPTIONS[2],
-              nameDescending: sort === OPTIONS[3],
-              costAscending: sort === OPTIONS[4],
-              costDescending: sort === OPTIONS[5],
-              retailAscending: sort === OPTIONS[6],
-              retailDescending: sort === OPTIONS[7],
-            }}
-            selectedRows={selectedRows}
-            setSelectedRows={setSelectedRows}
-            ref={productRef}
-            setOpenAlert={setOpen}
-          />
+          <div style={{ width: "100%", margin: "20px auto auto auto" }}>
+            <ProductTable
+              productName={productName}
+              filterOption={filterOptions}
+              sort={{
+                createdAtNewest: sort === OPTIONS[0],
+                createdAtOldest: sort === OPTIONS[1],
+                nameAscending: sort === OPTIONS[2],
+                nameDescending: sort === OPTIONS[3],
+                costAscending: sort === OPTIONS[4],
+                costDescending: sort === OPTIONS[5],
+                retailAscending: sort === OPTIONS[6],
+                retailDescending: sort === OPTIONS[7],
+              }}
+              selectedRows={selectedRows}
+              setSelectedRows={setSelectedRows}
+              ref={productRef}
+              setOpenAlert={setOpen}
+            />
+          </div>
         </div>
+        <AddNewProduct
+          openAddForm={openAddForm}
+          setOpenAddForm={setOpenAddForm}
+          data={dataInput}
+          setData={setDataInput}
+        />
+
+        <AlertModal
+          open={open}
+          setOpen={setOpen}
+          onConfirm={onDeleteMultiProduct}
+        />
       </div>
-      <AddNewProduct
-        openAddForm={openAddForm}
-        setOpenAddForm={setOpenAddForm}
-        data={dataInput}
-        setData={setDataInput}
-      />
-
-      <AlertModal
-        open={open}
-        setOpen={setOpen}
-        onConfirm={onDeleteMultiProduct}
-      />
-    </div>
+    </Spin>
   );
 }
