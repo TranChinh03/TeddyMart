@@ -36,10 +36,13 @@ export default function Warehouse() {
   ];
   //const WAREHOUSES = ["Kho 1", "Kho 2", "Kho 3", "Kho 4"];
   const [sort, setSort] = useState(OPTIONS[0]);
-  const [warehouse, setWarehouse] = useState(WAREHOUSES[0]?.warehouseName);
+  const [warehouse, setWarehouse] = useState<string>(
+    WAREHOUSES[0]?.warehouseName ?? "WarehouseDefault"
+  );
   const count = WAREHOUSES.find((w) => w.warehouseName === warehouse)?.count;
   const productName = useDeferredValue(search);
   const excelRef = useRef(null);
+  console.log("Warehouse", warehouse);
   return (
     <div className="w-full bg-extreme_lg_grey min-h-screen">
       {/* <Header width={"100%"} title={t("warehouse.warehouse")} /> */}
@@ -84,19 +87,21 @@ export default function Warehouse() {
           <div>{`${t("warehouse.totalProduct")}: ${count ?? 0}`}</div>
         </div>
         <div className="h-3" />
-        <ProductTable
-          filterOption={filterOptions}
-          warehouseName={warehouse}
-          sort={{
-            nameAscending: sort === OPTIONS[0],
-            nameDescending: sort === OPTIONS[1],
-            quantityAscending: sort === OPTIONS[2],
-            quantityDescending: sort === OPTIONS[3],
-          }}
-          //productName={productName}
-          ref={excelRef}
-          //setOpenAlert={setOpen}
-        />
+        {warehouse && (
+          <ProductTable
+            filterOption={filterOptions}
+            warehouseName={warehouse}
+            sort={{
+              nameAscending: sort === OPTIONS[0],
+              nameDescending: sort === OPTIONS[1],
+              quantityAscending: sort === OPTIONS[2],
+              quantityDescending: sort === OPTIONS[3],
+            }}
+            //productName={productName}
+            ref={excelRef}
+            //setOpenAlert={setOpen}
+          />
+        )}
       </div>
     </div>
   );

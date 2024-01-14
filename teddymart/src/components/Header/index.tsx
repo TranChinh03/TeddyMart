@@ -47,7 +47,7 @@ export default function Header({
       (notification) => notification.notiId
     );
     console.log("Dispatching deleteNotifications action...");
-    dispatch(deleteNotifications(notificationIds));
+    dispatch(deleteNotifications([...notificationIds]));
     console.log("Deleting notifications from Firebase...");
     await deleteNotificationFirebase(notificationIds, userId);
   };

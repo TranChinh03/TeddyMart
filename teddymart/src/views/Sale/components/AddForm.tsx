@@ -74,11 +74,14 @@ const AddForm = ({
   const [selectedRows, setSelectedRows] = useState([]);
 
   const getVoucherInfo = (voucherName: string) => {
-    let item = vouchers.find((value) => value.voucherName === voucherName);
-    return {
-      discount: item?.discountAmount ?? 0,
-      voucherId: item?.voucherId ?? "",
-    };
+    if (typeAdd === "Export") {
+      let item = vouchers.find((value) => value.voucherName === voucherName);
+      return {
+        discount: item?.discountAmount ?? 0,
+        voucherId: item?.voucherId ?? "",
+      };
+    }
+    return null;
   };
   // const partners = useSelector((state: RootState) =>
   //   state.partnerSlice.filter((p) =>
@@ -91,8 +94,8 @@ const AddForm = ({
   );
   const warehouses = useSelector((state: RootState) => state.warehouseSlice);
 
-  const discount = getVoucherInfo(voucher).discount;
-  const voucherId = getVoucherInfo(voucher).voucherId;
+  const discount = getVoucherInfo(voucher)?.discount ?? 0;
+  const voucherId = getVoucherInfo(voucher)?.voucherId;
   const dispatch = useDispatch();
   const customerInfo = useMemo(() => {
     let customer = partners.find((partner) =>
@@ -119,6 +122,7 @@ const AddForm = ({
 
   console.log("Sum", sum);
   console.log("ProductMenu", productMenu);
+  console.log("voucher", voucher);
   const onAddOrder = async () => {
     const listProduct = [
       ...productMenu.map((product) => {
@@ -379,7 +383,7 @@ const AddForm = ({
             selectedRows={selectedRows}
             setSelectedRows={setSelectedRows}
             isExport={typeAdd === "Export"}
-            isFull={true}
+            //isFull={true}
           />
         </div>
       </Card>

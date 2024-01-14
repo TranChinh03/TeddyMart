@@ -137,7 +137,6 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
     });
     const [openModalUpdate, setOpenModalUpdate] = useState(false);
     const [openShelf, setOpenShelf] = useState(false);
-    const isAddOnShelf = useRef<boolean>(true);
     const [shelf, setShelf] = useState<TShelf | undefined>();
     const [productShelf, setProductShelf] = useState<TProduct>();
 
@@ -163,6 +162,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                 note: listProducts[tmp].note,
                 groupId: listProducts[tmp]?.groupId,
                 VAT: listProducts[tmp]?.VAT || 0,
+                quantity: value.quantity,
               };
             }
           return {
@@ -172,6 +172,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
             note: listProducts[tmp]?.note,
             groupId: listProducts[tmp]?.groupId,
             VAT: listProducts[tmp]?.VAT || 0,
+            quantity: value.quantity,
           };
         });
         listProducts = [...productFilterProductTable];
@@ -269,6 +270,8 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
       data,
       productGroup,
     ]);
+
+    //console.log("Products", productsFilter);
     const options: TOptions = {
       productId: true,
       productName: true,
@@ -533,11 +536,12 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                                   (isExport &&
                                     +e.target.value < content?.quantity) ||
                                   !isExport
-                                )
+                                ) {
                                   changeQuantity(
                                     content.productId,
                                     +e.target.value
                                   );
+                                }
                               }}
                             />
                           ) : (

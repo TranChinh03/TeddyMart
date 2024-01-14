@@ -23,17 +23,14 @@ const notificationSlice = createSlice({
     ) => {
       return [...state, action.payload];
     },
-    deleteNotifications: (state, action: PayloadAction<string | string[]>) => {
-      const idsToDelete = Array.isArray(action.payload)
-        ? action.payload
-        : [action.payload];
+    deleteNotifications: (state, action: PayloadAction<string[]>) => {
       return state.filter(
-        (notification) => !idsToDelete.includes(notification.notiId)
+        (notification) => !action.payload.includes(notification.notiId)
       );
     },
   },
 });
 
-export const { updateNotifications, addNotifications,deleteNotifications } =
+export const { updateNotifications, addNotifications, deleteNotifications } =
   notificationSlice.actions;
 export default notificationSlice.reducer;
