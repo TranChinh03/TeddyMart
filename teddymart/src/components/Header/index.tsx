@@ -45,11 +45,10 @@ export default function Header({
   const deleteNotificationsAsync =
     (notificationIds: string[], userId: string) => async (dispatch: any) => {
       try {
-        console.log("Deleting notifications from Firebase...");
-        await deleteNotificationFirebase(notificationIds, userId);
-
         console.log("Dispatching deleteNotifications action...");
         dispatch(deleteNotifications(notificationIds));
+        console.log("Deleting notifications from Firebase...");
+        await deleteNotificationFirebase(notificationIds, userId);
       } catch (error) {
         console.error("Error deleting notifications:", error);
       }

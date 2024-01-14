@@ -18,6 +18,7 @@ import { deleteData } from "controller/deleteData";
 import { deleteProduct } from "state_management/slices/productSlice";
 import { deleteObject, ref } from "firebase/storage";
 import { storage } from "firebaseConfig";
+import { deleteProductWarehouse } from "state_management/slices/warehouseSlice";
 export type Input = {
   productId: string;
   productName: string;
@@ -120,6 +121,8 @@ export default function ProductScreen() {
           deleteObject(refimg);
         }
       });
+      const tmp = PRODUCT.filter((p) => selectedRows.includes(p.productId));
+      dispatch(deleteProductWarehouse({ products: tmp }));
       setOpen(false);
       message.success(t("product.deleteProduct"));
       setSelectedRows([]);

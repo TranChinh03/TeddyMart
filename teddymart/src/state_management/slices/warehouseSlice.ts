@@ -5,6 +5,7 @@ import { RESET_ALL_STORES } from "state_management/actions/actions";
 import { store } from "state_management/stores/store";
 import { addNotificationFirebase, updateProductFirebase } from "utils/appUtils";
 import { addNotifications } from "./notificationSlice";
+import { updateData } from "controller/addData";
 type WarehouseUpdate = {
   warehouseName: string;
   listProduct: {
@@ -151,16 +152,26 @@ const warehouseSlice = createSlice({
         }
       }
     },
+    deleteProductWarehouse: (
+      state: TWarehouse[],
+      action: PayloadAction<{ products: TProduct[] }>
+    ) => {
+      const productNames = action.payload.products.map((p) => p.productName);
+      state.forEach((s) => {
+        const tmp = s.listProduct;
+        s.listProduct = s.listProduct.filter(
+          (p) => !productNames.includes(p.productName)
+        );
+        if (tmp.length !== s.listProduct.length) {
+          updateData({ data: s, table: "Ware_House", id: s.warehouseId });
+        }
+      });
+    },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(RESET_ALL_STORES, (state: TWarehouse[]) => {
-        return [];
-      })
-      .addCase(DELETE_PRODUCT, (state, action) => {
-        console.log("extraReducers");
-        console.log(action.payload);
-      });
+    builder.addCase(RESET_ALL_STORES, (state: TWarehouse[]) => {
+      return [];
+    });
   },
 });
 export const {
@@ -171,5 +182,6 @@ export const {
   updateWarehouse,
   updateProductWarehouse,
   updateShelfWarehouse,
+  deleteProductWarehouse,
 } = warehouseSlice.actions;
 export default warehouseSlice.reducer;
