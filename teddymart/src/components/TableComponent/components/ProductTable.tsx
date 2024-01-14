@@ -166,6 +166,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
                 totalPrice: value.quantity * listProducts[tmp]?.sell_price, //????
                 note: listProducts[tmp].note,
                 groupId: listProducts[tmp]?.groupId,
+                VAT: listProducts[tmp]?.VAT || 0,
               };
             }
           return {
@@ -174,6 +175,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
             totalPrice: value.quantity * listProducts[tmp]?.cost_price, //????
             note: listProducts[tmp]?.note,
             groupId: listProducts[tmp]?.groupId,
+            VAT: listProducts[tmp]?.VAT || 0,
           };
         });
         listProducts = [...productFilterProductTable];

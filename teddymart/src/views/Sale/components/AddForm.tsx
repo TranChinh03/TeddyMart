@@ -103,19 +103,22 @@ const AddForm = ({
 
   const sum = useMemo(() => {
     if (typeAdd === "Export") {
+      console.log("export ok");
       return productMenu.reduce(
         (pre, cur) =>
-          pre + ((cur.sell_price * (1 + cur?.VAT ?? 0)) / 100) * cur.quantity,
+          pre + ((cur.sell_price * (1 + cur?.VAT || 0)) / 100) * cur.quantity,
         0
       );
     }
     return productMenu.reduce(
       (pre, cur) =>
-        pre + ((cur.cost_price * (1 + cur?.VAT ?? 0)) / 100) * cur.quantity,
+        pre + ((cur.cost_price * (1 + cur?.VAT || 0)) / 100) * cur.quantity,
       0
     );
   }, [productMenu]);
 
+  // console.log("Sum", sum);
+  // console.log("ProductMenu", productMenu);
   const onAddOrder = async () => {
     const listProduct = [
       ...productMenu.map((product) => {
@@ -459,7 +462,7 @@ const AddForm = ({
           </h1> */}
           <h1 className=" text-base italic">
             {new Intl.NumberFormat().format(
-              +(sum * (1 - discount / 100) - +payment)
+              +(sum * (1 - (discount ?? 0) / 100) - +payment)
             )}
           </h1>
         </div>
