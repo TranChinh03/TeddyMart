@@ -151,7 +151,6 @@ const AddForm = ({
         };
       }),
     ];
-
     const y = new Date().getFullYear();
     const m = new Date().getMonth();
     const d = new Date().getDate();
@@ -176,6 +175,7 @@ const AddForm = ({
       receiver: "TeddyMart",
       warehouseName: warehouseName ?? "",
     };
+    console.log("list product", listProduct);
     addOrderFirebase(data, userId, orderId);
     dispatch(addNewOrder(data));
     dispatch(
@@ -379,6 +379,7 @@ const AddForm = ({
             selectedRows={selectedRows}
             setSelectedRows={setSelectedRows}
             isExport={typeAdd === "Export"}
+            isFull={true}
           />
         </div>
       </Card>

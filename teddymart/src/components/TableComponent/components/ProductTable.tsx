@@ -96,6 +96,7 @@ type Props = {
   setData?: (data: TProduct[]) => void;
   isExport?: boolean;
   setOpenAlert?(openAlert: boolean): void;
+  isFull?: boolean;
 };
 const ProductTable = forwardRef<HTMLTableElement, Props>(
   (
@@ -114,6 +115,7 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
       setData,
       isExport = true,
       setOpenAlert,
+      isFull = false,
     }: Props,
     reference
   ) => {
@@ -141,22 +143,16 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
 
     const productsFilter = useMemo(() => {
       let listProducts: TProduct[] = [...products];
-
-      if (productGroup) {
-        let tmp = listProducts.filter(
-          (value) => value.groupName === productGroup
-        );
-        listProducts = tmp;
-      }
-      if (warehouseName) {
+      if (warehouseName && isFull !== true) {
         const listProductWarehouse =
           warehouses.filter((value) => value.warehouseName === warehouseName)[0]
             ?.listProduct ?? [];
+
         let productFilterProductTable = listProductWarehouse.map((value) => {
           let tmp = listProducts.findIndex(
             (warehouse) => warehouse.productId === value.productId
           );
-          //console.log(value);
+          console.log("value", value);
           //console.log("listProduct", listProducts[tmp].groupId);
           if (tmp > -1)
             if (isExport) {
@@ -180,6 +176,13 @@ const ProductTable = forwardRef<HTMLTableElement, Props>(
         });
         listProducts = [...productFilterProductTable];
       }
+      if (productGroup) {
+        let tmp = listProducts.filter(
+          (value) => value.groupName === productGroup
+        );
+        listProducts = tmp;
+      }
+
       if (productName) {
         let tmp = listProducts.filter((value) =>
           value.productName.toLowerCase().includes(productName.toLowerCase())
