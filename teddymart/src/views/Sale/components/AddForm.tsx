@@ -106,19 +106,19 @@ const AddForm = ({
       console.log("export ok");
       return productMenu.reduce(
         (pre, cur) =>
-          pre + ((cur.sell_price * (1 + cur?.VAT || 0)) / 100) * cur.quantity,
+          pre + cur.sell_price * (1 + (cur?.VAT || 0) / 100) * cur.quantity,
         0
       );
     }
     return productMenu.reduce(
       (pre, cur) =>
-        pre + ((cur.cost_price * (1 + cur?.VAT || 0)) / 100) * cur.quantity,
+        pre + cur.cost_price * (1 + (cur?.VAT || 0) / 100) * cur.quantity,
       0
     );
   }, [productMenu]);
 
-  // console.log("Sum", sum);
-  // console.log("ProductMenu", productMenu);
+  console.log("Sum", sum);
+  console.log("ProductMenu", productMenu);
   const onAddOrder = async () => {
     const listProduct = [
       ...productMenu.map((product) => {
