@@ -69,26 +69,39 @@ const warehouseSlice = createSlice({
         isDelete: boolean;
       }>
     ) => {
+      console.log("v1", state.length);
+
       for (const item of action.payload.listUpdate) {
-        const index = state.findIndex(
+        const warehouseIndex = state.findIndex(
           (w) => w.warehouseName === item.warehouseName
         );
         const count =
           item.listProduct.reduce((pre, cur) => pre + cur.quantity, 0) *
           (action.payload.type === "Import" ? 1 : -1);
-        console.log("update product warehouse", index);
-        if (index > -1) {
-          let listProduct = state[index].listProduct;
+        console.log("update product warehouse", warehouseIndex);
+        if (warehouseIndex > -1) {
+          let listProduct = state[warehouseIndex].listProduct;
+          console.log("v2", listProduct);
+
           let products = item.listProduct;
+          console.log("v3", products);
+
           for (let index = 0; index < products.length; index++) {
             const element = products[index];
+            console.log("element", element);
             let index_product = listProduct.findIndex(
               (product) => product.productId === element.productId
             );
+            console.log(
+              "index product",
+              index_product,
+              listProduct[index_product]
+            );
+
             if (index_product > -1) {
               if (action.payload.type === "Import")
                 listProduct[index_product] = {
-                  ...state[index].listProduct[index_product],
+                  ...listProduct[index_product],
                   quantity: !action.payload.isDelete
                     ? listProduct[index_product].quantity + element.quantity
                     : listProduct[index_product].quantity - element.quantity,
@@ -103,25 +116,33 @@ const warehouseSlice = createSlice({
                 };
               }
             } else {
-              listProduct = [...state[index].listProduct, element];
+              listProduct = [...state[warehouseIndex].listProduct, element];
             }
           }
-          state[index] = {
-            ...state[index],
+
+          state[warehouseIndex] = {
+            ...state[warehouseIndex],
             listProduct: listProduct,
             count:
-              state[index].count + count * (action.payload.isDelete ? -1 : 1),
+              state[warehouseIndex].count +
+              count *
+                (action.payload.isDelete || action.payload.type === "Export"
+                  ? -1
+                  : 1),
           };
-
           updateProductFirebase(
             action.payload.userId,
-            state[index].warehouseId,
+            state[warehouseIndex].warehouseId,
             listProduct,
-            count * (action.payload.isDelete ? -1 : 1)
+            count *
+              (action.payload.isDelete || action.payload.type === "Export"
+                ? -1
+                : 1)
           );
         }
       }
     },
+
     updateShelfWarehouse: (
       state: TWarehouse[],
       action: PayloadAction<{
