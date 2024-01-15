@@ -238,14 +238,15 @@ const AddForm = ({
               theme: "light",
               native: true,
             });
-            dispatch(
-              addNotifications({
-                notiId: "Noti" + Math.floor(Math.random() * 1000),
-                img: "https://i.pinimg.com/564x/02/f8/da/02f8da32d01361bd68a1718fcbe6a537.jpg",
-                title: "Warning",
-                subTitle: `The ${item.productName} is up to out of stock in ${warehouse[index].warehouseName}`,
-              })
-            );
+            // dispatch(
+            //   addNotifications({
+            //     notiId: "Noti" + Math.floor(Math.random() * 1000),
+            //     img: "https://i.pinimg.com/564x/02/f8/da/02f8da32d01361bd68a1718fcbe6a537.jpg",
+            //     title: "Warning",
+            //     subTitle: `The ${item.productName} is up to out of stock in ${warehouse[index].warehouseName}`,
+            //   })
+            // );
+            dispatch(addNotifications(data));
             addNotificationFirebase(data, userId);
           }
         }

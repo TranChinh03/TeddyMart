@@ -41,7 +41,7 @@ export default function Header({
   useEffect(() => {
     i18n.changeLanguage(language);
   }, [language]);
-
+  console.log("notifications", notifications);
   const handleClearAllNotifications = async () => {
     const notificationIds = notifications.map(
       (notification) => notification.notiId
@@ -49,7 +49,7 @@ export default function Header({
     console.log("Dispatching deleteNotifications action...");
     dispatch(deleteNotifications([...notificationIds]));
     console.log("Deleting notifications from Firebase...");
-    await deleteNotificationFirebase(notificationIds, userId);
+    await deleteNotificationFirebase(notificationIds);
   };
 
   const items: MenuProps["items"] = [
